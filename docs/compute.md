@@ -32,3 +32,8 @@ Example GPU selection:
 CUDA_VISIBLE_DEVICES=4 python scripts/train_xrd_encoder.py --config configs/zeus_2080ti.yaml
 ```
 
+Sync the local repo to the Zeus workspace:
+
+```bash
+bash scripts/sync_to_zeus.sh
+```
