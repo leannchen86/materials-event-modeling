@@ -1,0 +1,8 @@
+device: cuda
+seed: 17
+batch_size: 128
+num_workers: 4
+max_epochs: 50
+precision: float32
+cuda_visible_devices: "4"
+

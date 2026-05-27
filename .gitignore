@@ -1,0 +1,24 @@
+.DS_Store
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Data and model artifacts are tracked through manifests, not git.
+data/raw/
+data/interim/
+data/processed/
+outputs/
+checkpoints/
+runs/
+wandb/
+
+# Keep directory placeholders.
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+
