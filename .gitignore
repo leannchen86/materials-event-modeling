@@ -9,9 +9,9 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Data and model artifacts are tracked through manifests, not git.
-data/raw/
-data/interim/
-data/processed/
+data/raw/*
+data/interim/*
+data/processed/*
 outputs/
 checkpoints/
 runs/
@@ -21,4 +21,3 @@ wandb/
 !data/raw/.gitkeep
 !data/interim/.gitkeep
 !data/processed/.gitkeep
-
