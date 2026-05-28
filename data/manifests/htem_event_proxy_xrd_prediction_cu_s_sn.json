@@ -1,0 +1,844 @@
+{
+  "angle_max": 52.0,
+  "angle_min": 19.0,
+  "api_base_url": "https://htem-api.nlr.gov/api",
+  "caveats": [
+    "This is a public-data event-proxy run, not evidence that HTEM is a complete event log.",
+    "Random position splits leak sample-library context and should be treated as a shortcut diagnostic.",
+    "Local non-XRD measurements are post-fabrication measurements, not necessarily prospective inputs.",
+    "XRD PCA prediction is an objective feedback task, not a phase-label benchmark."
+  ],
+  "created_at": "2026-05-28T23:25:07.978027+00:00",
+  "dataset_id": "htem",
+  "element_system_filter": "Cu|S|Sn",
+  "event_count": 2860,
+  "feature_sets": {
+    "local_measurements_no_xrd": {
+      "categorical": [
+        "elements_text",
+        "deposition_compounds_text",
+        "deposition_power_text",
+        "deposition_gases_text",
+        "deposition_gas_flow_sccm_text",
+        "deposition_substrate_material_text",
+        "xrf_compounds_text"
+      ],
+      "numeric": [
+        "element_Cu",
+        "element_S",
+        "element_Sn",
+        "deposition_sample_time_min",
+        "deposition_initial_temp_c",
+        "position",
+        "x_mm",
+        "y_mm",
+        "absolute_temp_c_value",
+        "absolute_temp_c_count",
+        "absolute_temp_c_sum",
+        "absolute_temp_c_max",
+        "fpm_conductivity_value",
+        "fpm_conductivity_count",
+        "fpm_conductivity_sum",
+        "fpm_conductivity_max",
+        "fpm_resistivity_value",
+        "fpm_resistivity_count",
+        "fpm_resistivity_sum",
+        "fpm_resistivity_max",
+        "fpm_sheet_resistance_value",
+        "fpm_sheet_resistance_count",
+        "fpm_sheet_resistance_sum",
+        "fpm_sheet_resistance_max",
+        "fpm_standard_deviation_value",
+        "fpm_standard_deviation_count",
+        "fpm_standard_deviation_sum",
+        "fpm_standard_deviation_max",
+        "opt_average_vis_trans_value",
+        "opt_average_vis_trans_count",
+        "opt_average_vis_trans_sum",
+        "opt_average_vis_trans_max",
+        "opt_direct_bandgap_value",
+        "opt_direct_bandgap_count",
+        "opt_direct_bandgap_sum",
+        "opt_direct_bandgap_max",
+        "thickness_value",
+        "thickness_count",
+        "thickness_sum",
+        "thickness_max",
+        "xrf_concentration_value",
+        "xrf_concentration_count",
+        "xrf_concentration_sum",
+        "xrf_concentration_max"
+      ]
+    },
+    "position_only": {
+      "categorical": [],
+      "numeric": [
+        "position",
+        "x_mm",
+        "y_mm"
+      ]
+    },
+    "provenance_only": {
+      "categorical": [
+        "pdac_text",
+        "person_id_text"
+      ],
+      "numeric": [
+        "quality",
+        "sample_date_year",
+        "sciround"
+      ]
+    },
+    "recipe_only": {
+      "categorical": [
+        "elements_text",
+        "deposition_compounds_text",
+        "deposition_power_text",
+        "deposition_gases_text",
+        "deposition_gas_flow_sccm_text",
+        "deposition_substrate_material_text"
+      ],
+      "numeric": [
+        "element_Cu",
+        "element_S",
+        "element_Sn",
+        "deposition_sample_time_min",
+        "deposition_initial_temp_c"
+      ]
+    },
+    "recipe_plus_position": {
+      "categorical": [
+        "elements_text",
+        "deposition_compounds_text",
+        "deposition_power_text",
+        "deposition_gases_text",
+        "deposition_gas_flow_sccm_text",
+        "deposition_substrate_material_text"
+      ],
+      "numeric": [
+        "element_Cu",
+        "element_S",
+        "element_Sn",
+        "deposition_sample_time_min",
+        "deposition_initial_temp_c",
+        "position",
+        "x_mm",
+        "y_mm"
+      ]
+    },
+    "sample_id_only": {
+      "categorical": [
+        "sample_library_id_text"
+      ],
+      "numeric": []
+    },
+    "sample_id_plus_position": {
+      "categorical": [
+        "sample_library_id_text"
+      ],
+      "numeric": [
+        "position",
+        "x_mm",
+        "y_mm"
+      ]
+    }
+  },
+  "min_xrd_positions": 40,
+  "pre_run_hypothesis": "Restricting to one HTEM element system (Cu|S|Sn) should reduce broad chemistry/family shift. Random-position splits should still expose within-library shortcuts. If recipe/process features still fail held-out-library transfer inside the fixed element system, then the previous collapse was not mainly caused by broad element-family mixing.",
+  "results": {
+    "held_out_library": {
+      "folds": 5,
+      "folds_detail": [
+        {
+          "baseline_mse": 2.9434545040130615,
+          "fold": 0,
+          "target_components": 8,
+          "target_explained_variance": 0.546143651008606,
+          "test_events": 572,
+          "train_events": 2288
+        },
+        {
+          "baseline_mse": 2.5338351726531982,
+          "fold": 1,
+          "target_components": 8,
+          "target_explained_variance": 0.5575386881828308,
+          "test_events": 572,
+          "train_events": 2288
+        },
+        {
+          "baseline_mse": 1.966458797454834,
+          "fold": 2,
+          "target_components": 8,
+          "target_explained_variance": 0.5695151090621948,
+          "test_events": 572,
+          "train_events": 2288
+        },
+        {
+          "baseline_mse": 1.6536345481872559,
+          "fold": 3,
+          "target_components": 8,
+          "target_explained_variance": 0.5754677057266235,
+          "test_events": 572,
+          "train_events": 2288
+        },
+        {
+          "baseline_mse": 2.3959739208221436,
+          "fold": 4,
+          "target_components": 8,
+          "target_explained_variance": 0.5604596734046936,
+          "test_events": 572,
+          "train_events": 2288
+        }
+      ],
+      "models": {
+        "local_measurements_no_xrd": {
+          "mae": {
+            "max": 3.2024305245825015,
+            "mean": 1.6059666946361464,
+            "min": 0.973504808908187,
+            "std": 0.8092727121556055
+          },
+          "mse": {
+            "max": 203.0519282274079,
+            "mean": 42.80848791187763,
+            "min": 1.7505259682800833,
+            "std": 80.12412066604873
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": -0.058593006658600455,
+            "mean": -13.834602733069445,
+            "min": -67.98422515128736,
+            "std": 27.076524310016044
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 68.98422515128736,
+            "mean": 14.834602733069445,
+            "min": 1.0585930066586005,
+            "std": 27.076524310016044
+          },
+          "rmse": {
+            "max": 14.249629055782746,
+            "mean": 4.164879948230472,
+            "min": 1.3230744379210428,
+            "std": 5.046014558907392
+          }
+        },
+        "position_only": {
+          "mae": {
+            "max": 1.339215034615955,
+            "mean": 1.1737688336035743,
+            "min": 0.9744181440726192,
+            "std": 0.12395194235379822
+          },
+          "mse": {
+            "max": 2.9482620164431883,
+            "mean": 2.3035278302418396,
+            "min": 1.657858291300883,
+            "std": 0.4484807633317426
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": -0.0014344638438503754,
+            "mean": -0.0022214953554703155,
+            "min": -0.0035548716278133163,
+            "std": 0.0007666292432938678
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 1.0035548716278133,
+            "mean": 1.0022214953554704,
+            "min": 1.0014344638438504,
+            "std": 0.0007666292432938678
+          },
+          "rmse": {
+            "max": 1.7170503826164183,
+            "mean": 1.5103509195559766,
+            "min": 1.2875784602504359,
+            "std": 0.1495591188736255
+          }
+        },
+        "provenance_only": {
+          "mae": {
+            "max": 1.2850377061421345,
+            "mean": 1.1622900563636511,
+            "min": 0.9764809636802831,
+            "std": 0.11333400765640787
+          },
+          "mse": {
+            "max": 2.6684195592877797,
+            "mean": 2.247504011741607,
+            "min": 1.6715854765211597,
+            "std": 0.39174872171180425
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": 0.09343950937590617,
+            "mean": 0.017811015031835287,
+            "min": -0.017843093503370655,
+            "std": 0.04233216601890569
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 1.0178430935033707,
+            "mean": 0.9821889849681646,
+            "min": 0.9065604906240938,
+            "std": 0.04233216601890568
+          },
+          "rmse": {
+            "max": 1.6335297852465929,
+            "mean": 1.4931868298633044,
+            "min": 1.2928980920865958,
+            "std": 0.13378005406031762
+          }
+        },
+        "recipe_only": {
+          "mae": {
+            "max": 1.3163870613240245,
+            "mean": 1.197066188999163,
+            "min": 0.9670229359998583,
+            "std": 0.12814493775325023
+          },
+          "mse": {
+            "max": 3.5857274563099955,
+            "mean": 2.6727213177742124,
+            "min": 1.5850452000380522,
+            "std": 0.6505288043455313
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": 0.04147793611617068,
+            "mean": -0.18266622131810484,
+            "min": -0.8234439800879445,
+            "std": 0.32470979295111124
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 1.8234439800879445,
+            "mean": 1.182666221318105,
+            "min": 0.9585220638838293,
+            "std": 0.32470979295111124
+          },
+          "rmse": {
+            "max": 1.8936017153324496,
+            "mean": 1.6215473033379386,
+            "min": 1.2589857823017907,
+            "std": 0.20810012208471054
+          }
+        },
+        "recipe_plus_position": {
+          "mae": {
+            "max": 1.3200608056487095,
+            "mean": 1.198674961906994,
+            "min": 0.9685396656910126,
+            "std": 0.12844340122839212
+          },
+          "mse": {
+            "max": 3.5927179878493285,
+            "mean": 2.6775777587866605,
+            "min": 1.5892690195641528,
+            "std": 0.6512961679928609
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": 0.03892367191630197,
+            "mean": -0.1848877240950571,
+            "min": -0.8269988633880068,
+            "std": 0.32532395812023235
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 1.8269988633880068,
+            "mean": 1.184887724095057,
+            "min": 0.961076328083698,
+            "std": 0.3253239581202323
+          },
+          "rmse": {
+            "max": 1.8954466460043997,
+            "mean": 1.6230439040680615,
+            "min": 1.2606621353733731,
+            "std": 0.2081015239112046
+          }
+        },
+        "sample_id_only": {
+          "mae": {
+            "max": 1.3375363497282242,
+            "mean": 1.1723614396650852,
+            "min": 0.9725325534811302,
+            "std": 0.12396335146578048
+          },
+          "mse": {
+            "max": 2.943454779558466,
+            "mean": 2.298671389229391,
+            "min": 1.6536344717748015,
+            "std": 0.4487656911078452
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": 8.268661899624163e-08,
+            "mean": 7.421481695857324e-09,
+            "min": -9.361293140663918e-08,
+            "std": 5.948702365870415e-08
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 1.0000000936129314,
+            "mean": 0.9999999925785182,
+            "min": 0.999999917313381,
+            "std": 5.948702365870416e-08
+          },
+          "rmse": {
+            "max": 1.7156499583418716,
+            "mean": 1.5087175558780694,
+            "min": 1.2859371958905308,
+            "std": 0.14980896440031666
+          }
+        },
+        "sample_id_plus_position": {
+          "mae": {
+            "max": 1.3392150346159566,
+            "mean": 1.173768833603575,
+            "min": 0.9744181440726252,
+            "std": 0.12395194235379656
+          },
+          "mse": {
+            "max": 2.9482620164431927,
+            "mean": 2.3035278302418396,
+            "min": 1.6578582913009021,
+            "std": 0.448480763331741
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": -0.001434463843848599,
+            "mean": -0.0022214953554705375,
+            "min": -0.003554871627802658,
+            "std": 0.0007666292432912722
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 1.0035548716278027,
+            "mean": 1.0022214953554704,
+            "min": 1.0014344638438486,
+            "std": 0.0007666292432912723
+          },
+          "rmse": {
+            "max": 1.7170503826164196,
+            "mean": 1.5103509195559768,
+            "min": 1.2875784602504432,
+            "std": 0.14955911887362455
+          }
+        },
+        "train_mean": {
+          "mae": {
+            "max": 1.337536334991455,
+            "mean": 1.172361433506012,
+            "min": 0.9725325703620911,
+            "std": 0.12396333869370706
+          },
+          "mse": {
+            "max": 2.9434545040130615,
+            "mean": 2.2986713886260985,
+            "min": 1.6536345481872559,
+            "std": 0.4487655925388833
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "std": 0.0
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 1.0,
+            "mean": 1.0,
+            "min": 1.0,
+            "std": 0.0
+          },
+          "rmse": {
+            "max": 1.7156498780383664,
+            "mean": 1.5087175586278423,
+            "min": 1.285937225601334,
+            "std": 0.14980893469396794
+          }
+        }
+      },
+      "target_explained_variance": {
+        "max": 0.5754677057266235,
+        "mean": 0.5618249654769898,
+        "min": 0.546143651008606,
+        "std": 0.010113382113037049
+      }
+    },
+    "random_position": {
+      "folds": 5,
+      "folds_detail": [
+        {
+          "baseline_mse": 2.455697774887085,
+          "fold": 0,
+          "target_components": 8,
+          "target_explained_variance": 0.5576715469360352,
+          "test_events": 572,
+          "train_events": 2288
+        },
+        {
+          "baseline_mse": 2.389000654220581,
+          "fold": 1,
+          "target_components": 8,
+          "target_explained_variance": 0.5598752498626709,
+          "test_events": 572,
+          "train_events": 2288
+        },
+        {
+          "baseline_mse": 2.4457223415374756,
+          "fold": 2,
+          "target_components": 8,
+          "target_explained_variance": 0.5564888715744019,
+          "test_events": 572,
+          "train_events": 2288
+        },
+        {
+          "baseline_mse": 2.391662120819092,
+          "fold": 3,
+          "target_components": 8,
+          "target_explained_variance": 0.5589264631271362,
+          "test_events": 572,
+          "train_events": 2288
+        },
+        {
+          "baseline_mse": 2.443584680557251,
+          "fold": 4,
+          "target_components": 8,
+          "target_explained_variance": 0.557675302028656,
+          "test_events": 572,
+          "train_events": 2288
+        }
+      ],
+      "models": {
+        "local_measurements_no_xrd": {
+          "mae": {
+            "max": 0.8905724070673655,
+            "mean": 0.8722960399342655,
+            "min": 0.8628178611228209,
+            "std": 0.010856378011211964
+          },
+          "mse": {
+            "max": 1.4709527126307038,
+            "mean": 1.42063688183864,
+            "min": 1.3856413658854956,
+            "std": 0.03579521741497911
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": 0.4329472692677444,
+            "mean": 0.4140777123291947,
+            "min": 0.3842811595584905,
+            "std": 0.017826179227998444
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 0.6157188404415095,
+            "mean": 0.5859222876708052,
+            "min": 0.5670527307322556,
+            "std": 0.017826179227998444
+          },
+          "rmse": {
+            "max": 1.2128283937271191,
+            "mean": 1.1918106132276645,
+            "min": 1.177132688308967,
+            "std": 0.014978118591416147
+          }
+        },
+        "position_only": {
+          "mae": {
+            "max": 1.1963050853421606,
+            "mean": 1.187849455405503,
+            "min": 1.180879579928954,
+            "std": 0.0057537189034275755
+          },
+          "mse": {
+            "max": 2.455004235737256,
+            "mean": 2.4262868011301046,
+            "min": 2.388647699865136,
+            "std": 0.030438720919176748
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": 0.0012603874634781187,
+            "mean": -0.00046852113582958045,
+            "min": -0.0038851149026557508,
+            "std": 0.001783925153821904
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 1.0038851149026558,
+            "mean": 1.0004685211358297,
+            "min": 0.9987396125365219,
+            "std": 0.0017839251538219042
+          },
+          "rmse": {
+            "max": 1.5668453132767306,
+            "mean": 1.5576235448495983,
+            "min": 1.5455250563692378,
+            "std": 0.009782313646349476
+          }
+        },
+        "provenance_only": {
+          "mae": {
+            "max": 1.1635204819178198,
+            "mean": 1.1586693466665088,
+            "min": 1.1536854233683669,
+            "std": 0.004035033481717054
+          },
+          "mse": {
+            "max": 2.3347646180987778,
+            "mean": 2.3088388076466293,
+            "min": 2.276175889879545,
+            "std": 0.02656979425741681
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": 0.04996644209971046,
+            "mean": 0.04794876445062708,
+            "min": 0.045368078605744544,
+            "std": 0.0016445912388948014
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 0.9546319213942555,
+            "mean": 0.9520512355493731,
+            "min": 0.9500335579002895,
+            "std": 0.0016445912388948014
+          },
+          "rmse": {
+            "max": 1.5279936577416733,
+            "mean": 1.5194611625643408,
+            "min": 1.5087000662423082,
+            "std": 0.008751177363717813
+          }
+        },
+        "recipe_only": {
+          "mae": {
+            "max": 0.9791873580832298,
+            "mean": 0.9613207286384187,
+            "min": 0.9547112930182025,
+            "std": 0.009006945395126125
+          },
+          "mse": {
+            "max": 1.7053089035567996,
+            "mean": 1.6647193973806949,
+            "min": 1.6414719096779657,
+            "std": 0.022263797848169325
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": 0.3234418156963841,
+            "mean": 0.31353814976880195,
+            "min": 0.30557053030061443,
+            "std": 0.006416273034129765
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 0.6944294696993856,
+            "mean": 0.6864618502311981,
+            "min": 0.6765581843036159,
+            "std": 0.006416273034129765
+          },
+          "rmse": {
+            "max": 1.3058747656482224,
+            "mean": 1.2902113835177187,
+            "min": 1.281199402777712,
+            "std": 0.008601350009672454
+          }
+        },
+        "recipe_plus_position": {
+          "mae": {
+            "max": 0.9797769241166797,
+            "mean": 0.9617206771225918,
+            "min": 0.9558446243593165,
+            "std": 0.009177808687274556
+          },
+          "mse": {
+            "max": 1.7032650622719998,
+            "mean": 1.6642668157360567,
+            "min": 1.6377278227324865,
+            "std": 0.021917935995506236
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": 0.32182913830139137,
+            "mean": 0.3137277785536989,
+            "min": 0.30640281565172756,
+            "std": 0.005891328778257594
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 0.6935971843482724,
+            "mean": 0.6862722214463011,
+            "min": 0.6781708616986086,
+            "std": 0.005891328778257594
+          },
+          "rmse": {
+            "max": 1.305091974640868,
+            "mean": 1.2900368206655093,
+            "min": 1.2797374038186453,
+            "std": 0.008474494868784726
+          }
+        },
+        "sample_id_only": {
+          "mae": {
+            "max": 0.5720386504697712,
+            "mean": 0.5649493357706293,
+            "min": 0.5550088623094045,
+            "std": 0.006228616350711783
+          },
+          "mse": {
+            "max": 0.6116342519032971,
+            "mean": 0.5920870606793607,
+            "min": 0.5691265257765546,
+            "std": 0.013996918067067474
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": 0.7672971636597228,
+            "mean": 0.7557953760000167,
+            "min": 0.7442639382130509,
+            "std": 0.007323750893380263
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 0.25573606178694913,
+            "mean": 0.24420462399998333,
+            "min": 0.23270283634027716,
+            "std": 0.007323750893380297
+          },
+          "rmse": {
+            "max": 0.7820704903672668,
+            "mean": 0.7694179499956222,
+            "min": 0.754404749306733,
+            "std": 0.009114762964268866
+          }
+        },
+        "sample_id_plus_position": {
+          "mae": {
+            "max": 0.5707020650654361,
+            "mean": 0.5642794262321914,
+            "min": 0.5535858103577824,
+            "std": 0.006568538318728396
+          },
+          "mse": {
+            "max": 0.607073480006461,
+            "mean": 0.5898378425586418,
+            "min": 0.5676158760226001,
+            "std": 0.013206748378895638
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": 0.7679148338376895,
+            "mean": 0.7567268028040369,
+            "min": 0.7461708847909705,
+            "std": 0.006922931789193638
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 0.25382911520902945,
+            "mean": 0.24327319719596302,
+            "min": 0.23208516616231048,
+            "std": 0.006922931789193611
+          },
+          "rmse": {
+            "max": 0.7791492026604795,
+            "mean": 0.7679605985892011,
+            "min": 0.7534028643578415,
+            "std": 0.00862331567077288
+          }
+        },
+        "train_mean": {
+          "mae": {
+            "max": 1.1963211297988892,
+            "mean": 1.1872578620910645,
+            "min": 1.179887294769287,
+            "std": 0.0057626225423734094
+          },
+          "mse": {
+            "max": 2.455697774887085,
+            "mean": 2.4251335144042967,
+            "min": 2.389000654220581,
+            "std": 0.028720853495588256
+          },
+          "mse_improvement_vs_train_mean": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "std": 0.0
+          },
+          "relative_mse_vs_train_mean": {
+            "max": 1.0,
+            "mean": 1.0,
+            "min": 1.0,
+            "std": 0.0
+          },
+          "rmse": {
+            "max": 1.5670666146935441,
+            "mean": 1.5572566585474708,
+            "min": 1.5456392380567274,
+            "std": 0.009231132859146394
+          }
+        }
+      },
+      "target_explained_variance": {
+        "max": 0.5598752498626709,
+        "mean": 0.55812748670578,
+        "min": 0.5564888715744019,
+        "std": 0.0011653712695197677
+      }
+    }
+  },
+  "selected_library_count": 65,
+  "selected_library_ids": [
+    7352,
+    7187,
+    7133,
+    7240,
+    7145,
+    7279,
+    7781,
+    7303,
+    7206,
+    7304,
+    7344,
+    6978,
+    6674,
+    6700,
+    7958,
+    6886,
+    7327,
+    7920,
+    6808,
+    7813,
+    7773,
+    7821,
+    7008,
+    8882,
+    7228,
+    7273,
+    8892,
+    7200,
+    6709,
+    7651,
+    6949,
+    6972,
+    7612,
+    6928,
+    8005,
+    7126,
+    8020,
+    6903,
+    7892,
+    7798,
+    6733,
+    7330,
+    7407,
+    7748,
+    6647,
+    7443,
+    7387,
+    8893,
+    7471,
+    6858,
+    7605,
+    7504,
+    7975,
+    7665,
+    7491,
+    7935,
+    7856,
+    7938,
+    6973,
+    7786,
+    7617,
+    7954,
+    7643,
+    7110,
+    7967
+  ],
+  "target": {
+    "description": "PCA scores of normalized position-level XRD spectra.",
+    "local_measurement_transform": "signed log1p for local non-XRD measurement values, sums, and maxima.",
+    "normalization": "log1p(nonnegative intensity), then per-spectrum max normalization.",
+    "target_pca_components": 8
+  },
+  "task": "event_proxy_xrd_pca_prediction",
+  "xrd_points": 661
+}

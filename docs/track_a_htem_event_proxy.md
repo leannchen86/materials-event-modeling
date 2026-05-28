@@ -187,3 +187,82 @@ The next HTEM test should not be a bigger model. It should be a cleaner question
 Both are aligned with the project. The first tests prospective transfer. The second tests
 whether a material-making event should be represented as a field/trajectory rather than a
 static material row.
+
+## Within-Family Control: Cu-S-Sn
+
+### Pre-Run Hypothesis
+
+If the prior held-out-library collapse was mostly caused by mixing unrelated chemistry
+families, then restricting to one large element system should improve held-out-library
+transfer. If recipe/process features still fail within a fixed element system, then the
+public sample-library representation is probably too compressed for prospective event
+generalization.
+
+The largest exact element system with full XRD-position coverage was `Cu|S|Sn`: 65
+libraries. All 65 are in PDAC `4`, so this run has no held-out-PDAC split.
+
+### Command
+
+```bash
+python3 scripts/run_htem_event_proxy.py --element-system Cu,S,Sn --max-libraries 65 --min-xrd-positions 40 --chunk-size 5 --n-splits 5 --target-pca-components 8 --output data/manifests/htem_event_proxy_xrd_prediction_cu_s_sn.json
+```
+
+Output manifest:
+
+```text
+data/manifests/htem_event_proxy_xrd_prediction_cu_s_sn.json
+```
+
+### Setup
+
+The run built 2,860 position-level rows from 65 `Cu|S|Sn` sample libraries. Each XRD
+spectrum has 661 angle points. Local non-XRD measurement values, sums, and maxima were
+signed-log transformed because the public electrical-property fields include extreme
+scale artifacts.
+
+### Results
+
+Mean MSE improvement versus train-mean prediction:
+
+| Feature set | Random position | Held-out library |
+|---|---:|---:|
+| `sample_id_plus_position` | +75.7% | -0.2% |
+| `sample_id_only` | +75.6% | +0.0% |
+| `local_measurements_no_xrd` | +41.4% | -1383.5% |
+| `recipe_plus_position` | +31.4% | -18.5% |
+| `recipe_only` | +31.4% | -18.3% |
+| `provenance_only` | +4.8% | +1.8% |
+| `position_only` | -0.0% | -0.2% |
+
+### Verdict
+
+The hypothesis that broad chemistry/family shift was the main cause was not validated.
+
+Restricting to `Cu|S|Sn` reduced the random-position recipe shortcut from about +87% to
+about +31%, but it did not rescue held-out-library transfer. Recipe/process features were
+still worse than train mean by about 18%. This means the previous collapse was not merely
+because we mixed many unrelated element systems.
+
+The `sample_id_only` result is a useful sanity check: it still looks strong on random
+position splits but becomes train mean on held-out-library, as expected. That confirms the
+split is doing what it should.
+
+The `local_measurements_no_xrd` result is a warning rather than a useful predictor. Even
+after log-scaling extreme local measurement values, it generalizes very badly to held-out
+libraries. These local measurements are post-fabrication derived measurements, not clean
+prospective event inputs.
+
+### Next-Step Implication
+
+For HTEM, the better next task is not “make a stronger supervised predictor from public
+metadata.” The better next task is to explicitly model the sample library as a spatial
+measurement field:
+
+```text
+within one library, predict held-out position XRD from neighboring positions,
+spatial coordinates, local composition/property traces, and shared recipe metadata
+```
+
+That task does not pretend to generalize to unseen material-making events. It asks whether
+the event should be represented as a field/trajectory rather than a static row. This is
+more aligned with Track B than further tuning held-out-library metadata prediction.

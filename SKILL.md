@@ -211,6 +211,16 @@ test. Next HTEM work should either restrict to a chemistry family for cleaner he
 library transfer, or explicitly frame the task as within-library spatial/event-field
 modeling.
 
+The first within-family HTEM control used all 65 `Cu|S|Sn` libraries with full XRD-position
+coverage, producing 2,860 position-level rows. This did not rescue held-out-library
+transfer: recipe-plus-position improved random-position MSE by about 31.4%, but was about
+18.5% worse than train mean on held-out-library. Sample-id-only still improved
+random-position MSE by about 75.6% and collapsed to train mean on held-out-library, which
+confirms the split is exposing shortcut structure. Interpretation: the previous
+held-out-library failure was not just broad chemistry/family mixing. For HTEM, the next
+better-aligned task is within-library spatial/event-field modeling rather than stronger
+supervised prediction from compressed sample-library metadata.
+
 ## Track B Direction
 
 Track B is the real pre-taxonomic event dataset. The unit is a material-making event, not a

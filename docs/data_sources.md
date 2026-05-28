@@ -78,6 +78,7 @@ Local audit:
 ```bash
 python3 scripts/audit_htem_dataset.py --endpoint-sample-ids 2
 python3 scripts/run_htem_event_proxy.py --max-libraries 32 --min-xrd-positions 40 --chunk-size 4 --n-splits 4 --target-pca-components 8
+python3 scripts/run_htem_event_proxy.py --element-system Cu,S,Sn --max-libraries 65 --min-xrd-positions 40 --chunk-size 5 --n-splits 5 --target-pca-components 8 --output data/manifests/htem_event_proxy_xrd_prediction_cu_s_sn.json
 ```
 
 Current audit:
@@ -93,6 +94,9 @@ Current audit:
   libraries. Random-position XRD-PCA prediction looked strong, but held-out-library
   transfer collapsed, so random-position wins should be treated as leakage/within-library
   diagnostics.
+- A within-family `Cu|S|Sn` control built 2,860 rows from 65 libraries. It did not rescue
+  held-out-library transfer for recipe/process features, suggesting the bottleneck is not
+  only broad chemistry/family mixing.
 
 Track A use:
 

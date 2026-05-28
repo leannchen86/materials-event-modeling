@@ -130,6 +130,14 @@ def summarize_numeric_like(value: Any) -> dict[str, float]:
     }
 
 
+def signed_log1p(value: float) -> float:
+    if math.isnan(value):
+        return math.nan
+    if not math.isfinite(value):
+        return math.nan
+    return math.copysign(math.log1p(abs(value)), value)
+
+
 def categorical_text(value: Any) -> str:
     if value is None:
         return "__missing__"
@@ -148,18 +156,38 @@ def sample_date_year(value: Any) -> float:
         return math.nan
 
 
+def element_system(record: dict[str, Any]) -> str:
+    return "|".join(record.get("elements") or []) or "none"
+
+
+def parse_element_system_filter(value: str | None) -> str | None:
+    if value is None:
+        return None
+    normalized = value.strip()
+    if not normalized:
+        return None
+    return "|".join(part.strip() for part in normalized.replace("|", ",").split(",") if part.strip())
+
+
 def select_libraries(
     records: list[dict[str, Any]],
     max_libraries: int,
     min_xrd_positions: int,
     seed: int,
+    element_system_filter: str | None,
 ) -> list[dict[str, Any]]:
     candidates = [
         record
         for record in records
         if isinstance(record.get("has_xrd"), (int, float))
         and int(record["has_xrd"]) >= min_xrd_positions
+        and (element_system_filter is None or element_system(record) == element_system_filter)
     ]
+    if not candidates:
+        raise RuntimeError(
+            "No HTEM libraries match "
+            f"element_system={element_system_filter!r} and min_xrd_positions={min_xrd_positions}."
+        )
     rng = np.random.default_rng(seed)
     indices = np.arange(len(candidates))
     rng.shuffle(indices)
@@ -311,10 +339,10 @@ def build_event_table(
 
             for field in LOCAL_PROP_FIELDS:
                 summary = summarize_numeric_like(property_value(prop_entry, field, index))
-                row[f"{field}_value"] = summary["value"]
+                row[f"{field}_value"] = signed_log1p(summary["value"])
                 row[f"{field}_count"] = summary["count"]
-                row[f"{field}_sum"] = summary["sum"]
-                row[f"{field}_max"] = summary["max"]
+                row[f"{field}_sum"] = signed_log1p(summary["sum"])
+                row[f"{field}_max"] = signed_log1p(summary["max"])
 
             xrd_rows.append(normalize_spectrum(measurement))
             rows.append(row)
@@ -532,15 +560,34 @@ def evaluate(
     return results
 
 
+def pre_run_hypothesis(element_system_filter: str | None) -> str:
+    if element_system_filter:
+        return (
+            f"Restricting to one HTEM element system ({element_system_filter}) should reduce broad "
+            "chemistry/family shift. Random-position splits should still expose within-library "
+            "shortcuts. If recipe/process features still fail held-out-library transfer inside "
+            "the fixed element system, then the previous collapse was not mainly caused by broad "
+            "element-family mixing."
+        )
+    return (
+        "Position-level HTEM rows should expose event-shaped structure, but random "
+        "position splits may overstate success because positions from the same sample "
+        "library leak context. Held-out-library and held-out-PDAC splits are the real "
+        "controls."
+    )
+
+
 def run(args: argparse.Namespace) -> dict[str, Any]:
     root = project_root()
     cache_dir = root / args.cache_dir
     records = fetch_records(cache_dir=cache_dir, force=args.force_fetch)
+    element_system_filter = parse_element_system_filter(args.element_system)
     selected_records = select_libraries(
         records=records,
         max_libraries=args.max_libraries,
         min_xrd_positions=args.min_xrd_positions,
         seed=args.seed,
+        element_system_filter=element_system_filter,
     )
     selected_ids = [int(record["id"]) for record in selected_records]
     print(f"selected {len(selected_ids)} HTEM libraries", file=sys.stderr)
@@ -570,13 +617,9 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "dataset_id": "htem",
         "task": "event_proxy_xrd_pca_prediction",
         "created_at": datetime.now(timezone.utc).isoformat(),
-        "pre_run_hypothesis": (
-            "Position-level HTEM rows should expose event-shaped structure, but random "
-            "position splits may overstate success because positions from the same sample "
-            "library leak context. Held-out-library and held-out-PDAC splits are the real "
-            "controls."
-        ),
+        "pre_run_hypothesis": pre_run_hypothesis(element_system_filter),
         "api_base_url": HTEM_API_BASE_URL,
+        "element_system_filter": element_system_filter,
         "selected_library_count": len(selected_ids),
         "selected_library_ids": selected_ids,
         "min_xrd_positions": args.min_xrd_positions,
@@ -587,6 +630,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "target": {
             "description": "PCA scores of normalized position-level XRD spectra.",
             "normalization": "log1p(nonnegative intensity), then per-spectrum max normalization.",
+            "local_measurement_transform": "signed log1p for local non-XRD measurement values, sums, and maxima.",
             "target_pca_components": args.target_pca_components,
         },
         "feature_sets": {
@@ -615,6 +659,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--max-libraries", type=int, default=32)
     parser.add_argument("--min-xrd-positions", type=int, default=40)
+    parser.add_argument(
+        "--element-system",
+        default=None,
+        help="Optional exact element system filter, for example `Cu,S,Sn` or `Cu|S|Sn`.",
+    )
     parser.add_argument("--chunk-size", type=int, default=4)
     parser.add_argument("--seed", type=int, default=17)
     parser.add_argument("--n-splits", type=int, default=4)
