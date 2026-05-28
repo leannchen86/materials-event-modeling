@@ -44,6 +44,7 @@ python3 scripts/audit_opxrd_dataset.py --max-patterns 5000
 python3 scripts/preprocess_opxrd.py --max-spectra 4096 --points 4096 --selection spread
 python3 scripts/run_opxrd_reconstruction.py --max-samples 1024 --mask-widths 256 512 1024 --mask-strategies random peak --repeats 1 --pca-components 4 16 64
 python3 scripts/run_opxrd_conv_reconstruction.py --max-samples 512 --mask-width 1024 --train-mask-strategy peak --eval-mask-strategy peak --epochs 25 --batch-size 64 --channels 32 --depth 10 --n-splits 3 --split-kinds random_kfold held_out_top_level_source
+python3 scripts/run_opxrd_conv_scaling.py --sample-sizes 256 512 --seeds 0 1 --epochs 25 --n-splits 3 --split-kinds random_kfold held_out_top_level_source --mask-width 1024 --train-mask-strategy peak --eval-mask-strategy peak --channels 32 --depth 10 --batch-size 64
 ```
 
 Current plan:

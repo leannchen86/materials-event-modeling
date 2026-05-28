@@ -207,3 +207,26 @@ Interpretation: this is the first neural result that points in the desired direc
 measurement model can beat local interpolation on a peak-focused task under source shift.
 The next scaling step should test whether this improves with more opXRD samples, longer
 training, and eventually transfer back to NIST.
+
+## opXRD CNN Replication Curve
+
+The next check repeated the CNN over two sample sizes and two seeds:
+
+```bash
+python3 scripts/run_opxrd_conv_scaling.py --sample-sizes 256 512 --seeds 0 1 --epochs 25 --n-splits 3 --split-kinds random_kfold held_out_top_level_source --mask-width 1024 --train-mask-strategy peak --eval-mask-strategy peak --channels 32 --depth 10 --batch-size 64
+```
+
+Summary:
+
+| Samples | Split | Interpolation MSE improvement | CNN MSE improvement | CNN MSE win rate vs interpolation |
+| ---: | --- | ---: | ---: | ---: |
+| 256 | Random folds | 9.9% | 8.6% | 50% |
+| 256 | Held-out source | 32.0% | 8.4% | 0% |
+| 512 | Random folds | 8.0% | 33.7% | 100% |
+| 512 | Held-out source | 27.0% | 28.4% | 50% |
+
+Interpretation: the CNN signal strengthens with more samples on random folds, but it is not
+yet robust under source shift. At 512 samples, the held-out-source average MSE is slightly
+better than interpolation, but only one of two seeds wins. MAE remains worse than
+interpolation in every setting. This supports scaling the raw-XRD neural path, but it also
+says the current local pilot is not strong enough for an ontology-level claim.

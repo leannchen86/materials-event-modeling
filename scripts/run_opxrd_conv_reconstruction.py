@@ -135,11 +135,12 @@ def split_iterators(
     samples: pd.DataFrame,
     n_splits: int,
     split_kinds: list[str],
+    seed: int,
 ) -> dict[str, list[tuple[np.ndarray, np.ndarray]]]:
     indices = np.arange(len(samples))
     splits: dict[str, list[tuple[np.ndarray, np.ndarray]]] = {}
     if "random_kfold" in split_kinds:
-        random_cv = KFold(n_splits=n_splits, shuffle=True, random_state=17)
+        random_cv = KFold(n_splits=n_splits, shuffle=True, random_state=17 + seed)
         splits["random_kfold"] = list(random_cv.split(indices))
     if "held_out_top_level_source" in split_kinds:
         groups = samples["top_level_source"].to_numpy()
@@ -149,8 +150,14 @@ def split_iterators(
     return splits
 
 
-def random_mask_starts(n_samples: int, n_features: int, mask_width: int, repeats: int) -> np.ndarray:
-    rng = np.random.default_rng(1701 + mask_width)
+def random_mask_starts(
+    n_samples: int,
+    n_features: int,
+    mask_width: int,
+    repeats: int,
+    seed: int,
+) -> np.ndarray:
+    rng = np.random.default_rng(1701 + mask_width + seed)
     return rng.integers(0, n_features - mask_width + 1, size=(repeats, n_samples))
 
 
@@ -159,8 +166,9 @@ def peak_mask_starts(
     mask_width: int,
     repeats: int,
     peak_top_fraction: float,
+    seed: int,
 ) -> np.ndarray:
-    rng = np.random.default_rng(3407 + mask_width)
+    rng = np.random.default_rng(3407 + mask_width + seed)
     n_samples, n_features = xrd.shape
     starts = np.empty((repeats, n_samples), dtype=np.int64)
     candidates_per_spectrum = max(8, int(round(n_features * peak_top_fraction)))
@@ -187,6 +195,7 @@ def build_mask_starts(
     repeats: int,
     strategy: str,
     peak_top_fraction: float,
+    seed: int,
 ) -> np.ndarray:
     if strategy == "random":
         return random_mask_starts(
@@ -194,6 +203,7 @@ def build_mask_starts(
             n_features=xrd.shape[1],
             mask_width=mask_width,
             repeats=repeats,
+            seed=seed,
         )
     if strategy == "peak":
         return peak_mask_starts(
@@ -201,6 +211,7 @@ def build_mask_starts(
             mask_width=mask_width,
             repeats=repeats,
             peak_top_fraction=peak_top_fraction,
+            seed=seed,
         )
     raise ValueError(f"Unsupported mask strategy: {strategy}")
 
@@ -373,6 +384,7 @@ def evaluate(
     n_splits: int,
     split_kinds: list[str],
     peak_top_fraction: float,
+    seed: int,
     channels: int,
     depth: int,
     dropout: float,
@@ -389,11 +401,12 @@ def evaluate(
         repeats=repeats,
         strategy=eval_mask_strategy,
         peak_top_fraction=peak_top_fraction,
+        seed=seed,
     )
     results = {}
     fold_losses = {}
 
-    for split_name, splits in split_iterators(samples, n_splits, split_kinds).items():
+    for split_name, splits in split_iterators(samples, n_splits, split_kinds, seed).items():
         accumulator = EvaluationAccumulator()
 
         for fold_idx, (train_idx, test_idx) in enumerate(splits):
@@ -416,7 +429,7 @@ def evaluate(
                 learning_rate=learning_rate,
                 weight_decay=weight_decay,
                 observed_loss_weight=observed_loss_weight,
-                seed=17 + fold_idx + 1000 * len(split_name),
+                seed=17 + seed + fold_idx + 1000 * len(split_name),
                 device=device,
             )
             fold_losses[f"{split_name}_fold_{fold_idx}"] = losses
@@ -470,6 +483,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         n_splits=args.n_splits,
         split_kinds=args.split_kinds,
         peak_top_fraction=args.peak_top_fraction,
+        seed=args.seed,
         channels=args.channels,
         depth=args.depth,
         dropout=args.dropout,
@@ -493,6 +507,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "train_mask_strategy": args.train_mask_strategy,
         "eval_mask_strategy": args.eval_mask_strategy,
         "peak_top_fraction": args.peak_top_fraction,
+        "seed": args.seed,
         "repeats": args.repeats,
         "n_splits": args.n_splits,
         "split_kinds": args.split_kinds,
@@ -515,7 +530,8 @@ def run(args: argparse.Namespace) -> dict[str, object]:
             "The key comparison is against local interpolation on peak masks and held-out-source splits.",
         ],
     }
-    output_path = root / "data" / "manifests" / "opxrd_masked_xrd_conv_reconstruction.json"
+    output_path = root / args.output
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
     return result
 
@@ -528,6 +544,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--train-mask-strategy", choices=["random", "peak"], default="peak")
     parser.add_argument("--eval-mask-strategy", choices=["random", "peak"], default="peak")
     parser.add_argument("--peak-top-fraction", type=float, default=0.02)
+    parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--n-splits", type=int, default=3)
     parser.add_argument(
@@ -544,6 +561,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--learning-rate", type=float, default=1e-3)
     parser.add_argument("--weight-decay", type=float, default=1e-4)
     parser.add_argument("--observed-loss-weight", type=float, default=0.05)
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path("data/manifests/opxrd_masked_xrd_conv_reconstruction.json"),
+        help="Path for the JSON result, relative to project root unless absolute.",
+    )
     return parser.parse_args()
 
 

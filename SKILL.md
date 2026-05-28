@@ -107,6 +107,12 @@ approximate receptive field of 4,093 points. On a 512-spectrum pilot, it improve
 both cases. It still has worse MAE than interpolation, so treat this as a promising pilot
 signal for peak recovery, not a mature representation claim.
 
+The first replication curve weakens and clarifies that pilot. With two seeds and 25 epochs:
+at 256 spectra, the CNN does not beat interpolation; at 512 spectra, it reliably wins random
+folds on MSE and only barely wins held-out-source on average, with a 50% seed win rate. MAE
+still loses to interpolation. Treat this as evidence that scale helps, not evidence that the
+current CNN is robust enough.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
