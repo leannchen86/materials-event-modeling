@@ -148,6 +148,16 @@ Before any lab work:
 4. Adjust the schema based on what the lab can actually record.
 5. Only then run a tiny pilot batch.
 
+Current working artifacts:
+
+- Event schema: `schemas/material_event.schema.json`
+- Blank event-log template: `templates/calcium_carbonate_event_log.csv`
+- Mock JSON events: `examples/track_b/calcium_carbonate_mock_events.json`
+- Mock CSV event log: `examples/track_b/calcium_carbonate_mock_event_log.csv`
+- Mock event review: `docs/track_b_mock_event_review.md`
+- Lab outreach brief: `docs/track_b_lab_outreach_brief.md`
+- Mock event summary script: `scripts/summarize_track_b_mock_events.py`
+
 The first real result should not be "we made pure calcite." It should be:
 
 > We can collect raw material-making events in a way that preserves process history,
