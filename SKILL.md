@@ -190,6 +190,15 @@ dummy baseline. Interpretation: normalization can reduce public-data provenance 
 but cannot be trusted to remove them. Track B should log raw theta coverage, export format,
 instrument/session, and preprocessing before any learned representation is interpreted.
 
+The HTEM event-proxy audit validates HTEM as a useful bridge from raw XRD archives toward
+event-shaped data. The public API exposed 1,891 sample-library records: 97.7% have
+composition fields, 92.0% have at least one process field, 79.9% have nonzero XRD
+availability, and 74.2% have composition plus process metadata plus XRD availability. A
+small endpoint probe showed position-resolved property arrays and XRD arrays. However, HTEM
+still looks like a sample-library snapshot, not a full material-making trajectory log. Use
+HTEM to design Track B schemas and event-proxy objectives; do not turn it into another
+leaderboard target.
+
 ## Track B Direction
 
 Track B is the real pre-taxonomic event dataset. The unit is a material-making event, not a

@@ -69,6 +69,32 @@ event-level representation.
 
 Link: https://www.nature.com/articles/sdata201853
 
+Data portal: https://htem.nlr.gov/
+
+NREL submission page: https://data.nrel.gov/submissions/75
+
+Local audit:
+
+```bash
+python3 scripts/audit_htem_dataset.py --endpoint-sample-ids 2
+```
+
+Current audit:
+
+- 1,891 public sample-library records from the API.
+- 1,847 records have nonempty composition fields.
+- 1,739 records have at least one nonempty process field.
+- 1,510 records have nonzero XRD availability.
+- 1,403 records have composition, process metadata, and XRD availability.
+- Sampled XRD spectra are position-resolved, but the public records remain
+  sample-library snapshots rather than full material-making trajectories.
+
+Track A use:
+
+- Treat HTEM as a bridge dataset for event-proxy tasks, not as the final Track B object.
+- Use it to design position-level and process-aware feedback tasks.
+- Do not optimize around HTEM metrics as if its public schema were the target ontology.
+
 ### Failed Synthesis Dataset
 
 Hydrothermal synthesis outcomes with successful and failed experiments. Useful as a
