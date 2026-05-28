@@ -13,10 +13,14 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+from sklearn.impute import SimpleImputer
 from sklearn.linear_model import Ridge
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 from run_htem_event_proxy import (
     HTEM_API_BASE_URL,
+    LOCAL_PROP_FIELDS,
     build_event_table,
     fetch_properties,
     fetch_records,
@@ -161,6 +165,54 @@ def ridge_prediction(
     return model.predict(target_features).astype(np.float32)
 
 
+def local_feature_columns(events: pd.DataFrame) -> list[str]:
+    columns = [
+        column
+        for column in events.columns
+        if any(column.startswith(f"{field}_") for field in LOCAL_PROP_FIELDS)
+    ]
+    return sorted(column for column in columns if events[column].notna().any())
+
+
+def feature_matrix(events: pd.DataFrame, indices: np.ndarray, columns: list[str]) -> np.ndarray:
+    if not columns:
+        raise ValueError("At least one feature column is required.")
+    return events.loc[indices, columns].to_numpy(dtype=np.float32)
+
+
+def numeric_ridge_prediction(
+    train_features: np.ndarray,
+    target_features: np.ndarray,
+    train_target: np.ndarray,
+    *,
+    alpha: float,
+) -> np.ndarray:
+    model = Pipeline(
+        [
+            ("imputer", SimpleImputer(strategy="median", keep_empty_features=True)),
+            ("scaler", StandardScaler()),
+            ("ridge", Ridge(alpha=alpha)),
+        ]
+    )
+    model.fit(train_features, train_target)
+    return model.predict(target_features).astype(np.float32)
+
+
+def leave_one_out_idw_prediction(
+    train_xrd: np.ndarray,
+    train_coords: np.ndarray,
+    *,
+    power: float,
+) -> np.ndarray:
+    distances = np.linalg.norm(train_coords[:, None, :] - train_coords[None, :, :], axis=2)
+    np.fill_diagonal(distances, np.inf)
+    weights = 1.0 / np.maximum(distances, 1e-6) ** power
+    weights[~np.isfinite(weights)] = 0.0
+    weights_sum = np.sum(weights, axis=1, keepdims=True)
+    weights = weights / np.maximum(weights_sum, 1e-12)
+    return weights @ train_xrd
+
+
 def random_position_split(
     group_indices: np.ndarray,
     rng: np.random.Generator,
@@ -253,6 +305,7 @@ def evaluate_split(
     min_train_positions: int,
     idw_power: float,
     ridge_alpha: float,
+    local_ridge_alpha: float,
 ) -> dict[str, Any]:
     splits = build_splits(
         events,
@@ -265,6 +318,7 @@ def evaluate_split(
     )
     train_indices = np.concatenate([train_idx for train_idx, _ in splits.values()])
     global_mean = np.mean(xrd[train_indices], axis=0)
+    local_columns = local_feature_columns(events)
 
     result = RepeatResult(repeat=repeat, split_kind=split_kind, libraries=len(splits))
     for sample_id, (train_idx, test_idx) in sorted(splits.items()):
@@ -274,6 +328,28 @@ def evaluate_split(
         test_coords = coordinate_matrix(events, test_idx)
 
         library_mean = np.mean(train_xrd, axis=0)
+        idw_all = idw_prediction(
+            train_xrd,
+            train_coords,
+            test_coords,
+            k=None,
+            power=idw_power,
+        )
+        local_train = feature_matrix(events, train_idx, local_columns)
+        local_test = feature_matrix(events, test_idx, local_columns)
+        xy_local_train = np.column_stack([train_coords, local_train])
+        xy_local_test = np.column_stack([test_coords, local_test])
+        train_idw_loo = leave_one_out_idw_prediction(
+            train_xrd,
+            train_coords,
+            power=idw_power,
+        )
+        local_residual = numeric_ridge_prediction(
+            local_train,
+            local_test,
+            train_xrd - train_idw_loo,
+            alpha=local_ridge_alpha,
+        )
         predictions = {
             "global_mean": np.repeat(global_mean[None, :], repeats=test_idx.size, axis=0),
             "library_mean": np.repeat(library_mean[None, :], repeats=test_idx.size, axis=0),
@@ -285,13 +361,7 @@ def evaluate_split(
                 k=min(3, train_idx.size),
                 power=idw_power,
             ),
-            "idw_all": idw_prediction(
-                train_xrd,
-                train_coords,
-                test_coords,
-                k=None,
-                power=idw_power,
-            ),
+            "idw_all": idw_all,
             "xy_ridge_linear": ridge_prediction(
                 train_xrd,
                 train_coords,
@@ -306,6 +376,19 @@ def evaluate_split(
                 degree=2,
                 alpha=ridge_alpha,
             ),
+            "local_ridge_direct": numeric_ridge_prediction(
+                local_train,
+                local_test,
+                train_xrd,
+                alpha=local_ridge_alpha,
+            ),
+            "xy_local_ridge_direct": numeric_ridge_prediction(
+                xy_local_train,
+                xy_local_test,
+                train_xrd,
+                alpha=local_ridge_alpha,
+            ),
+            "idw_all_plus_local_residual": idw_all + local_residual,
         }
         for name, prediction in predictions.items():
             result.update(name, test_xrd, prediction)
@@ -395,6 +478,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     min_train_positions=args.min_train_positions,
                     idw_power=args.idw_power,
                     ridge_alpha=args.ridge_alpha,
+                    local_ridge_alpha=args.local_ridge_alpha,
                 )
             )
 
@@ -408,6 +492,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "library-mean baseline. Nearest-neighbor or distance-weighted interpolation "
             "should be strong on random held-out positions; row holdout should be harder "
             "and tests whether the field model extrapolates across the spatial grid."
+            " Local non-XRD features are tested both as direct predictors and as residual "
+            "corrections over the strongest spatial smoother."
         ),
         "api_base_url": HTEM_API_BASE_URL,
         "element_system_filter": element_system_filter,
@@ -425,6 +511,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "min_train_positions": args.min_train_positions,
         "idw_power": args.idw_power,
         "ridge_alpha": args.ridge_alpha,
+        "local_ridge_alpha": args.local_ridge_alpha,
+        "local_feature_columns": local_feature_columns(events),
         "summary": summarize_trials(trials),
         "trials": trials,
         "caveats": [
@@ -432,6 +520,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "Neighbor baselines use XRD measurements from other positions in the same sample library.",
             "Strong random-position performance can reflect smooth spatial interpolation, not broad discovery.",
             "Held-out-row splits are a harder spatial extrapolation control.",
+            "Local non-XRD measurements are post-fabrication observations, not prospective synthesis inputs.",
+            "Residual models are only useful if they improve over idw_all, not merely over global or library means.",
         ],
     }
 
@@ -460,6 +550,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--min-train-positions", type=int, default=16)
     parser.add_argument("--idw-power", type=float, default=2.0)
     parser.add_argument("--ridge-alpha", type=float, default=1.0)
+    parser.add_argument("--local-ridge-alpha", type=float, default=100000.0)
     parser.add_argument("--force-fetch", action="store_true")
     parser.add_argument(
         "--cache-dir",

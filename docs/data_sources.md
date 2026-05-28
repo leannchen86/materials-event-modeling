@@ -80,6 +80,7 @@ python3 scripts/audit_htem_dataset.py --endpoint-sample-ids 2
 python3 scripts/run_htem_event_proxy.py --max-libraries 32 --min-xrd-positions 40 --chunk-size 4 --n-splits 4 --target-pca-components 8
 python3 scripts/run_htem_event_proxy.py --element-system Cu,S,Sn --max-libraries 65 --min-xrd-positions 40 --chunk-size 5 --n-splits 5 --target-pca-components 8 --output data/manifests/htem_event_proxy_xrd_prediction_cu_s_sn.json
 python3 scripts/run_htem_spatial_field_prediction.py
+python3 scripts/run_htem_spatial_field_prediction.py --output data/manifests/htem_spatial_field_multimodal_cu_s_sn.json
 ```
 
 Current audit:
@@ -102,6 +103,9 @@ Current audit:
   mean is already about 51% better than global mean, and inverse-distance smoothing over
   all observed positions improves another 12-16% versus library mean. This supports
   treating a sample library as a spatial measurement field.
+- A multimodal residual check found that local non-XRD features did not improve over the
+  `idw_all` spatial smoother. This is a reminder to benchmark extra modalities against
+  strong within-event baselines before interpreting them.
 
 Track A use:
 

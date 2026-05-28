@@ -10,7 +10,7 @@
     "Local non-XRD measurements are post-fabrication observations, not prospective synthesis inputs.",
     "Residual models are only useful if they improve over idw_all, not merely over global or library means."
   ],
-  "created_at": "2026-05-28T23:42:56.448460+00:00",
+  "created_at": "2026-05-28T23:42:26.709909+00:00",
   "dataset_id": "htem",
   "element_system_filter": "Cu|S|Sn",
   "event_count": 2860,

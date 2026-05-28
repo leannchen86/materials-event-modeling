@@ -232,6 +232,14 @@ point; it is a smoother event-level field. This suggests Track B should create e
 multiple partial observations over time, space, process state, or modality, then predict
 missing/future event measurements from partial event context.
 
+The HTEM multimodal residual check did not validate local non-XRD measurements as useful
+beyond the spatial XRD field baseline. With strong regularization, direct local-feature
+ridge models were worse than library mean, and adding a local-feature residual correction
+to `idw_all` made MSE about 1.4% worse on random held-out positions and 3.0% worse on
+held-out rows. Interpretation: in this public slice, "multimodal" does not automatically
+mean better. Track B should collect additional modalities, but always compare them against
+strong within-event baselines such as library/event mean and spatial/temporal interpolation.
+
 ## Track B Direction
 
 Track B is the real pre-taxonomic event dataset. The unit is a material-making event, not a

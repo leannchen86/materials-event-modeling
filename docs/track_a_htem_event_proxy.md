@@ -375,3 +375,73 @@ This maps much better to Track B. A lab dataset should be designed so that each 
 multiple partial observations over time, space, process state, or measurement modality.
 Then the objective becomes: given partial event observations, predict missing/future event
 measurements. The labels come later as probes.
+
+## Multimodal Residual Check
+
+### Pre-Run Hypothesis
+
+The stricter multimodal question is whether local non-XRD measurements add information
+beyond the strongest spatial smoother. `idw_all` is the baseline to beat. Local
+measurements may help on random held-out positions, but should be treated skeptically
+because they are noisy post-fabrication measurements and can overfit badly.
+
+### Command
+
+```bash
+python3 scripts/run_htem_spatial_field_prediction.py --output data/manifests/htem_spatial_field_multimodal_cu_s_sn.json
+```
+
+Output manifest:
+
+```text
+data/manifests/htem_spatial_field_multimodal_cu_s_sn.json
+```
+
+### Setup
+
+The script now includes three local-feature probes:
+
+- `local_ridge_direct`: local non-XRD features directly predict full XRD.
+- `xy_local_ridge_direct`: spatial coordinates plus local non-XRD features directly
+  predict full XRD.
+- `idw_all_plus_local_residual`: first predict XRD with `idw_all`, then use local
+  non-XRD features to predict the remaining residual.
+
+The local ridge alpha was set to `100000.0`. A weaker local ridge was numerically unstable
+because the public local measurement fields include noisy, high-scale derived quantities.
+
+### Results
+
+Mean MSE improvement:
+
+| Split | Model | vs library mean | vs `idw_all` |
+|---|---|---:|---:|
+| `random_positions` | `idw_all` | +15.8% | +0.0% |
+| `random_positions` | `local_ridge_direct` | -1.4% | -20.5% |
+| `random_positions` | `xy_local_ridge_direct` | -1.4% | -20.4% |
+| `random_positions` | `idw_all_plus_local_residual` | +14.6% | -1.4% |
+| `held_out_row` | `idw_all` | +12.1% | +0.0% |
+| `held_out_row` | `local_ridge_direct` | -4.1% | -18.4% |
+| `held_out_row` | `xy_local_ridge_direct` | -4.1% | -18.4% |
+| `held_out_row` | `idw_all_plus_local_residual` | +9.5% | -3.0% |
+
+### Verdict
+
+The multimodal residual hypothesis was not validated.
+
+Local non-XRD features did not beat the spatial smoother. Direct local-feature models were
+worse than the library mean, and residual correction over `idw_all` made results slightly
+worse: about 1.4% worse on random positions and 3.0% worse on held-out rows.
+
+This does not mean multimodal event modeling is wrong. It means this public HTEM slice
+does not yet show usable local-modality signal beyond a simple spatial field baseline.
+The next useful move is to change the objective rather than tune the local ridge:
+
+```text
+predict missing XRD from partial XRD observations first;
+then add other modalities only if they beat the spatial/XRD-only field baseline
+```
+
+For Track B, this is a design rule: collect additional modalities, but always compare
+them against strong within-event baselines. Otherwise "multimodal" can become another
+word for noisy metadata.
