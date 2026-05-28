@@ -49,6 +49,13 @@ tasks: prediction, compression, retrieval, search, or intervention.
    for the A100. Fall back to another GPU only if the A100 is busy, unsuitable, or the
    run is just a tiny smoke test.
 
+8. **Do not turn public datasets into a leaderboard.**
+   NIST, opXRD, and similar datasets are sandboxes for feasibility checks and artifact
+   audits. Do not keep tuning around their metrics as if they were the research target.
+   A public-data run is useful when it tests an objective feedback idea, reveals a
+   failure mode, or informs Track B. It is drift when it only optimizes dataset-specific
+   performance.
+
 ## Current NIST Lesson
 
 The first NIST baseline shows that human-label disagreement is structured:
@@ -160,6 +167,17 @@ while losing MAE, and loses to interpolation on EMPA and HKUST. Interpretation: 
 aggregate held-out-source score hides source-specific failure modes. Next investigate why
 EMPA/HKUST differ: source size, instrument/preprocessing, material family, peak density, or
 background/scale statistics.
+
+## Track B Direction
+
+Track B is the real pre-taxonomic event dataset. The unit is a material-making event, not a
+material label. A controlled pilot should log process trajectories, raw measurements,
+negative/ambiguous outcomes, and downstream human labels only as probes.
+
+The first candidate system is calcium carbonate polymorph crystallization, pending lab SOP
+and safety review. The goal is not to make pure calcite or optimize phase classification.
+The goal is to create a small, richly logged event dataset where raw measurement/process
+objectives can be tested before inherited labels are used.
 
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or

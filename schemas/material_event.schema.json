@@ -1,0 +1,301 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MaterialMakingEvent",
+  "type": "object",
+  "required": [
+    "event_id",
+    "system",
+    "created_at",
+    "process",
+    "measurements",
+    "labels",
+    "data_quality"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "system": {
+      "type": "string",
+      "description": "Material system, for example calcium_carbonate."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "operator_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "lab_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "batch_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pre_registered_plan_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "process": {
+      "type": "object",
+      "required": [
+        "precursors",
+        "conditions",
+        "timeline"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "precursors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "additionalProperties": true,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "lot_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "prepared_solution_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "nominal_concentration": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "concentration_unit": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "target_temperature_c": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "initial_ph": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "final_ph": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "mixing_description": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "aging_time_minutes": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "drying_route": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "timestamp",
+              "event_type"
+            ],
+            "additionalProperties": true,
+            "properties": {
+              "timestamp": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "event_type": {
+                "type": "string"
+              },
+              "notes": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "measurements": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "xrd": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "file_path"
+            ],
+            "additionalProperties": true,
+            "properties": {
+              "file_path": {
+                "type": "string"
+              },
+              "instrument_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "measurement_time": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "raw_export_format": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "spectroscopy": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "microscopy": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "photos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "labels": {
+      "type": "object",
+      "required": [
+        "assigned_after_raw_data_frozen",
+        "human_labels"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "assigned_after_raw_data_frozen": {
+          "type": "boolean"
+        },
+        "human_labels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "labeler_id",
+              "label"
+            ],
+            "additionalProperties": true,
+            "properties": {
+              "labeler_id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "confidence": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "notes": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "data_quality": {
+      "type": "object",
+      "required": [
+        "include_in_raw_objective",
+        "deviations",
+        "missing_fields"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "include_in_raw_objective": {
+          "type": "boolean"
+        },
+        "deviations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "missing_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

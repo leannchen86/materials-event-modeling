@@ -9,6 +9,12 @@ The working hypothesis is that inherited labels such as `phase pure`, `phase imp
 `failed synthesis`, `metastable`, and `ambiguous XRD` are useful human projections, but
 not necessarily the native coordinate system for discovery.
 
+This repo has two connected tracks:
+
+Track A uses public datasets as sandboxes for feasibility checks and artifact audits.
+Track B builds toward a controlled material-making event dataset, where the event is the
+unit of learning and inherited labels are recorded only as downstream probes.
+
 This repo starts with a computational prototype:
 
 1. Learn representations from raw or weakly processed XRD patterns.
@@ -18,9 +24,9 @@ This repo starts with a computational prototype:
 
 ## Near-Term Milestone
 
-Load one public XRD dataset, train a small self-supervised encoder, and evaluate whether
-the latent space predicts human-label ambiguity or disagreement better than simple
-baselines.
+Do not turn opXRD or NIST into a leaderboard. The near-term milestone is to use public
+data only long enough to design Track B: a small controlled event dataset with raw process
+logs, raw measurements, negative/ambiguous outcomes, and later human labels as probes.
 
 ## Layout
 
