@@ -22,14 +22,19 @@ Detected GPUs:
 - 1x NVIDIA A100 80GB PCIe
 - 6x NVIDIA RTX 2080 Ti 11GB
 
-Use RTX 2080 Ti devices for early CUDA debugging and small/medium model runs. Reserve
-the A100 for larger pretraining runs after preprocessing, checkpointing, and evaluation
-are known to work.
+Prefer the A100 for GPU runs when available:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python scripts/train_xrd_encoder.py --config configs/zeus_a100.yaml
+```
+
+Before launching a long job, check GPU occupancy with `nvidia-smi`. Fall back to an RTX
+2080 Ti only if the A100 is busy, unsuitable, or the run is just a tiny CUDA smoke test.
 
 Example GPU selection:
 
 ```bash
-CUDA_VISIBLE_DEVICES=4 python scripts/train_xrd_encoder.py --config configs/zeus_2080ti.yaml
+CUDA_VISIBLE_DEVICES=0 python scripts/train_xrd_encoder.py --config configs/zeus_a100.yaml
 ```
 
 Sync the local repo to the Zeus workspace manually:

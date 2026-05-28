@@ -44,6 +44,11 @@ tasks: prediction, compression, retrieval, search, or intervention.
    weaken, or falsify it. After the run, explicitly compare the result to the hypothesis,
    including caveats and next decision implications.
 
+7. **Prefer the A100 on Zeus when available.**
+   For GPU runs on Zeus, check GPU availability and prioritize `CUDA_VISIBLE_DEVICES=0`
+   for the A100. Fall back to another GPU only if the A100 is busy, unsuitable, or the
+   run is just a tiny smoke test.
+
 ## Current NIST Lesson
 
 The first NIST baseline shows that human-label disagreement is structured:
