@@ -1,0 +1,106 @@
+{
+  "composition_temperature": {
+    "rows": 352,
+    "temps": {
+      "23": 44,
+      "30": 44,
+      "36": 44,
+      "45": 44,
+      "50": 44,
+      "55": 44,
+      "62": 44,
+      "68": 44
+    },
+    "v_max": 99,
+    "v_min": 55
+  },
+  "dataset_id": "nist_mds2_2301",
+  "human_labels": {
+    "columns": [
+      "",
+      "V",
+      "V",
+      "temp",
+      "HL3",
+      "HL2",
+      "HL4",
+      "HL1",
+      "HL5"
+    ],
+    "consensus_label_counts": {
+      "0": 23,
+      "1": 47,
+      "2": 122
+    },
+    "disagreeing_rows": 73,
+    "label_counts": {
+      "0": 112,
+      "1": 213,
+      "2": 635
+    },
+    "labeler_columns": [
+      "HL3",
+      "HL2",
+      "HL4",
+      "HL1",
+      "HL5"
+    ],
+    "max_entropy": 1.0549201679861442,
+    "mean_entropy": 0.22011547899410278,
+    "rows": 192,
+    "rows_aligned_to_composition_by_sample_index": 192,
+    "sample_index_base": "one_based_in_workbook_zero_based_in_audit",
+    "sample_index_max": 331,
+    "sample_index_min": 0
+  },
+  "machine_labels": {
+    "columns": [
+      "",
+      "V",
+      "Nb",
+      "temp",
+      "Comp-Distance-Spectral",
+      "Cosine-Local-Scaling-Spectral",
+      "Cosine-Spectral",
+      "VAE-Spectral"
+    ],
+    "rows": 152,
+    "rows_aligned_to_composition_by_sample_index": 152,
+    "sample_index_base": "zero_based",
+    "sample_index_max": 326,
+    "sample_index_min": 0
+  },
+  "machine_loglik": {
+    "columns": [
+      "",
+      "V",
+      "Nb",
+      "temp",
+      "Comp_Distance_Spectral",
+      "Cosine_Local_Scaling_Spectral",
+      "Cosine_Spectral",
+      "Comp_Distance_Kmeans",
+      "Comp_Distance_MeanShift",
+      "K_Means",
+      "Discretized_VAE_Spectral",
+      "VAE_Spectral",
+      "VAE_GMM",
+      "VAE_KMeans"
+    ],
+    "rows": 152,
+    "rows_aligned_to_composition_by_sample_index": 152,
+    "sample_index_base": "zero_based",
+    "sample_index_max": 326,
+    "sample_index_min": 0
+  },
+  "raw_data_dir": "data/raw/nist_mds2_2301",
+  "xrd": {
+    "column_counts": {
+      "3841": 353
+    },
+    "rows_total": 353,
+    "spectra_rows": 352,
+    "two_theta_max": 37.2,
+    "two_theta_min": 18.0
+  }
+}

@@ -8,6 +8,20 @@ Useful for label ambiguity and human/machine consensus questions.
 
 Link: https://catalog.data.gov/dataset/dataset-an-open-combinatorial-diffraction-dataset-including-consensus-human-and-machine-le-0de06
 
+Local download:
+
+```bash
+python3 scripts/download_data.py nist_mds2_2301
+python3 scripts/audit_nist_dataset.py
+```
+
+Initial shape:
+
+- 352 XRD spectra, each with 3,841 2-theta intensity points.
+- 352 aligned composition/temperature rows.
+- 192 human-labeled rows from five human labelers.
+- 152 machine-labeled rows from four machine-labeling methods.
+
 ### opXRD
 
 Large open experimental powder XRD dataset. Useful for self-supervised XRD pretraining.
@@ -28,4 +42,3 @@ Hydrothermal synthesis outcomes with successful and failed experiments. Useful a
 historical baseline for failure-as-data.
 
 Link: https://www.nature.com/articles/nature17439
-

@@ -1,0 +1,82 @@
+{
+  "dataset_id": "nist_mds2_2301",
+  "doi": "doi:10.18434/mds2-2301",
+  "downloaded_at": "2026-05-28T04:53:09.780410+00:00",
+  "files": [
+    {
+      "download_url": "https://data.nist.gov/od/ds/mds2-2301/Compare%20ML%20Labels.csv",
+      "filename": "Compare ML Labels.csv",
+      "local_path": "data/raw/nist_mds2_2301/Compare ML Labels.csv",
+      "media_type": "application/vnd.ms-excel",
+      "sha256": "ea71726981f484032a287deb4391e0b1d78a3aa32526eae4a08045334b3ec6bb",
+      "size_bytes": 3314
+    },
+    {
+      "download_url": "https://data.nist.gov/od/ds/mds2-2301/Condensing%20Write-Ups%20of%20Human%20and%20Machine%20Labeling%20Metrics.docx",
+      "filename": "Condensing Write-Ups of Human and Machine Labeling Metrics.docx",
+      "local_path": "data/raw/nist_mds2_2301/Condensing Write-Ups of Human and Machine Labeling Metrics.docx",
+      "media_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "sha256": "85724c3f0c340f6a8839805791b9cdfb404dbc36962fa8bf2525a245f59f604b",
+      "size_bytes": 767921
+    },
+    {
+      "download_url": "https://data.nist.gov/od/ds/mds2-2301/Human%20Labels.xlsx",
+      "filename": "Human Labels.xlsx",
+      "local_path": "data/raw/nist_mds2_2301/Human Labels.xlsx",
+      "media_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "sha256": "0056a45f7d45694368597fe7804569339745214530584dae10652873fed38cd2",
+      "size_bytes": 17183
+    },
+    {
+      "download_url": "https://data.nist.gov/od/ds/mds2-2301/Open%20Data%20Challenge%20Notebook%20Human%20Labels%20and%20Plots.py",
+      "filename": "Open Data Challenge Notebook Human Labels and Plots.py",
+      "local_path": "data/raw/nist_mds2_2301/Open Data Challenge Notebook Human Labels and Plots.py",
+      "media_type": "application/octet-stream",
+      "sha256": "8c42083be78e24fab507984611665d0744fae2c64d9d9a527098410e42671997",
+      "size_bytes": 13428
+    },
+    {
+      "download_url": "https://data.nist.gov/od/ds/mds2-2301/Open%20Data%20Challenge%20Notebook%20Machine%20Labels%20and%20Plots.py",
+      "filename": "Open Data Challenge Notebook Machine Labels and Plots.py",
+      "local_path": "data/raw/nist_mds2_2301/Open Data Challenge Notebook Machine Labels and Plots.py",
+      "media_type": "application/octet-stream",
+      "sha256": "5be8431734c679761488d7f43dc9bbfe6a209e8ff111c50a3b56fd0b3cd2f567",
+      "size_bytes": 11437
+    },
+    {
+      "download_url": "https://data.nist.gov/od/ds/mds2-2301/Readme.txt",
+      "filename": "Readme.txt",
+      "local_path": "data/raw/nist_mds2_2301/Readme.txt",
+      "media_type": "text/plain",
+      "sha256": "79664bb816f830b98254f13bd699fe4266097471b3a4eb8093cdf3725b475110",
+      "size_bytes": 7255
+    },
+    {
+      "download_url": "https://data.nist.gov/od/ds/mds2-2301/VO2%20-%20Nb2O3%20Composition%20and%20temp%20Combiview.txt",
+      "filename": "VO2 - Nb2O3 Composition and temp Combiview.txt",
+      "local_path": "data/raw/nist_mds2_2301/VO2 - Nb2O3 Composition and temp Combiview.txt",
+      "media_type": "text/plain",
+      "sha256": "6fcc4e862ea866286436a8624b2b82241ce80a08cc87eb0bb878f56ce6fdd027",
+      "size_bytes": 2472
+    },
+    {
+      "download_url": "https://data.nist.gov/od/ds/mds2-2301/VO2%20-Nb2O3%20XRD%20Combiview.txt",
+      "filename": "VO2 -Nb2O3 XRD Combiview.txt",
+      "local_path": "data/raw/nist_mds2_2301/VO2 -Nb2O3 XRD Combiview.txt",
+      "media_type": "text/plain",
+      "sha256": "3b47bf36b2abaef376730226e2616a353ba07571c46e71bce464cf9e9bfbe348",
+      "size_bytes": 13396322
+    },
+    {
+      "download_url": "https://data.nist.gov/od/ds/mds2-2301/cluster_assignment_loglik_all.csv",
+      "filename": "cluster_assignment_loglik_all.csv",
+      "local_path": "data/raw/nist_mds2_2301/cluster_assignment_loglik_all.csv",
+      "media_type": "application/vnd.ms-excel",
+      "sha256": "e4fb673a2c2fcfc8a258eedc0a9236be7e6c0bd693ff2e78864395c8d882415a",
+      "size_bytes": 22443
+    }
+  ],
+  "landing_page": "https://data.nist.gov/od/id/mds2-2301",
+  "metadata_url": "https://data.nist.gov/od/id/mds2-2301",
+  "title": "Dataset: An Open Combinatorial Diffraction Dataset Including Consensus Human and Machine Learning Labels with Quantified Uncertainty for Training New Machine Learning Models "
+}
