@@ -81,6 +81,7 @@ python3 scripts/run_htem_event_proxy.py --max-libraries 32 --min-xrd-positions 4
 python3 scripts/run_htem_event_proxy.py --element-system Cu,S,Sn --max-libraries 65 --min-xrd-positions 40 --chunk-size 5 --n-splits 5 --target-pca-components 8 --output data/manifests/htem_event_proxy_xrd_prediction_cu_s_sn.json
 python3 scripts/run_htem_spatial_field_prediction.py
 python3 scripts/run_htem_spatial_field_prediction.py --output data/manifests/htem_spatial_field_multimodal_cu_s_sn.json
+python3 scripts/run_htem_spatial_sampling_curve.py
 ```
 
 Current audit:
@@ -106,6 +107,9 @@ Current audit:
 - A multimodal residual check found that local non-XRD features did not improve over the
   `idw_all` spatial smoother. This is a reminder to benchmark extra modalities against
   strong within-event baselines before interpreting them.
+- A spatial sampling budget curve found that field reconstruction improves with more
+  observed positions, and space-filling coverage generally helps. This directly informs
+  Track B measurement planning.
 
 Track A use:
 

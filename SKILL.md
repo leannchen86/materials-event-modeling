@@ -240,6 +240,15 @@ held-out rows. Interpretation: in this public slice, "multimodal" does not autom
 mean better. Track B should collect additional modalities, but always compare them against
 strong within-event baselines such as library/event mean and spatial/temporal interpolation.
 
+The HTEM spatial sampling budget curve supports an active-measurement design lesson. In
+65 `Cu|S|Sn` libraries, observing more positions improved prediction of unmeasured
+positions. With only 4 observations, `idw_all` was about tied with or slightly worse than
+the observed library mean; with 32 observations, it improved about 15.2% under random
+sampling and 17.6% under space-filling sampling. Space-filling generally lowered absolute
+MSE and made coordinate models less fragile. Track B should therefore collect enough
+partial observations per event to support field reconstruction, and prefer coverage over
+convenience sampling.
+
 ## Track B Direction
 
 Track B is the real pre-taxonomic event dataset. The unit is a material-making event, not a

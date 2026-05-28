@@ -445,3 +445,96 @@ then add other modalities only if they beat the spatial/XRD-only field baseline
 For Track B, this is a design rule: collect additional modalities, but always compare
 them against strong within-event baselines. Otherwise "multimodal" can become another
 word for noisy metadata.
+
+## Spatial Sampling Budget Curve
+
+### Pre-Run Hypothesis
+
+If each HTEM sample library behaves like a spatial measurement field, prediction of
+unmeasured positions should improve as the number of observed positions increases.
+Space-filling sampling should beat random sampling at small budgets if spatial coverage
+matters.
+
+### Command
+
+```bash
+python3 scripts/run_htem_spatial_sampling_curve.py
+```
+
+Output manifest:
+
+```text
+data/manifests/htem_spatial_sampling_curve_cu_s_sn.json
+```
+
+### Setup
+
+The run used the same 65 `Cu|S|Sn` libraries. For each library, it observed only a fixed
+number of positions and predicted all remaining positions. Two observation strategies
+were compared:
+
+- `random`: random observed positions, averaged over 5 repeats.
+- `space_filling`: deterministic farthest-first spatial coverage, starting near the
+  library center.
+
+Models:
+
+- `observed_library_mean`: mean XRD of observed positions in the same library.
+- `idw_all`: inverse-distance weighted average of all observed positions.
+- `xy_ridge_linear`: per-library linear coordinate model.
+- `nearest_neighbor`: closest observed position.
+
+### Results
+
+Mean MSE and improvement versus `observed_library_mean`:
+
+| Observed positions | Strategy | `observed_library_mean` MSE | `idw_all` MSE | `idw_all` vs library mean | `xy_ridge_linear` vs library mean |
+|---:|---|---:|---:|---:|---:|
+| 4 | random | 0.03099 | 0.03159 | -1.9% | -58.2% |
+| 4 | space_filling | 0.03054 | 0.03061 | -0.2% | -1.1% |
+| 8 | random | 0.02775 | 0.02714 | +2.2% | -6.1% |
+| 8 | space_filling | 0.02674 | 0.02676 | -0.1% | +5.0% |
+| 12 | random | 0.02666 | 0.02515 | +5.7% | +3.7% |
+| 12 | space_filling | 0.02569 | 0.02495 | +2.9% | +8.6% |
+| 16 | random | 0.02625 | 0.02417 | +7.9% | +7.3% |
+| 16 | space_filling | 0.02522 | 0.02347 | +6.9% | +11.6% |
+| 24 | random | 0.02548 | 0.02248 | +11.8% | +11.1% |
+| 24 | space_filling | 0.02528 | 0.02176 | +13.9% | +14.7% |
+| 32 | random | 0.02562 | 0.02172 | +15.2% | +13.1% |
+| 32 | space_filling | 0.02596 | 0.02138 | +17.6% | +16.2% |
+
+### Verdict
+
+The hypothesis was mostly validated.
+
+More observed positions improve prediction. The strongest spatial smoother, `idw_all`,
+goes from roughly no improvement over the observed library mean at 4 positions to about
+15-18% improvement at 32 positions.
+
+Space-filling helps, but the lesson is nuanced. It usually lowers absolute MSE relative to
+random sampling, especially as the observed budget grows. At tiny budgets, however, the
+observed library mean is very hard to beat: with only 4 observations, `idw_all` is slightly
+worse than the mean even with space-filling. That means we need enough partial observations
+before a field model has real leverage.
+
+Linear coordinate models are fragile under random low-budget sampling, but become useful
+with space-filling. At 4 random points, linear ridge is much worse than the library mean;
+at 8 space-filling points, it already improves over the mean by about 5%.
+
+### Track B Design Rule
+
+For a real event dataset, do not merely ask for "more measurements." Ask for partial
+observations that cover the event field.
+
+This result suggests a practical starting rule:
+
+```text
+For each material-making event, collect enough partial observations to support field
+reconstruction, and prefer space-filling coverage over arbitrary convenience sampling.
+```
+
+For the calcium carbonate pilot, the analogue may not be spatial positions. It could be
+time points, pH/temperature perturbations, repeated droplets/vials, or measurement
+modalities. The important structure is the same: a material-making event should have
+multiple partial observations so the model can learn to predict missing/future
+measurements before we ask about labels.
