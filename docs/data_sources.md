@@ -31,7 +31,32 @@ Initial shape:
 
 Large open experimental powder XRD dataset. Useful for self-supervised XRD pretraining.
 
-Link: https://arxiv.org/abs/2503.05577
+Paper: https://arxiv.org/abs/2503.05577
+
+Latest Zenodo concept record: https://zenodo.org/records/14254270
+
+Local metadata/download:
+
+```bash
+python3 scripts/download_data.py opxrd --metadata-only
+python3 scripts/download_data.py opxrd
+python3 scripts/audit_opxrd_dataset.py --max-patterns 5000
+python3 scripts/preprocess_opxrd.py --max-spectra 4096 --points 4096 --selection spread
+python3 scripts/run_opxrd_reconstruction.py --max-samples 1024 --mask-widths 256 512 1024 --repeats 1 --pca-components 4 16 64
+```
+
+Current plan:
+
+- Use opXRD as the larger unlabeled experimental XRD pretraining pool.
+- Keep NIST as a small transfer/probe benchmark because it has human disagreement labels.
+- Start with fixed-grid raw-pattern objectives before using phase labels as probes.
+
+Initial audit:
+
+- 92,552 JSON diffraction patterns in the current Zenodo archive.
+- 90,373 decoded as unlabeled, 1,069 as one-phase, 1,108 as two-phase.
+- The archive is contributor-skewed: LBNL and INT dominate, so use deterministic spread or
+  stratified sampling for pilots instead of the first files in archive order.
 
 ### HTEM DB
 

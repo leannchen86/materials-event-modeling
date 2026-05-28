@@ -75,6 +75,31 @@ Interpretation: NIST is too small for this naive MLP to learn robust imputation.
 as the small-data floor. Neural scaling should probably wait for opXRD pretraining or a
 more data-efficient architecture/objective.
 
+## Current Scaling Direction
+
+Use NIST as the pilot assay, not the training universe. Its job is to expose baselines,
+failure modes, and transfer probes. Use opXRD as the larger raw experimental XRD pool for
+self-supervised pretraining, then transfer learned representations back to NIST.
+
+The first opXRD audit found 92,552 JSON diffraction patterns in the current Zenodo archive.
+Most are unlabeled: 90,373 have zero decoded phases, 1,069 have one phase, 1,108 have two
+phases, and only two have more. The archive is heavily contributor-skewed, especially LBNL
+and INT, so pilot subsets should use a deterministic spread or stratified sampling rather
+than the first files in archive order.
+
+The first opXRD masked-reconstruction pilot showed that local interpolation is a very strong
+baseline on fixed-grid opXRD. PCA is not automatically the floor here: small PCA sometimes
+helps on random folds, but larger PCA bases can become unstable and much worse than train
+mean, especially for wide masks and held-out-source splits. Future neural encoders should
+beat interpolation, not just train mean, and the masking scheme should hide meaningful peak
+regions instead of only rewarding smooth background interpolation.
+
+The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
+objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
+transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
+these checks, including local interpolation where relevant, scale alone has not yet earned a
+stronger claim.
+
 ## Next Experiment Direction
 
 Move from label-prediction diagnostics to raw measurement objectives:

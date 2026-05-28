@@ -1,0 +1,27 @@
+{
+  "concept_record_id": "14254270",
+  "conceptdoi": "10.5281/zenodo.14254270",
+  "dataset_id": "opxrd",
+  "doi": "10.5281/zenodo.15298026",
+  "downloaded_at": "2026-05-28T06:49:45.656544+00:00",
+  "files": [
+    {
+      "actual_checksum": "e8e9800a8ecd2b7f01a764fdf77d5c53",
+      "checksum_algorithm": "md5",
+      "download_url": "https://zenodo.org/api/records/15298026/files/opxrd.zip/content",
+      "downloaded": true,
+      "expected_checksum": "e8e9800a8ecd2b7f01a764fdf77d5c53",
+      "filename": "opxrd.zip",
+      "local_path": "data/raw/opxrd/opxrd.zip",
+      "local_size_bytes": 1400997733,
+      "size_bytes": 1400997733
+    }
+  ],
+  "landing_page": null,
+  "license": "cc-by-4.0",
+  "metadata_only": false,
+  "metadata_url": "https://zenodo.org/api/records/14254270",
+  "publication_date": "2025-04-28",
+  "record_id": 15298026,
+  "title": "opXRD: Open Experimental Powder X-ray Diffraction Database"
+}

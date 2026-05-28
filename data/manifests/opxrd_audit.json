@@ -1,0 +1,108 @@
+{
+  "archive": {
+    "archive_path": "/Users/leannchen/github/materials-event-modeling/data/raw/opxrd/opxrd.zip",
+    "archive_size_bytes": 1400997733,
+    "compressed_size_bytes": 1380454079,
+    "directories": 13,
+    "entries": 92565,
+    "extension_counts": {
+      ".json": 92552,
+      "<dir>": 13
+    },
+    "files": 92552,
+    "sample_paths": [
+      "CNRS/pattern_0.json",
+      "CNRS/pattern_1.json",
+      "CNRS/pattern_2.json",
+      "CNRS/pattern_3.json",
+      "CNRS/pattern_4.json",
+      "CNRS/pattern_5.json",
+      "CNRS/pattern_6.json",
+      "CNRS/pattern_7.json",
+      "CNRS/pattern_8.json",
+      "CNRS/pattern_9.json",
+      "CNRS/pattern_10.json",
+      "CNRS/pattern_11.json",
+      "CNRS/pattern_12.json",
+      "CNRS/pattern_13.json",
+      "CNRS/pattern_14.json",
+      "CNRS/pattern_15.json",
+      "CNRS/pattern_16.json",
+      "CNRS/pattern_17.json",
+      "CNRS/pattern_19.json",
+      "CNRS/pattern_20.json"
+    ],
+    "top_level_counts": {
+      "CNRS": 1053,
+      "EMPA": 771,
+      "HKUST": 523,
+      "IKFT": 65,
+      "INT": 19797,
+      "LBNL": 70017,
+      "USC": 339
+    },
+    "uncompressed_size_bytes": 3612139779
+  },
+  "created_at": "2026-05-28T06:52:03.532941+00:00",
+  "dataset_id": "opxrd",
+  "max_patterns": null,
+  "patterns": {
+    "institution_top20": {
+      "CNRS /PSL University": 1052,
+      "Hongkong University of Science and Technology (Guangzhou)": 499,
+      "Institute of Nanotechnology (INT) at KIT": 19796,
+      "KIT, IKFT, Material Synthesis and Scale-Up (Wolf Group)": 64,
+      "Laboratory for Surface Science and Coating Technologies, Empa\u2013Swiss Federal Laboratories for Materials Science and Technology Ueberlandstrasse 129, Duebendorf, CH-8600 Switzerland": 364,
+      "Laboratory for Surface Science and Coating Technologies, Empa\u2013Swiss Federal Laboratories for Materials Science and Technology Ueberlandstrasse 129, Duebendorf, CH-8600 Switzerland.": 406,
+      "Molecular Foundry Division, Lawrence Berkeley National Laboratory, Berkeley, California 94710, United States, and Sutter-Fella group": 7473,
+      "Multiple Key Laboratory of Materials Informatics, Hongkong University of Science and Technology (Guangzhou)": 21,
+      "Sutter Fella Lab, LBNL": 62539,
+      "University of Southern California": 338
+    },
+    "labeled_patterns": 2179,
+    "original_file_format_top20": {
+      "<missing>": 681,
+      "bruker_raw (.raw)": 10218,
+      "column_dat (.dat)": 10452,
+      "csv (.csv)": 59556,
+      "csv (.xlsx)": 342,
+      "pdCIF (.cif)": 891,
+      "stoe_raw (.raw)": 9578,
+      "text (.txt)": 770,
+      "text (.xy)": 64
+    },
+    "parsed_patterns": 92552,
+    "phase_count_distribution": {
+      "0": 90373,
+      "1": 1069,
+      "2": 1108,
+      "3": 1,
+      "4": 1
+    },
+    "point_count_top20": {
+      "268": 779,
+      "458": 14241,
+      "459": 7473,
+      "934": 2282,
+      "935": 12242,
+      "943": 1752,
+      "944": 2871,
+      "945": 7006,
+      "946": 11352,
+      "1392": 406,
+      "1750": 5448,
+      "2600": 1578,
+      "2850": 3427,
+      "3341": 1103,
+      "3422": 1350,
+      "3685": 1810,
+      "3879": 548,
+      "3911": 2339,
+      "4004": 416,
+      "8501": 375
+    },
+    "theta_max": 180.0,
+    "theta_min": 0.0,
+    "unlabeled_patterns": 90373
+  }
+}

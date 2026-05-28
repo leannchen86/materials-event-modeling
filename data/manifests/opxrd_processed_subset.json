@@ -1,0 +1,13 @@
+{
+  "archive_path": "data/raw/opxrd/opxrd.zip",
+  "arrays_path": "data/processed/opxrd/xrd_subset_4096_p4096.npz",
+  "created_at": "2026-05-28T06:53:02.875073+00:00",
+  "dataset_id": "opxrd",
+  "normalization": "per-pattern interpolation to fixed 2-theta grid, minimum shift, then max-intensity normalization",
+  "requested_max_spectra": 4096,
+  "samples_path": "data/interim/opxrd/samples_subset_4096_p4096.csv",
+  "selection": "spread",
+  "skipped_before_subset_complete": 0,
+  "spectra": 4096,
+  "theta_points": 4096
+}

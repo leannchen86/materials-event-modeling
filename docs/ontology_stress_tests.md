@@ -116,3 +116,35 @@ A same-data sanity check with longer training also barely improved over train-me
 prediction. So the correct lesson is not "neural methods are bad"; it is that this
 small MLP is a poor imputer for 352 spectra. PCA remains the small-data baseline future
 self-supervised models must beat.
+
+## Initial opXRD Scaling Check
+
+After downloading opXRD, the first full audit found 92,552 JSON diffraction patterns.
+Most patterns are unlabeled after decoding the bundled phase metadata:
+
+- 90,373 zero-phase/unlabeled patterns.
+- 1,069 one-phase patterns.
+- 1,108 two-phase patterns.
+- 2 patterns with more than two decoded phases.
+
+The archive is strongly contributor-skewed: LBNL and INT dominate. A pilot subset should
+therefore not use the first files in archive order. The current preprocessing script uses a
+deterministic spread across archive order by default, which produced a 4,096-spectrum,
+4,096-point fixed-grid subset.
+
+The first opXRD masked-reconstruction run used a 1,024-spectrum spread sample, random folds,
+held-out-top-level-source folds, and mask widths of 256, 512, and 1,024 grid points.
+
+Important first lesson: local interpolation is a very strong baseline on opXRD. For example,
+with a 256-point mask it improves MSE by about 61% on random folds and 69% on held-out
+top-level-source folds relative to the train mean. With a 1,024-point mask, it still improves
+MSE by about 32% on random folds and 48% on held-out-source folds.
+
+PCA did not behave like it did on NIST. A small PCA basis sometimes helped on random folds,
+but larger PCA bases became unstable and could be much worse than the train mean, especially
+for wide masks or held-out-source splits.
+
+Interpretation: the opXRD objective needs a stricter baseline and probably a better masking
+scheme. "Beat train mean" is too weak. A useful self-supervised raw-XRD encoder should beat
+local interpolation, handle contributor/instrument shift, and avoid learning only smooth
+background interpolation.
