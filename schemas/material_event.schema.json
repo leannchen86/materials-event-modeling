@@ -52,7 +52,6 @@
       "type": "object",
       "required": [
         "precursors",
-        "conditions",
         "timeline"
       ],
       "additionalProperties": true,
@@ -96,8 +95,101 @@
             }
           }
         },
+        "planned_conditions": {
+          "type": "object",
+          "description": "Intentional design settings for the event before execution.",
+          "additionalProperties": true,
+          "properties": {
+            "target_temperature_c": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "target_aging_time_minutes": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "target_mixing_intensity": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "target_additive_level": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "drying_route": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "observed_trajectory": {
+          "type": "object",
+          "description": "Actually observed process trajectory and deviations during execution.",
+          "additionalProperties": true,
+          "properties": {
+            "temperature_c": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "initial_ph": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "final_ph": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "mixing_description": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "mixing_intensity": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "aging_time_minutes": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "additive_level": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "early_turbidity": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        },
         "conditions": {
           "type": "object",
+          "description": "Legacy flat process field kept during schema transition; prefer planned_conditions and observed_trajectory.",
           "additionalProperties": true,
           "properties": {
             "target_temperature_c": {

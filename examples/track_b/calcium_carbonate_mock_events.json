@@ -44,7 +44,23 @@
           "event_type": "aging_complete",
           "notes": "Mock observation: faint turbidity."
         }
-      ]
+      ],
+      "planned_conditions": {
+        "target_temperature_c": 25.0,
+        "target_aging_time_minutes": 30.0,
+        "target_mixing_description": "mock_low_agitation",
+        "target_additive_level": null,
+        "drying_route": "mock_route_air_dry"
+      },
+      "observed_trajectory": {
+        "temperature_c": 25.0,
+        "aging_time_minutes": 30.0,
+        "mixing_description": "mock_low_agitation",
+        "initial_ph": null,
+        "final_ph": null,
+        "early_turbidity": null,
+        "deviations": []
+      }
     },
     "measurements": {
       "xrd": [
@@ -129,7 +145,23 @@
           "event_type": "aging_complete",
           "notes": "Mock observation: visible precipitate."
         }
-      ]
+      ],
+      "planned_conditions": {
+        "target_temperature_c": 25.0,
+        "target_aging_time_minutes": 120.0,
+        "target_mixing_description": "mock_medium_agitation",
+        "target_additive_level": null,
+        "drying_route": "mock_route_air_dry"
+      },
+      "observed_trajectory": {
+        "temperature_c": 25.0,
+        "aging_time_minutes": 120.0,
+        "mixing_description": "mock_medium_agitation",
+        "initial_ph": null,
+        "final_ph": null,
+        "early_turbidity": null,
+        "deviations": []
+      }
     },
     "measurements": {
       "xrd": [
@@ -214,7 +246,25 @@
           "event_type": "aging_complete",
           "notes": "Mock observation: rapid clouding."
         }
-      ]
+      ],
+      "planned_conditions": {
+        "target_temperature_c": 35.0,
+        "target_aging_time_minutes": 30.0,
+        "target_mixing_description": "mock_high_agitation",
+        "target_additive_level": null,
+        "drying_route": "mock_route_filtered_then_dry"
+      },
+      "observed_trajectory": {
+        "temperature_c": 35.0,
+        "aging_time_minutes": 30.0,
+        "mixing_description": "mock_high_agitation",
+        "initial_ph": null,
+        "final_ph": null,
+        "early_turbidity": null,
+        "deviations": [
+          "mock_temperature_ramp_uncertain"
+        ]
+      }
     },
     "measurements": {
       "xrd": [
@@ -308,7 +358,23 @@
           "event_type": "aging_complete",
           "notes": "Mock observation: slow settling."
         }
-      ]
+      ],
+      "planned_conditions": {
+        "target_temperature_c": 25.0,
+        "target_aging_time_minutes": 240.0,
+        "target_mixing_description": "mock_medium_agitation",
+        "target_additive_level": null,
+        "drying_route": "mock_route_filtered_then_dry"
+      },
+      "observed_trajectory": {
+        "temperature_c": 25.0,
+        "aging_time_minutes": 240.0,
+        "mixing_description": "mock_medium_agitation",
+        "initial_ph": null,
+        "final_ph": null,
+        "early_turbidity": null,
+        "deviations": []
+      }
     },
     "measurements": {
       "xrd": [
@@ -393,7 +459,23 @@
           "event_type": "aging_complete",
           "notes": "Mock observation: similar to reference event."
         }
-      ]
+      ],
+      "planned_conditions": {
+        "target_temperature_c": 25.0,
+        "target_aging_time_minutes": 120.0,
+        "target_mixing_description": "mock_medium_agitation",
+        "target_additive_level": null,
+        "drying_route": "mock_route_filtered_then_dry"
+      },
+      "observed_trajectory": {
+        "temperature_c": 25.0,
+        "aging_time_minutes": 120.0,
+        "mixing_description": "mock_medium_agitation",
+        "initial_ph": null,
+        "final_ph": null,
+        "early_turbidity": null,
+        "deviations": []
+      }
     },
     "measurements": {
       "xrd": [
@@ -473,7 +555,25 @@
           "event_type": "aging_complete",
           "notes": "Mock observation: weaker precipitate than paired replicate."
         }
-      ]
+      ],
+      "planned_conditions": {
+        "target_temperature_c": 25.0,
+        "target_aging_time_minutes": 120.0,
+        "target_mixing_description": "mock_medium_agitation",
+        "target_additive_level": null,
+        "drying_route": "mock_route_filtered_then_dry"
+      },
+      "observed_trajectory": {
+        "temperature_c": 25.0,
+        "aging_time_minutes": 120.0,
+        "mixing_description": "mock_medium_agitation",
+        "initial_ph": null,
+        "final_ph": null,
+        "early_turbidity": null,
+        "deviations": [
+          "mock_observation_differs_from_replicate"
+        ]
+      }
     },
     "measurements": {
       "xrd": [

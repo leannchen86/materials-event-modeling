@@ -53,8 +53,10 @@ Each event should include:
 
 - event identity: event id, date, operator, lab, batch, pre-registered plan id,
 - process inputs: precursor identities, lots, concentrations or prepared solution ids,
-- process trajectory: timestamps, temperature, pH, mixing/stirring/shaking notes, order of
-  operations, aging time, separation/drying route,
+- planned conditions: target temperature, intended aging time, planned mixing mode,
+  planned additives, intended separation/drying route,
+- observed trajectory: timestamps, actual temperature, pH, mixing/stirring/shaking notes,
+  deviations, actual aging time, observed turbidity or visual state,
 - raw observations: photos, time-series notes, turbidity or visual state if available,
 - raw measurements: XRD raw file, measurement metadata, optional Raman/FTIR/microscopy,
 - final human-facing labels: assigned after raw data is frozen,

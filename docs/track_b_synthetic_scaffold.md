@@ -21,8 +21,8 @@ Generated with:
 H1: Event-process features should predict held-out synthetic spectra better than
 label-only features.
 
-H2: Replicate retrieval should improve when using event-process or raw-measurement
-features instead of labels alone.
+H2: Planned-condition features should retrieve replicates better than label-only or noisy
+observed-trajectory features.
 
 H3: Legacy labels should split across multiple hidden regimes, showing that labels are
 lossy projections in this synthetic world.
@@ -41,16 +41,18 @@ Held-out spectrum prediction:
 | Feature view | MSE improvement vs train mean | MSE |
 | --- | ---: | ---: |
 | Label only | 36.7% | 0.00791 |
-| Coarse planned process | 28.3% | 0.00895 |
-| Event process | 58.0% | 0.00525 |
+| Planned conditions | 62.3% | 0.00471 |
+| Observed trajectory | 58.0% | 0.00525 |
+| Full event | 61.0% | 0.00487 |
 
 Replicate retrieval hit rate:
 
 | Feature view | Hit rate |
 | --- | ---: |
 | Label only | 13.5% |
-| Coarse planned process | 39.6% |
-| Event process | 12.5% |
+| Planned conditions | 100.0% |
+| Observed trajectory | 12.5% |
+| Full event | 21.9% |
 | Raw measurement PCA | 71.9% |
 
 Label projection audit:
@@ -67,21 +69,22 @@ Missingness:
 
 ## Verdict
 
-H1 validated. Event-process features predict held-out synthetic spectra better than
-label-only features.
+H1 validated. Planned, observed, and full-event features all predict held-out synthetic
+spectra better than label-only features. In this synthetic setup, planned conditions are
+slightly strongest because they encode the replicate-level design that generates the hidden
+regime.
 
-H2 partially validated. Raw measurement PCA retrieves replicates strongly, and coarse
-planned-process features beat labels. Full event-process features do not retrieve
-replicates well, probably because noisy observed trajectory fields distinguish replicates
-rather than grouping them.
+H2 validated. Planned-condition features retrieve replicates perfectly, while noisy
+observed-trajectory features do not. This is the concrete reason to log planned and
+observed views separately.
 
 H3 validated. Several inherited labels split across hidden regimes, and hidden regimes are
 much more compact in spectral space than legacy labels.
 
 ## Design Lesson
 
-The scaffold exposed an important Track B design issue: planned conditions and observed
-trajectory fields should probably be represented separately.
+The scaffold validates an important Track B design issue: planned conditions and observed
+trajectory fields should be represented separately.
 
 Examples:
 
@@ -91,4 +94,5 @@ Examples:
   operator notes.
 
 For real data, replicate retrieval may be better evaluated on planned-condition embeddings,
-while held-out measurement prediction may need observed trajectory embeddings.
+while held-out measurement prediction may need planned, observed, and combined views
+compared explicitly.

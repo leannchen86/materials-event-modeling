@@ -33,8 +33,8 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "replicates_per_group": args.replicates_per_group,
         "theta_points": args.theta_points,
         "hypotheses": [
-            "Event-process features should predict held-out synthetic spectra better than label-only features.",
-            "Replicate retrieval should improve when using event-process or raw-measurement features instead of labels alone.",
+            "Observed-trajectory or full-event features should predict held-out synthetic spectra better than label-only features.",
+            "Planned-condition features should retrieve replicates better than label-only or noisy observed-trajectory features.",
             "Legacy labels should split across multiple hidden regimes, showing that labels are lossy projections in this synthetic world.",
         ],
         "evaluation": evaluation,

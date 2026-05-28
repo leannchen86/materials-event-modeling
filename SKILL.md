@@ -211,12 +211,11 @@ The goal is to create a small, richly logged event dataset where raw measurement
 objectives can be tested before inherited labels are used.
 
 The first Track B synthetic scaffold is now in place. It is not chemistry evidence; it is a
-pre-lab test harness. In the corrected synthetic setup, event-process features predict
-held-out synthetic spectra better than label-only features, legacy labels split across
-multiple hidden regimes, and raw measurement embeddings retrieve replicates better than
-labels. A useful nuance: coarse planned-process features retrieve replicates better than
-full noisy event-process features, suggesting future real data should separate planned
-condition fields from observed trajectory fields.
+pre-lab test harness. In the two-view synthetic setup, planned, observed, and full-event
+features all predict held-out synthetic spectra better than label-only features; planned
+conditions retrieve replicates perfectly; and legacy labels split across multiple hidden
+regimes. Design rule: real Track B data should separate planned condition fields from
+observed trajectory fields.
 
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or

@@ -23,21 +23,24 @@ class PredictionResult:
     mse_improvement_vs_train_mean: float
 
 
-PROCESS_COLUMNS = [
-    "target_temperature_c",
-    "aging_time_minutes",
-    "mixing_intensity",
-    "additive_level",
+PLANNED_CONDITION_COLUMNS = [
+    "planned_temperature_c",
+    "planned_aging_time_minutes",
+    "planned_mixing_intensity",
+    "planned_additive_level",
+]
+
+OBSERVED_TRAJECTORY_COLUMNS = [
+    "observed_temperature_c",
+    "observed_aging_time_minutes",
+    "observed_mixing_intensity",
+    "observed_additive_level",
     "initial_ph",
     "final_ph",
     "early_turbidity",
 ]
 
-COARSE_COLUMNS = [
-    "target_temperature_c",
-    "aging_time_minutes",
-    "additive_level",
-]
+FULL_EVENT_COLUMNS = PLANNED_CONDITION_COLUMNS + OBSERVED_TRAJECTORY_COLUMNS
 
 
 def mean_squared_error(truth: np.ndarray, prediction: np.ndarray) -> float:
@@ -153,26 +156,31 @@ def evaluate_synthetic_track_b(table: pd.DataFrame, spectra: np.ndarray) -> dict
     n_splits = min(4, len(np.unique(groups)))
 
     label_features = label_matrix(table)
-    coarse_features = numeric_matrix(table, COARSE_COLUMNS)
-    process_features = numeric_matrix(table, PROCESS_COLUMNS)
+    planned_features = numeric_matrix(table, PLANNED_CONDITION_COLUMNS)
+    observed_features = numeric_matrix(table, OBSERVED_TRAJECTORY_COLUMNS)
+    full_event_features = numeric_matrix(table, FULL_EVENT_COLUMNS)
     spectra_features = PCA(n_components=12, random_state=17).fit_transform(spectra)
 
     prediction_results = {
         "label_only": cross_validated_spectrum_prediction(
             table, spectra, label_features, groups=groups, n_splits=n_splits
         ).__dict__,
-        "coarse_process": cross_validated_spectrum_prediction(
-            table, spectra, coarse_features, groups=groups, n_splits=n_splits
+        "planned_conditions": cross_validated_spectrum_prediction(
+            table, spectra, planned_features, groups=groups, n_splits=n_splits
         ).__dict__,
-        "event_process": cross_validated_spectrum_prediction(
-            table, spectra, process_features, groups=groups, n_splits=n_splits
+        "observed_trajectory": cross_validated_spectrum_prediction(
+            table, spectra, observed_features, groups=groups, n_splits=n_splits
+        ).__dict__,
+        "full_event": cross_validated_spectrum_prediction(
+            table, spectra, full_event_features, groups=groups, n_splits=n_splits
         ).__dict__,
     }
 
     retrieval_results = {
         "label_only": nearest_neighbor_hit_rate(label_features, groups),
-        "coarse_process": nearest_neighbor_hit_rate(coarse_features, groups),
-        "event_process": nearest_neighbor_hit_rate(process_features, groups),
+        "planned_conditions": nearest_neighbor_hit_rate(planned_features, groups),
+        "observed_trajectory": nearest_neighbor_hit_rate(observed_features, groups),
+        "full_event": nearest_neighbor_hit_rate(full_event_features, groups),
         "raw_measurement_pca": nearest_neighbor_hit_rate(spectra_features, groups),
     }
 

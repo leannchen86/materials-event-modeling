@@ -18,6 +18,7 @@ Files:
 - Can negative, ambiguous, and partial outcomes remain in the dataset?
 - Can replicate-like events be represented without assuming identical outcomes?
 - Can missing fields be explicit rather than silently absent?
+- Can planned conditions and observed trajectories be logged separately?
 
 ## What Looks Awkward Already
 
@@ -27,6 +28,8 @@ Files:
   actual settings.
 - `drying_route` may be too compressed. The route from wet product to XRD sample can
   strongly affect the measurement.
+- Planned and observed fields may duplicate each other in simple runs. That duplication is
+  acceptable if it preserves the difference between intended design and actual execution.
 - CSV is convenient for humans, but JSON is closer to the event structure. We may need both.
 
 ## Questions To Ask A Lab

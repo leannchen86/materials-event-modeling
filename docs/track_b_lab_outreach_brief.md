@@ -17,6 +17,9 @@ from the partner lab.
 - Permission to save raw measurement files, not only processed summaries.
 - Powder XRD access with raw export metadata.
 - Basic event metadata logging: date, operator, batch, reagent lot, instrument session.
+- Separate logging for planned conditions versus observed trajectory:
+  planned settings before execution, and actual pH/temperature/timing/deviations during
+  execution.
 - Permission to keep negative, ambiguous, partial, and messy runs.
 - Optional access to microscopy, Raman, or FTIR if already available.
 - A lab-approved SOP and safety guidance before any actual experiment.
@@ -50,6 +53,8 @@ the data model and measurement loop, not to discover a new material.
 6. What SOP, PPE, training, and waste-handling requirements apply?
 7. Are there safer or more convenient candidate systems than calcium carbonate for this
    first event-dataset pilot?
+8. Can planned conditions and observed trajectory be logged separately, or would that be
+   too burdensome for normal workflow?
 
 ## Success Criterion For The First Lab Conversation
 

@@ -4,7 +4,7 @@
     "This is not evidence about calcium carbonate chemistry.",
     "The purpose is to test Track B analysis logic before real lab data exists."
   ],
-  "created_at": "2026-05-28T22:17:15.094428+00:00",
+  "created_at": "2026-05-28T22:25:09.903961+00:00",
   "evaluation": {
     "event_count": 96,
     "label_projection_audit": {
@@ -83,27 +83,33 @@
       "final_ph": 23
     },
     "prediction": {
-      "coarse_process": {
-        "mse": 0.008947668131440878,
-        "mse_improvement_vs_train_mean": 0.2834085845580825,
-        "relative_mse_vs_train_mean": 0.7165914154419175
-      },
-      "event_process": {
-        "mse": 0.005247708759270608,
-        "mse_improvement_vs_train_mean": 0.5797270314017433,
-        "relative_mse_vs_train_mean": 0.4202729685982567
+      "full_event": {
+        "mse": 0.0048660594038665295,
+        "mse_improvement_vs_train_mean": 0.6102921627604388,
+        "relative_mse_vs_train_mean": 0.38970783723956115
       },
       "label_only": {
         "mse": 0.007906763814389706,
         "mse_improvement_vs_train_mean": 0.36677143250215194,
         "relative_mse_vs_train_mean": 0.6332285674978481
+      },
+      "observed_trajectory": {
+        "mse": 0.005247708759270608,
+        "mse_improvement_vs_train_mean": 0.5797270314017433,
+        "relative_mse_vs_train_mean": 0.4202729685982567
+      },
+      "planned_conditions": {
+        "mse": 0.004710569977760315,
+        "mse_improvement_vs_train_mean": 0.6227448360494918,
+        "relative_mse_vs_train_mean": 0.37725516395050823
       }
     },
     "replicate_group_count": 32,
     "replicate_retrieval_hit_rate": {
-      "coarse_process": 0.3958333333333333,
-      "event_process": 0.125,
+      "full_event": 0.21875,
       "label_only": 0.13541666666666666,
+      "observed_trajectory": 0.125,
+      "planned_conditions": 1.0,
       "raw_measurement_pca": 0.71875
     },
     "spectral_silhouette": {
@@ -113,8 +119,8 @@
   },
   "groups": 32,
   "hypotheses": [
-    "Event-process features should predict held-out synthetic spectra better than label-only features.",
-    "Replicate retrieval should improve when using event-process or raw-measurement features instead of labels alone.",
+    "Observed-trajectory or full-event features should predict held-out synthetic spectra better than label-only features.",
+    "Planned-condition features should retrieve replicates better than label-only or noisy observed-trajectory features.",
     "Legacy labels should split across multiple hidden regimes, showing that labels are lossy projections in this synthetic world."
   ],
   "replicates_per_group": 3,
