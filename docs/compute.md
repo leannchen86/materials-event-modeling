@@ -32,8 +32,20 @@ Example GPU selection:
 CUDA_VISIBLE_DEVICES=4 python scripts/train_xrd_encoder.py --config configs/zeus_2080ti.yaml
 ```
 
-Sync the local repo to the Zeus workspace:
+Sync the local repo to the Zeus workspace manually:
 
 ```bash
-bash scripts/sync_to_zeus.sh
+ssh -A leann@zeus.diffbot.com 'mkdir -p ~/zeus/materials-event-modeling'
+
+rsync -az --delete \
+  --exclude '.venv/' \
+  --exclude 'data/raw/*' \
+  --exclude 'data/interim/*' \
+  --exclude 'data/processed/*' \
+  --exclude 'outputs/' \
+  --exclude 'checkpoints/' \
+  --exclude 'runs/' \
+  --exclude 'wandb/' \
+  /Users/leannchen/github/materials-event-modeling/ \
+  leann@zeus.diffbot.com:~/zeus/materials-event-modeling/
 ```
