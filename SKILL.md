@@ -100,6 +100,13 @@ interpolation on some random-fold peak masks, but interpolation remains much mor
 held-out-source splits. Treat random-fold wins as weak evidence; robust progress should show
 up on peak masks and contributor/source shift.
 
+The first opXRD neural pilot uses a dilated 1D CNN trained on peak-mask reconstruction. A
+too-small receptive field failed for 1,024-point masks; the useful run uses depth 10 with an
+approximate receptive field of 4,093 points. On a 512-spectrum pilot, it improves MSE by
+34.6% on random folds and 33.0% on held-out-source splits, beating interpolation on MSE in
+both cases. It still has worse MAE than interpolation, so treat this as a promising pilot
+signal for peak recovery, not a mature representation claim.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on

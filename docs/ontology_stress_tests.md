@@ -175,3 +175,35 @@ First result:
 Interpretation: the next neural encoder should be evaluated on peak-focused masks and
 held-out-source splits. A model that only wins on random folds may be learning source- or
 instrument-specific structure rather than a robust raw-XRD representation.
+
+## Initial opXRD Convolutional Reconstructor
+
+The first neural opXRD pilot trains a compact dilated 1D CNN on raw spectra only. Labels are
+not used. The model receives the masked spectrum plus an observed/missing mask and predicts
+the full spectrum, with loss concentrated on the hidden region.
+
+Generated with:
+
+```bash
+python3 scripts/run_opxrd_conv_reconstruction.py --max-samples 512 --mask-width 1024 --train-mask-strategy peak --eval-mask-strategy peak --epochs 25 --batch-size 64 --channels 32 --depth 10 --n-splits 3 --split-kinds random_kfold held_out_top_level_source
+```
+
+Important implementation lesson: the first attempt used too small a receptive field for a
+1,024-point hidden window. The committed run uses exponentially increasing dilations and an
+approximate receptive field of 4,093 points, which can cover the whole mask.
+
+First result:
+
+| Split | Interpolation MSE improvement | CNN MSE improvement | Interpretation |
+| --- | ---: | ---: | --- |
+| Random folds | 11.2% | 34.6% | CNN clearly beats interpolation on MSE. |
+| Held-out source | 29.4% | 33.0% | CNN barely but meaningfully beats interpolation on MSE. |
+
+Caveat: the CNN has worse MAE than interpolation, so it may be improving squared-error-heavy
+peak recovery while producing broader small errors. This is a promising pilot signal, not a
+claim that the representation is already robust or ontologically meaningful.
+
+Interpretation: this is the first neural result that points in the desired direction: a raw
+measurement model can beat local interpolation on a peak-focused task under source shift.
+The next scaling step should test whether this improves with more opXRD samples, longer
+training, and eventually transfer back to NIST.
