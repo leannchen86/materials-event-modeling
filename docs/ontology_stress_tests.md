@@ -304,3 +304,42 @@ beyond interpolation. It is not yet evidence that the learned representation has
 source or contributor bias. The next useful stress test should target transfer: either a
 larger held-out-source sweep, source-balanced sampling, or pretrain-on-opXRD then evaluate
 on NIST without making phase labels the training objective.
+
+## A100 4,096-Spectrum Residual Check
+
+Hypothesis before the run:
+
+- Random-fold MSE should improve beyond the 2,048-spectrum result if sample scale is still
+  helping in-distribution reconstruction.
+- Held-out-source MSE may plateau near the earlier 41% improvement if source shift is the
+  current bottleneck.
+- MAE should continue winning on random folds, but may remain fragile under held-out-source
+  evaluation.
+
+Generated on Zeus A100 with:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 .venv/bin/python scripts/run_opxrd_conv_scaling.py --sample-sizes 4096 --seeds 0 1 --epochs 40 --n-splits 3 --split-kinds random_kfold held_out_top_level_source --mask-width 1024 --train-mask-strategy peak --eval-mask-strategy peak --prediction-mode residual --channels 32 --depth 10 --batch-size 64 --device cuda --output data/manifests/opxrd_masked_xrd_conv_residual_scaling_4096_a100.json
+```
+
+Summary:
+
+| Samples | Split | Interpolation MSE improvement | Residual CNN MSE improvement | Residual CNN MSE win rate | Residual CNN MAE win rate |
+| ---: | --- | ---: | ---: | ---: | ---: |
+| 4,096 | Random folds | 14.3% | 71.2% | 100% | 100% |
+| 4,096 | Held-out source | 32.4% | 41.5% | 100% | 100% |
+
+Verdict:
+
+- The random-scale hypothesis is validated strongly. Random-fold residual reconstruction
+  improves monotonically from 512 to 4,096 spectra.
+- The source-shift plateau hypothesis is also validated. Held-out-source MSE remains
+  positive but essentially flat from 1,024 to 4,096 spectra.
+- The MAE hypothesis is better than expected at 4,096: the residual model beats
+  interpolation on MAE for both held-out-source seeds.
+
+Interpretation: the current model has passed the "beat interpolation on peak-masked raw XRD"
+test. The next bottleneck is no longer generic neural capacity on opXRD; it is transfer
+across sources, contributors, instruments, and experimental styles. The next experiment
+should ask whether source-balanced sampling or leave-one-source-out pretraining improves
+held-out-source performance more than simply adding more spectra.

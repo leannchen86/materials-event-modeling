@@ -139,6 +139,13 @@ around 41% MSE improvement. MAE is mostly improved, but held-out-source remains 
 2,048 spectra. Interpretation: the residual model is learning real nonlocal peak structure,
 but source-shift transfer, not in-distribution reconstruction, is now the main bottleneck.
 
+The A100 4,096-spectrum check sharpened this lesson. Random-fold MSE improvement climbed
+to about 71.2%, while held-out-source MSE stayed essentially flat at about 41.5%. MAE won in
+both held-out-source seeds, which is encouraging, but the main causal story did not change:
+scaling more spectra from the same mixed archive helps in-distribution reconstruction much
+more than it helps source transfer. The next experiment should test source diversity and
+transfer directly rather than only increasing sample count.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
