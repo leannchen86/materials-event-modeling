@@ -1,0 +1,368 @@
+{
+  "batch_size": 64,
+  "caveats": [
+    "This is a modest local replication curve, not full opXRD pretraining.",
+    "The main success criterion is whether CNN MSE beats interpolation under peak masks and source shift.",
+    "MAE is tracked separately because interpolation may still win on average absolute error."
+  ],
+  "channels": 32,
+  "created_at": "2026-05-28T10:11:01.896100+00:00",
+  "dataset_id": "opxrd",
+  "depth": 10,
+  "epochs": 40,
+  "eval_mask_strategy": "peak",
+  "mask_width": 1024,
+  "n_splits": 3,
+  "peak_top_fraction": 0.02,
+  "prediction_mode": "residual",
+  "sample_sizes": [
+    1024,
+    2048
+  ],
+  "seeds": [
+    0,
+    1
+  ],
+  "split_kinds": [
+    "random_kfold",
+    "held_out_top_level_source"
+  ],
+  "summary": {
+    "1024": {
+      "held_out_top_level_source": {
+        "conv_mae_win_rate_vs_interpolation": 1.0,
+        "conv_minus_interpolation_mae": {
+          "max": -0.0016645448411784641,
+          "mean": -0.003019731497195144,
+          "min": -0.004374918153211824,
+          "std": 0.0013551866560166798
+        },
+        "conv_minus_interpolation_mse": {
+          "max": -0.004513939192894459,
+          "mean": -0.0045625569132635956,
+          "min": -0.004611174633632732,
+          "std": 4.861772036913667e-05
+        },
+        "conv_mse_improvement_vs_train_mean": {
+          "max": 0.42777462718109616,
+          "mean": 0.41396668342580456,
+          "min": 0.40015873967051296,
+          "std": 0.013807943755291596
+        },
+        "conv_mse_win_rate_vs_interpolation": 1.0,
+        "interpolation_mse_improvement_vs_train_mean": {
+          "max": 0.329359263804466,
+          "mean": 0.3141142604436032,
+          "min": 0.29886925708274037,
+          "std": 0.015245003360862819
+        },
+        "trials": 2
+      },
+      "random_kfold": {
+        "conv_mae_win_rate_vs_interpolation": 1.0,
+        "conv_minus_interpolation_mae": {
+          "max": -0.012900865677715645,
+          "mean": -0.013426476141309991,
+          "min": -0.013952086604904337,
+          "std": 0.0005256104635943462
+        },
+        "conv_minus_interpolation_mse": {
+          "max": -0.009890637822375037,
+          "mean": -0.009952384315446896,
+          "min": -0.010014130808518755,
+          "std": 6.174649307185906e-05
+        },
+        "conv_mse_improvement_vs_train_mean": {
+          "max": 0.4165226720073638,
+          "mean": 0.39749494172346345,
+          "min": 0.3784672114395631,
+          "std": 0.019027730283900368
+        },
+        "conv_mse_win_rate_vs_interpolation": 1.0,
+        "interpolation_mse_improvement_vs_train_mean": {
+          "max": 0.13487190140743321,
+          "mean": 0.11713539147577745,
+          "min": 0.09939888154412169,
+          "std": 0.017736509931655764
+        },
+        "trials": 2
+      }
+    },
+    "2048": {
+      "held_out_top_level_source": {
+        "conv_mae_win_rate_vs_interpolation": 0.5,
+        "conv_minus_interpolation_mae": {
+          "max": 0.0012827399933517947,
+          "mean": -0.0013329583409485007,
+          "min": -0.003948656675248796,
+          "std": 0.0026156983343002954
+        },
+        "conv_minus_interpolation_mse": {
+          "max": -0.003211531767440684,
+          "mean": -0.0037574006266799416,
+          "min": -0.004303269485919199,
+          "std": 0.0005458688592392576
+        },
+        "conv_mse_improvement_vs_train_mean": {
+          "max": 0.42255681400879685,
+          "mean": 0.41161615644645494,
+          "min": 0.400675498884113,
+          "std": 0.010940657562341916
+        },
+        "conv_mse_win_rate_vs_interpolation": 1.0,
+        "interpolation_mse_improvement_vs_train_mean": {
+          "max": 0.32869654815376714,
+          "mean": 0.32751372574040805,
+          "min": 0.32633090332704895,
+          "std": 0.001182822413359097
+        },
+        "trials": 2
+      },
+      "random_kfold": {
+        "conv_mae_win_rate_vs_interpolation": 1.0,
+        "conv_minus_interpolation_mae": {
+          "max": -0.027850994435899612,
+          "mean": -0.02829075142355017,
+          "min": -0.028730508411200728,
+          "std": 0.00043975698765055804
+        },
+        "conv_minus_interpolation_mse": {
+          "max": -0.014465831638197476,
+          "mean": -0.014809265510306148,
+          "min": -0.01515269938241482,
+          "std": 0.00034343387210867236
+        },
+        "conv_mse_improvement_vs_train_mean": {
+          "max": 0.5683410584993422,
+          "mean": 0.5609007487513271,
+          "min": 0.553460439003312,
+          "std": 0.007440309748015128
+        },
+        "conv_mse_win_rate_vs_interpolation": 1.0,
+        "interpolation_mse_improvement_vs_train_mean": {
+          "max": 0.13634157882615694,
+          "mean": 0.13393774800571945,
+          "min": 0.13153391718528196,
+          "std": 0.0024038308204374914
+        },
+        "trials": 2
+      }
+    }
+  },
+  "task": "masked_xrd_conv_scaling",
+  "train_mask_strategy": "peak",
+  "trials": [
+    {
+      "max_samples": 1024,
+      "seed": 0,
+      "splits": {
+        "held_out_top_level_source": {
+          "linear_interpolation": {
+            "mae": 0.10617120453664457,
+            "mse": 0.031918775908431986,
+            "mse_improvement_vs_train_mean": 0.29886925708274037,
+            "relative_mse_vs_train_mean": 0.7011307429172596,
+            "rmse": 0.17865826571539303
+          },
+          "masked_conv_reconstructor": {
+            "mae": 0.10179628638343274,
+            "mse": 0.027307601274799254,
+            "mse_improvement_vs_train_mean": 0.40015873967051296,
+            "relative_mse_vs_train_mean": 0.599841260329487,
+            "rmse": 0.16525011732158998
+          },
+          "train_mean": {
+            "mae": 0.16221174877864541,
+            "mse": 0.04552471308792505,
+            "mse_improvement_vs_train_mean": 0.0,
+            "relative_mse_vs_train_mean": 1.0,
+            "rmse": 0.21336521058486796
+          }
+        },
+        "random_kfold": {
+          "linear_interpolation": {
+            "mae": 0.10617120453664453,
+            "mse": 0.03191877590843201,
+            "mse_improvement_vs_train_mean": 0.09939888154412169,
+            "relative_mse_vs_train_mean": 0.9006011184558783,
+            "rmse": 0.17865826571539312
+          },
+          "masked_conv_reconstructor": {
+            "mae": 0.09327033885892888,
+            "mse": 0.02202813808605697,
+            "mse_improvement_vs_train_mean": 0.3784672114395631,
+            "relative_mse_vs_train_mean": 0.6215327885604369,
+            "rmse": 0.14841879290055207
+          },
+          "train_mean": {
+            "mae": 0.14238040892178105,
+            "mse": 0.03544163476407647,
+            "mse_improvement_vs_train_mean": 0.0,
+            "relative_mse_vs_train_mean": 1.0,
+            "rmse": 0.18825948784610158
+          }
+        }
+      },
+      "trial_path": "data/interim/opxrd/conv_scaling_runs/sample_1024_seed_0.json"
+    },
+    {
+      "max_samples": 1024,
+      "seed": 1,
+      "splits": {
+        "held_out_top_level_source": {
+          "linear_interpolation": {
+            "mae": 0.10380351097576775,
+            "mse": 0.03075974522270032,
+            "mse_improvement_vs_train_mean": 0.329359263804466,
+            "relative_mse_vs_train_mean": 0.670640736195534,
+            "rmse": 0.1753845638096475
+          },
+          "masked_conv_reconstructor": {
+            "mae": 0.10213896613458928,
+            "mse": 0.026245806029805863,
+            "mse_improvement_vs_train_mean": 0.42777462718109616,
+            "relative_mse_vs_train_mean": 0.5722253728189038,
+            "rmse": 0.16200557407017163
+          },
+          "train_mean": {
+            "mae": 0.16338140427615144,
+            "mse": 0.045866204604863015,
+            "mse_improvement_vs_train_mean": 0.0,
+            "relative_mse_vs_train_mean": 1.0,
+            "rmse": 0.21416396663505982
+          }
+        },
+        "random_kfold": {
+          "linear_interpolation": {
+            "mae": 0.10380351097576758,
+            "mse": 0.0307597452227003,
+            "mse_improvement_vs_train_mean": 0.13487190140743321,
+            "relative_mse_vs_train_mean": 0.8651280985925668,
+            "rmse": 0.17538456380964745
+          },
+          "masked_conv_reconstructor": {
+            "mae": 0.08985142437086324,
+            "mse": 0.020745614414181546,
+            "mse_improvement_vs_train_mean": 0.4165226720073638,
+            "relative_mse_vs_train_mean": 0.5834773279926362,
+            "rmse": 0.14403337951385278
+          },
+          "train_mean": {
+            "mae": 0.14317330005724216,
+            "mse": 0.03555513371111374,
+            "mse_improvement_vs_train_mean": 0.0,
+            "relative_mse_vs_train_mean": 1.0,
+            "rmse": 0.18856068972909953
+          }
+        }
+      },
+      "trial_path": "data/interim/opxrd/conv_scaling_runs/sample_1024_seed_1.json"
+    },
+    {
+      "max_samples": 2048,
+      "seed": 0,
+      "splits": {
+        "held_out_top_level_source": {
+          "linear_interpolation": {
+            "mae": 0.10263204430511577,
+            "mse": 0.029951983730263615,
+            "mse_improvement_vs_train_mean": 0.32869654815376714,
+            "relative_mse_vs_train_mean": 0.6713034518462329,
+            "rmse": 0.1730664142179632
+          },
+          "masked_conv_reconstructor": {
+            "mae": 0.10391478429846757,
+            "mse": 0.02674045196282293,
+            "mse_improvement_vs_train_mean": 0.400675498884113,
+            "relative_mse_vs_train_mean": 0.599324501115887,
+            "rmse": 0.1635250805314675
+          },
+          "train_mean": {
+            "mae": 0.16137111743853438,
+            "mse": 0.044617651894816035,
+            "mse_improvement_vs_train_mean": 0.0,
+            "relative_mse_vs_train_mean": 1.0,
+            "rmse": 0.2112289087573385
+          }
+        },
+        "random_kfold": {
+          "linear_interpolation": {
+            "mae": 0.10263204430511569,
+            "mse": 0.02995198373026364,
+            "mse_improvement_vs_train_mean": 0.13634157882615694,
+            "relative_mse_vs_train_mean": 0.8636584211738431,
+            "rmse": 0.17306641421796326
+          },
+          "masked_conv_reconstructor": {
+            "mae": 0.07478104986921608,
+            "mse": 0.015486152092066163,
+            "mse_improvement_vs_train_mean": 0.553460439003312,
+            "relative_mse_vs_train_mean": 0.44653956099668807,
+            "rmse": 0.1244433690160555
+          },
+          "train_mean": {
+            "mae": 0.14149450273873754,
+            "mse": 0.03468035857226326,
+            "mse_improvement_vs_train_mean": 0.0,
+            "relative_mse_vs_train_mean": 1.0,
+            "rmse": 0.186226632285136
+          }
+        }
+      },
+      "trial_path": "data/interim/opxrd/conv_scaling_runs/sample_2048_seed_0.json"
+    },
+    {
+      "max_samples": 2048,
+      "seed": 1,
+      "splits": {
+        "held_out_top_level_source": {
+          "linear_interpolation": {
+            "mae": 0.10328951863633062,
+            "mse": 0.030126809367462155,
+            "mse_improvement_vs_train_mean": 0.32633090332704895,
+            "relative_mse_vs_train_mean": 0.673669096672951,
+            "rmse": 0.17357076184502435
+          },
+          "masked_conv_reconstructor": {
+            "mae": 0.09934086196108183,
+            "mse": 0.025823539881542956,
+            "mse_improvement_vs_train_mean": 0.42255681400879685,
+            "relative_mse_vs_train_mean": 0.5774431859912031,
+            "rmse": 0.1606970437859482
+          },
+          "train_mean": {
+            "mae": 0.16160979479718662,
+            "mse": 0.04472048594220723,
+            "mse_improvement_vs_train_mean": 0.0,
+            "relative_mse_vs_train_mean": 1.0,
+            "rmse": 0.21147218715993654
+          }
+        },
+        "random_kfold": {
+          "linear_interpolation": {
+            "mae": 0.10328951863633062,
+            "mse": 0.030126809367462155,
+            "mse_improvement_vs_train_mean": 0.13153391718528196,
+            "relative_mse_vs_train_mean": 0.868466082814718,
+            "rmse": 0.17357076184502435
+          },
+          "masked_conv_reconstructor": {
+            "mae": 0.0745590102251299,
+            "mse": 0.014974109985047335,
+            "mse_improvement_vs_train_mean": 0.5683410584993422,
+            "relative_mse_vs_train_mean": 0.4316589415006578,
+            "rmse": 0.12236874594865854
+          },
+          "train_mean": {
+            "mae": 0.1415216675177362,
+            "mse": 0.03468967869167727,
+            "mse_improvement_vs_train_mean": 0.0,
+            "relative_mse_vs_train_mean": 1.0,
+            "rmse": 0.18625165419849907
+          }
+        }
+      },
+      "trial_path": "data/interim/opxrd/conv_scaling_runs/sample_2048_seed_1.json"
+    }
+  ]
+}

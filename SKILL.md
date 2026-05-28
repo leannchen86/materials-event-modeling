@@ -39,6 +39,11 @@ tasks: prediction, compression, retrieval, search, or intervention.
    explain results. Control for them to avoid fooling ourselves, but do not make them the
    final ontology.
 
+6. **Every run needs a hypothesis and a verdict.**
+   Before running an experiment, state the expected outcome and what would validate,
+   weaken, or falsify it. After the run, explicitly compare the result to the hypothesis,
+   including caveats and next decision implications.
+
 ## Current NIST Lesson
 
 The first NIST baseline shows that human-label disagreement is structured:
@@ -119,6 +124,15 @@ and two seeds, it beats interpolation on MSE in every random and held-out-source
 also improves in most settings. Interpretation: the model is learning structure beyond
 local smoothness, but this is still a small local curve that must be scaled and transferred
 before making stronger claims.
+
+The first Zeus GPU scaling check extended residual learning to 1,024/2,048 spectra with two
+seeds and 40 epochs. The run validates the MSE hypothesis: residual CNNs beat interpolation
+on MSE in every random and held-out-source trial. The random-fold signal scales strongly
+with sample count, reaching about 56.1% MSE improvement at 2,048 spectra versus about 13.4%
+for interpolation. The held-out-source signal is positive but less scale-sensitive, staying
+around 41% MSE improvement. MAE is mostly improved, but held-out-source remains mixed at
+2,048 spectra. Interpretation: the residual model is learning real nonlocal peak structure,
+but source-shift transfer, not in-distribution reconstruction, is now the main bottleneck.
 
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or

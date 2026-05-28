@@ -264,3 +264,43 @@ reduces the MAE penalty. This supports the thesis that there is learnable nonloc
 structure beyond local smooth interpolation. It is still a small local curve, so the next
 question is whether the residual signal strengthens at 1,024-4,096 spectra and transfers to
 NIST.
+
+## Zeus Residual Scaling Check
+
+Hypotheses before the run:
+
+- H1: residual CNNs should continue beating interpolation on MSE at larger sample sizes.
+- H2: held-out-source behavior should become more stable as sample count increases.
+- H3: MAE should mostly improve or at least stop degrading, because interpolation is the
+  starting prediction and the model only learns a residual correction.
+
+Generated on Zeus with:
+
+```bash
+CUDA_VISIBLE_DEVICES=4 .venv/bin/python scripts/run_opxrd_conv_scaling.py --sample-sizes 1024 2048 --seeds 0 1 --epochs 40 --n-splits 3 --split-kinds random_kfold held_out_top_level_source --mask-width 1024 --train-mask-strategy peak --eval-mask-strategy peak --prediction-mode residual --channels 32 --depth 10 --batch-size 64 --device cuda --output data/manifests/opxrd_masked_xrd_conv_residual_scaling_zeus.json
+```
+
+Summary:
+
+| Samples | Split | Interpolation MSE improvement | Residual CNN MSE improvement | Residual CNN MSE win rate | Residual CNN MAE win rate |
+| ---: | --- | ---: | ---: | ---: | ---: |
+| 1,024 | Random folds | 11.7% | 39.7% | 100% | 100% |
+| 1,024 | Held-out source | 31.4% | 41.4% | 100% | 100% |
+| 2,048 | Random folds | 13.4% | 56.1% | 100% | 100% |
+| 2,048 | Held-out source | 32.8% | 41.2% | 100% | 50% |
+
+Verdict:
+
+- H1 validated. The residual CNN beats interpolation on MSE in every trial at both larger
+  sample sizes and both split types.
+- H2 partially validated. Held-out-source MSE is stable and consistently positive, but it
+  does not noticeably improve from 1,024 to 2,048 spectra. Scale helps random folds much
+  more than source-shift transfer.
+- H3 partially validated. MAE improves on random folds and at 1,024 held-out-source, but
+  remains mixed at 2,048 held-out-source.
+
+Interpretation: this is stronger evidence that the model learns nonlocal peak structure
+beyond interpolation. It is not yet evidence that the learned representation has escaped
+source or contributor bias. The next useful stress test should target transfer: either a
+larger held-out-source sweep, source-balanced sampling, or pretrain-on-opXRD then evaluate
+on NIST without making phase labels the training objective.
