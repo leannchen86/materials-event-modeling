@@ -91,3 +91,99 @@ together:
 This audit supports the original direction: the public datasets are placeholders and
 stress tests. They help us design the feedback loop, but they should not become the
 ontology or the leaderboard.
+
+## Event-Table XRD Prediction Run
+
+### Pre-Run Hypothesis
+
+Position-level HTEM rows should expose event-shaped structure, but random position splits
+may overstate success because positions from the same sample library leak context.
+Held-out-library and held-out-PDAC splits are the real controls.
+
+Expected result:
+
+- `sample_id_only` should look suspiciously strong on random position splits and collapse
+  on held-out-library splits.
+- `recipe_plus_position` should be weaker but more meaningful.
+- `local_measurements_no_xrd` may help, but those inputs are post-fabrication
+  measurements rather than prospective synthesis knowledge.
+
+### Command
+
+```bash
+python3 scripts/run_htem_event_proxy.py --max-libraries 32 --min-xrd-positions 40 --chunk-size 4 --n-splits 4 --target-pca-components 8
+```
+
+Output manifest:
+
+```text
+data/manifests/htem_event_proxy_xrd_prediction.json
+```
+
+### Setup
+
+The script selected 32 XRD-bearing sample libraries and built 1,408 position-level event
+rows. Each row has sample metadata, deposition metadata, spatial position, local
+non-XRD measurement summaries, and a normalized XRD spectrum with 661 angle points.
+
+The objective was not phase classification. It was to predict PCA scores of normalized
+position-level XRD spectra:
+
+```text
+log1p(nonnegative intensity) -> per-spectrum max normalization -> 8-component PCA target
+```
+
+This is a raw-measurement feedback task, not a inherited-label task.
+
+### Results
+
+Mean MSE improvement versus train-mean prediction:
+
+| Feature set | Random position | Held-out library | Held-out PDAC |
+|---|---:|---:|---:|
+| `local_measurements_no_xrd` | +89.5% | -68.4% | -124.9% |
+| `recipe_plus_position` | +86.9% | -17.8% | -131.8% |
+| `recipe_only` | +86.7% | -17.0% | -131.3% |
+| `sample_id_plus_position` | +83.4% | -0.9% | -0.5% |
+| `sample_id_only` | +83.2% | +0.0% | -0.0% |
+| `provenance_only` | +67.2% | -61.8% | -252.5% |
+| `position_only` | -0.0% | -0.9% | -0.5% |
+
+### Verdict
+
+The run validated the main warning more than the optimistic version.
+
+Random position splits look excellent, but this is mostly because rows from the same
+sample library appear in both train and test. The important twist is that `recipe_only`
+also looks excellent on the random split. That means explicit sample id is not the only
+shortcut: sample-level recipe/composition fields can become implicit library identifiers
+when every library contributes many nearby position rows.
+
+Held-out-library transfer mostly collapses. The best honest sample-level feature sets do
+not beat the train-mean baseline on average. Held-out-PDAC transfer is even worse, which
+suggests that project/source/family shift is a major confound in this public view.
+
+This does not mean HTEM is useless. It means HTEM is most useful right now as a control
+design sandbox:
+
+- Always report random-position and held-out-library splits together.
+- Treat random-position wins as within-library interpolation or shortcut diagnostics.
+- Avoid claiming event generalization from rows that share a sample library across train
+  and test.
+- Do not trust public sample-library metadata as a substitute for a true event trajectory.
+
+### Next-Step Implication
+
+The next HTEM test should not be a bigger model. It should be a cleaner question:
+
+1. Restrict to a chemistry family or related element systems with many libraries, then
+   repeat held-out-library transfer. This asks whether the previous collapse was mostly
+   chemistry/family shift.
+2. Separately, define a within-library spatial objective on purpose: predict one position's
+   XRD from neighboring positions and process context. This treats a sample library as one
+   material-making event field rather than pretending random-position success is broad
+   material generalization.
+
+Both are aligned with the project. The first tests prospective transfer. The second tests
+whether a material-making event should be represented as a field/trajectory rather than a
+static material row.

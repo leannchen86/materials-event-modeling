@@ -77,6 +77,7 @@ Local audit:
 
 ```bash
 python3 scripts/audit_htem_dataset.py --endpoint-sample-ids 2
+python3 scripts/run_htem_event_proxy.py --max-libraries 32 --min-xrd-positions 40 --chunk-size 4 --n-splits 4 --target-pca-components 8
 ```
 
 Current audit:
@@ -88,6 +89,10 @@ Current audit:
 - 1,403 records have composition, process metadata, and XRD availability.
 - Sampled XRD spectra are position-resolved, but the public records remain
   sample-library snapshots rather than full material-making trajectories.
+- A first event-table probe built 1,408 position-level rows from 32 XRD-bearing sample
+  libraries. Random-position XRD-PCA prediction looked strong, but held-out-library
+  transfer collapsed, so random-position wins should be treated as leakage/within-library
+  diagnostics.
 
 Track A use:
 

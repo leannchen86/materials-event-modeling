@@ -199,6 +199,18 @@ still looks like a sample-library snapshot, not a full material-making trajector
 HTEM to design Track B schemas and event-proxy objectives; do not turn it into another
 leaderboard target.
 
+The first HTEM event-table run built 1,408 position-level rows from 32 XRD-bearing sample
+libraries and predicted 8-component XRD PCA targets. Random-position splits looked very
+strong: recipe-plus-position improved MSE by about 86.9%, local non-XRD measurements by
+about 89.5%, and sample-id-only by about 83.2% versus train mean. But held-out-library
+transfer collapsed: recipe-plus-position was about 17.8% worse than train mean, and local
+measurements were about 68.4% worse. Interpretation: random position splits mostly measure
+within-library leakage/shortcut structure. Sample-level recipe fields can act as implicit
+library identifiers when many positions from the same library are split across train and
+test. Next HTEM work should either restrict to a chemistry family for cleaner held-out
+library transfer, or explicitly frame the task as within-library spatial/event-field
+modeling.
+
 ## Track B Direction
 
 Track B is the real pre-taxonomic event dataset. The unit is a material-making event, not a
