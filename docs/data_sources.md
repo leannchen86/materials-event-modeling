@@ -79,6 +79,7 @@ Local audit:
 python3 scripts/audit_htem_dataset.py --endpoint-sample-ids 2
 python3 scripts/run_htem_event_proxy.py --max-libraries 32 --min-xrd-positions 40 --chunk-size 4 --n-splits 4 --target-pca-components 8
 python3 scripts/run_htem_event_proxy.py --element-system Cu,S,Sn --max-libraries 65 --min-xrd-positions 40 --chunk-size 5 --n-splits 5 --target-pca-components 8 --output data/manifests/htem_event_proxy_xrd_prediction_cu_s_sn.json
+python3 scripts/run_htem_spatial_field_prediction.py
 ```
 
 Current audit:
@@ -97,6 +98,10 @@ Current audit:
 - A within-family `Cu|S|Sn` control built 2,860 rows from 65 libraries. It did not rescue
   held-out-library transfer for recipe/process features, suggesting the bottleneck is not
   only broad chemistry/family mixing.
+- A within-library spatial-field run on the same `Cu|S|Sn` libraries found that library
+  mean is already about 51% better than global mean, and inverse-distance smoothing over
+  all observed positions improves another 12-16% versus library mean. This supports
+  treating a sample library as a spatial measurement field.
 
 Track A use:
 

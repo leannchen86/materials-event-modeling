@@ -266,3 +266,112 @@ spatial coordinates, local composition/property traces, and shared recipe metada
 That task does not pretend to generalize to unseen material-making events. It asks whether
 the event should be represented as a field/trajectory rather than a static row. This is
 more aligned with Track B than further tuning held-out-library metadata prediction.
+
+## Within-Library Spatial Field Prediction
+
+### Pre-Run Hypothesis
+
+If HTEM's useful event structure is inside each sample library rather than across
+libraries, then within-library spatial predictors should beat a flat library-mean
+baseline. Nearest-neighbor or distance-weighted interpolation should be strong on random
+held-out positions. Holding out an entire spatial row should be harder and tests whether
+the field model extrapolates across the grid.
+
+### Command
+
+```bash
+python3 scripts/run_htem_spatial_field_prediction.py
+```
+
+Output manifest:
+
+```text
+data/manifests/htem_spatial_field_prediction_cu_s_sn.json
+```
+
+### Setup
+
+The run used the same 65 `Cu|S|Sn` libraries and 2,860 position-level XRD rows.
+
+The target was the full normalized XRD spectrum, not phase labels and not PCA labels:
+
+```text
+log1p(nonnegative intensity) -> per-spectrum max normalization -> full 661-point XRD
+```
+
+For each library, the experiment hides positions and predicts their XRD using only other
+positions from the same library. Two split types were used:
+
+- `random_positions`: randomly hide about 25% of positions per library.
+- `held_out_row`: hide one full spatial row per library.
+
+Baselines:
+
+- `global_mean`: mean XRD over all observed training positions.
+- `library_mean`: mean XRD over observed positions from the same library.
+- `nearest_neighbor`: XRD from the closest observed position in the same library.
+- `idw_3`: inverse-distance weighted average of the 3 closest observed positions.
+- `idw_all`: inverse-distance weighted average of all observed positions.
+- `xy_ridge_linear`: per-library linear ridge model from `(x, y)` to full XRD.
+- `xy_ridge_quadratic`: per-library quadratic ridge model from `(x, y)` to full XRD.
+
+### Results
+
+Mean MSE improvement:
+
+| Split | Model | vs global mean | vs library mean |
+|---|---|---:|---:|
+| `random_positions` | `library_mean` | +51.7% | +0.0% |
+| `random_positions` | `nearest_neighbor` | +34.9% | -34.6% |
+| `random_positions` | `idw_3` | +52.1% | +0.9% |
+| `random_positions` | `idw_all` | +59.3% | +15.8% |
+| `random_positions` | `xy_ridge_linear` | +58.3% | +13.7% |
+| `random_positions` | `xy_ridge_quadratic` | +57.6% | +12.4% |
+| `held_out_row` | `library_mean` | +50.7% | +0.0% |
+| `held_out_row` | `nearest_neighbor` | +29.4% | -43.2% |
+| `held_out_row` | `idw_3` | +51.0% | +0.7% |
+| `held_out_row` | `idw_all` | +56.7% | +12.1% |
+| `held_out_row` | `xy_ridge_linear` | +52.4% | +3.4% |
+| `held_out_row` | `xy_ridge_quadratic` | +22.1% | -57.7% |
+
+### Verdict
+
+This validated the field-modeling hypothesis, with an important nuance.
+
+The sample library itself is a strong event unit: `library_mean` cuts MSE by about 51%
+versus the global mean. That means the spatial rows inside a library are not independent
+static material rows; they share an event-level measurement field.
+
+Spatial modeling adds real information beyond the library mean. `idw_all` improves over
+the library mean by about 15.8% on random held-out positions and 12.1% on held-out rows.
+Linear ridge also helps, especially on random positions.
+
+But nearest-neighbor is worse than the library mean. So the field is not just locally
+copyable from the closest measured point. The useful signal looks smoother and more
+global across the library.
+
+The row-holdout split is especially useful: `idw_all` still improves over library mean
+when a full spatial row is missing, while quadratic ridge fails badly. This says simple,
+stable spatial smoothers are better first baselines than higher-capacity coordinate fits.
+
+### Research Implication
+
+This is the first HTEM Track A result that cleanly supports the "event as field" framing.
+
+The strongest public-data direction is no longer:
+
+```text
+sample metadata -> predict XRD for unseen sample libraries
+```
+
+It is:
+
+```text
+within a material-making event, learn the spatial/measurement field and predict held-out
+measurements from partial observations
+```
+
+This maps much better to Track B. A lab dataset should be designed so that each event has
+multiple partial observations over time, space, process state, or measurement modality.
+Then the objective becomes: given partial event observations, predict missing/future event
+measurements. The labels come later as probes.

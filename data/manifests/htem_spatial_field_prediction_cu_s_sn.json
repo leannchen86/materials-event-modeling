@@ -1,0 +1,1483 @@
+{
+  "angle_max": 52.0,
+  "angle_min": 19.0,
+  "api_base_url": "https://htem-api.nlr.gov/api",
+  "caveats": [
+    "This is within-library spatial prediction, not transfer to unseen material-making events.",
+    "Neighbor baselines use XRD measurements from other positions in the same sample library.",
+    "Strong random-position performance can reflect smooth spatial interpolation, not broad discovery.",
+    "Held-out-row splits are a harder spatial extrapolation control."
+  ],
+  "created_at": "2026-05-28T23:38:26.219545+00:00",
+  "dataset_id": "htem",
+  "element_system_filter": "Cu|S|Sn",
+  "event_count": 2860,
+  "idw_power": 2.0,
+  "min_test_positions": 8,
+  "min_train_positions": 16,
+  "normalization": "log1p(nonnegative intensity), then per-spectrum max normalization.",
+  "pre_run_hypothesis": "If HTEM's useful event structure is inside each sample library rather than across libraries, then within-library spatial predictors should beat a flat library-mean baseline. Nearest-neighbor or distance-weighted interpolation should be strong on random held-out positions; row holdout should be harder and tests whether the field model extrapolates across the spatial grid.",
+  "repeats": 5,
+  "ridge_alpha": 1.0,
+  "selected_library_count": 65,
+  "selected_library_ids": [
+    7352,
+    7187,
+    7133,
+    7240,
+    7145,
+    7279,
+    7781,
+    7303,
+    7206,
+    7304,
+    7344,
+    6978,
+    6674,
+    6700,
+    7958,
+    6886,
+    7327,
+    7920,
+    6808,
+    7813,
+    7773,
+    7821,
+    7008,
+    8882,
+    7228,
+    7273,
+    8892,
+    7200,
+    6709,
+    7651,
+    6949,
+    6972,
+    7612,
+    6928,
+    8005,
+    7126,
+    8020,
+    6903,
+    7892,
+    7798,
+    6733,
+    7330,
+    7407,
+    7748,
+    6647,
+    7443,
+    7387,
+    8893,
+    7471,
+    6858,
+    7605,
+    7504,
+    7975,
+    7665,
+    7491,
+    7935,
+    7856,
+    7938,
+    6973,
+    7786,
+    7617,
+    7954,
+    7643,
+    7110,
+    7967
+  ],
+  "split_kinds": [
+    "random_positions",
+    "held_out_row"
+  ],
+  "summary": {
+    "held_out_row": {
+      "libraries": {
+        "max": 65.0,
+        "mean": 65.0,
+        "min": 65.0,
+        "std": 0.0
+      },
+      "models": {
+        "global_mean": {
+          "mae": {
+            "max": 0.17860085209192636,
+            "mean": 0.1780081660949088,
+            "min": 0.17634554330733326,
+            "std": 0.0008414993035445581
+          },
+          "mse": {
+            "max": 0.05349064331952235,
+            "mean": 0.0530046165534674,
+            "min": 0.0523242969528477,
+            "std": 0.00038654273105855736
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "std": 0.0
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": -0.9482825489298015,
+            "mean": -1.0301275492217872,
+            "min": -1.0793525847022098,
+            "std": 0.046161417127729115
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 1.0,
+            "mean": 1.0,
+            "min": 1.0,
+            "std": 0.0
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 2.07935258470221,
+            "mean": 2.0301275492217874,
+            "min": 1.9482825489298015,
+            "std": 0.046161417127729115
+          },
+          "rmse": {
+            "max": 0.23128044301134143,
+            "mean": 0.2302257806537969,
+            "min": 0.2287450479307644,
+            "std": 0.0008405211580815858
+          }
+        },
+        "idw_3": {
+          "mae": {
+            "max": 0.10149286601737723,
+            "mean": 0.09776050450146724,
+            "min": 0.09612608604777823,
+            "std": 0.001996419689372217
+          },
+          "mse": {
+            "max": 0.027934863829851598,
+            "mean": 0.02594947411125818,
+            "min": 0.025035767455201047,
+            "std": 0.0010606794114501191
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.5284397895436417,
+            "mean": 0.510423162573002,
+            "min": 0.474811239068599,
+            "std": 0.019807296723552997
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": 0.025877465211519457,
+            "mean": 0.0070009647291300325,
+            "min": -0.023216097816713965,
+            "std": 0.017361788637835447
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 0.525188760931401,
+            "mean": 0.4895768374269981,
+            "min": 0.4715602104563584,
+            "std": 0.019807296723552983
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 1.023216097816714,
+            "mean": 0.99299903527087,
+            "min": 0.9741225347884805,
+            "std": 0.017361788637835447
+          },
+          "rmse": {
+            "max": 0.16713726044736882,
+            "mean": 0.16105544544581157,
+            "min": 0.1582269492065149,
+            "std": 0.0032584664352117284
+          }
+        },
+        "idw_all": {
+          "mae": {
+            "max": 0.1042632648870017,
+            "mean": 0.10154537665642553,
+            "min": 0.1003811289491463,
+            "std": 0.0014142375818329519
+          },
+          "mse": {
+            "max": 0.024449329507987432,
+            "mean": 0.022966383064350494,
+            "min": 0.02216072823883948,
+            "std": 0.0007975814376034159
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.5812936084481573,
+            "mean": 0.5667183013038537,
+            "min": 0.5403409464204403,
+            "std": 0.014423502187488122
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": 0.12936178249534036,
+            "mean": 0.12104700443763594,
+            "min": 0.10445428745335539,
+            "std": 0.008807058638190859
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 0.45965905357955966,
+            "mean": 0.4332816986961462,
+            "min": 0.4187063915518427,
+            "std": 0.014423502187488122
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 0.8955457125466446,
+            "mean": 0.8789529955623643,
+            "min": 0.8706382175046596,
+            "std": 0.008807058638190859
+          },
+          "rmse": {
+            "max": 0.15636281369938132,
+            "mean": 0.1515241703332914,
+            "min": 0.14886479852147547,
+            "std": 0.002609380991380968
+          }
+        },
+        "library_mean": {
+          "mae": {
+            "max": 0.11356154757700342,
+            "mean": 0.11159434828568511,
+            "min": 0.11079639948845948,
+            "std": 0.0010220412226368113
+          },
+          "mse": {
+            "max": 0.027301040209841868,
+            "mean": 0.02612290562590886,
+            "min": 0.025453429212370725,
+            "std": 0.000641535912816491
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.5190810796798019,
+            "mean": 0.5071605897321444,
+            "min": 0.4867274253678946,
+            "std": 0.011415573384293595
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "std": 0.0
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 0.5132725746321054,
+            "mean": 0.4928394102678556,
+            "min": 0.4809189203201981,
+            "std": 0.011415573384293592
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 1.0,
+            "mean": 1.0,
+            "min": 1.0,
+            "std": 0.0
+          },
+          "rmse": {
+            "max": 0.1652302642067786,
+            "mean": 0.16161377144961495,
+            "min": 0.15954130879609432,
+            "std": 0.001973449705586664
+          }
+        },
+        "nearest_neighbor": {
+          "mae": {
+            "max": 0.11071943648294844,
+            "mean": 0.10742747825244088,
+            "min": 0.1056094129087836,
+            "std": 0.0018641729214324164
+          },
+          "mse": {
+            "max": 0.03923693262700757,
+            "mean": 0.03741703178935492,
+            "min": 0.03636955789992395,
+            "std": 0.0010497110788568703
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.31496262664278996,
+            "mean": 0.29405010017056793,
+            "min": 0.2623269562135382,
+            "std": 0.02015836620565299
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": -0.41511163953754737,
+            "mean": -0.4322705254552256,
+            "min": -0.4532532986523816,
+            "std": 0.012719855925261475
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 0.7376730437864618,
+            "mean": 0.7059498998294321,
+            "min": 0.68503737335721,
+            "std": 0.02015836620565299
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 1.4532532986523816,
+            "mean": 1.4322705254552255,
+            "min": 1.4151116395375474,
+            "std": 0.012719855925261475
+          },
+          "rmse": {
+            "max": 0.19808314574190197,
+            "mean": 0.19341596397392985,
+            "min": 0.19070804361621443,
+            "std": 0.0027012347899434594
+          }
+        },
+        "xy_ridge_linear": {
+          "mae": {
+            "max": 0.1080459786020375,
+            "mean": 0.10445549681081671,
+            "min": 0.1031680242222999,
+            "std": 0.0018469618324632306
+          },
+          "mse": {
+            "max": 0.027202009348333934,
+            "mean": 0.025235169305181205,
+            "min": 0.024540764205201505,
+            "std": 0.000991706968782087
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.5363250378985447,
+            "mean": 0.5239134310651049,
+            "min": 0.488589252787785,
+            "std": 0.018140604266359807
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": 0.05071483319980974,
+            "mean": 0.034283269123110506,
+            "min": 0.0036273658712914214,
+            "std": 0.016084429859055307
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 0.511410747212215,
+            "mean": 0.4760865689348951,
+            "min": 0.46367496210145537,
+            "std": 0.01814060426635979
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 0.9963726341287086,
+            "mean": 0.9657167308768896,
+            "min": 0.9492851668001903,
+            "std": 0.016084429859055307
+          },
+          "rmse": {
+            "max": 0.16493031664413288,
+            "mean": 0.15882596768453655,
+            "min": 0.1566549207819579,
+            "std": 0.0030791710332097443
+          }
+        },
+        "xy_ridge_quadratic": {
+          "mae": {
+            "max": 0.13922645632854405,
+            "mean": 0.12631572155439763,
+            "min": 0.12040621989148392,
+            "std": 0.006836080839168272
+          },
+          "mse": {
+            "max": 0.04955110621056577,
+            "mean": 0.04126772862625449,
+            "min": 0.037578272262335455,
+            "std": 0.004477053566198872
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.29219593494299223,
+            "mean": 0.22133747216775443,
+            "min": 0.06841557445868052,
+            "std": 0.08488530616270154
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": -0.46214178952813345,
+            "mean": -0.5770399024554344,
+            "min": -0.8149896791369466,
+            "std": 0.13471307284480377
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 0.9315844255413195,
+            "mean": 0.7786625278322455,
+            "min": 0.7078040650570078,
+            "std": 0.08488530616270153
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 1.8149896791369466,
+            "mean": 1.5770399024554345,
+            "min": 1.4621417895281335,
+            "std": 0.13471307284480377
+          },
+          "rmse": {
+            "max": 0.22260077765040662,
+            "mean": 0.20286032976561735,
+            "min": 0.1938511600747735,
+            "std": 0.010743148218258574
+          }
+        }
+      },
+      "repeats": 5,
+      "test_events": {
+        "max": 715.0,
+        "mean": 715.0,
+        "min": 715.0,
+        "std": 0.0
+      },
+      "train_events": {
+        "max": 2145.0,
+        "mean": 2145.0,
+        "min": 2145.0,
+        "std": 0.0
+      }
+    },
+    "random_positions": {
+      "libraries": {
+        "max": 65.0,
+        "mean": 65.0,
+        "min": 65.0,
+        "std": 0.0
+      },
+      "models": {
+        "global_mean": {
+          "mae": {
+            "max": 0.17868735357193158,
+            "mean": 0.1778101428211421,
+            "min": 0.17687661276988306,
+            "std": 0.0005868676834744118
+          },
+          "mse": {
+            "max": 0.05314884554051783,
+            "mean": 0.052932665316700364,
+            "min": 0.05267327630514696,
+            "std": 0.00016373915396308223
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "std": 0.0
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": -1.048246511880778,
+            "mean": -1.0687512004670292,
+            "min": -1.0869673935967472,
+            "std": 0.012485799848584113
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 1.0,
+            "mean": 1.0,
+            "min": 1.0,
+            "std": 0.0
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 2.086967393596747,
+            "mean": 2.0687512004670294,
+            "min": 2.048246511880778,
+            "std": 0.012485799848584112
+          },
+          "rmse": {
+            "max": 0.2305403338691905,
+            "mean": 0.23007072529132513,
+            "min": 0.22950659316269537,
+            "std": 0.0003559222161876778
+          }
+        },
+        "idw_3": {
+          "mae": {
+            "max": 0.09316896194618307,
+            "mean": 0.09287100985838104,
+            "min": 0.09248220469695537,
+            "std": 0.00025219833754190694
+          },
+          "mse": {
+            "max": 0.02549793716436637,
+            "mean": 0.02536182326441568,
+            "min": 0.025223990638795626,
+            "std": 0.00010755231028409993
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.522337827015203,
+            "mean": 0.5208661875356937,
+            "min": 0.5182975421581385,
+            "std": 0.0014329048587276448
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": 0.017968003765506668,
+            "mean": 0.008798625729424359,
+            "min": 0.0024757110011747185,
+            "std": 0.005487484390410944
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 0.4817024578418615,
+            "mean": 0.47913381246430625,
+            "min": 0.4776621729847969,
+            "std": 0.0014329048587276567
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 0.9975242889988253,
+            "mean": 0.9912013742705756,
+            "min": 0.9820319962344933,
+            "std": 0.005487484390410944
+          },
+          "rmse": {
+            "max": 0.15968073510717054,
+            "mean": 0.15925360025975416,
+            "min": 0.15882062409773998,
+            "std": 0.00033774061364684824
+          }
+        },
+        "idw_all": {
+          "mae": {
+            "max": 0.0935250757343988,
+            "mean": 0.09332489453728358,
+            "min": 0.09288218556253752,
+            "std": 0.00023223347346394493
+          },
+          "mse": {
+            "max": 0.021678593041105487,
+            "mean": 0.021551678421854938,
+            "min": 0.021413449211068546,
+            "std": 0.00010589436314253172
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.5956730601007751,
+            "mean": 0.592845152937747,
+            "min": 0.5905586261303234,
+            "std": 0.0020357332612321354
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": 0.16302497744956645,
+            "mean": 0.15771474820137052,
+            "min": 0.15361935019024187,
+            "std": 0.003907180268496861
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 0.4094413738696766,
+            "mean": 0.407154847062253,
+            "min": 0.4043269398992249,
+            "std": 0.0020357332612321198
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 0.8463806498097581,
+            "mean": 0.8422852517986295,
+            "min": 0.8369750225504335,
+            "std": 0.003907180268496861
+          },
+          "rmse": {
+            "max": 0.14723652074504304,
+            "mean": 0.14680445629316738,
+            "min": 0.14633334962020295,
+            "std": 0.00036060272108032003
+          }
+        },
+        "library_mean": {
+          "mae": {
+            "max": 0.11086645060459409,
+            "mean": 0.11047519157457046,
+            "min": 0.10980411744766734,
+            "std": 0.0003670604440550466
+          },
+          "mse": {
+            "max": 0.025901123040740683,
+            "mean": 0.02558769416964458,
+            "min": 0.02540688486106205,
+            "std": 0.0001723501361353494
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.5208358295063884,
+            "mean": 0.5165989578756827,
+            "min": 0.5117775159388593,
+            "std": 0.0029222848074452615
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "std": 0.0
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 0.4882224840611406,
+            "mean": 0.4834010421243174,
+            "min": 0.47916417049361165,
+            "std": 0.002922284807445227
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 1.0,
+            "mean": 1.0,
+            "min": 1.0,
+            "std": 0.0
+          },
+          "rmse": {
+            "max": 0.16093825847430027,
+            "mean": 0.15996063521376575,
+            "min": 0.15939537277180305,
+            "std": 0.0005379141689454775
+          }
+        },
+        "nearest_neighbor": {
+          "mae": {
+            "max": 0.10168454583980635,
+            "mean": 0.10139723127644447,
+            "min": 0.10105841991509755,
+            "std": 0.00020743155566026249
+          },
+          "mse": {
+            "max": 0.0346131550496783,
+            "mean": 0.03444515441156477,
+            "min": 0.03436205656021509,
+            "std": 9.097804303410087e-05
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.35186271280549486,
+            "mean": 0.3492603741353774,
+            "min": 0.3456473355862565,
+            "std": 0.0021250359430015917
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": -0.3275449377160151,
+            "mean": -0.3462349724842749,
+            "min": -0.35913631318892825,
+            "std": 0.011389332289088984
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 0.6543526644137435,
+            "mean": 0.6507396258646225,
+            "min": 0.6481372871945051,
+            "std": 0.002125035943001592
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 1.3591363131889282,
+            "mean": 1.3462349724842748,
+            "min": 1.3275449377160151,
+            "std": 0.011389332289088984
+          },
+          "rmse": {
+            "max": 0.18604611000953045,
+            "mean": 0.1855938965019965,
+            "min": 0.18537005302964957,
+            "std": 0.00024493421763437123
+          }
+        },
+        "xy_ridge_linear": {
+          "mae": {
+            "max": 0.09892114687085501,
+            "mean": 0.09818715935043587,
+            "min": 0.09768531393886525,
+            "std": 0.00040992610736317615
+          },
+          "mse": {
+            "max": 0.02248341721883951,
+            "mean": 0.022082830870404885,
+            "min": 0.021750246876530092,
+            "std": 0.0002564565067926891
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.588502743093018,
+            "mean": 0.5828121795252805,
+            "min": 0.5752473125498755,
+            "std": 0.00472409466288286
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": 0.1484933131208841,
+            "mean": 0.13697119555176762,
+            "min": 0.12243369499146872,
+            "std": 0.008519453366206778
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 0.4247526874501245,
+            "mean": 0.4171878204747195,
+            "min": 0.411497256906982,
+            "std": 0.004724094662882854
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 0.8775663050085313,
+            "mean": 0.8630288044482324,
+            "min": 0.8515066868791159,
+            "std": 0.008519453366206778
+          },
+          "rmse": {
+            "max": 0.14994471387427938,
+            "mean": 0.1486004297621756,
+            "min": 0.14747964902497596,
+            "std": 0.0008620585256200626
+          }
+        },
+        "xy_ridge_quadratic": {
+          "mae": {
+            "max": 0.09622378820829322,
+            "mean": 0.0957476765120989,
+            "min": 0.09493221700536426,
+            "std": 0.00046273284985313794
+          },
+          "mse": {
+            "max": 0.022712719981879202,
+            "mean": 0.02242332844877309,
+            "min": 0.022211285054544325,
+            "std": 0.00020089990686039083
+          },
+          "mse_improvement_vs_global_mean": {
+            "max": 0.5811730222288938,
+            "mean": 0.576380542494762,
+            "min": 0.5718772289565918,
+            "std": 0.0035091963486944522
+          },
+          "mse_improvement_vs_library_mean": {
+            "max": 0.1261894451197607,
+            "mean": 0.12367645190472723,
+            "min": 0.11739510979375234,
+            "std": 0.003333381856474031
+          },
+          "relative_mse_vs_global_mean": {
+            "max": 0.42812277104340823,
+            "mean": 0.4236194575052381,
+            "min": 0.41882697777110617,
+            "std": 0.003509196348694475
+          },
+          "relative_mse_vs_library_mean": {
+            "max": 0.8826048902062477,
+            "mean": 0.8763235480952727,
+            "min": 0.8738105548802393,
+            "std": 0.0033333818564740313
+          },
+          "rmse": {
+            "max": 0.15070739856383694,
+            "mean": 0.14974271015977095,
+            "min": 0.1490345096095006,
+            "std": 0.0006702259170775596
+          }
+        }
+      },
+      "repeats": 5,
+      "test_events": {
+        "max": 715.0,
+        "mean": 715.0,
+        "min": 715.0,
+        "std": 0.0
+      },
+      "train_events": {
+        "max": 2145.0,
+        "mean": 2145.0,
+        "min": 2145.0,
+        "std": 0.0
+      }
+    }
+  },
+  "task": "within_library_spatial_field_xrd_prediction",
+  "test_fraction": 0.25,
+  "trials": [
+    {
+      "libraries": 65,
+      "models": {
+        "global_mean": {
+          "mae": 0.17868735357193158,
+          "mse": 0.05314884554051783,
+          "mse_improvement_vs_global_mean": 0.0,
+          "mse_improvement_vs_library_mean": -1.0869673935967472,
+          "relative_mse_vs_global_mean": 1.0,
+          "relative_mse_vs_library_mean": 2.086967393596747,
+          "rmse": 0.2305403338691905
+        },
+        "idw_3": {
+          "mae": 0.09316896194618307,
+          "mse": 0.02540397349837928,
+          "mse_improvement_vs_global_mean": 0.5220221015146481,
+          "mse_improvement_vs_library_mean": 0.0024757110011747185,
+          "relative_mse_vs_global_mean": 0.4779778984853519,
+          "relative_mse_vs_library_mean": 0.9975242889988253,
+          "rmse": 0.15938623999071966
+        },
+        "idw_all": {
+          "mae": 0.0935250757343988,
+          "mse": 0.021489510076574143,
+          "mse_improvement_vs_global_mean": 0.5956730601007751,
+          "mse_improvement_vs_library_mean": 0.156182860077566,
+          "relative_mse_vs_global_mean": 0.4043269398992249,
+          "relative_mse_vs_library_mean": 0.843817139922434,
+          "rmse": 0.1465930082799795
+        },
+        "library_mean": {
+          "mae": 0.11073671530238506,
+          "mse": 0.025467022486115317,
+          "mse_improvement_vs_global_mean": 0.5208358295063884,
+          "mse_improvement_vs_library_mean": 0.0,
+          "relative_mse_vs_global_mean": 0.47916417049361165,
+          "relative_mse_vs_library_mean": 1.0,
+          "rmse": 0.15958390422005383
+        },
+        "nearest_neighbor": {
+          "mae": 0.10141896745802774,
+          "mse": 0.0346131550496783,
+          "mse_improvement_vs_global_mean": 0.34875057590308167,
+          "mse_improvement_vs_library_mean": -0.35913631318892825,
+          "relative_mse_vs_global_mean": 0.6512494240969183,
+          "relative_mse_vs_library_mean": 1.3591363131889282,
+          "rmse": 0.18604611000953045
+        },
+        "xy_ridge_linear": {
+          "mae": 0.09802748920432643,
+          "mse": 0.02195536855194759,
+          "mse_improvement_vs_global_mean": 0.5869078936962047,
+          "mse_improvement_vs_library_mean": 0.13789024359177793,
+          "relative_mse_vs_global_mean": 0.41309210630379534,
+          "relative_mse_vs_library_mean": 0.8621097564082221,
+          "rmse": 0.1481734407778519
+        },
+        "xy_ridge_quadratic": {
+          "mae": 0.09559666671632665,
+          "mse": 0.022260170349758416,
+          "mse_improvement_vs_global_mean": 0.5811730222288938,
+          "mse_improvement_vs_library_mean": 0.12592175383303195,
+          "relative_mse_vs_global_mean": 0.41882697777110617,
+          "relative_mse_vs_library_mean": 0.874078246166968,
+          "rmse": 0.14919842609678702
+        }
+      },
+      "repeat": 0,
+      "split_kind": "random_positions",
+      "test_events": 715,
+      "train_events": 2145
+    },
+    {
+      "libraries": 65,
+      "models": {
+        "global_mean": {
+          "mae": 0.1780259971707035,
+          "mse": 0.053051884921991956,
+          "mse_improvement_vs_global_mean": 0.0,
+          "mse_improvement_vs_library_mean": -1.048246511880778,
+          "relative_mse_vs_global_mean": 1.0,
+          "relative_mse_vs_library_mean": 2.048246511880778,
+          "rmse": 0.23032994794857214
+        },
+        "idw_3": {
+          "mae": 0.09281265631529495,
+          "mse": 0.025435731564413804,
+          "mse_improvement_vs_global_mean": 0.520549899370875,
+          "mse_improvement_vs_library_mean": 0.017968003765506668,
+          "relative_mse_vs_global_mean": 0.479450100629125,
+          "relative_mse_vs_library_mean": 0.9820319962344933,
+          "rmse": 0.15948583499613314
+        },
+        "idw_all": {
+          "mae": 0.09331917217579071,
+          "mse": 0.021678593041105487,
+          "mse_improvement_vs_global_mean": 0.5913699753932982,
+          "mse_improvement_vs_library_mean": 0.16302497744956645,
+          "relative_mse_vs_global_mean": 0.40863002460670184,
+          "relative_mse_vs_library_mean": 0.8369750225504335,
+          "rmse": 0.14723652074504304
+        },
+        "library_mean": {
+          "mae": 0.11086645060459409,
+          "mse": 0.025901123040740683,
+          "mse_improvement_vs_global_mean": 0.5117775159388593,
+          "mse_improvement_vs_library_mean": 0.0,
+          "relative_mse_vs_global_mean": 0.4882224840611406,
+          "relative_mse_vs_library_mean": 1.0,
+          "rmse": 0.16093825847430027
+        },
+        "nearest_neighbor": {
+          "mae": 0.10132023899410147,
+          "mse": 0.034384904773894935,
+          "mse_improvement_vs_global_mean": 0.35186271280549486,
+          "mse_improvement_vs_library_mean": -0.3275449377160151,
+          "relative_mse_vs_global_mean": 0.6481372871945051,
+          "relative_mse_vs_library_mean": 1.3275449377160151,
+          "rmse": 0.18543167144232653
+        },
+        "xy_ridge_linear": {
+          "mae": 0.09825458127275405,
+          "mse": 0.022253546272819346,
+          "mse_improvement_vs_global_mean": 0.5805324107608769,
+          "mse_improvement_vs_library_mean": 0.14082697349392725,
+          "relative_mse_vs_global_mean": 0.41946758923912303,
+          "relative_mse_vs_library_mean": 0.8591730265060727,
+          "rmse": 0.14917622556164686
+        },
+        "xy_ridge_quadratic": {
+          "mae": 0.09622378820829322,
+          "mse": 0.022712719981879202,
+          "mse_improvement_vs_global_mean": 0.5718772289565918,
+          "mse_improvement_vs_library_mean": 0.12309902755360613,
+          "relative_mse_vs_global_mean": 0.42812277104340823,
+          "relative_mse_vs_library_mean": 0.8769009724463939,
+          "rmse": 0.15070739856383694
+        }
+      },
+      "repeat": 1,
+      "split_kind": "random_positions",
+      "test_events": 715,
+      "train_events": 2145
+    },
+    {
+      "libraries": 65,
+      "models": {
+        "global_mean": {
+          "mae": 0.17687661276988306,
+          "mse": 0.05267327630514696,
+          "mse_improvement_vs_global_mean": 0.0,
+          "mse_improvement_vs_library_mean": -1.0731890821401997,
+          "relative_mse_vs_global_mean": 1.0,
+          "relative_mse_vs_library_mean": 2.0731890821401997,
+          "rmse": 0.22950659316269537
+        },
+        "idw_3": {
+          "mae": 0.09248220469695537,
+          "mse": 0.025223990638795626,
+          "mse_improvement_vs_global_mean": 0.521123567619604,
+          "mse_improvement_vs_library_mean": 0.007198608694713449,
+          "relative_mse_vs_global_mean": 0.47887643238039607,
+          "relative_mse_vs_library_mean": 0.9928013913052866,
+          "rmse": 0.15882062409773998
+        },
+        "idw_all": {
+          "mae": 0.09288218556253752,
+          "mse": 0.021503895718347404,
+          "mse_improvement_vs_global_mean": 0.5917494177926017,
+          "mse_improvement_vs_library_mean": 0.15361935019024187,
+          "relative_mse_vs_global_mean": 0.4082505822073983,
+          "relative_mse_vs_library_mean": 0.8463806498097581,
+          "rmse": 0.14664206667374613
+        },
+        "library_mean": {
+          "mae": 0.10980411744766734,
+          "mse": 0.02540688486106205,
+          "mse_improvement_vs_global_mean": 0.5176513282774586,
+          "mse_improvement_vs_library_mean": 0.0,
+          "relative_mse_vs_global_mean": 0.48234867172254137,
+          "relative_mse_vs_library_mean": 1.0,
+          "rmse": 0.15939537277180305
+        },
+        "nearest_neighbor": {
+          "mae": 0.10150398417518917,
+          "mse": 0.03446689869367422,
+          "mse_improvement_vs_global_mean": 0.3456473355862565,
+          "mse_improvement_vs_library_mean": -0.35659679973192304,
+          "relative_mse_vs_global_mean": 0.6543526644137435,
+          "relative_mse_vs_library_mean": 1.356596799731923,
+          "rmse": 0.18565262910520341
+        },
+        "xy_ridge_linear": {
+          "mae": 0.09768531393886525,
+          "mse": 0.021971575431887897,
+          "mse_improvement_vs_global_mean": 0.5828705375264278,
+          "mse_improvement_vs_library_mean": 0.1352117525607801,
+          "relative_mse_vs_global_mean": 0.4171294624735722,
+          "relative_mse_vs_library_mean": 0.8647882474392199,
+          "rmse": 0.14822811957212403
+        },
+        "xy_ridge_quadratic": {
+          "mae": 0.09493221700536426,
+          "mse": 0.022211285054544325,
+          "mse_improvement_vs_global_mean": 0.5783196601276547,
+          "mse_improvement_vs_library_mean": 0.125776923223485,
+          "relative_mse_vs_global_mean": 0.4216803398723453,
+          "relative_mse_vs_library_mean": 0.874223076776515,
+          "rmse": 0.1490345096095006
+        }
+      },
+      "repeat": 2,
+      "split_kind": "random_positions",
+      "test_events": 715,
+      "train_events": 2145
+    },
+    {
+      "libraries": 65,
+      "models": {
+        "global_mean": {
+          "mae": 0.17783471252739083,
+          "mse": 0.05293296048063161,
+          "mse_improvement_vs_global_mean": 0.0,
+          "mse_improvement_vs_library_mean": -1.066064161422351,
+          "relative_mse_vs_global_mean": 1.0,
+          "relative_mse_vs_library_mean": 2.066064161422351,
+          "rmse": 0.2300716420609711
+        },
+        "idw_3": {
+          "mae": 0.09276737363143014,
+          "mse": 0.02549793716436637,
+          "mse_improvement_vs_global_mean": 0.5182975421581385,
+          "mse_improvement_vs_library_mean": 0.004771815383869171,
+          "relative_mse_vs_global_mean": 0.4817024578418615,
+          "relative_mse_vs_library_mean": 0.9952281846161308,
+          "rmse": 0.15968073510717054
+        },
+        "idw_all": {
+          "mae": 0.09341192936703815,
+          "mse": 0.021672944062179105,
+          "mse_improvement_vs_global_mean": 0.5905586261303234,
+          "mse_improvement_vs_library_mean": 0.15406785124433142,
+          "relative_mse_vs_global_mean": 0.4094413738696766,
+          "relative_mse_vs_library_mean": 0.8459321487556686,
+          "rmse": 0.14721733614686522
+        },
+        "library_mean": {
+          "mae": 0.11045534770689491,
+          "mse": 0.02562019199064501,
+          "mse_improvement_vs_global_mean": 0.5159879258969552,
+          "mse_improvement_vs_library_mean": 0.0,
+          "relative_mse_vs_global_mean": 0.4840120741030448,
+          "relative_mse_vs_library_mean": 1.0,
+          "rmse": 0.16006308753315054
+        },
+        "nearest_neighbor": {
+          "mae": 0.10105841991509755,
+          "mse": 0.03436205656021509,
+          "mse_improvement_vs_global_mean": 0.35083818762057883,
+          "mse_improvement_vs_library_mean": -0.3412099555211021,
+          "relative_mse_vs_global_mean": 0.6491618123794212,
+          "relative_mse_vs_library_mean": 1.3412099555211021,
+          "rmse": 0.18537005302964957
+        },
+        "xy_ridge_linear": {
+          "mae": 0.09892114687085501,
+          "mse": 0.02248341721883951,
+          "mse_improvement_vs_global_mean": 0.5752473125498755,
+          "mse_improvement_vs_library_mean": 0.12243369499146872,
+          "relative_mse_vs_global_mean": 0.4247526874501245,
+          "relative_mse_vs_library_mean": 0.8775663050085313,
+          "rmse": 0.14994471387427938
+        },
+        "xy_ridge_quadratic": {
+          "mae": 0.09612687517914786,
+          "mse": 0.022612506738966226,
+          "mse_improvement_vs_global_mean": 0.5728085764777839,
+          "mse_improvement_vs_library_mean": 0.11739510979375234,
+          "relative_mse_vs_global_mean": 0.4271914235222161,
+          "relative_mse_vs_library_mean": 0.8826048902062477,
+          "rmse": 0.15037455482549641
+        }
+      },
+      "repeat": 3,
+      "split_kind": "random_positions",
+      "test_events": 715,
+      "train_events": 2145
+    },
+    {
+      "libraries": 65,
+      "models": {
+        "global_mean": {
+          "mae": 0.17762603806580143,
+          "mse": 0.05285635933521347,
+          "mse_improvement_vs_global_mean": 0.0,
+          "mse_improvement_vs_library_mean": -1.0692888532950708,
+          "relative_mse_vs_global_mean": 1.0,
+          "relative_mse_vs_library_mean": 2.069288853295071,
+          "rmse": 0.22990510941519648
+        },
+        "idw_3": {
+          "mae": 0.0931238527020416,
+          "mse": 0.02524748345612332,
+          "mse_improvement_vs_global_mean": 0.522337827015203,
+          "mse_improvement_vs_library_mean": 0.011578989801857786,
+          "relative_mse_vs_global_mean": 0.4776621729847969,
+          "relative_mse_vs_library_mean": 0.9884210101981422,
+          "rmse": 0.15889456710700753
+        },
+        "idw_all": {
+          "mae": 0.09348610984665273,
+          "mse": 0.021413449211068546,
+          "mse_improvement_vs_global_mean": 0.5948746852717365,
+          "mse_improvement_vs_library_mean": 0.1616787020451469,
+          "relative_mse_vs_global_mean": 0.4051253147282635,
+          "relative_mse_vs_library_mean": 0.8383212979548531,
+          "rmse": 0.14633334962020295
+        },
+        "library_mean": {
+          "mae": 0.11051332681131097,
+          "mse": 0.025543248469659833,
+          "mse_improvement_vs_global_mean": 0.5167421897587515,
+          "mse_improvement_vs_library_mean": 0.0,
+          "relative_mse_vs_global_mean": 0.4832578102412485,
+          "relative_mse_vs_library_mean": 1.0,
+          "rmse": 0.15982255306952092
+        },
+        "nearest_neighbor": {
+          "mae": 0.10168454583980635,
+          "mse": 0.03439875698036126,
+          "mse_improvement_vs_global_mean": 0.3492030587614754,
+          "mse_improvement_vs_library_mean": -0.34668685626340623,
+          "relative_mse_vs_global_mean": 0.6507969412385246,
+          "relative_mse_vs_library_mean": 1.3466868562634062,
+          "rmse": 0.18546901892327264
+        },
+        "xy_ridge_linear": {
+          "mae": 0.09804726546537863,
+          "mse": 0.021750246876530092,
+          "mse_improvement_vs_global_mean": 0.588502743093018,
+          "mse_improvement_vs_library_mean": 0.1484933131208841,
+          "relative_mse_vs_global_mean": 0.411497256906982,
+          "relative_mse_vs_library_mean": 0.8515066868791159,
+          "rmse": 0.14747964902497596
+        },
+        "xy_ridge_quadratic": {
+          "mae": 0.09585883545136253,
+          "mse": 0.022319960118717282,
+          "mse_improvement_vs_global_mean": 0.5777242246828853,
+          "mse_improvement_vs_library_mean": 0.1261894451197607,
+          "relative_mse_vs_global_mean": 0.42227577531711474,
+          "relative_mse_vs_library_mean": 0.8738105548802393,
+          "rmse": 0.14939866170323374
+        }
+      },
+      "repeat": 4,
+      "split_kind": "random_positions",
+      "test_events": 715,
+      "train_events": 2145
+    },
+    {
+      "libraries": 65,
+      "models": {
+        "global_mean": {
+          "mae": 0.17860085209192636,
+          "mse": 0.05349064331952235,
+          "mse_improvement_vs_global_mean": 0.0,
+          "mse_improvement_vs_library_mean": -1.04002408272274,
+          "relative_mse_vs_global_mean": 1.0,
+          "relative_mse_vs_library_mean": 2.04002408272274,
+          "rmse": 0.23128044301134143
+        },
+        "idw_3": {
+          "mae": 0.09700171198825286,
+          "mse": 0.02577792478082178,
+          "mse_improvement_vs_global_mean": 0.5180853476216527,
+          "mse_improvement_vs_library_mean": 0.016882503331213994,
+          "relative_mse_vs_global_mean": 0.4819146523783473,
+          "relative_mse_vs_library_mean": 0.983117496668786,
+          "rmse": 0.16055505218093194
+        },
+        "idw_all": {
+          "mae": 0.10143435122571441,
+          "mse": 0.02301960764096437,
+          "mse_improvement_vs_global_mean": 0.5696516958403647,
+          "mse_improvement_vs_library_mean": 0.12207909555545327,
+          "relative_mse_vs_global_mean": 0.4303483041596353,
+          "relative_mse_vs_library_mean": 0.8779209044445467,
+          "rmse": 0.15172213958735348
+        },
+        "library_mean": {
+          "mae": 0.11161913051048092,
+          "mse": 0.02622059404716953,
+          "mse_improvement_vs_global_mean": 0.5098097083906288,
+          "mse_improvement_vs_library_mean": 0.0,
+          "relative_mse_vs_global_mean": 0.4901902916093713,
+          "relative_mse_vs_library_mean": 1.0,
+          "rmse": 0.16192774329054774
+        },
+        "nearest_neighbor": {
+          "mae": 0.10708901375762629,
+          "mse": 0.037376749267461894,
+          "mse_improvement_vs_global_mean": 0.3012469667976382,
+          "mse_improvement_vs_library_mean": -0.42547301560838036,
+          "relative_mse_vs_global_mean": 0.6987530332023618,
+          "relative_mse_vs_library_mean": 1.4254730156083804,
+          "rmse": 0.19333067337456283
+        },
+        "xy_ridge_linear": {
+          "mae": 0.10331629865538265,
+          "mse": 0.024890820993667403,
+          "mse_improvement_vs_global_mean": 0.5346696272657641,
+          "mse_improvement_vs_library_mean": 0.05071483319980974,
+          "relative_mse_vs_global_mean": 0.46533037273423594,
+          "relative_mse_vs_library_mean": 0.9492851668001903,
+          "rmse": 0.15776825090514063
+        },
+        "xy_ridge_quadratic": {
+          "mae": 0.12246832166716368,
+          "mse": 0.038426565739306466,
+          "mse_improvement_vs_global_mean": 0.2816207965612181,
+          "mse_improvement_vs_library_mean": -0.46551087554229365,
+          "relative_mse_vs_global_mean": 0.7183792034387819,
+          "relative_mse_vs_library_mean": 1.4655108755422936,
+          "rmse": 0.19602695156357064
+        }
+      },
+      "repeat": 0,
+      "split_kind": "held_out_row",
+      "test_events": 715,
+      "train_events": 2145
+    },
+    {
+      "libraries": 65,
+      "models": {
+        "global_mean": {
+          "mae": 0.178477474072324,
+          "mse": 0.053091348464223406,
+          "mse_improvement_vs_global_mean": 0.0,
+          "mse_improvement_vs_library_mean": -1.0657437018398164,
+          "relative_mse_vs_global_mean": 1.0,
+          "relative_mse_vs_library_mean": 2.0657437018398164,
+          "rmse": 0.23041559943767567
+        },
+        "idw_3": {
+          "mae": 0.0961280731788452,
+          "mse": 0.025035767455201047,
+          "mse_improvement_vs_global_mean": 0.5284397895436417,
+          "mse_improvement_vs_library_mean": 0.025877465211519457,
+          "relative_mse_vs_global_mean": 0.4715602104563584,
+          "relative_mse_vs_library_mean": 0.9741225347884805,
+          "rmse": 0.1582269492065149
+        },
+        "idw_all": {
+          "mae": 0.10050387016213977,
+          "mse": 0.022423908877786152,
+          "mse_improvement_vs_global_mean": 0.5776353487631432,
+          "mse_improvement_vs_library_mean": 0.12750288182769254,
+          "relative_mse_vs_global_mean": 0.4223646512368568,
+          "relative_mse_vs_library_mean": 0.8724971181723075,
+          "rmse": 0.14974614812336962
+        },
+        "library_mean": {
+          "mae": 0.11079639948845948,
+          "mse": 0.025700840049488513,
+          "mse_improvement_vs_global_mean": 0.515912840925344,
+          "mse_improvement_vs_library_mean": 0.0,
+          "relative_mse_vs_global_mean": 0.48408715907465605,
+          "relative_mse_vs_library_mean": 1.0,
+          "rmse": 0.1603148154397731
+        },
+        "nearest_neighbor": {
+          "mae": 0.1056094129087836,
+          "mse": 0.03636955789992395,
+          "mse_improvement_vs_global_mean": 0.31496262664278996,
+          "mse_improvement_vs_library_mean": -0.41511163953754737,
+          "relative_mse_vs_global_mean": 0.68503737335721,
+          "relative_mse_vs_library_mean": 1.4151116395375474,
+          "rmse": 0.19070804361621443
+        },
+        "xy_ridge_linear": {
+          "mae": 0.10335774519608902,
+          "mse": 0.024677565303555624,
+          "mse_improvement_vs_global_mean": 0.5351866920429595,
+          "mse_improvement_vs_library_mean": 0.0398148365564126,
+          "relative_mse_vs_global_mean": 0.4648133079570405,
+          "relative_mse_vs_library_mean": 0.9601851634435874,
+          "rmse": 0.15709094596301731
+        },
+        "xy_ridge_quadratic": {
+          "mae": 0.12040621989148392,
+          "mse": 0.037578272262335455,
+          "mse_improvement_vs_global_mean": 0.29219593494299223,
+          "mse_improvement_vs_library_mean": -0.46214178952813345,
+          "relative_mse_vs_global_mean": 0.7078040650570078,
+          "relative_mse_vs_library_mean": 1.4621417895281335,
+          "rmse": 0.1938511600747735
+        }
+      },
+      "repeat": 1,
+      "split_kind": "held_out_row",
+      "test_events": 715,
+      "train_events": 2145
+    },
+    {
+      "libraries": 65,
+      "models": {
+        "global_mean": {
+          "mae": 0.17841890400724228,
+          "mse": 0.0529266538222778,
+          "mse_improvement_vs_global_mean": 0.0,
+          "mse_improvement_vs_library_mean": -1.0793525847022098,
+          "relative_mse_vs_global_mean": 1.0,
+          "relative_mse_vs_library_mean": 2.07935258470221,
+          "rmse": 0.23005793579504663
+        },
+        "idw_3": {
+          "mae": 0.09612608604777823,
+          "mse": 0.02504442244285431,
+          "mse_improvement_vs_global_mean": 0.5268088829694226,
+          "mse_improvement_vs_library_mean": 0.01606882774434315,
+          "relative_mse_vs_global_mean": 0.47319111703057737,
+          "relative_mse_vs_library_mean": 0.9839311722556568,
+          "rmse": 0.15825429675953293
+        },
+        "idw_all": {
+          "mae": 0.1003811289491463,
+          "mse": 0.02216072823883948,
+          "mse_improvement_vs_global_mean": 0.5812936084481573,
+          "mse_improvement_vs_library_mean": 0.12936178249534036,
+          "relative_mse_vs_global_mean": 0.4187063915518427,
+          "relative_mse_vs_library_mean": 0.8706382175046596,
+          "rmse": 0.14886479852147547
+        },
+        "library_mean": {
+          "mae": 0.1109600844865056,
+          "mse": 0.025453429212370725,
+          "mse_improvement_vs_global_mean": 0.5190810796798019,
+          "mse_improvement_vs_library_mean": 0.0,
+          "relative_mse_vs_global_mean": 0.4809189203201981,
+          "relative_mse_vs_library_mean": 1.0,
+          "rmse": 0.15954130879609432
+        },
+        "nearest_neighbor": {
+          "mae": 0.10574751503106387,
+          "mse": 0.036406527374413834,
+          "mse_improvement_vs_global_mean": 0.3121324560463775,
+          "mse_improvement_vs_library_mean": -0.4303191554527257,
+          "relative_mse_vs_global_mean": 0.6878675439536225,
+          "relative_mse_vs_library_mean": 1.4303191554527257,
+          "rmse": 0.19080494588561858
+        },
+        "xy_ridge_linear": {
+          "mae": 0.1031680242222999,
+          "mse": 0.024540764205201505,
+          "mse_improvement_vs_global_mean": 0.5363250378985447,
+          "mse_improvement_vs_library_mean": 0.035856269092639614,
+          "relative_mse_vs_global_mean": 0.46367496210145537,
+          "relative_mse_vs_library_mean": 0.9641437309073604,
+          "rmse": 0.1566549207819579
+        },
+        "xy_ridge_quadratic": {
+          "mae": 0.12226141660069673,
+          "mse": 0.03834375046685376,
+          "mse_improvement_vs_global_mean": 0.2755304237519325,
+          "mse_improvement_vs_library_mean": -0.5064276859095338,
+          "relative_mse_vs_global_mean": 0.7244695762480675,
+          "relative_mse_vs_library_mean": 1.5064276859095338,
+          "rmse": 0.19581560322623362
+        }
+      },
+      "repeat": 2,
+      "split_kind": "held_out_row",
+      "test_events": 715,
+      "train_events": 2145
+    },
+    {
+      "libraries": 65,
+      "models": {
+        "global_mean": {
+          "mae": 0.17634554330733326,
+          "mse": 0.0523242969528477,
+          "mse_improvement_vs_global_mean": 0.0,
+          "mse_improvement_vs_library_mean": -1.0172348279143684,
+          "relative_mse_vs_global_mean": 1.0,
+          "relative_mse_vs_library_mean": 2.0172348279143684,
+          "rmse": 0.2287450479307644
+        },
+        "idw_3": {
+          "mae": 0.09805378527508268,
+          "mse": 0.025954392047562166,
+          "mse_improvement_vs_global_mean": 0.5039705536616939,
+          "mse_improvement_vs_library_mean": -0.0006078748247124732,
+          "relative_mse_vs_global_mean": 0.49602944633830615,
+          "relative_mse_vs_library_mean": 1.0006078748247125,
+          "rmse": 0.16110366863470915
+        },
+        "idw_all": {
+          "mae": 0.10114426805812557,
+          "mse": 0.022778341056175027,
+          "mse_improvement_vs_global_mean": 0.5646699070471632,
+          "mse_improvement_vs_library_mean": 0.12183697485633815,
+          "relative_mse_vs_global_mean": 0.4353300929528368,
+          "relative_mse_vs_library_mean": 0.8781630251436618,
+          "rmse": 0.15092495173487724
+        },
+        "library_mean": {
+          "mae": 0.11103457936597608,
+          "mse": 0.02593862461067367,
+          "mse_improvement_vs_global_mean": 0.5042718942970531,
+          "mse_improvement_vs_library_mean": 0.0,
+          "relative_mse_vs_global_mean": 0.4957281057029469,
+          "relative_mse_vs_library_mean": 1.0,
+          "rmse": 0.16105472551488104
+        },
+        "nearest_neighbor": {
+          "mae": 0.10797201308178218,
+          "mse": 0.03769539177796736,
+          "mse_improvement_vs_global_mean": 0.27958149515249586,
+          "mse_improvement_vs_library_mean": -0.4532532986523816,
+          "relative_mse_vs_global_mean": 0.7204185048475041,
+          "relative_mse_vs_library_mean": 1.4532532986523816,
+          "rmse": 0.19415301125135134
+        },
+        "xy_ridge_linear": {
+          "mae": 0.1043894373782745,
+          "mse": 0.02486468667514754,
+          "mse_improvement_vs_global_mean": 0.524796545330471,
+          "mse_improvement_vs_library_mean": 0.041403040895399146,
+          "relative_mse_vs_global_mean": 0.475203454669529,
+          "relative_mse_vs_library_mean": 0.9585969591046009,
+          "rmse": 0.15768540412843396
+        },
+        "xy_ridge_quadratic": {
+          "mae": 0.12721619328409983,
+          "mse": 0.042438948452210995,
+          "mse_improvement_vs_global_mean": 0.18892463112394875,
+          "mse_improvement_vs_library_mean": -0.6361294821602643,
+          "relative_mse_vs_global_mean": 0.8110753688760513,
+          "relative_mse_vs_library_mean": 1.6361294821602643,
+          "rmse": 0.20600715631310237
+        }
+      },
+      "repeat": 3,
+      "split_kind": "held_out_row",
+      "test_events": 715,
+      "train_events": 2145
+    },
+    {
+      "libraries": 65,
+      "models": {
+        "global_mean": {
+          "mae": 0.17819805699571797,
+          "mse": 0.053190140208465714,
+          "mse_improvement_vs_global_mean": 0.0,
+          "mse_improvement_vs_library_mean": -0.9482825489298015,
+          "relative_mse_vs_global_mean": 1.0,
+          "relative_mse_vs_library_mean": 1.9482825489298015,
+          "rmse": 0.23062987709415647
+        },
+        "idw_3": {
+          "mae": 0.10149286601737723,
+          "mse": 0.027934863829851598,
+          "mse_improvement_vs_global_mean": 0.474811239068599,
+          "mse_improvement_vs_library_mean": -0.023216097816713965,
+          "relative_mse_vs_global_mean": 0.525188760931401,
+          "relative_mse_vs_library_mean": 1.023216097816714,
+          "rmse": 0.16713726044736882
+        },
+        "idw_all": {
+          "mae": 0.1042632648870017,
+          "mse": 0.024449329507987432,
+          "mse_improvement_vs_global_mean": 0.5403409464204403,
+          "mse_improvement_vs_library_mean": 0.10445428745335539,
+          "relative_mse_vs_global_mean": 0.45965905357955966,
+          "relative_mse_vs_library_mean": 0.8955457125466446,
+          "rmse": 0.15636281369938132
+        },
+        "library_mean": {
+          "mae": 0.11356154757700342,
+          "mse": 0.027301040209841868,
+          "mse_improvement_vs_global_mean": 0.4867274253678946,
+          "mse_improvement_vs_library_mean": 0.0,
+          "relative_mse_vs_global_mean": 0.5132725746321054,
+          "relative_mse_vs_library_mean": 1.0,
+          "rmse": 0.1652302642067786
+        },
+        "nearest_neighbor": {
+          "mae": 0.11071943648294844,
+          "mse": 0.03923693262700757,
+          "mse_improvement_vs_global_mean": 0.2623269562135382,
+          "mse_improvement_vs_library_mean": -0.4371955180250928,
+          "relative_mse_vs_global_mean": 0.7376730437864618,
+          "relative_mse_vs_library_mean": 1.4371955180250928,
+          "rmse": 0.19808314574190197
+        },
+        "xy_ridge_linear": {
+          "mae": 0.1080459786020375,
+          "mse": 0.027202009348333934,
+          "mse_improvement_vs_global_mean": 0.488589252787785,
+          "mse_improvement_vs_library_mean": 0.0036273658712914214,
+          "relative_mse_vs_global_mean": 0.511410747212215,
+          "relative_mse_vs_library_mean": 0.9963726341287086,
+          "rmse": 0.16493031664413288
+        },
+        "xy_ridge_quadratic": {
+          "mae": 0.13922645632854405,
+          "mse": 0.04955110621056577,
+          "mse_improvement_vs_global_mean": 0.06841557445868052,
+          "mse_improvement_vs_library_mean": -0.8149896791369466,
+          "relative_mse_vs_global_mean": 0.9315844255413195,
+          "relative_mse_vs_library_mean": 1.8149896791369466,
+          "rmse": 0.22260077765040662
+        }
+      },
+      "repeat": 4,
+      "split_kind": "held_out_row",
+      "test_events": 715,
+      "train_events": 2145
+    }
+  ],
+  "xrd_points": 661
+}

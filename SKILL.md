@@ -221,6 +221,17 @@ held-out-library failure was not just broad chemistry/family mixing. For HTEM, t
 better-aligned task is within-library spatial/event-field modeling rather than stronger
 supervised prediction from compressed sample-library metadata.
 
+The first within-library spatial-field HTEM run is the cleanest support so far for the
+event-as-field framing. Using the same 65 `Cu|S|Sn` libraries and 2,860 position-level rows,
+predicting full held-out XRD spectra from other positions in the same library showed that
+the library mean improves MSE by about 51% versus a global mean. Spatial smoothers add
+signal beyond that: inverse-distance weighting over all observed positions improves about
+15.8% versus library mean on random held-out positions and 12.1% on held-out rows. Nearest
+neighbor is worse than library mean, so the useful structure is not just copying the closest
+point; it is a smoother event-level field. This suggests Track B should create events with
+multiple partial observations over time, space, process state, or modality, then predict
+missing/future event measurements from partial event context.
+
 ## Track B Direction
 
 Track B is the real pre-taxonomic event dataset. The unit is a material-making event, not a
