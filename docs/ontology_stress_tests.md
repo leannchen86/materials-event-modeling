@@ -435,3 +435,46 @@ have different peak/background statistics, or where the training sources do not 
 compatible measurement style. The next test should compute source-level data diagnostics:
 peak density, intensity distribution, interpolation baseline strength, theta-range
 coverage before resampling, and nearest-source retrieval structure.
+
+## Source Artifact Diagnostic
+
+Hypothesis before the run:
+
+- EMPA and HKUST fail for different reasons.
+- HKUST should look like an interpolation-friendly source where the local baseline is
+  already strong.
+- EMPA may show a source/style mismatch rather than merely easy interpolation.
+
+Generated with:
+
+```bash
+.venv/bin/python scripts/analyze_opxrd_source_diagnostics.py --output data/manifests/opxrd_source_diagnostics.json
+```
+
+Compact summary:
+
+| Source | Spectra | Mean phase count | Labeled fraction | Median theta span | Median interpolation MSE | Median peak density | Median high-intensity fraction | Transfer CNN - interp MSE | Transfer CNN - interp MAE |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| CNRS | 47 | 1.00 | 1.00 | 74.1 | 0.00719 | 0.01490 | 0.00488 | -0.00056 | 0.02246 |
+| EMPA | 34 | 2.00 | 1.00 | 70.0 | 0.00653 | 0.08366 | 0.00562 | 0.00506 | 0.03192 |
+| HKUST | 23 | 0.04 | 0.04 | 85.0 | 0.00473 | 0.00879 | 0.00342 | 0.00132 | 0.01655 |
+| INT | 876 | 0.00 | 0.00 | 65.0 | 0.02444 | 0.06766 | 0.04724 | -0.01036 | -0.01230 |
+| LBNL | 3,098 | 0.00 | 0.00 | 65.3 | 0.01723 | 0.05960 | 0.14062 | -0.00450 | -0.00861 |
+| USC | 15 | 2.00 | 1.00 | 80.1 | 0.00416 | 0.00049 | 0.00195 | -0.00023 | 0.02017 |
+
+Verdict: the hypothesis is partially validated. HKUST does look interpolation-friendly:
+low median interpolation MSE, low peak density, low high-intensity fraction, and the CNN
+loses against interpolation. USC shows a similar low-signal/easy-interpolation profile,
+though its MSE delta is barely positive for the CNN.
+
+EMPA is different. It is not simply another sparse/easy source: it has high local peak
+density, all two-phase metadata, a small source size, narrow-ish theta coverage, and a very
+different raw intensity scale. The CNN losing badly there may reflect measurement style,
+material-family mismatch, preprocessing artifacts, or the fact that the residual objective
+does not handle dense local peak structure well in small held-out sources.
+
+Track A lesson for Track B: collect event-level metadata that public datasets often hide or
+compress. At minimum, Track B should log instrument/session, raw theta coverage, raw file
+format, sample-preparation/drying route, operator/date, pH/timepoint if relevant, and
+measurement settings. Otherwise a learned representation may silently organize around
+source artifacts while looking like it learned materials structure.

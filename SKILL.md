@@ -168,6 +168,13 @@ aggregate held-out-source score hides source-specific failure modes. Next invest
 EMPA/HKUST differ: source size, instrument/preprocessing, material family, peak density, or
 background/scale statistics.
 
+The first source artifact diagnostic partially explains the split. HKUST and USC are sparse,
+low-signal, interpolation-friendly sources; CNN wins there are tiny or negative. EMPA is a
+different failure mode: it is small, fully labeled as two-phase, low raw-intensity scale,
+and has dense local peaks after preprocessing. Interpretation: Track A public-data failures
+are not one thing. For Track B, collect metadata that can expose source/session/instrument
+style, theta coverage, peak density, and sample-preparation route before labels are used.
+
 ## Track B Direction
 
 Track B is the real pre-taxonomic event dataset. The unit is a material-making event, not a
