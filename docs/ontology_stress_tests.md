@@ -478,3 +478,46 @@ compress. At minimum, Track B should log instrument/session, raw theta coverage,
 format, sample-preparation/drying route, operator/date, pH/timepoint if relevant, and
 measurement settings. Otherwise a learned representation may silently organize around
 source artifacts while looking like it learned materials structure.
+
+## Source Predictability Diagnostic
+
+Hypothesis before the run:
+
+- Source identity will be easy to recover from opXRD patterns, even after per-pattern
+  normalization.
+- If validated, this means raw measurement embeddings can encode lab, instrument,
+  preprocessing, or file-provenance artifacts unless those variables are logged and
+  controlled.
+
+Generated with:
+
+```bash
+.venv/bin/python scripts/analyze_opxrd_source_predictability.py --output data/manifests/opxrd_source_predictability.json
+```
+
+Six sources with at least 15 samples were included: CNRS, EMPA, HKUST, INT, LBNL, and USC.
+IKFT was excluded because it has only three samples. The majority-class dummy baseline is
+LBNL, with about 75.7% raw accuracy but only 16.7% balanced accuracy.
+
+Summary:
+
+| Feature set | Features | Accuracy | Balanced accuracy | Baseline accuracy | Baseline balanced accuracy |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Metadata | 8 | 98.7% | 97.8% | 75.7% | 16.7% |
+| Spectrum summary | 12 | 80.7% | 66.8% | 75.7% | 16.7% |
+| XRD PCA | 32 | 91.2% | 78.6% | 75.7% | 16.7% |
+| Metadata + spectrum summary | 20 | 99.1% | 98.5% | 75.7% | 16.7% |
+| XRD PCA + metadata | 40 | 99.2% | 98.6% | 75.7% | 16.7% |
+
+For XRD PCA alone, per-class recall was 72.3% for CNRS, 88.2% for EMPA, 56.5% for HKUST,
+69.6% for INT, 97.9% for LBNL, and 86.7% for USC.
+
+Verdict: the hypothesis is validated. Source identity is strongly encoded in both metadata
+and raw normalized XRD. This does not mean source prediction is the research goal; it means
+source artifacts are strong enough that representation learning can accidentally organize
+around provenance.
+
+Track A lesson for Track B: every controlled event dataset needs source/session variables
+from day one. At minimum, log instrument id, instrument session, operator, date, raw export
+format, theta range/settings, sample-preparation route, drying route, reagent lot, and any
+manual processing before measurement. Splits should later test transfer across these axes.

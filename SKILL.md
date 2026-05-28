@@ -175,6 +175,13 @@ and has dense local peaks after preprocessing. Interpretation: Track A public-da
 are not one thing. For Track B, collect metadata that can expose source/session/instrument
 style, theta coverage, peak density, and sample-preparation route before labels are used.
 
+The source-predictability diagnostic shows that source identity is easy to recover from the
+opXRD data itself. Eight metadata features predict source with about 98.7% accuracy, and 32
+PCA components of normalized XRD alone reach about 91.2% accuracy and 78.6% balanced
+accuracy across six sources. Interpretation: raw measurement embeddings can silently encode
+lab/instrument/preprocessing provenance. Track B must log and split by session/source-like
+variables so representation gains do not merely reflect collection artifacts.
+
 ## Track B Direction
 
 Track B is the real pre-taxonomic event dataset. The unit is a material-making event, not a
