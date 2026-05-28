@@ -154,6 +154,13 @@ with spread sampling; at 2,048 spectra it was worse, about 38.1% MSE improvement
 bottleneck likely needs per-source diagnostics, source-aware normalization, or explicit
 domain-transfer objectives.
 
+The first leave-one-source-out diagnostic validates that source shift is not uniform. The
+residual CNN beats interpolation clearly on INT and LBNL, barely on CNRS and USC by MSE
+while losing MAE, and loses to interpolation on EMPA and HKUST. Interpretation: the
+aggregate held-out-source score hides source-specific failure modes. Next investigate why
+EMPA/HKUST differ: source size, instrument/preprocessing, material family, peak density, or
+background/scale statistics.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on

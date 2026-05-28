@@ -396,3 +396,42 @@ is irrelevant; it means naive source-balanced subsampling is not sufficient. The
 better test is to measure per-source errors and source-pair transfer directly: train on all
 but one source, evaluate the held-out source separately, and inspect whether failures are
 concentrated in specific contributors or instrument styles.
+
+## Leave-One-Source-Out Transfer Diagnostic
+
+Hypothesis before the run:
+
+- The source-shift plateau is not uniform. Some held-out sources should be much harder than
+  others, which would explain why adding more spectra and naive source balancing did not fix
+  transfer.
+- Large sources, especially INT and LBNL, should provide more reliable estimates than small
+  sources such as USC, HKUST, EMPA, and CNRS.
+
+Generated on Zeus A100 with:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 .venv/bin/python scripts/run_opxrd_source_transfer.py --max-samples 4096 --sample-strategy spread --min-test-samples 15 --seeds 0 1 --epochs 40 --mask-width 1024 --train-mask-strategy peak --eval-mask-strategy peak --prediction-mode residual --channels 32 --depth 10 --batch-size 64 --device cuda --output data/manifests/opxrd_source_transfer_a100.json
+```
+
+Summary, sorted by CNN advantage over interpolation:
+
+| Held-out source | Test spectra | Interpolation MSE improvement | Residual CNN MSE improvement | CNN - interpolation MSE | CNN - interpolation MAE | MSE win rate | MAE win rate |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| INT | 876 | 17.9% | 36.0% | -0.01036 | -0.01230 | 100% | 100% |
+| LBNL | 3,098 | 36.0% | 47.0% | -0.00450 | -0.00861 | 100% | 100% |
+| CNRS | 47 | 52.4% | 53.6% | -0.00056 | 0.02246 | 100% | 0% |
+| USC | 15 | 84.5% | 85.1% | -0.00023 | 0.02017 | 100% | 0% |
+| HKUST | 23 | 85.8% | 81.9% | 0.00132 | 0.01655 | 0% | 0% |
+| EMPA | 34 | 33.9% | 20.4% | 0.00506 | 0.03192 | 0% | 0% |
+
+Verdict: the hypothesis is validated. Source shift is highly source-specific. The model
+transfers well to INT and LBNL, is only marginally better than interpolation on CNRS/USC by
+MSE, and loses to interpolation on EMPA/HKUST. MAE is stricter: only INT and LBNL are clear
+wins.
+
+Interpretation: the aggregate held-out-source score was hiding distinct regimes. EMPA and
+HKUST may be sources where local interpolation is already very strong, where the spectra
+have different peak/background statistics, or where the training sources do not contain
+compatible measurement style. The next test should compute source-level data diagnostics:
+peak density, intensity distribution, interpolation baseline strength, theta-range
+coverage before resampling, and nearest-source retrieval structure.
