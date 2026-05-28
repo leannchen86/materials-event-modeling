@@ -48,6 +48,8 @@ def run_single(
         args.train_mask_strategy,
         "--eval-mask-strategy",
         args.eval_mask_strategy,
+        "--prediction-mode",
+        args.prediction_mode,
         "--epochs",
         str(args.epochs),
         "--batch-size",
@@ -169,6 +171,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "mask_width": args.mask_width,
         "train_mask_strategy": args.train_mask_strategy,
         "eval_mask_strategy": args.eval_mask_strategy,
+        "prediction_mode": args.prediction_mode,
         "peak_top_fraction": args.peak_top_fraction,
         "epochs": args.epochs,
         "batch_size": args.batch_size,
@@ -206,6 +209,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--mask-width", type=int, default=1024)
     parser.add_argument("--train-mask-strategy", choices=["random", "peak"], default="peak")
     parser.add_argument("--eval-mask-strategy", choices=["random", "peak"], default="peak")
+    parser.add_argument("--prediction-mode", choices=["direct", "residual"], default="direct")
     parser.add_argument("--peak-top-fraction", type=float, default=0.02)
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--n-splits", type=int, default=3)

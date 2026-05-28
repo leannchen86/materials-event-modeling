@@ -230,3 +230,37 @@ yet robust under source shift. At 512 samples, the held-out-source average MSE i
 better than interpolation, but only one of two seeds wins. MAE remains worse than
 interpolation in every setting. This supports scaling the raw-XRD neural path, but it also
 says the current local pilot is not strong enough for an ontology-level claim.
+
+## Residual-Over-Interpolation CNN
+
+The next experiment asks whether the CNN can learn what local interpolation misses. Instead
+of predicting the hidden XRD window directly, the model predicts a correction:
+
+```text
+final prediction = linear interpolation + CNN residual
+```
+
+This makes interpolation the default answer and forces the neural model to add nonlocal peak
+structure only where useful.
+
+Generated with:
+
+```bash
+python3 scripts/run_opxrd_conv_scaling.py --sample-sizes 256 512 --seeds 0 1 --epochs 25 --n-splits 3 --split-kinds random_kfold held_out_top_level_source --mask-width 1024 --train-mask-strategy peak --eval-mask-strategy peak --prediction-mode residual --channels 32 --depth 10 --batch-size 64 --output data/manifests/opxrd_masked_xrd_conv_residual_scaling.json
+```
+
+Summary:
+
+| Samples | Split | Interpolation MSE improvement | Residual CNN MSE improvement | Residual CNN MSE win rate | Residual CNN MAE win rate |
+| ---: | --- | ---: | ---: | ---: | ---: |
+| 256 | Random folds | 9.9% | 27.4% | 100% | 100% |
+| 256 | Held-out source | 32.0% | 40.7% | 100% | 100% |
+| 512 | Random folds | 8.0% | 30.3% | 100% | 100% |
+| 512 | Held-out source | 27.0% | 33.8% | 100% | 50% |
+
+Interpretation: residual learning is a much cleaner signal than direct CNN prediction. It
+beats interpolation on MSE in every trial, including held-out-source splits, and usually
+reduces the MAE penalty. This supports the thesis that there is learnable nonlocal XRD
+structure beyond local smooth interpolation. It is still a small local curve, so the next
+question is whether the residual signal strengthens at 1,024-4,096 spectra and transfers to
+NIST.

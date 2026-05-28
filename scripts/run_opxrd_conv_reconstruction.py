@@ -227,6 +227,18 @@ def make_observed_masks(
     return observed
 
 
+def interpolation_baseline_full(
+    spectra: np.ndarray,
+    starts: np.ndarray,
+    mask_width: int,
+) -> np.ndarray:
+    baseline = spectra.copy()
+    for row_idx, start in enumerate(starts):
+        end = int(start) + mask_width
+        baseline[row_idx, start:end] = interpolate_masked_region(spectra[row_idx], int(start), end)
+    return baseline.astype(np.float32)
+
+
 def sample_training_starts(
     batch: np.ndarray,
     mask_width: int,
@@ -260,9 +272,10 @@ def make_training_batch(
     mask_width: int,
     strategy: str,
     peak_top_fraction: float,
+    prediction_mode: str,
     rng: np.random.Generator,
     device: torch.device,
-) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
     batch_np = batch.numpy()
     starts = sample_training_starts(
         batch=batch_np,
@@ -272,11 +285,18 @@ def make_training_batch(
         rng=rng,
     )
     observed = make_observed_masks(batch_np, starts, mask_width)
+    if prediction_mode == "residual":
+        baseline = interpolation_baseline_full(batch_np, starts, mask_width)
+    elif prediction_mode == "direct":
+        baseline = np.zeros_like(batch_np, dtype=np.float32)
+    else:
+        raise ValueError(f"Unsupported prediction mode: {prediction_mode}")
     target = torch.as_tensor(batch_np, dtype=torch.float32, device=device)
     observed_tensor = torch.as_tensor(observed, dtype=torch.float32, device=device)
+    baseline_tensor = torch.as_tensor(baseline, dtype=torch.float32, device=device)
     masked = target * observed_tensor
     missing = 1.0 - observed_tensor
-    return masked, observed_tensor, missing
+    return masked, observed_tensor, baseline_tensor, missing
 
 
 def masked_loss(
@@ -297,6 +317,7 @@ def train_model(
     x_train: np.ndarray,
     mask_width: int,
     train_mask_strategy: str,
+    prediction_mode: str,
     peak_top_fraction: float,
     channels: int,
     depth: int,
@@ -325,17 +346,20 @@ def train_model(
         epoch_loss = 0.0
         epoch_batches = 0
         for (batch,) in loader:
-            masked, observed, missing = make_training_batch(
+            masked, observed, baseline, missing = make_training_batch(
                 batch=batch,
                 mask_width=mask_width,
                 strategy=train_mask_strategy,
                 peak_top_fraction=peak_top_fraction,
+                prediction_mode=prediction_mode,
                 rng=rng,
                 device=device,
             )
             target = batch.to(device)
             optimizer.zero_grad(set_to_none=True)
             prediction = model(masked, observed)
+            if prediction_mode == "residual":
+                prediction = baseline + prediction
             loss = masked_loss(prediction, target, missing, observed_loss_weight)
             loss.backward()
             optimizer.step()
@@ -350,10 +374,17 @@ def predict_masks(
     spectra: np.ndarray,
     starts: np.ndarray,
     mask_width: int,
+    prediction_mode: str,
     batch_size: int,
     device: torch.device,
 ) -> np.ndarray:
     observed = make_observed_masks(spectra, starts, mask_width)
+    if prediction_mode == "residual":
+        baseline = interpolation_baseline_full(spectra, starts, mask_width)
+    elif prediction_mode == "direct":
+        baseline = np.zeros_like(spectra, dtype=np.float32)
+    else:
+        raise ValueError(f"Unsupported prediction mode: {prediction_mode}")
     predictions = []
     model.eval()
     with torch.no_grad():
@@ -361,8 +392,12 @@ def predict_masks(
             end = start + batch_size
             target = torch.as_tensor(spectra[start:end], dtype=torch.float32, device=device)
             observed_tensor = torch.as_tensor(observed[start:end], dtype=torch.float32, device=device)
+            baseline_tensor = torch.as_tensor(baseline[start:end], dtype=torch.float32, device=device)
             masked = target * observed_tensor
-            prediction = model(masked, observed_tensor).cpu().numpy()
+            prediction = model(masked, observed_tensor)
+            if prediction_mode == "residual":
+                prediction = baseline_tensor + prediction
+            prediction = prediction.cpu().numpy()
             predictions.append(prediction)
     return np.concatenate(predictions, axis=0)
 
@@ -380,6 +415,7 @@ def evaluate(
     mask_width: int,
     eval_mask_strategy: str,
     train_mask_strategy: str,
+    prediction_mode: str,
     repeats: int,
     n_splits: int,
     split_kinds: list[str],
@@ -420,6 +456,7 @@ def evaluate(
                 x_train=xrd[train_idx],
                 mask_width=mask_width,
                 train_mask_strategy=train_mask_strategy,
+                prediction_mode=prediction_mode,
                 peak_top_fraction=peak_top_fraction,
                 channels=channels,
                 depth=depth,
@@ -441,6 +478,7 @@ def evaluate(
                     spectra=xrd[test_idx],
                     starts=repeat_starts,
                     mask_width=mask_width,
+                    prediction_mode=prediction_mode,
                     batch_size=batch_size,
                     device=device,
                 )
@@ -479,6 +517,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         mask_width=args.mask_width,
         eval_mask_strategy=args.eval_mask_strategy,
         train_mask_strategy=args.train_mask_strategy,
+        prediction_mode=args.prediction_mode,
         repeats=args.repeats,
         n_splits=args.n_splits,
         split_kinds=args.split_kinds,
@@ -506,6 +545,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "mask_width": args.mask_width,
         "train_mask_strategy": args.train_mask_strategy,
         "eval_mask_strategy": args.eval_mask_strategy,
+        "prediction_mode": args.prediction_mode,
         "peak_top_fraction": args.peak_top_fraction,
         "seed": args.seed,
         "repeats": args.repeats,
@@ -543,6 +583,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--mask-width", type=int, default=1024)
     parser.add_argument("--train-mask-strategy", choices=["random", "peak"], default="peak")
     parser.add_argument("--eval-mask-strategy", choices=["random", "peak"], default="peak")
+    parser.add_argument("--prediction-mode", choices=["direct", "residual"], default="direct")
     parser.add_argument("--peak-top-fraction", type=float, default=0.02)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--repeats", type=int, default=1)

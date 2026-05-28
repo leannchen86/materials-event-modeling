@@ -113,6 +113,13 @@ folds on MSE and only barely wins held-out-source on average, with a 50% seed wi
 still loses to interpolation. Treat this as evidence that scale helps, not evidence that the
 current CNN is robust enough.
 
+The residual-over-interpolation CNN is the clearest neural result so far. It predicts a
+correction to linear interpolation rather than the whole hidden region. With 256/512 spectra
+and two seeds, it beats interpolation on MSE in every random and held-out-source trial; MAE
+also improves in most settings. Interpretation: the model is learning structure beyond
+local smoothness, but this is still a small local curve that must be scaled and transferred
+before making stronger claims.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
