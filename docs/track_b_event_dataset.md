@@ -157,6 +157,9 @@ Current working artifacts:
 - Mock event review: `docs/track_b_mock_event_review.md`
 - Lab outreach brief: `docs/track_b_lab_outreach_brief.md`
 - Mock event summary script: `scripts/summarize_track_b_mock_events.py`
+- Synthetic event scaffold: `scripts/run_track_b_synthetic_scaffold.py`
+- Synthetic scaffold result: `data/manifests/track_b_synthetic_event_scaffold.json`
+- Synthetic scaffold notes: `docs/track_b_synthetic_scaffold.md`
 
 The first real result should not be "we made pure calcite." It should be:
 

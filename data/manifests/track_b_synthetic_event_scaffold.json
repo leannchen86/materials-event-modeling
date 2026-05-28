@@ -1,0 +1,124 @@
+{
+  "caveats": [
+    "Synthetic hidden regimes are known only because this is a scaffold test.",
+    "This is not evidence about calcium carbonate chemistry.",
+    "The purpose is to test Track B analysis logic before real lab data exists."
+  ],
+  "created_at": "2026-05-28T22:17:15.094428+00:00",
+  "evaluation": {
+    "event_count": 96,
+    "label_projection_audit": {
+      "labels": {
+        "ambiguous_low_signal": {
+          "events": 11,
+          "hidden_regime_counts": {
+            "low_signal_sparse": 11
+          },
+          "hidden_regime_entropy": -0.0,
+          "splits_into_multiple_regimes": false
+        },
+        "delayed_conversion_possible": {
+          "events": 18,
+          "hidden_regime_counts": {
+            "additive_shifted_pathway": 6,
+            "slow_aging_conversion": 12
+          },
+          "hidden_regime_entropy": 0.9182958340544896,
+          "splits_into_multiple_regimes": true
+        },
+        "failed_or_low_signal": {
+          "events": 7,
+          "hidden_regime_counts": {
+            "low_signal_sparse": 7
+          },
+          "hidden_regime_entropy": -0.0,
+          "splits_into_multiple_regimes": false
+        },
+        "mixed_or_impure": {
+          "events": 9,
+          "hidden_regime_counts": {
+            "rapid_mixture": 6,
+            "slow_aging_conversion": 3
+          },
+          "hidden_regime_entropy": 0.9182958340544896,
+          "splits_into_multiple_regimes": true
+        },
+        "possible_mixture": {
+          "events": 21,
+          "hidden_regime_counts": {
+            "additive_shifted_pathway": 9,
+            "rapid_mixture": 12
+          },
+          "hidden_regime_entropy": 0.9852281360342515,
+          "splits_into_multiple_regimes": true
+        },
+        "reference_like": {
+          "events": 26,
+          "hidden_regime_counts": {
+            "reference_like_crystalline": 15,
+            "replicate_sensitive_pathway": 11
+          },
+          "hidden_regime_entropy": 0.9828586897127056,
+          "splits_into_multiple_regimes": true
+        },
+        "replicate_variation": {
+          "events": 4,
+          "hidden_regime_counts": {
+            "replicate_sensitive_pathway": 4
+          },
+          "hidden_regime_entropy": -0.0,
+          "splits_into_multiple_regimes": false
+        }
+      },
+      "labels_that_split": [
+        "delayed_conversion_possible",
+        "mixed_or_impure",
+        "possible_mixture",
+        "reference_like"
+      ],
+      "mean_hidden_regime_entropy_per_label": 0.5435254991222767
+    },
+    "missingness": {
+      "early_turbidity": 9,
+      "final_ph": 23
+    },
+    "prediction": {
+      "coarse_process": {
+        "mse": 0.008947668131440878,
+        "mse_improvement_vs_train_mean": 0.2834085845580825,
+        "relative_mse_vs_train_mean": 0.7165914154419175
+      },
+      "event_process": {
+        "mse": 0.005247708759270608,
+        "mse_improvement_vs_train_mean": 0.5797270314017433,
+        "relative_mse_vs_train_mean": 0.4202729685982567
+      },
+      "label_only": {
+        "mse": 0.007906763814389706,
+        "mse_improvement_vs_train_mean": 0.36677143250215194,
+        "relative_mse_vs_train_mean": 0.6332285674978481
+      }
+    },
+    "replicate_group_count": 32,
+    "replicate_retrieval_hit_rate": {
+      "coarse_process": 0.3958333333333333,
+      "event_process": 0.125,
+      "label_only": 0.13541666666666666,
+      "raw_measurement_pca": 0.71875
+    },
+    "spectral_silhouette": {
+      "hidden_regime": 0.7836670279502869,
+      "legacy_label": 0.026293111965060234
+    }
+  },
+  "groups": 32,
+  "hypotheses": [
+    "Event-process features should predict held-out synthetic spectra better than label-only features.",
+    "Replicate retrieval should improve when using event-process or raw-measurement features instead of labels alone.",
+    "Legacy labels should split across multiple hidden regimes, showing that labels are lossy projections in this synthetic world."
+  ],
+  "replicates_per_group": 3,
+  "seed": 17,
+  "task": "track_b_synthetic_event_scaffold",
+  "theta_points": 512
+}
