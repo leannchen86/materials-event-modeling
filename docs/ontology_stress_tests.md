@@ -148,3 +148,30 @@ Interpretation: the opXRD objective needs a stricter baseline and probably a bet
 scheme. "Beat train mean" is too weak. A useful self-supervised raw-XRD encoder should beat
 local interpolation, handle contributor/instrument shift, and avoid learning only smooth
 background interpolation.
+
+## Peak-Focused opXRD Masks
+
+The next stress test added `peak` masks that hide windows centered on each spectrum's high
+intensity points. This makes the task less like filling a smooth local background and more
+like predicting missing peak structure.
+
+Generated with:
+
+```bash
+python3 scripts/run_opxrd_reconstruction.py --max-samples 1024 --mask-widths 256 512 1024 --mask-strategies random peak --repeats 1 --pca-components 4 16 64
+```
+
+First result:
+
+- Peak masks are harder than random masks: the train-mean error is much larger because the
+  hidden regions contain real signal.
+- Local interpolation remains surprisingly strong, especially under held-out-source splits.
+- PCA can beat interpolation on random folds for some peak masks, especially 256-point
+  peak masks, but it often collapses under held-out-source splits.
+- Wide peak masks expose the objective better: for 1,024-point peak masks, interpolation
+  gives only about 16% MSE improvement on random folds, while a 4-component PCA gives about
+  24%; under held-out source, interpolation still wins.
+
+Interpretation: the next neural encoder should be evaluated on peak-focused masks and
+held-out-source splits. A model that only wins on random folds may be learning source- or
+instrument-specific structure rather than a robust raw-XRD representation.

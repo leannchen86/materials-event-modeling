@@ -115,9 +115,63 @@ def select_sample_indices(n_samples: int, max_samples: int) -> np.ndarray:
     return np.linspace(0, n_samples - 1, num=max_samples, dtype=np.int64)
 
 
-def mask_starts(n_samples: int, n_features: int, mask_width: int, repeats: int) -> np.ndarray:
+def random_mask_starts(n_samples: int, n_features: int, mask_width: int, repeats: int) -> np.ndarray:
     rng = np.random.default_rng(1701 + mask_width)
     return rng.integers(0, n_features - mask_width + 1, size=(repeats, n_samples))
+
+
+def peak_mask_starts(
+    xrd: np.ndarray,
+    mask_width: int,
+    repeats: int,
+    peak_top_fraction: float,
+) -> np.ndarray:
+    if not 0 < peak_top_fraction <= 1:
+        raise ValueError("peak_top_fraction must be in (0, 1]")
+
+    rng = np.random.default_rng(3407 + mask_width)
+    n_samples, n_features = xrd.shape
+    starts = np.empty((repeats, n_samples), dtype=np.int64)
+    candidates_per_spectrum = max(8, int(round(n_features * peak_top_fraction)))
+    candidates_per_spectrum = min(candidates_per_spectrum, n_features)
+
+    for sample_idx, spectrum in enumerate(xrd):
+        candidate_indices = np.argpartition(spectrum, -candidates_per_spectrum)[
+            -candidates_per_spectrum:
+        ]
+        if candidate_indices.size == 0 or float(np.max(spectrum[candidate_indices])) <= 0:
+            starts[:, sample_idx] = rng.integers(0, n_features - mask_width + 1, size=repeats)
+            continue
+
+        for repeat in range(repeats):
+            center = int(rng.choice(candidate_indices))
+            start = center - mask_width // 2
+            starts[repeat, sample_idx] = int(np.clip(start, 0, n_features - mask_width))
+    return starts
+
+
+def build_mask_starts(
+    xrd: np.ndarray,
+    mask_width: int,
+    repeats: int,
+    strategy: str,
+    peak_top_fraction: float,
+) -> np.ndarray:
+    if strategy == "random":
+        return random_mask_starts(
+            n_samples=xrd.shape[0],
+            n_features=xrd.shape[1],
+            mask_width=mask_width,
+            repeats=repeats,
+        )
+    if strategy == "peak":
+        return peak_mask_starts(
+            xrd=xrd,
+            mask_width=mask_width,
+            repeats=repeats,
+            peak_top_fraction=peak_top_fraction,
+        )
+    raise ValueError(f"Unsupported mask strategy: {strategy}")
 
 
 def interpolate_masked_region(spectrum: np.ndarray, start: int, end: int) -> np.ndarray:
@@ -146,15 +200,18 @@ def evaluate_mask_width(
     xrd: np.ndarray,
     samples: pd.DataFrame,
     mask_width: int,
+    mask_strategy: str,
     repeats: int,
     pca_components: list[int],
     n_splits: int,
+    peak_top_fraction: float,
 ) -> dict[str, dict[str, dict[str, float]]]:
-    starts = mask_starts(
-        n_samples=xrd.shape[0],
-        n_features=xrd.shape[1],
+    starts = build_mask_starts(
+        xrd=xrd,
         mask_width=mask_width,
         repeats=repeats,
+        strategy=mask_strategy,
+        peak_top_fraction=peak_top_fraction,
     )
     results = {}
 
@@ -194,9 +251,11 @@ def evaluate_mask_width(
 def run(
     max_samples: int,
     mask_widths: list[int],
+    mask_strategies: list[str],
     repeats: int,
     pca_components: list[int],
     n_splits: int,
+    peak_top_fraction: float,
 ) -> dict[str, object]:
     root = project_root()
     xrd, samples = load_subset(root)
@@ -214,7 +273,8 @@ def run(
         "top_level_source_counts": samples["top_level_source"].value_counts().sort_index().to_dict(),
         "repeats": repeats,
         "pca_components": pca_components,
-        "mask_widths": {},
+        "peak_top_fraction": peak_top_fraction,
+        "mask_strategies": {},
         "caveats": [
             "This evaluates reconstruction on a pilot subset, not full-dataset pretraining.",
             "Held-out-top-level-source splits stress contributor/instrument shift, not causal mechanisms.",
@@ -222,15 +282,19 @@ def run(
         ],
     }
 
-    for mask_width in mask_widths:
-        results["mask_widths"][str(mask_width)] = evaluate_mask_width(
-            xrd=xrd,
-            samples=samples,
-            mask_width=mask_width,
-            repeats=repeats,
-            pca_components=pca_components,
-            n_splits=n_splits,
-        )
+    for mask_strategy in mask_strategies:
+        results["mask_strategies"][mask_strategy] = {}
+        for mask_width in mask_widths:
+            results["mask_strategies"][mask_strategy][str(mask_width)] = evaluate_mask_width(
+                xrd=xrd,
+                samples=samples,
+                mask_width=mask_width,
+                mask_strategy=mask_strategy,
+                repeats=repeats,
+                pca_components=pca_components,
+                n_splits=n_splits,
+                peak_top_fraction=peak_top_fraction,
+            )
 
     output_path = root / "data" / "manifests" / "opxrd_masked_xrd_reconstruction_subset.json"
     output_path.write_text(json.dumps(results, indent=2, sort_keys=True) + "\n")
@@ -241,9 +305,16 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--max-samples", type=int, default=1024)
     parser.add_argument("--mask-widths", type=int, nargs="+", default=[256])
+    parser.add_argument("--mask-strategies", nargs="+", choices=["random", "peak"], default=["random"])
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--pca-components", type=int, nargs="+", default=[16, 64])
     parser.add_argument("--n-splits", type=int, default=5)
+    parser.add_argument(
+        "--peak-top-fraction",
+        type=float,
+        default=0.02,
+        help="For peak masks, sample centers from each spectrum's top intensity fraction.",
+    )
     return parser.parse_args()
 
 
@@ -254,9 +325,11 @@ def main() -> None:
             run(
                 max_samples=args.max_samples,
                 mask_widths=args.mask_widths,
+                mask_strategies=args.mask_strategies,
                 repeats=args.repeats,
                 pca_components=args.pca_components,
                 n_splits=args.n_splits,
+                peak_top_fraction=args.peak_top_fraction,
             ),
             indent=2,
             sort_keys=True,

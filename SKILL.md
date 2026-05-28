@@ -94,6 +94,12 @@ mean, especially for wide masks and held-out-source splits. Future neural encode
 beat interpolation, not just train mean, and the masking scheme should hide meaningful peak
 regions instead of only rewarding smooth background interpolation.
 
+The peak-mask stress test hides windows centered on high-intensity diffraction regions.
+It makes train-mean prediction much worse and gives a sharper objective. PCA can beat
+interpolation on some random-fold peak masks, but interpolation remains much more robust on
+held-out-source splits. Treat random-fold wins as weak evidence; robust progress should show
+up on peak masks and contributor/source shift.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on

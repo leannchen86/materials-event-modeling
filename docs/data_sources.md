@@ -42,7 +42,7 @@ python3 scripts/download_data.py opxrd --metadata-only
 python3 scripts/download_data.py opxrd
 python3 scripts/audit_opxrd_dataset.py --max-patterns 5000
 python3 scripts/preprocess_opxrd.py --max-spectra 4096 --points 4096 --selection spread
-python3 scripts/run_opxrd_reconstruction.py --max-samples 1024 --mask-widths 256 512 1024 --repeats 1 --pca-components 4 16 64
+python3 scripts/run_opxrd_reconstruction.py --max-samples 1024 --mask-widths 256 512 1024 --mask-strategies random peak --repeats 1 --pca-components 4 16 64
 ```
 
 Current plan:
