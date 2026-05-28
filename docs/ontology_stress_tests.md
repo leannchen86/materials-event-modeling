@@ -521,3 +521,46 @@ Track A lesson for Track B: every controlled event dataset needs source/session 
 from day one. At minimum, log instrument id, instrument session, operator, date, raw export
 format, theta range/settings, sample-preparation route, drying route, reagent lot, and any
 manual processing before measurement. Splits should later test transfer across these axes.
+
+## Normalization-Control Source Predictability
+
+Hypothesis before the run:
+
+- Source predictability should drop after reducing obvious coverage and normalization
+  artifacts.
+- It should not disappear entirely if source imprint is also carried in peak/background
+  shape.
+
+Generated with:
+
+```bash
+.venv/bin/python scripts/analyze_opxrd_normalization_controls.py --output data/manifests/opxrd_normalization_controls.json
+```
+
+The high-coverage crop used theta bins covered by at least 95% of included samples, yielding
+455 grid points from 20.00 to 39.96 degrees.
+
+Summary:
+
+| Feature set | Accuracy | Balanced accuracy | Dummy balanced accuracy |
+| --- | ---: | ---: | ---: |
+| Metadata | 98.7% | 97.8% | 16.7% |
+| Spectrum summary | 80.7% | 66.8% | 16.7% |
+| Coverage mask PCA | 95.0% | 89.8% | 16.7% |
+| Full XRD PCA | 91.2% | 78.6% | 16.7% |
+| Full XRD row-zscore PCA | 93.3% | 74.3% | 16.7% |
+| Full XRD L1 PCA | 88.7% | 70.5% | 16.7% |
+| Cropped XRD PCA | 78.1% | 62.3% | 16.7% |
+| Cropped XRD row-zscore PCA | 82.0% | 61.8% | 16.7% |
+| Cropped XRD L1 PCA | 80.3% | 61.8% | 16.7% |
+| Cropped XRD derivative PCA | 61.3% | 55.6% | 16.7% |
+
+Verdict: the hypothesis is validated. Coverage artifacts are enormous: the binary
+in-range/out-of-range mask alone predicts source nearly as well as full XRD PCA. Cropping
+and derivative features reduce source predictability substantially, but do not remove it.
+
+Track A lesson for Track B: preprocessing is not a magic eraser for provenance. A controlled
+event dataset should store raw theta range, measurement window, export format, instrument
+session, operator/date, and any transformation applied before model ingestion. Later
+evaluation should include splits across instrument session or measurement day, because
+random splits may reward provenance recovery.

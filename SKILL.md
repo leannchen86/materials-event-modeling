@@ -182,6 +182,14 @@ accuracy across six sources. Interpretation: raw measurement embeddings can sile
 lab/instrument/preprocessing provenance. Track B must log and split by session/source-like
 variables so representation gains do not merely reflect collection artifacts.
 
+The normalization-control diagnostic shows theta coverage is a major source artifact:
+coverage masks alone predict source with about 95.0% accuracy and 89.8% balanced accuracy.
+Cropping to theta bins covered by at least 95% of samples and using derivative features
+reduces source predictability, but balanced accuracy remains about 55.6% versus a 16.7%
+dummy baseline. Interpretation: normalization can reduce public-data provenance signals,
+but cannot be trusted to remove them. Track B should log raw theta coverage, export format,
+instrument/session, and preprocessing before any learned representation is interpreted.
+
 ## Track B Direction
 
 Track B is the real pre-taxonomic event dataset. The unit is a material-making event, not a
