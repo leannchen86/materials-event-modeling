@@ -13,6 +13,7 @@ Local download:
 ```bash
 python3 scripts/download_data.py nist_mds2_2301
 python3 scripts/audit_nist_dataset.py
+python3 scripts/preprocess_xrd.py nist_mds2_2301
 ```
 
 Initial shape:
