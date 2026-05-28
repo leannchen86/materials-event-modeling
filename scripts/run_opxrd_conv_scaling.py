@@ -42,6 +42,10 @@ def run_single(
         SCRIPT_NAME,
         "--max-samples",
         str(max_samples),
+        "--sample-strategy",
+        args.sample_strategy,
+        "--source-balance-alpha",
+        str(args.source_balance_alpha),
         "--mask-width",
         str(args.mask_width),
         "--train-mask-strategy",
@@ -149,7 +153,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     trials = []
     for max_samples in args.sample_sizes:
         for seed in args.seeds:
-            output_path = trial_dir / f"sample_{max_samples}_seed_{seed}.json"
+            output_path = trial_dir / (
+                f"{args.prediction_mode}_{args.sample_strategy}_"
+                f"sample_{max_samples}_seed_{seed}.json"
+            )
             result = run_single(
                 root=root,
                 max_samples=max_samples,
@@ -167,6 +174,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "created_at": datetime.now(timezone.utc).isoformat(),
         "task": "masked_xrd_conv_scaling",
         "sample_sizes": args.sample_sizes,
+        "sample_strategy": args.sample_strategy,
+        "source_balance_alpha": args.source_balance_alpha,
         "seeds": args.seeds,
         "mask_width": args.mask_width,
         "train_mask_strategy": args.train_mask_strategy,
@@ -204,6 +213,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sample-sizes", type=int, nargs="+", default=[256, 512])
+    parser.add_argument(
+        "--sample-strategy",
+        choices=["spread", "source_balanced"],
+        default="spread",
+    )
+    parser.add_argument("--source-balance-alpha", type=float, default=0.5)
     parser.add_argument("--seeds", type=int, nargs="+", default=[0, 1])
     parser.add_argument("--device", default="auto")
     parser.add_argument("--mask-width", type=int, default=1024)

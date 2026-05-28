@@ -146,6 +146,14 @@ scaling more spectra from the same mixed archive helps in-distribution reconstru
 more than it helps source transfer. The next experiment should test source diversity and
 transfer directly rather than only increasing sample count.
 
+The first source-balanced sampling test did not fix source transfer. It added a
+`source_balanced` sampling option that keeps rare opXRD sources represented and caps the
+dominant LBNL/INT skew. At 1,024 spectra, held-out-source performance was essentially tied
+with spread sampling; at 2,048 spectra it was worse, about 38.1% MSE improvement versus
+41.2% for spread. Interpretation: simple source rebalancing is not enough. The transfer
+bottleneck likely needs per-source diagnostics, source-aware normalization, or explicit
+domain-transfer objectives.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on

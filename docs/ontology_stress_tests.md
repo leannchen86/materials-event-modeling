@@ -343,3 +343,56 @@ test. The next bottleneck is no longer generic neural capacity on opXRD; it is t
 across sources, contributors, instruments, and experimental styles. The next experiment
 should ask whether source-balanced sampling or leave-one-source-out pretraining improves
 held-out-source performance more than simply adding more spectra.
+
+## Source-Balanced Sampling Check
+
+Hypothesis before the run:
+
+- Source-balanced sampling should improve held-out-source transfer, or at least reduce its
+  fragility, because training sees more minority-source diversity.
+- Random-fold performance may decline because the sample is less dominated by the largest
+  and possibly easiest source.
+- If held-out-source does not improve, then source diversity by simple subsampling is not
+  enough; the next step should be per-source diagnostics or a stronger domain-transfer
+  objective.
+
+Implementation change:
+
+```bash
+--sample-strategy source_balanced --source-balance-alpha 0.5
+```
+
+The allocation is proportional to `source_count ** 0.5`, capped by availability. This keeps
+rare sources represented without requiring impossible equal quotas from sources with only a
+few spectra.
+
+Source counts:
+
+| Samples | Strategy | CNRS | EMPA | HKUST | IKFT | INT | LBNL | USC |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1,024 | Spread | 12 | 9 | 5 | 1 | 219 | 774 | 4 |
+| 1,024 | Source-balanced | 47 | 34 | 23 | 3 | 312 | 590 | 15 |
+| 2,048 | Spread | 24 | 17 | 11 | 2 | 438 | 1,549 | 7 |
+| 2,048 | Source-balanced | 47 | 34 | 23 | 3 | 668 | 1,258 | 15 |
+
+Generated on Zeus A100 with:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 .venv/bin/python scripts/run_opxrd_conv_scaling.py --sample-sizes 1024 2048 --sample-strategy source_balanced --source-balance-alpha 0.5 --seeds 0 1 --epochs 40 --n-splits 3 --split-kinds random_kfold held_out_top_level_source --mask-width 1024 --train-mask-strategy peak --eval-mask-strategy peak --prediction-mode residual --channels 32 --depth 10 --batch-size 64 --device cuda --output data/manifests/opxrd_masked_xrd_conv_residual_source_balanced_a100.json
+```
+
+Summary versus spread sampling:
+
+| Samples | Split | Spread residual CNN MSE improvement | Source-balanced residual CNN MSE improvement | Verdict |
+| ---: | --- | ---: | ---: | --- |
+| 1,024 | Random folds | 39.7% | 41.9% | Slightly better. |
+| 1,024 | Held-out source | 41.4% | 41.2% | Essentially tied. |
+| 2,048 | Random folds | 56.1% | 54.3% | Slightly worse. |
+| 2,048 | Held-out source | 41.2% | 38.1% | Worse. |
+
+Verdict: the source-balanced hypothesis is weakened. It did not improve held-out-source
+transfer, and at 2,048 spectra it made transfer worse. This does not mean source diversity
+is irrelevant; it means naive source-balanced subsampling is not sufficient. The next
+better test is to measure per-source errors and source-pair transfer directly: train on all
+but one source, evaluate the held-out source separately, and inspect whether failures are
+concentrated in specific contributors or instrument styles.

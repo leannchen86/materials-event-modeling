@@ -125,10 +125,80 @@ def load_subset(root: Path) -> tuple[np.ndarray, pd.DataFrame]:
     return xrd, samples
 
 
-def select_sample_indices(n_samples: int, max_samples: int) -> np.ndarray:
+def select_spread_indices(n_samples: int, max_samples: int) -> np.ndarray:
     if max_samples >= n_samples:
         return np.arange(n_samples)
     return np.linspace(0, n_samples - 1, num=max_samples, dtype=np.int64)
+
+
+def allocate_source_balanced_counts(
+    source_counts: dict[str, int],
+    max_samples: int,
+    alpha: float,
+) -> dict[str, int]:
+    total_available = sum(source_counts.values())
+    if max_samples >= total_available:
+        return dict(source_counts)
+    if not 0.0 <= alpha <= 1.0:
+        raise ValueError("--source-balance-alpha must be between 0 and 1.")
+
+    allocated = {source: 0 for source in source_counts}
+    remaining = max_samples
+    active = set(source_counts)
+    while remaining > 0 and active:
+        weights = {source: float(source_counts[source]) ** alpha for source in active}
+        weight_sum = sum(weights.values())
+        increments = {}
+        for source in sorted(active):
+            available = source_counts[source] - allocated[source]
+            raw = remaining * weights[source] / weight_sum
+            increments[source] = min(available, int(np.floor(raw)))
+
+        if sum(increments.values()) == 0:
+            source = max(active, key=lambda item: source_counts[item] - allocated[item])
+            increments[source] = 1
+
+        for source, increment in increments.items():
+            allocated[source] += increment
+            remaining -= increment
+        active = {
+            source
+            for source in active
+            if allocated[source] < source_counts[source]
+        }
+
+    return allocated
+
+
+def select_sample_indices(
+    samples: pd.DataFrame,
+    max_samples: int,
+    strategy: str,
+    source_balance_alpha: float,
+) -> np.ndarray:
+    if strategy == "spread":
+        return select_spread_indices(len(samples), max_samples)
+    if strategy != "source_balanced":
+        raise ValueError(f"Unsupported sample strategy: {strategy}")
+
+    source_counts = samples["top_level_source"].value_counts().sort_index().to_dict()
+    target_counts = allocate_source_balanced_counts(
+        source_counts=source_counts,
+        max_samples=max_samples,
+        alpha=source_balance_alpha,
+    )
+    selected = []
+    for source, target_count in sorted(target_counts.items()):
+        source_indices = np.flatnonzero(samples["top_level_source"].to_numpy() == source)
+        if target_count >= len(source_indices):
+            selected.extend(source_indices.tolist())
+        elif target_count > 0:
+            selected.extend(
+                source_indices[
+                    np.linspace(0, len(source_indices) - 1, num=target_count, dtype=np.int64)
+                ].tolist()
+            )
+    return np.array(sorted(selected), dtype=np.int64)
 
 
 def split_iterators(
@@ -507,7 +577,12 @@ def run(args: argparse.Namespace) -> dict[str, object]:
     device = choose_device(args.device)
     root = project_root()
     xrd, samples = load_subset(root)
-    selected = select_sample_indices(len(samples), max_samples=args.max_samples)
+    selected = select_sample_indices(
+        samples=samples,
+        max_samples=args.max_samples,
+        strategy=args.sample_strategy,
+        source_balance_alpha=args.source_balance_alpha,
+    )
     xrd = xrd[selected]
     samples = samples.iloc[selected].reset_index(drop=True)
 
@@ -540,6 +615,8 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "subset": "opxrd_processed_subset",
         "spectra": int(xrd.shape[0]),
         "theta_points": int(xrd.shape[1]),
+        "sample_strategy": args.sample_strategy,
+        "source_balance_alpha": args.source_balance_alpha,
         "top_level_source_counts": samples["top_level_source"].value_counts().sort_index().to_dict(),
         "device": str(device),
         "mask_width": args.mask_width,
@@ -580,6 +657,18 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--device", default="auto", help="auto, cpu, mps, or cuda.")
     parser.add_argument("--max-samples", type=int, default=512)
+    parser.add_argument(
+        "--sample-strategy",
+        choices=["spread", "source_balanced"],
+        default="spread",
+        help="How to choose a subset from the processed opXRD archive sample.",
+    )
+    parser.add_argument(
+        "--source-balance-alpha",
+        type=float,
+        default=0.5,
+        help="Source allocation exponent for source_balanced sampling; 1=count-proportional, 0=equal-source.",
+    )
     parser.add_argument("--mask-width", type=int, default=1024)
     parser.add_argument("--train-mask-strategy", choices=["random", "peak"], default="peak")
     parser.add_argument("--eval-mask-strategy", choices=["random", "peak"], default="peak")
