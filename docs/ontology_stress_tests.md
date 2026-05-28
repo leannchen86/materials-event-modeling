@@ -1,16 +1,18 @@
 # Ontology Stress Tests
 
-These tests ask whether inherited materials labels behave like natural coordinates in a
-learned measurement/event space.
+These tests ask how inherited materials labels project onto a learned
+measurement/event space. Labels are probes and diagnostics, not the main objective.
 
 ## Candidate Tests
 
-1. Label compactness: do labels occupy compact latent regions?
-2. Label boundary ambiguity: do disputed labels sit near latent boundaries?
-3. Label splitting: do broad labels break into multiple latent neighborhoods?
-4. Label merging: do distinct labels overlap when raw measurements and process metadata
+1. Functional utility: do raw/event embeddings improve prediction, compression,
+   retrieval, or active sampling?
+2. Label compactness: after raw/event training, do labels occupy compact latent regions?
+3. Label boundary ambiguity: do disputed labels sit near latent boundaries?
+4. Label splitting: do broad labels break into multiple latent neighborhoods?
+5. Label merging: do distinct labels overlap when raw measurements and process metadata
    are modeled together?
-5. Intervention relevance: do learned embeddings predict the next measurement or useful
+6. Intervention relevance: do learned embeddings predict the next measurement or useful
    process change better than label-only baselines?
 
 ## Baselines

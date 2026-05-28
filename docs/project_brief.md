@@ -16,13 +16,16 @@ projections, or artifacts of the measurement/interpretation pipeline.
 
 ## First Claim To Test
 
-Raw XRD embeddings can reveal label ambiguity, disagreement, or hidden structure that
-phase labels and simple peak features do not capture.
+Raw/event-trained representations can support objective feedback tasks such as
+prediction, compression, retrieval, or search better than inherited labels alone. Phase
+labels and disagreement labels are diagnostic probes, not the final target.
 
 ## Initial Questions
 
-- Do conventional labels form compact regions in learned XRD space?
-- Are ambiguous or disputed labels predictable from raw-pattern embeddings?
+- Can raw XRD objectives learn embeddings useful for held-out measurement prediction?
+- Do conventional labels form compact regions after training on raw objectives?
+- Are ambiguous or disputed labels predictable as downstream probes rather than primary
+  training targets?
 - Do broad labels such as `mixed phase` or `failure` split into multiple latent regimes?
 - Does adding process metadata reorganize the latent space around material-making events
   rather than static material categories?
@@ -32,4 +35,3 @@ phase labels and simple peak features do not capture.
 - Discovering a new material.
 - Building the largest possible transformer.
 - Treating phase classification accuracy as the only success criterion.
-

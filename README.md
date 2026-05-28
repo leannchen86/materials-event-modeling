@@ -2,6 +2,9 @@
 
 Pre-taxonomic materials informatics experiments.
 
+Read [SKILL.md](SKILL.md) first when resuming the project; it tracks the operating
+stance and decision pivots.
+
 The working hypothesis is that inherited labels such as `phase pure`, `phase impurity`,
 `failed synthesis`, `metastable`, and `ambiguous XRD` are useful human projections, but
 not necessarily the native coordinate system for discovery.
@@ -29,4 +32,3 @@ src/           Reusable preprocessing, models, training, and evaluation code.
 configs/       Local and Zeus run configs.
 scripts/       Thin command-line entrypoints.
 ```
-
