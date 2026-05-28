@@ -1,0 +1,291 @@
+{
+  "caveats": [
+    "This is a reconstruction/prediction task, not a causal claim.",
+    "Linear interpolation is a strong local baseline for smooth regions but cannot infer hidden peaks well.",
+    "Held-out-temperature splits test extrapolation across temperatures and are much harder than random folds."
+  ],
+  "created_at": "2026-05-28T06:09:55.307832+00:00",
+  "dataset_id": "nist_mds2_2301",
+  "mask_widths": {
+    "256": {
+      "held_out_temperature": {
+        "composition_temp_ridge": {
+          "mae": 0.02992446590426632,
+          "mse": 0.0024004346753854684,
+          "mse_improvement_vs_train_mean": 0.2037222740266852,
+          "relative_mse_vs_train_mean": 0.7962777259733148,
+          "rmse": 0.04899423104188358
+        },
+        "linear_interpolation": {
+          "mae": 0.044393742887284086,
+          "mse": 0.006390676965353685,
+          "mse_improvement_vs_train_mean": -1.1199300999868744,
+          "relative_mse_vs_train_mean": 2.1199300999868744,
+          "rmse": 0.07994170979753738
+        },
+        "pca_missing_10": {
+          "mae": 0.026986183239690337,
+          "mse": 0.001412231478118911,
+          "mse_improvement_vs_train_mean": 0.531531317441963,
+          "relative_mse_vs_train_mean": 0.468468682558037,
+          "rmse": 0.037579668414169265
+        },
+        "pca_missing_25": {
+          "mae": 0.027115093115505508,
+          "mse": 0.0014265342683067888,
+          "mse_improvement_vs_train_mean": 0.5267867628982956,
+          "relative_mse_vs_train_mean": 0.4732132371017044,
+          "rmse": 0.03776948858942611
+        },
+        "pca_missing_5": {
+          "mae": 0.026951166443089307,
+          "mse": 0.0014090009898140895,
+          "mse_improvement_vs_train_mean": 0.5326029424720145,
+          "relative_mse_vs_train_mean": 0.4673970575279855,
+          "rmse": 0.03753666194288045
+        },
+        "train_mean": {
+          "mae": 0.03232746435484538,
+          "mse": 0.003014569662175773,
+          "mse_improvement_vs_train_mean": 0.0,
+          "relative_mse_vs_train_mean": 1.0,
+          "rmse": 0.05490509686883152
+        }
+      },
+      "random_kfold": {
+        "composition_temp_ridge": {
+          "mae": 0.02992303173982002,
+          "mse": 0.002410412431620926,
+          "mse_improvement_vs_train_mean": 0.2016585489816537,
+          "relative_mse_vs_train_mean": 0.7983414510183463,
+          "rmse": 0.04909595127524189
+        },
+        "linear_interpolation": {
+          "mae": 0.04439374288728415,
+          "mse": 0.006390676965353677,
+          "mse_improvement_vs_train_mean": -1.1166262895844268,
+          "relative_mse_vs_train_mean": 2.116626289584427,
+          "rmse": 0.07994170979753734
+        },
+        "pca_missing_10": {
+          "mae": 0.0269570726844849,
+          "mse": 0.0013835452997558275,
+          "mse_improvement_vs_train_mean": 0.5417624188845098,
+          "relative_mse_vs_train_mean": 0.45823758111549023,
+          "rmse": 0.03719603876430698
+        },
+        "pca_missing_25": {
+          "mae": 0.027075509149157864,
+          "mse": 0.001397742560198601,
+          "mse_improvement_vs_train_mean": 0.5370602105181401,
+          "relative_mse_vs_train_mean": 0.4629397894818599,
+          "rmse": 0.037386395389213456
+        },
+        "pca_missing_5": {
+          "mae": 0.026897969060386953,
+          "mse": 0.001376116795213558,
+          "mse_improvement_vs_train_mean": 0.544222779201845,
+          "relative_mse_vs_train_mean": 0.4557772207981549,
+          "rmse": 0.03709604824254947
+        },
+        "train_mean": {
+          "mae": 0.03233444723688687,
+          "mse": 0.0030192750589941916,
+          "mse_improvement_vs_train_mean": 0.0,
+          "relative_mse_vs_train_mean": 1.0,
+          "rmse": 0.054947930434131834
+        }
+      }
+    },
+    "512": {
+      "held_out_temperature": {
+        "composition_temp_ridge": {
+          "mae": 0.03007405288129424,
+          "mse": 0.0025420537880508523,
+          "mse_improvement_vs_train_mean": 0.2117720700679554,
+          "relative_mse_vs_train_mean": 0.7882279299320446,
+          "rmse": 0.05041878407945646
+        },
+        "linear_interpolation": {
+          "mae": 0.05251473052062588,
+          "mse": 0.010485641929798525,
+          "mse_improvement_vs_train_mean": -2.251337902913171,
+          "relative_mse_vs_train_mean": 3.251337902913171,
+          "rmse": 0.10239942348372146
+        },
+        "pca_missing_10": {
+          "mae": 0.027389820647482393,
+          "mse": 0.0015261605039720025,
+          "mse_improvement_vs_train_mean": 0.5267754205499002,
+          "relative_mse_vs_train_mean": 0.4732245794500997,
+          "rmse": 0.039066104284558534
+        },
+        "pca_missing_25": {
+          "mae": 0.027533031246892995,
+          "mse": 0.0015419089633834312,
+          "mse_improvement_vs_train_mean": 0.5218922132708728,
+          "relative_mse_vs_train_mean": 0.4781077867291272,
+          "rmse": 0.03926714865359377
+        },
+        "pca_missing_5": {
+          "mae": 0.0273516523231978,
+          "mse": 0.0015243054872509233,
+          "mse_improvement_vs_train_mean": 0.527350615298697,
+          "relative_mse_vs_train_mean": 0.472649384701303,
+          "rmse": 0.03904235504232453
+        },
+        "train_mean": {
+          "mae": 0.032447292917464496,
+          "mse": 0.0032250237418889865,
+          "mse_improvement_vs_train_mean": 0.0,
+          "relative_mse_vs_train_mean": 1.0,
+          "rmse": 0.05678929249329478
+        }
+      },
+      "random_kfold": {
+        "composition_temp_ridge": {
+          "mae": 0.030042919674253262,
+          "mse": 0.0025374122269016825,
+          "mse_improvement_vs_train_mean": 0.2128634979379339,
+          "relative_mse_vs_train_mean": 0.7871365020620661,
+          "rmse": 0.050372732970345
+        },
+        "linear_interpolation": {
+          "mae": 0.05251473052062589,
+          "mse": 0.010485641929798529,
+          "mse_improvement_vs_train_mean": -2.252775178976368,
+          "relative_mse_vs_train_mean": 3.252775178976368,
+          "rmse": 0.10239942348372147
+        },
+        "pca_missing_10": {
+          "mae": 0.027289417371238498,
+          "mse": 0.001493199872598008,
+          "mse_improvement_vs_train_mean": 0.5367910219178351,
+          "relative_mse_vs_train_mean": 0.4632089780821649,
+          "rmse": 0.03864194447227013
+        },
+        "pca_missing_25": {
+          "mae": 0.027447578020986508,
+          "mse": 0.00151190919829484,
+          "mse_improvement_vs_train_mean": 0.53098715882109,
+          "relative_mse_vs_train_mean": 0.46901284117890996,
+          "rmse": 0.0388832765889764
+        },
+        "pca_missing_5": {
+          "mae": 0.02723647454915794,
+          "mse": 0.001489759730303018,
+          "mse_improvement_vs_train_mean": 0.5378581963973956,
+          "relative_mse_vs_train_mean": 0.4621418036026044,
+          "rmse": 0.038597405745762474
+        },
+        "train_mean": {
+          "mae": 0.032454402595194,
+          "mse": 0.0032235987281169264,
+          "mse_improvement_vs_train_mean": 0.0,
+          "relative_mse_vs_train_mean": 1.0,
+          "rmse": 0.05677674460654579
+        }
+      }
+    },
+    "64": {
+      "held_out_temperature": {
+        "composition_temp_ridge": {
+          "mae": 0.029150093479653482,
+          "mse": 0.0022042417150728534,
+          "mse_improvement_vs_train_mean": 0.23031551184840826,
+          "relative_mse_vs_train_mean": 0.7696844881515917,
+          "rmse": 0.04694935265871994
+        },
+        "linear_interpolation": {
+          "mae": 0.03476721235013508,
+          "mse": 0.0023483585003068914,
+          "mse_improvement_vs_train_mean": 0.1799923311743472,
+          "relative_mse_vs_train_mean": 0.8200076688256528,
+          "rmse": 0.04845986483995691
+        },
+        "pca_missing_10": {
+          "mae": 0.026199695158566377,
+          "mse": 0.0012610080636174341,
+          "mse_improvement_vs_train_mean": 0.5596769903393577,
+          "relative_mse_vs_train_mean": 0.44032300966064225,
+          "rmse": 0.035510675347245
+        },
+        "pca_missing_25": {
+          "mae": 0.026299978832178043,
+          "mse": 0.0012670776726405495,
+          "mse_improvement_vs_train_mean": 0.5575575839773915,
+          "relative_mse_vs_train_mean": 0.4424424160226085,
+          "rmse": 0.035596034507239
+        },
+        "pca_missing_5": {
+          "mae": 0.026217016890630915,
+          "mse": 0.0012706147459043264,
+          "mse_improvement_vs_train_mean": 0.5563224969150387,
+          "relative_mse_vs_train_mean": 0.4436775030849613,
+          "rmse": 0.03564568341194101
+        },
+        "train_mean": {
+          "mae": 0.031108028980353,
+          "mse": 0.002863825046502329,
+          "mse_improvement_vs_train_mean": 0.0,
+          "relative_mse_vs_train_mean": 1.0,
+          "rmse": 0.053514718036277914
+        }
+      },
+      "random_kfold": {
+        "composition_temp_ridge": {
+          "mae": 0.029142174698680526,
+          "mse": 0.0022007417785999046,
+          "mse_improvement_vs_train_mean": 0.23081732707463953,
+          "relative_mse_vs_train_mean": 0.7691826729253605,
+          "rmse": 0.04691206431825298
+        },
+        "linear_interpolation": {
+          "mae": 0.03476721235013508,
+          "mse": 0.002348358500306891,
+          "mse_improvement_vs_train_mean": 0.1792237118331027,
+          "relative_mse_vs_train_mean": 0.8207762881668973,
+          "rmse": 0.0484598648399569
+        },
+        "pca_missing_10": {
+          "mae": 0.026264248190052582,
+          "mse": 0.0012789522113025394,
+          "mse_improvement_vs_train_mean": 0.5529925909529738,
+          "relative_mse_vs_train_mean": 0.44700740904702624,
+          "rmse": 0.03576244134986507
+        },
+        "pca_missing_25": {
+          "mae": 0.026313183221535644,
+          "mse": 0.0012781171223623185,
+          "mse_improvement_vs_train_mean": 0.5532844634249809,
+          "relative_mse_vs_train_mean": 0.44671553657501906,
+          "rmse": 0.035750763940961015
+        },
+        "pca_missing_5": {
+          "mae": 0.026258541591232643,
+          "mse": 0.0012826041813902768,
+          "mse_improvement_vs_train_mean": 0.5517161885413666,
+          "relative_mse_vs_train_mean": 0.44828381145863333,
+          "rmse": 0.03581346368881788
+        },
+        "train_mean": {
+          "mae": 0.03111472737686144,
+          "mse": 0.002861143205722549,
+          "mse_improvement_vs_train_mean": 0.0,
+          "relative_mse_vs_train_mean": 1.0,
+          "rmse": 0.05348965512809509
+        }
+      }
+    }
+  },
+  "pca_components": [
+    5,
+    10,
+    25
+  ],
+  "repeats": 3,
+  "spectra": 352,
+  "spectrum_input": "xrd_area_norm_scaled_by_1000",
+  "task": "masked_xrd_reconstruction",
+  "theta_points": 3841
+}

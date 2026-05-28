@@ -51,6 +51,18 @@ The first NIST baseline shows that human-label disagreement is structured:
 Interpretation: the phase labels are lossy near structured transition regions, but the
 first pass does not yet prove that raw XRD alone has discovered a better ontology.
 
+The first masked-XRD reconstruction baseline is a better Bitter Lesson-style objective:
+
+- Hide contiguous 2-theta regions and predict them from the remaining XRD signal.
+- PCA missing-data reconstruction improves masked MSE by about 53-56% over train-mean
+  prediction across 64, 256, and 512 point masks.
+- Composition/temperature ridge improves about 20-23%.
+- Linear interpolation helps only for short masks and fails badly as mask width grows.
+
+Interpretation: even a simple low-dimensional raw-XRD basis is functionally useful for
+predicting unseen measurement signal. This is stronger evidence for the raw-measurement
+path than label-disagreement prediction alone.
+
 ## Next Experiment Direction
 
 Move from label-prediction diagnostics to raw measurement objectives:
@@ -85,4 +97,3 @@ Target claim:
 > Raw/event-trained representations become more useful than inherited labels for
 > prediction, compression, retrieval, or search, while inherited labels remain useful as
 > human-facing probes.
-
