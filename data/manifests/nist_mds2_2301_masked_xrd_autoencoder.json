@@ -1,0 +1,100 @@
+{
+  "batch_size": 64,
+  "caveats": [
+    "This is a tiny neural baseline on 352 spectra, so failure to beat PCA is plausible and informative.",
+    "The training objective is masked raw-signal reconstruction; labels are not used.",
+    "The model is evaluated only on held-out masked regions, not full-spectrum reconstruction."
+  ],
+  "created_at": "2026-05-28T06:17:30.594746+00:00",
+  "dataset_id": "nist_mds2_2301",
+  "device": "mps",
+  "dropout": 0.05,
+  "epochs": 120,
+  "hidden_dim": 512,
+  "latent_dim": 64,
+  "learning_rate": 0.001,
+  "mask_width": 256,
+  "observed_loss_weight": 0.05,
+  "pca_components": [
+    5
+  ],
+  "repeats": 3,
+  "splits": {
+    "held_out_temperature": {
+      "composition_temp_ridge": {
+        "mae": 0.02992446590426632,
+        "mse": 0.0024004346753854684,
+        "mse_improvement_vs_train_mean": 0.2037222740266852,
+        "relative_mse_vs_train_mean": 0.7962777259733148,
+        "rmse": 0.04899423104188358
+      },
+      "linear_interpolation": {
+        "mae": 0.044393742887284086,
+        "mse": 0.006390676965353685,
+        "mse_improvement_vs_train_mean": -1.1199300999868744,
+        "relative_mse_vs_train_mean": 2.1199300999868744,
+        "rmse": 0.07994170979753738
+      },
+      "masked_mlp_autoencoder": {
+        "mae": 0.03039435595873687,
+        "mse": 0.002443771372093055,
+        "mse_improvement_vs_train_mean": 0.18934652505948157,
+        "relative_mse_vs_train_mean": 0.8106534749405184,
+        "rmse": 0.04943451599938099
+      },
+      "pca_missing_5": {
+        "mae": 0.026951166443089307,
+        "mse": 0.0014090009898140895,
+        "mse_improvement_vs_train_mean": 0.5326029424720145,
+        "relative_mse_vs_train_mean": 0.4673970575279855,
+        "rmse": 0.03753666194288045
+      },
+      "train_mean": {
+        "mae": 0.03232746435484538,
+        "mse": 0.003014569662175773,
+        "mse_improvement_vs_train_mean": 0.0,
+        "relative_mse_vs_train_mean": 1.0,
+        "rmse": 0.05490509686883152
+      }
+    },
+    "random_kfold": {
+      "composition_temp_ridge": {
+        "mae": 0.02992303173982002,
+        "mse": 0.002410412431620926,
+        "mse_improvement_vs_train_mean": 0.2016585489816537,
+        "relative_mse_vs_train_mean": 0.7983414510183463,
+        "rmse": 0.04909595127524189
+      },
+      "linear_interpolation": {
+        "mae": 0.04439374288728415,
+        "mse": 0.006390676965353677,
+        "mse_improvement_vs_train_mean": -1.1166262895844268,
+        "relative_mse_vs_train_mean": 2.116626289584427,
+        "rmse": 0.07994170979753734
+      },
+      "masked_mlp_autoencoder": {
+        "mae": 0.031543026410156126,
+        "mse": 0.0028030989595649635,
+        "mse_improvement_vs_train_mean": 0.0715986769026743,
+        "relative_mse_vs_train_mean": 0.9284013230973257,
+        "rmse": 0.05294430053900952
+      },
+      "pca_missing_5": {
+        "mae": 0.026897969060386953,
+        "mse": 0.001376116795213558,
+        "mse_improvement_vs_train_mean": 0.544222779201845,
+        "relative_mse_vs_train_mean": 0.4557772207981549,
+        "rmse": 0.03709604824254947
+      },
+      "train_mean": {
+        "mae": 0.03233444723688687,
+        "mse": 0.0030192750589941916,
+        "mse_improvement_vs_train_mean": 0.0,
+        "relative_mse_vs_train_mean": 1.0,
+        "rmse": 0.054947930434131834
+      }
+    }
+  },
+  "task": "masked_xrd_autoencoder_reconstruction",
+  "weight_decay": 0.0001
+}

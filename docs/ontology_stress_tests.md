@@ -96,3 +96,23 @@ and train-mean prediction.
 This does not mean PCA is the final model. It gives the minimum bar for future
 self-supervised encoders: they must beat PCA missing-data reconstruction on held-out
 raw-signal prediction before their latent spaces deserve much interpretation.
+
+## Initial Masked Autoencoder
+
+Generated with:
+
+```bash
+python3 scripts/run_xrd_autoencoder.py nist_mds2_2301 --mask-width 256 --repeats 3 --epochs 120 --pca-components 5 --device auto --observed-loss-weight 0.05
+```
+
+Result:
+
+| Split | Metadata ridge MSE improvement | PCA missing-data MSE improvement | Masked MLP autoencoder MSE improvement |
+| --- | ---: | ---: | ---: |
+| Random folds | 20.2% | 54.4% | 7.2% |
+| Held-out temperature | 20.4% | 53.3% | 18.9% |
+
+A same-data sanity check with longer training also barely improved over train-mean
+prediction. So the correct lesson is not "neural methods are bad"; it is that this
+small MLP is a poor imputer for 352 spectra. PCA remains the small-data baseline future
+self-supervised models must beat.

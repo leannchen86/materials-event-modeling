@@ -63,6 +63,18 @@ Interpretation: even a simple low-dimensional raw-XRD basis is functionally usef
 predicting unseen measurement signal. This is stronger evidence for the raw-measurement
 path than label-disagreement prediction alone.
 
+The first neural attempt was intentionally small and did not beat PCA:
+
+- A masked MLP autoencoder trained only on NIST reaches about 7% MSE improvement on
+  random folds and 19% on held-out-temperature folds for 256-point masks.
+- PCA missing-data reconstruction reaches about 54% and 53% on the same masks/splits.
+- A same-data sanity check showed the MLP barely improves over train-mean reconstruction,
+  so this is an architecture/training failure, not a deep result against neural methods.
+
+Interpretation: NIST is too small for this naive MLP to learn robust imputation. Treat PCA
+as the small-data floor. Neural scaling should probably wait for opXRD pretraining or a
+more data-efficient architecture/objective.
+
 ## Next Experiment Direction
 
 Move from label-prediction diagnostics to raw measurement objectives:
