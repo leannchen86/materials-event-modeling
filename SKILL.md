@@ -285,6 +285,15 @@ about 44% with six. Interpretation: for a real pilot, do not merely ask for fina
 files. Ask whether each planned condition or event can have at least 3-4 deliberately
 covered partial observations, and preferably 6-8 if feasible.
 
+The first real-data-style Track B event-analysis harness is now in place. On a 48-event
+synthetic bundle, held-out-plan prediction reproduced the event-over-label signal:
+planned conditions improved held-out spectrum MSE by about 63.7% versus train mean, while
+label-only improved about 19.3%. The harness also flagged provenance leakage: raw spectral
+PCA predicted synthetic operator at about 89.6% accuracy and reagent lot at about 75.0%.
+Interpretation: always report random-event, held-out-plan, and held-out-batch/session
+splits, and always audit whether raw embeddings encode operator, reagent lot, instrument,
+or export artifacts.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
