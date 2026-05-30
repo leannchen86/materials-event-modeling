@@ -79,6 +79,42 @@ class SyntheticTrackBDataset:
     theta: np.ndarray
 
 
+def provenance_for_group(
+    *,
+    group_idx: int,
+    replicate_idx: int,
+    n_groups: int,
+    assignment_mode: str,
+    rng: np.random.Generator,
+) -> tuple[str, str, str]:
+    """Assign synthetic provenance fields for a planned condition/replicate."""
+
+    operators = ["operator_a", "operator_b"]
+    reagent_lots = ["lot_A", "lot_B", "lot_C"]
+
+    if assignment_mode == "random_group":
+        batch_id = f"synthetic_batch_{1 + group_idx // 8:02d}"
+        operator_id = str(rng.choice(operators))
+        reagent_lot = str(rng.choice(reagent_lots))
+    elif assignment_mode == "confounded_operator":
+        regime_idx = group_idx % len(REGIMES)
+        batch_id = f"synthetic_batch_{1 + int(regime_idx >= len(REGIMES) // 2):02d}"
+        operator_id = operators[int(regime_idx >= len(REGIMES) // 2)]
+        reagent_lot = reagent_lots[regime_idx % len(reagent_lots)]
+    elif assignment_mode == "balanced_replicate":
+        batch_id = f"synthetic_batch_{1 + (group_idx + replicate_idx) % 4:02d}"
+        operator_id = operators[(group_idx + replicate_idx) % len(operators)]
+        reagent_lot = reagent_lots[(group_idx + 2 * replicate_idx) % len(reagent_lots)]
+    elif assignment_mode == "balanced_plan":
+        batch_id = f"synthetic_batch_{1 + group_idx % 4:02d}"
+        operator_id = operators[group_idx % len(operators)]
+        reagent_lot = reagent_lots[group_idx % len(reagent_lots)]
+    else:
+        raise ValueError(f"unknown provenance assignment mode: {assignment_mode}")
+
+    return batch_id, operator_id, reagent_lot
+
+
 def gaussian_grid(theta: np.ndarray, center: float, width: float) -> np.ndarray:
     return np.exp(-0.5 * ((theta - center) / width) ** 2)
 
@@ -144,6 +180,7 @@ def generate_synthetic_track_b(
     replicates_per_group: int = 3,
     n_theta: int = 512,
     seed: int = 17,
+    provenance_assignment: str = "random_group",
 ) -> SyntheticTrackBDataset:
     rng = np.random.default_rng(seed)
     theta = np.linspace(15.0, 60.0, n_theta, dtype=np.float32)
@@ -156,16 +193,20 @@ def generate_synthetic_track_b(
     for group_idx in range(n_groups):
         regime = REGIMES[group_idx % len(REGIMES)]
         center = REGIME_PROCESS_CENTERS[regime]
-        batch_id = f"synthetic_batch_{1 + group_idx // 8:02d}"
         plan_id = f"synthetic_plan_{group_idx:03d}"
         base_temperature = center["temperature"] + float(rng.normal(0.0, 1.2))
         base_aging = center["aging"] + float(rng.normal(0.0, 12.0))
         base_mixing = center["mixing"] + float(rng.normal(0.0, 0.04))
         base_additive = center["additive"] + float(rng.normal(0.0, 0.04))
-        operator_id = str(rng.choice(["operator_a", "operator_b"]))
-        reagent_lot = str(rng.choice(["lot_A", "lot_B", "lot_C"]))
 
         for replicate_idx in range(replicates_per_group):
+            batch_id, operator_id, reagent_lot = provenance_for_group(
+                group_idx=group_idx,
+                replicate_idx=replicate_idx,
+                n_groups=n_groups,
+                assignment_mode=provenance_assignment,
+                rng=rng,
+            )
             event_idx = group_idx * replicates_per_group + replicate_idx
             event_id = f"synthetic_cc_{event_idx:04d}"
             temperature = base_temperature + float(rng.normal(0.0, 1.0))

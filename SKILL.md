@@ -306,6 +306,16 @@ shortcut exists, but they can expose bad pilot design. Real experiments should
 counterbalance operator, reagent lot, batch, and instrument session across planned
 conditions whenever possible.
 
+The counterbalanced-pilot stress test compared provenance assignment strategies for the
+48-event design. Deliberately confounded and plan-level "balanced" assignments collapsed
+on held-out-operator/provenance splits, even though held-out-plan performance stayed high.
+Replicate-level counterbalancing was robust: held-out-plan, held-out-operator, and
+held-out-provenance-combo full-event prediction all stayed around 65% MSE improvement,
+and provenance-residualized combo prediction stayed around 59%. Interpretation: the lab
+ask should be `16 planned conditions x 3 replicates`, with each planned condition's
+replicates distributed across available provenance axes such as operator, session, lot,
+batch, run order, or measurement day. Counts alone are not enough.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on

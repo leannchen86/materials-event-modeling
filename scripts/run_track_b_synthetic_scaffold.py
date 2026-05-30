@@ -23,6 +23,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         replicates_per_group=args.replicates_per_group,
         n_theta=args.theta_points,
         seed=args.seed,
+        provenance_assignment=args.provenance_assignment,
     )
     evaluation = evaluate_synthetic_track_b(dataset.event_table, dataset.spectra)
     result = {
@@ -31,6 +32,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "seed": args.seed,
         "groups": args.groups,
         "replicates_per_group": args.replicates_per_group,
+        "provenance_assignment": args.provenance_assignment,
         "theta_points": args.theta_points,
         "hypotheses": [
             "Observed-trajectory or full-event features should predict held-out synthetic spectra better than label-only features.",
@@ -69,6 +71,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--replicates-per-group", type=int, default=3)
     parser.add_argument("--theta-points", type=int, default=512)
     parser.add_argument("--seed", type=int, default=17)
+    parser.add_argument(
+        "--provenance-assignment",
+        choices=[
+            "random_group",
+            "confounded_operator",
+            "balanced_plan",
+            "balanced_replicate",
+        ],
+        default="random_group",
+    )
     parser.add_argument(
         "--output",
         type=Path,

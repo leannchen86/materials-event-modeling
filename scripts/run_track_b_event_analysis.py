@@ -597,11 +597,14 @@ def provenance_audit(table: pd.DataFrame, spectra: np.ndarray, *, seed: int) -> 
     return results
 
 
-def run(args: argparse.Namespace) -> dict[str, Any]:
-    bundle_path = project_root() / args.bundle
-    events, table, spectra, theta = load_bundle(bundle_path)
+def prepare_table_for_analysis(
+    table: pd.DataFrame,
+    spectra: np.ndarray,
+    *,
+    include_only_raw_objective: bool,
+) -> tuple[pd.DataFrame, np.ndarray]:
     table = table.copy()
-    if args.include_only_raw_objective and "include_in_raw_objective" in table:
+    if include_only_raw_objective and "include_in_raw_objective" in table:
         keep = table["include_in_raw_objective"].fillna(True).astype(bool).to_numpy()
         table = table.loc[keep].reset_index(drop=True)
         spectra = spectra[keep]
@@ -611,11 +614,28 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     table["provenance_combo"] = table[PROVENANCE_COLUMNS].fillna("missing").astype(str).agg(
         "|".join, axis=1
     )
+    return table, spectra
 
-    result = {
+
+def analyze_table(
+    *,
+    events: list[dict[str, Any]],
+    table: pd.DataFrame,
+    spectra: np.ndarray,
+    theta: np.ndarray | None,
+    seed: int,
+    include_only_raw_objective: bool,
+    bundle_name: str,
+) -> dict[str, Any]:
+    table, spectra = prepare_table_for_analysis(
+        table,
+        spectra,
+        include_only_raw_objective=include_only_raw_objective,
+    )
+    return {
         "created_at": datetime.now(timezone.utc).isoformat(),
         "task": "track_b_event_analysis_harness",
-        "bundle": str(args.bundle),
+        "bundle": bundle_name,
         "event_count": int(len(table)),
         "theta_points": int(len(theta)) if theta is not None else None,
         "hypotheses": [
@@ -626,17 +646,31 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         ],
         "schema_audit": schema_audit(events),
         "missingness_audit": missingness_audit(table),
-        "prediction_audit": prediction_audit(table, spectra, seed=args.seed),
-        "provenance_ablation_audit": provenance_ablation_audit(table, spectra, seed=args.seed),
+        "prediction_audit": prediction_audit(table, spectra, seed=seed),
+        "provenance_ablation_audit": provenance_ablation_audit(table, spectra, seed=seed),
         "retrieval_audit": retrieval_audit(table, spectra),
         "label_audit": label_audit(table, spectra),
-        "provenance_audit": provenance_audit(table, spectra, seed=args.seed),
+        "provenance_audit": provenance_audit(table, spectra, seed=seed),
         "caveats": [
             "The current run may use synthetic data; synthetic hidden regimes are not chemistry evidence.",
             "Random-event splits can leak replicate or batch context and must not be the main paper claim.",
             "Held-out-plan and held-out-batch splits are stricter checks, not nuisances to hide.",
         ],
     }
+
+
+def run(args: argparse.Namespace) -> dict[str, Any]:
+    bundle_path = project_root() / args.bundle
+    events, table, spectra, theta = load_bundle(bundle_path)
+    result = analyze_table(
+        events=events,
+        table=table,
+        spectra=spectra,
+        theta=theta,
+        seed=args.seed,
+        include_only_raw_objective=args.include_only_raw_objective,
+        bundle_name=str(args.bundle),
+    )
 
     output_path = project_root() / args.output
     output_path.parent.mkdir(parents=True, exist_ok=True)
