@@ -316,6 +316,16 @@ ask should be `16 planned conditions x 3 replicates`, with each planned conditio
 replicates distributed across available provenance axes such as operator, session, lot,
 batch, run order, or measurement day. Counts alone are not enough.
 
+The first active event-learning loop is in place. It does not use phase/failure labels:
+it starts from partial raw event observations, chooses the next observation, and is scored
+by missing raw-measurement reconstruction. The first heuristic active policies beat random
+at tiny budgets but do not beat static space-filling after budget 3; they over-focus on
+high-disagreement regions and lose coverage. The oracle-best policy is much stronger,
+reaching about 72% improvement versus global mean at budget 8 versus about 66% for
+space-filling and 26% for the active heuristic. Interpretation: this is a productive
+failure. The next active-loop step should learn an acquisition policy from prior fully
+observed events, rather than hand-tuning a heuristic.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
