@@ -40,7 +40,13 @@ FEATURE_VIEWS = {
     "observed_trajectory": {"numeric": OBSERVED_TRAJECTORY_COLUMNS, "categorical": []},
     "full_event": {"numeric": FULL_EVENT_COLUMNS, "categorical": []},
     "provenance_only": {"numeric": [], "categorical": ["batch_id", "operator_id", "reagent_lot"]},
+    "full_event_plus_provenance": {
+        "numeric": FULL_EVENT_COLUMNS,
+        "categorical": ["batch_id", "operator_id", "reagent_lot"],
+    },
 }
+
+PROVENANCE_COLUMNS = ["batch_id", "operator_id", "reagent_lot"]
 
 
 def project_root() -> Path:
@@ -244,6 +250,9 @@ def prediction_audit(table: pd.DataFrame, spectra: np.ndarray, *, seed: int) -> 
         "random_event": None,
         "heldout_plan": "replicate_group",
         "heldout_batch": "batch_id",
+        "heldout_operator": "operator_id",
+        "heldout_reagent_lot": "reagent_lot",
+        "heldout_provenance_combo": "provenance_combo",
     }
     results: dict[str, Any] = {}
     for split_name, group_column in split_specs.items():
@@ -273,6 +282,188 @@ def prediction_audit(table: pd.DataFrame, spectra: np.ndarray, *, seed: int) -> 
             "group_column": group_column,
             "feature_views": split_results,
         }
+    return results
+
+
+def residualized_prediction_for_view(
+    table: pd.DataFrame,
+    spectra: np.ndarray,
+    *,
+    numeric_columns: list[str],
+    categorical_columns: list[str],
+    provenance_columns: list[str],
+    splits: list[tuple[np.ndarray, np.ndarray]],
+) -> dict[str, float] | None:
+    numeric_columns = available_columns(table, numeric_columns)
+    categorical_columns = available_columns(table, categorical_columns)
+    provenance_columns = available_columns(table, provenance_columns)
+    if (not numeric_columns and not categorical_columns) or not provenance_columns:
+        return None
+
+    feature_table = table[numeric_columns + categorical_columns].copy()
+    provenance_table = table[provenance_columns].copy()
+    train_mean_errors = []
+    model_errors = []
+
+    for train_idx, test_idx in splits:
+        provenance_model = make_pipeline(
+            build_preprocessor([], provenance_columns),
+            Ridge(alpha=10.0),
+        )
+        provenance_model.fit(provenance_table.iloc[train_idx], spectra[train_idx])
+        train_residual = spectra[train_idx] - provenance_model.predict(
+            provenance_table.iloc[train_idx]
+        )
+        test_residual = spectra[test_idx] - provenance_model.predict(provenance_table.iloc[test_idx])
+
+        train_mean = train_residual.mean(axis=0)
+        residual_model = make_pipeline(
+            build_preprocessor(numeric_columns, categorical_columns),
+            Ridge(alpha=10.0),
+        )
+        residual_model.fit(feature_table.iloc[train_idx], train_residual)
+        prediction = residual_model.predict(feature_table.iloc[test_idx])
+        train_mean_prediction = np.tile(train_mean, (len(test_idx), 1))
+        train_mean_errors.append(mean_squared_error(test_residual, train_mean_prediction))
+        model_errors.append(mean_squared_error(test_residual, prediction))
+
+    train_mean_mse = float(np.mean(train_mean_errors))
+    model_mse = float(np.mean(model_errors))
+    return {
+        "mse": model_mse,
+        "residual_train_mean_mse": train_mean_mse,
+        "mse_improvement_vs_residual_train_mean": 1.0 - (model_mse / train_mean_mse),
+    }
+
+
+def shuffle_view_within_provenance(
+    table: pd.DataFrame,
+    *,
+    numeric_columns: list[str],
+    categorical_columns: list[str],
+    rng: np.random.Generator,
+) -> pd.DataFrame:
+    columns = available_columns(table, numeric_columns + categorical_columns)
+    group_columns = available_columns(table, PROVENANCE_COLUMNS)
+    shuffled = table.copy()
+    if not columns or not group_columns:
+        return shuffled
+
+    group_keys = table[group_columns].fillna("missing").astype(str).agg("|".join, axis=1)
+    for _, index in group_keys.groupby(group_keys).groups.items():
+        labels = list(index)
+        if len(labels) <= 1:
+            continue
+        permutation = rng.permutation(labels)
+        shuffled.loc[labels, columns] = table.loc[permutation, columns].to_numpy()
+    return shuffled
+
+
+def provenance_ablation_audit(
+    table: pd.DataFrame,
+    spectra: np.ndarray,
+    *,
+    seed: int,
+    permutation_repeats: int = 20,
+) -> dict[str, Any]:
+    split_specs = {
+        "heldout_plan": "replicate_group",
+        "heldout_batch": "batch_id",
+        "heldout_operator": "operator_id",
+        "heldout_reagent_lot": "reagent_lot",
+        "heldout_provenance_combo": "provenance_combo",
+    }
+    views_to_test = [
+        "label_only",
+        "planned_conditions",
+        "observed_trajectory",
+        "full_event",
+        "provenance_only",
+        "full_event_plus_provenance",
+    ]
+    results: dict[str, Any] = {}
+    for split_name, group_column in split_specs.items():
+        splits = split_indices(
+            table,
+            split_name=split_name,
+            group_column=group_column,
+            n_splits=4,
+            seed=seed,
+        )
+        if not splits:
+            results[split_name] = {"skipped": f"not enough groups for {group_column}"}
+            continue
+
+        original = {}
+        residualized = {}
+        for view in views_to_test:
+            columns = FEATURE_VIEWS[view]
+            original_result = spectrum_prediction_for_view(
+                table,
+                spectra,
+                numeric_columns=columns["numeric"],
+                categorical_columns=columns["categorical"],
+                splits=splits,
+            )
+            if original_result is not None:
+                original[view] = original_result
+
+            if view not in {"provenance_only", "full_event_plus_provenance"}:
+                residualized_result = residualized_prediction_for_view(
+                    table,
+                    spectra,
+                    numeric_columns=columns["numeric"],
+                    categorical_columns=columns["categorical"],
+                    provenance_columns=PROVENANCE_COLUMNS,
+                    splits=splits,
+                )
+                if residualized_result is not None:
+                    residualized[view] = residualized_result
+
+        results[split_name] = {
+            "fold_count": len(splits),
+            "group_column": group_column,
+            "original_prediction": original,
+            "target_residualized_against_provenance": residualized,
+        }
+
+    rng = np.random.default_rng(seed + 5000)
+    heldout_plan_splits = split_indices(
+        table,
+        split_name="heldout_plan",
+        group_column="replicate_group",
+        n_splits=4,
+        seed=seed,
+    )
+    permutation_results = {}
+    if heldout_plan_splits:
+        for view in ["planned_conditions", "observed_trajectory", "full_event"]:
+            columns = FEATURE_VIEWS[view]
+            improvements = []
+            for _ in range(permutation_repeats):
+                shuffled = shuffle_view_within_provenance(
+                    table,
+                    numeric_columns=columns["numeric"],
+                    categorical_columns=columns["categorical"],
+                    rng=rng,
+                )
+                shuffled_result = spectrum_prediction_for_view(
+                    shuffled,
+                    spectra,
+                    numeric_columns=columns["numeric"],
+                    categorical_columns=columns["categorical"],
+                    splits=heldout_plan_splits,
+                )
+                if shuffled_result is not None:
+                    improvements.append(shuffled_result["mse_improvement_vs_train_mean"])
+            if improvements:
+                permutation_results[view] = {
+                    "repeat_count": len(improvements),
+                    "mean_mse_improvement_vs_train_mean": float(np.mean(improvements)),
+                    "std_mse_improvement_vs_train_mean": float(np.std(improvements)),
+                    "note": "Feature rows were shuffled within provenance groups while spectra stayed fixed.",
+                }
+    results["within_provenance_feature_shuffle_on_heldout_plan"] = permutation_results
     return results
 
 
@@ -414,6 +605,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         keep = table["include_in_raw_objective"].fillna(True).astype(bool).to_numpy()
         table = table.loc[keep].reset_index(drop=True)
         spectra = spectra[keep]
+    for column in PROVENANCE_COLUMNS:
+        if column not in table:
+            table[column] = "missing"
+    table["provenance_combo"] = table[PROVENANCE_COLUMNS].fillna("missing").astype(str).agg(
+        "|".join, axis=1
+    )
 
     result = {
         "created_at": datetime.now(timezone.utc).isoformat(),
@@ -430,6 +627,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "schema_audit": schema_audit(events),
         "missingness_audit": missingness_audit(table),
         "prediction_audit": prediction_audit(table, spectra, seed=args.seed),
+        "provenance_ablation_audit": provenance_ablation_audit(table, spectra, seed=args.seed),
         "retrieval_audit": retrieval_audit(table, spectra),
         "label_audit": label_audit(table, spectra),
         "provenance_audit": provenance_audit(table, spectra, seed=args.seed),

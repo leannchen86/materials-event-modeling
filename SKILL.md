@@ -294,6 +294,18 @@ Interpretation: always report random-event, held-out-plan, and held-out-batch/se
 splits, and always audit whether raw embeddings encode operator, reagent lot, instrument,
 or export artifacts.
 
+The first provenance-ablation run adds shortcut tests to the harness. On the 48-event
+synthetic bundle, event/process features remained strong after provenance residualization:
+under held-out-plan splits, planned features improved residual-spectrum MSE by about 52.6%
+while label-only improved about 14.7%. Shuffling event features within provenance groups
+dropped held-out-plan gains from about 59-64% to about 12-15%, showing the synthetic signal
+is not explained only by provenance group membership. But held-out-operator splits
+collapsed for planned/full-event features because only two synthetic operators were
+confounded with planned-condition coverage. Interpretation: ablations cannot prove no
+shortcut exists, but they can expose bad pilot design. Real experiments should
+counterbalance operator, reagent lot, batch, and instrument session across planned
+conditions whenever possible.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
