@@ -267,6 +267,15 @@ conditions retrieve replicates perfectly; and legacy labels split across multipl
 regimes. Design rule: real Track B data should separate planned condition fields from
 observed trajectory fields.
 
+The Track B pilot-size stress test adds a practical design constraint. Across five
+synthetic seeds, 12- and 24-event replicated pilots had useful replicate retrieval but did
+not beat label-only prediction on held-out spectra, because they covered too few planned
+conditions. The first healthy region was around 48 events with replicate structure:
+`16 planned conditions x 3 replicates` gave the best event-over-label gain among tested
+48-event designs, while 48 one-shot samples could not test replicate retrieval at all.
+Interpretation: use 12-24 events for schema debugging only; ask for roughly 48 events as
+the first serious pilot, and 96 if resources allow.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
