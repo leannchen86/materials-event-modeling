@@ -326,6 +326,15 @@ space-filling and 26% for the active heuristic. Interpretation: this is a produc
 failure. The next active-loop step should learn an acquisition policy from prior fully
 observed events, rather than hand-tuning a heuristic.
 
+The first learned active policy validates the feedback-loop direction. A
+RandomForestRegressor trained on completed synthetic events predicts oracle one-step
+reconstruction improvement from candidate/state features. It improves oracle-target MSE by
+about 59-63% versus a train-mean target baseline. On held-out events, it beats random,
+naive active, and static space-filling at budgets 4, 6, and 8, reaching about 71.9%
+improvement versus global mean at budget 8 versus 67.9% for space-filling and 74.5% for
+oracle. Interpretation: this is the first learned event-feedback win. The next step can be
+a learned event-state encoder plus acquisition head, but only if it beats the forest.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
