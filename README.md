@@ -28,6 +28,9 @@ Do not turn opXRD or NIST into a leaderboard. The near-term milestone is to use 
 data only long enough to design Track B: a small controlled event dataset with raw process
 logs, raw measurements, negative/ambiguous outcomes, and later human labels as probes.
 
+Current Track A publication-positioning critique:
+[docs/track_a_publication_assessment.md](docs/track_a_publication_assessment.md)
+
 ## Layout
 
 ```text
