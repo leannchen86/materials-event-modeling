@@ -1,0 +1,3519 @@
+{
+  "caveats": [
+    "The field coordinates are synthetic proxies for time, spatial position, vial position, or another partial-observation axis.",
+    "This test informs pilot design only; it is not evidence about real material-making events.",
+    "A real lab pilot must define which partial-observation axis is practical: time points, positions, vials, or modalities."
+  ],
+  "compact_budget_summary": [
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": -0.3491777050547731,
+      "model": "event_mean",
+      "mse_mean": 0.01754521285110968,
+      "observed_count": 1,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": -0.3491777050547731,
+      "model": "idw_all",
+      "mse_mean": 0.01754521285110968,
+      "observed_count": 1,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": -0.3491777050547731,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.01754521285110968,
+      "observed_count": 1,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": -0.02383631064233869,
+      "model": "event_mean",
+      "mse_mean": 0.013152024316756675,
+      "observed_count": 2,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.08731411977049693,
+      "improvement_vs_global_mean_mean": 0.06541231744615805,
+      "model": "idw_all",
+      "mse_mean": 0.012004759743528364,
+      "observed_count": 2,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.010975815454816984,
+      "improvement_vs_global_mean_mean": -0.03480474764069104,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.013294258805884359,
+      "observed_count": 2,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": 0.08219091608920281,
+      "model": "event_mean",
+      "mse_mean": 0.011711484759143787,
+      "observed_count": 3,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.15902459479426803,
+      "improvement_vs_global_mean_mean": 0.2280966680717486,
+      "model": "idw_all",
+      "mse_mean": 0.00984906556320008,
+      "observed_count": 3,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.04065783377004824,
+      "improvement_vs_global_mean_mean": 0.11940684980645004,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.011235676002615946,
+      "observed_count": 3,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": 0.13062703372745021,
+      "model": "event_mean",
+      "mse_mean": 0.010995637393595341,
+      "observed_count": 4,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.2248730277145235,
+      "improvement_vs_global_mean_mean": 0.3260780675131401,
+      "model": "idw_all",
+      "mse_mean": 0.008523273702545946,
+      "observed_count": 4,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.11267241735751551,
+      "improvement_vs_global_mean_mean": 0.22850765885602903,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.00975534736304932,
+      "observed_count": 4,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": 0.19470660178996424,
+      "model": "event_mean",
+      "mse_mean": 0.010249685849218319,
+      "observed_count": 6,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.29573748297104574,
+      "improvement_vs_global_mean_mean": 0.43288912002438185,
+      "model": "idw_all",
+      "mse_mean": 0.007218144573926111,
+      "observed_count": 6,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.17885881425060546,
+      "improvement_vs_global_mean_mean": 0.33877166240479895,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.008414958498300014,
+      "observed_count": 6,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": 0.21528279094724043,
+      "model": "event_mean",
+      "mse_mean": 0.010011480232181688,
+      "observed_count": 8,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.3467869697126784,
+      "improvement_vs_global_mean_mean": 0.4873640264622214,
+      "model": "idw_all",
+      "mse_mean": 0.00653985715792563,
+      "observed_count": 8,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.2181451153082526,
+      "improvement_vs_global_mean_mean": 0.3864234321304327,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.00782697222778855,
+      "observed_count": 8,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": 0.020260507125539305,
+      "model": "event_mean",
+      "mse_mean": 0.014971290032068887,
+      "observed_count": 1,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": 0.020260507125539305,
+      "model": "idw_all",
+      "mse_mean": 0.014971290032068887,
+      "observed_count": 1,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": 0.020260507125539305,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.014971290032068887,
+      "observed_count": 1,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": 0.23330772285046164,
+      "model": "event_mean",
+      "mse_mean": 0.009965535963419824,
+      "observed_count": 2,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.14879871885349177,
+      "improvement_vs_global_mean_mean": 0.3473797183885072,
+      "model": "idw_all",
+      "mse_mean": 0.008482530348313352,
+      "observed_count": 2,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.07582406809441436,
+      "improvement_vs_global_mean_mean": 0.17514121813240252,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.010720896037916343,
+      "observed_count": 2,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": 0.17947989877723328,
+      "model": "event_mean",
+      "mse_mean": 0.011629035125952213,
+      "observed_count": 3,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.3277589494750684,
+      "improvement_vs_global_mean_mean": 0.44841437395439776,
+      "model": "idw_all",
+      "mse_mean": 0.00781713338025535,
+      "observed_count": 3,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.3252157697794327,
+      "improvement_vs_global_mean_mean": 0.4463141251379189,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.007846194992695624,
+      "observed_count": 3,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": 0.3283331988744684,
+      "model": "event_mean",
+      "mse_mean": 0.00827292290632613,
+      "observed_count": 4,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.336676123054206,
+      "improvement_vs_global_mean_mean": 0.5544752402343837,
+      "model": "idw_all",
+      "mse_mean": 0.005487312844100719,
+      "observed_count": 4,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.05840404394377232,
+      "improvement_vs_global_mean_mean": 0.3675655472583188,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.00778936975208732,
+      "observed_count": 4,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": 0.3809850133757933,
+      "model": "event_mean",
+      "mse_mean": 0.007338065711276915,
+      "observed_count": 6,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.44202841624452366,
+      "improvement_vs_global_mean_mean": 0.65460251160172,
+      "model": "idw_all",
+      "mse_mean": 0.004094138971413487,
+      "observed_count": 6,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.1126499330752865,
+      "improvement_vs_global_mean_mean": 0.45075601533158693,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.006509549089241773,
+      "observed_count": 6,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_global_mean_mean": 0.46353981947728046,
+      "model": "event_mean",
+      "mse_mean": 0.007035124920851862,
+      "observed_count": 8,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.40743105747882274,
+      "improvement_vs_global_mean_mean": 0.6821066137810814,
+      "model": "idw_all",
+      "mse_mean": 0.0041687101989130795,
+      "observed_count": 8,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.42761525689297947,
+      "improvement_vs_global_mean_mean": 0.6929366031982936,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.0040260934367931135,
+      "observed_count": 8,
+      "strategy": "space_filling"
+    }
+  ],
+  "created_at": "2026-05-30T08:36:25.865006+00:00",
+  "events": 24,
+  "hypotheses": [
+    "Event-local observations should predict held-out observations better than a global mean.",
+    "Inverse-distance field reconstruction should improve over a flat event mean once enough observations are available.",
+    "Space-filling observation should be more stable than random observation at small budgets."
+  ],
+  "observations_per_event": 12,
+  "observed_counts": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    8
+  ],
+  "random_repeats": 8,
+  "rows": [
+    {
+      "improvement_vs_event_mean": 0.25822525878572355,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01272839650240106,
+      "observed_count": 1,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.3481181609972481,
+      "model": "event_mean",
+      "mse": 0.01715938248526072,
+      "observed_count": 1,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.3481181609972481,
+      "model": "nearest_neighbor",
+      "mse": 0.01715938248526072,
+      "observed_count": 1,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.3481181609972481,
+      "model": "idw_all",
+      "mse": 0.01715938248526072,
+      "observed_count": 1,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.01347897105390694,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.014889128098729998,
+      "observed_count": 1,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.013299704718974348,
+      "model": "event_mean",
+      "mse": 0.014691107091493905,
+      "observed_count": 1,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.013299704718974348,
+      "model": "nearest_neighbor",
+      "mse": 0.014691107091493905,
+      "observed_count": 1,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.013299704718974348,
+      "model": "idw_all",
+      "mse": 0.014691107091493905,
+      "observed_count": 1,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.07539083066755115,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012465153694696104,
+      "observed_count": 2,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.0815380521501663,
+      "model": "event_mean",
+      "mse": 0.013481538046714073,
+      "observed_count": 2,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.006288454282960321,
+      "improvement_vs_global_mean": -0.074736849553938,
+      "model": "nearest_neighbor",
+      "mse": 0.013396760011043321,
+      "observed_count": 2,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.07962094043932577,
+      "improvement_vs_global_mean": 0.004575024682946571,
+      "model": "idw_all",
+      "mse": 0.012408125308866147,
+      "observed_count": 2,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.2952168447945289,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01266943426647534,
+      "observed_count": 2,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.22792850940829268,
+      "model": "event_mean",
+      "mse": 0.00978170899907127,
+      "observed_count": 2,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.08094604754763202,
+      "improvement_vs_global_mean": 0.1654323738206852,
+      "model": "nearest_neighbor",
+      "mse": 0.010573499680807194,
+      "observed_count": 2,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.14542101891021164,
+      "improvement_vs_global_mean": 0.3402039322416647,
+      "model": "idw_all",
+      "mse": 0.00835924290974314,
+      "observed_count": 2,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.057179492072797045,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012321866059210151,
+      "observed_count": 3,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.05408683435646866,
+      "model": "event_mean",
+      "mse": 0.01165541533070306,
+      "observed_count": 3,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.03230741262488279,
+      "improvement_vs_global_mean": 0.08464684130622335,
+      "model": "nearest_neighbor",
+      "mse": 0.01127885901829965,
+      "observed_count": 3,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.15250286875801977,
+      "improvement_vs_global_mean": 0.19834130571308706,
+      "model": "idw_all",
+      "mse": 0.00987793105620464,
+      "observed_count": 3,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.13042778228847263,
+      "improvement_vs_global_mean": 0.17746019078882302,
+      "model": "coordinate_ridge",
+      "mse": 0.010135225357468395,
+      "observed_count": 3,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.21093620705368843,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.013769593943531314,
+      "observed_count": 3,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.17419266665327837,
+      "model": "event_mean",
+      "mse": 0.011371031655774763,
+      "observed_count": 3,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.31602622972922323,
+      "improvement_vs_global_mean": 0.43516944469358665,
+      "model": "nearest_neighbor",
+      "mse": 0.007777487393468618,
+      "observed_count": 3,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.32370248803946644,
+      "improvement_vs_global_mean": 0.4415085550988491,
+      "model": "idw_all",
+      "mse": 0.007690200417224939,
+      "observed_count": 3,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4149416726581475,
+      "improvement_vs_global_mean": 0.5168545428455315,
+      "model": "coordinate_ridge",
+      "mse": 0.006652716760678838,
+      "observed_count": 3,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.1580923029490393,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012454867156823942,
+      "observed_count": 4,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.13651096941622287,
+      "model": "event_mean",
+      "mse": 0.010754641167295631,
+      "observed_count": 4,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.08771158361094333,
+      "improvement_vs_global_mean": 0.21224895971940427,
+      "model": "nearest_neighbor",
+      "mse": 0.009811334559344687,
+      "observed_count": 4,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.22033379046160873,
+      "improvement_vs_global_mean": 0.32676678054676644,
+      "model": "idw_all",
+      "mse": 0.008385030313850924,
+      "observed_count": 4,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.31341040515701135,
+      "improvement_vs_global_mean": 0.40713741634011935,
+      "model": "coordinate_ridge",
+      "mse": 0.007384024721735234,
+      "observed_count": 4,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.4776668841521079,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012121560983359814,
+      "observed_count": 4,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.32325748737760707,
+      "model": "event_mean",
+      "mse": 0.008203175636784485,
+      "observed_count": 4,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.05202772058677774,
+      "improvement_vs_global_mean": 0.35846685773351883,
+      "model": "nearest_neighbor",
+      "mse": 0.0077763831068295985,
+      "observed_count": 4,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.329762889716385,
+      "improvement_vs_global_mean": 0.5464220539338945,
+      "model": "idw_all",
+      "mse": 0.005498072733947386,
+      "observed_count": 4,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4537914012046115,
+      "improvement_vs_global_mean": 0.6303574204352522,
+      "model": "coordinate_ridge",
+      "mse": 0.004480645070240523,
+      "observed_count": 4,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.23277847680119956,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012543853442669691,
+      "observed_count": 6,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.18882425446395756,
+      "model": "event_mean",
+      "mse": 0.01017526966825244,
+      "observed_count": 6,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.1754938247803275,
+      "improvement_vs_global_mean": 0.3311805886171113,
+      "model": "nearest_neighbor",
+      "mse": 0.008389572675999565,
+      "observed_count": 6,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.29476360418527814,
+      "improvement_vs_global_mean": 0.42792934084584144,
+      "model": "idw_all",
+      "mse": 0.007175970507281211,
+      "observed_count": 6,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.4841507149102061,
+      "improvement_vs_global_mean": 0.5815555715830519,
+      "model": "coordinate_ridge",
+      "mse": 0.005248905583963885,
+      "observed_count": 6,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.5987953558977599,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01171284394028286,
+      "observed_count": 6,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.37452908134169727,
+      "model": "event_mean",
+      "mse": 0.0073260432594300555,
+      "observed_count": 6,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.10036377865011559,
+      "improvement_vs_global_mean": 0.4373037061740036,
+      "model": "nearest_neighbor",
+      "mse": 0.006590773875359446,
+      "observed_count": 6,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4292850637268356,
+      "improvement_vs_global_mean": 0.6430344045172092,
+      "model": "idw_all",
+      "mse": 0.004181082311940069,
+      "observed_count": 6,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.3818362301482521,
+      "improvement_vs_global_mean": 0.6133565389895477,
+      "model": "coordinate_ridge",
+      "mse": 0.00452869451934627,
+      "observed_count": 6,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.2408931788998261,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012595645940261116,
+      "observed_count": 8,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.19412886056268086,
+      "model": "event_mean",
+      "mse": 0.010150467545827269,
+      "observed_count": 8,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.21966877304461319,
+      "improvement_vs_global_mean": 0.3711535849949412,
+      "model": "nearest_neighbor",
+      "mse": 0.007920726794206226,
+      "observed_count": 8,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.3461757958370245,
+      "improvement_vs_global_mean": 0.47310194359948465,
+      "model": "idw_all",
+      "mse": 0.0066366213650326245,
+      "observed_count": 8,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.5456421861420507,
+      "improvement_vs_global_mean": 0.6338461508340452,
+      "model": "coordinate_ridge",
+      "mse": 0.004611944243758141,
+      "observed_count": 8,
+      "seed": 17,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.8602433926556554,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012927018746268004,
+      "observed_count": 8,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.46243593502438674,
+      "model": "event_mean",
+      "mse": 0.006949100745259784,
+      "observed_count": 8,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.42037706174769895,
+      "improvement_vs_global_mean": 0.6884155371599842,
+      "model": "nearest_neighbor",
+      "mse": 0.004027858192178731,
+      "observed_count": 8,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.40169254364468265,
+      "improvement_vs_global_mean": 0.6783714116564162,
+      "model": "idw_all",
+      "mse": 0.004157698790853222,
+      "observed_count": 8,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4495315258310155,
+      "improvement_vs_global_mean": 0.7040879293847974,
+      "model": "coordinate_ridge",
+      "mse": 0.003825260884089706,
+      "observed_count": 8,
+      "seed": 17,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.25724703091989287,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.013222004958758285,
+      "observed_count": 1,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.34634264907549395,
+      "model": "event_mean",
+      "mse": 0.017801349182263948,
+      "observed_count": 1,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.34634264907549395,
+      "model": "nearest_neighbor",
+      "mse": 0.017801349182263948,
+      "observed_count": 1,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.34634264907549395,
+      "model": "idw_all",
+      "mse": 0.017801349182263948,
+      "observed_count": 1,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.007662597161204765,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.0153723720771571,
+      "observed_count": 1,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.007604328257089232,
+      "model": "event_mean",
+      "mse": 0.015255475513792286,
+      "observed_count": 1,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.007604328257089232,
+      "model": "nearest_neighbor",
+      "mse": 0.015255475513792286,
+      "observed_count": 1,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.007604328257089232,
+      "model": "idw_all",
+      "mse": 0.015255475513792286,
+      "observed_count": 1,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.0102559274763534,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012937153708965829,
+      "observed_count": 2,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.010151811236557617,
+      "model": "event_mean",
+      "mse": 0.012805818166574076,
+      "observed_count": 2,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.01787063224143659,
+      "improvement_vs_global_mean": -0.007537401719685866,
+      "model": "nearest_neighbor",
+      "mse": 0.013034666233579628,
+      "observed_count": 2,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.09355527748935177,
+      "improvement_vs_global_mean": 0.10275733320865377,
+      "model": "idw_all",
+      "mse": 0.011607766294522056,
+      "observed_count": 2,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.30009654835693156,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012962965255913636,
+      "observed_count": 2,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.23082635573196086,
+      "model": "event_mean",
+      "mse": 0.009970771226411065,
+      "observed_count": 2,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.09261780870007663,
+      "improvement_vs_global_mean": 0.1595871782900029,
+      "model": "nearest_neighbor",
+      "mse": 0.010894242208451033,
+      "observed_count": 2,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.14433588713199896,
+      "improvement_vs_global_mean": 0.34184571603594094,
+      "model": "idw_all",
+      "mse": 0.008531631116056815,
+      "observed_count": 2,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.1032786705702673,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01278356688999338,
+      "observed_count": 3,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.09361068361530467,
+      "model": "event_mean",
+      "mse": 0.011586888454379126,
+      "observed_count": 3,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.044576201869959475,
+      "improvement_vs_global_mean": 0.13401407675524346,
+      "model": "nearest_neighbor",
+      "mse": 0.011070388975592019,
+      "observed_count": 3,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.16164008894876736,
+      "improvement_vs_global_mean": 0.24011953333793923,
+      "model": "idw_all",
+      "mse": 0.00971398277397384,
+      "observed_count": 3,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.1714064933806272,
+      "improvement_vs_global_mean": 0.24897169797446916,
+      "model": "coordinate_ridge",
+      "mse": 0.009600820535221525,
+      "observed_count": 3,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.2169276159516862,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.014140255089538792,
+      "observed_count": 3,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.17825843797787444,
+      "model": "event_mean",
+      "mse": 0.011619635304668918,
+      "observed_count": 3,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.31316450890348724,
+      "improvement_vs_global_mean": 0.4355987306941179,
+      "model": "nearest_neighbor",
+      "mse": 0.007980777920844654,
+      "observed_count": 3,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.3263206596692567,
+      "improvement_vs_global_mean": 0.4464096865745799,
+      "model": "idw_all",
+      "mse": 0.007827908246933172,
+      "observed_count": 3,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.41375222543901446,
+      "improvement_vs_global_mean": 0.5182558380002609,
+      "model": "coordinate_ridge",
+      "mse": 0.006811985338572413,
+      "observed_count": 3,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.1399156513976556,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01252639484058212,
+      "observed_count": 4,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.1227421092307176,
+      "model": "event_mean",
+      "mse": 0.010988878716792291,
+      "observed_count": 4,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.11020337650040712,
+      "improvement_vs_global_mean": 0.2194188908551179,
+      "model": "nearest_neighbor",
+      "mse": 0.00977786717824832,
+      "observed_count": 4,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.22800414539807023,
+      "improvement_vs_global_mean": 0.3227605449092815,
+      "model": "idw_all",
+      "mse": 0.008483368816087022,
+      "observed_count": 4,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.32402384351291524,
+      "improvement_vs_global_mean": 0.4069945827498137,
+      "model": "coordinate_ridge",
+      "mse": 0.007428219999079981,
+      "observed_count": 4,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.4885460929457557,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012267314499088874,
+      "observed_count": 4,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.32820353717025197,
+      "model": "event_mean",
+      "mse": 0.008241138488907987,
+      "observed_count": 4,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.04324055049273323,
+      "improvement_vs_global_mean": 0.3572523860420813,
+      "model": "nearest_neighbor",
+      "mse": 0.007884787123960754,
+      "observed_count": 4,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.33529264832963257,
+      "improvement_vs_global_mean": 0.5534519523309178,
+      "model": "idw_all",
+      "mse": 0.005477945339710762,
+      "observed_count": 4,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.46165751078387796,
+      "improvement_vs_global_mean": 0.6383434199536475,
+      "model": "coordinate_ridge",
+      "mse": 0.004436555008093516,
+      "observed_count": 4,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.23976090129484273,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012702677173365373,
+      "observed_count": 6,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.19339285586795762,
+      "model": "event_mean",
+      "mse": 0.010246070157639528,
+      "observed_count": 6,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.19276470163299808,
+      "improvement_vs_global_mean": 0.3488782413416155,
+      "model": "nearest_neighbor",
+      "mse": 0.008270989500791378,
+      "observed_count": 6,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.298546944912773,
+      "improvement_vs_global_mean": 0.43420295449339563,
+      "model": "idw_all",
+      "mse": 0.007187137214714312,
+      "observed_count": 6,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.4780073826125866,
+      "improvement_vs_global_mean": 0.5789570256311286,
+      "model": "coordinate_ridge",
+      "mse": 0.005348372979521325,
+      "observed_count": 6,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.6235570138335584,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01175157322237889,
+      "observed_count": 6,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.3840684426358453,
+      "model": "event_mean",
+      "mse": 0.007238164796338727,
+      "observed_count": 6,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.09243449709110785,
+      "improvement_vs_global_mean": 0.4410017663833439,
+      "model": "nearest_neighbor",
+      "mse": 0.006569108673526595,
+      "observed_count": 6,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.44290296360235915,
+      "improvement_vs_global_mean": 0.656866354768646,
+      "model": "idw_all",
+      "mse": 0.004032360156998038,
+      "observed_count": 6,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.38643784618834,
+      "improvement_vs_global_mean": 0.6220877070630793,
+      "model": "coordinate_ridge",
+      "mse": 0.004441063982085325,
+      "observed_count": 6,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.29324038360150206,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012647673878139662,
+      "observed_count": 8,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.22674855140609407,
+      "model": "event_mean",
+      "mse": 0.009779832147614798,
+      "observed_count": 8,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.22008683671401408,
+      "improvement_vs_global_mean": 0.39693101671165587,
+      "model": "nearest_neighbor",
+      "mse": 0.0076274198266522335,
+      "observed_count": 8,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.3434482291943537,
+      "improvement_vs_global_mean": 0.4923203921476398,
+      "model": "idw_all",
+      "mse": 0.006420966114698483,
+      "observed_count": 8,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.5329510120127623,
+      "improvement_vs_global_mean": 0.6388536934745506,
+      "model": "coordinate_ridge",
+      "mse": 0.004567660707228545,
+      "observed_count": 8,
+      "seed": 29,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.8797451326977062,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.013061216799542308,
+      "observed_count": 8,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.4680129861196367,
+      "model": "event_mean",
+      "mse": 0.006948397722832548,
+      "observed_count": 8,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4061866827611149,
+      "improvement_vs_global_mean": 0.6840990265596927,
+      "model": "nearest_neighbor",
+      "mse": 0.004126051101290311,
+      "observed_count": 8,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4095517915724419,
+      "improvement_vs_global_mean": 0.685889220747613,
+      "model": "idw_all",
+      "mse": 0.004102668986888602,
+      "observed_count": 8,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.45353827314788064,
+      "improvement_vs_global_mean": 0.7092894577320343,
+      "model": "coordinate_ridge",
+      "mse": 0.0037970334184744083,
+      "observed_count": 8,
+      "seed": 29,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.2421537304422101,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01299078187730629,
+      "observed_count": 1,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.319528828166574,
+      "model": "event_mean",
+      "mse": 0.017141711187529534,
+      "observed_count": 1,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.319528828166574,
+      "model": "nearest_neighbor",
+      "mse": 0.017141711187529534,
+      "observed_count": 1,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.319528828166574,
+      "model": "idw_all",
+      "mse": 0.017141711187529534,
+      "observed_count": 1,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.038387082999157496,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.015223301985921959,
+      "observed_count": 1,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.03696798970985338,
+      "model": "event_mean",
+      "mse": 0.014660527114756405,
+      "observed_count": 1,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.03696798970985338,
+      "model": "nearest_neighbor",
+      "mse": 0.014660527114756405,
+      "observed_count": 1,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.03696798970985338,
+      "model": "idw_all",
+      "mse": 0.014660527114756405,
+      "observed_count": 1,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.024392834925430984,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.013003415782198621,
+      "observed_count": 2,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.023811992913057134,
+      "model": "event_mean",
+      "mse": 0.012693778537747372,
+      "observed_count": 2,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.009143459117050945,
+      "improvement_vs_global_mean": 0.014886257779702095,
+      "model": "nearest_neighbor",
+      "mse": 0.012809843582848165,
+      "observed_count": 2,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.08889678202824558,
+      "improvement_vs_global_mean": 0.11059196539765248,
+      "model": "idw_all",
+      "mse": 0.011565342473962422,
+      "observed_count": 2,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.3287654299588121,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01308510386540244,
+      "observed_count": 2,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.24742172135604312,
+      "model": "event_mean",
+      "mse": 0.009847564942901954,
+      "observed_count": 2,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.06742989868874916,
+      "improvement_vs_global_mean": 0.1966754442717279,
+      "model": "nearest_neighbor",
+      "mse": 0.010511585249332711,
+      "observed_count": 2,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.15051967197852267,
+      "improvement_vs_global_mean": 0.3606995569956928,
+      "model": "idw_all",
+      "mse": 0.008365312697909152,
+      "observed_count": 2,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.11410867322818152,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01290879056129294,
+      "observed_count": 3,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.10242149259779698,
+      "model": "event_mean",
+      "mse": 0.011586652964372965,
+      "observed_count": 3,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.05900552918862878,
+      "improvement_vs_global_mean": 0.15538358741540348,
+      "model": "nearest_neighbor",
+      "mse": 0.010902976374685144,
+      "observed_count": 3,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.15800062499126455,
+      "improvement_vs_global_mean": 0.24423945774607136,
+      "model": "idw_all",
+      "mse": 0.009755954554445148,
+      "observed_count": 3,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.17159350428344777,
+      "improvement_vs_global_mean": 0.2564401340524475,
+      "model": "coordinate_ridge",
+      "mse": 0.00959845857930001,
+      "observed_count": 3,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.2400988888060851,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.014236772200092673,
+      "observed_count": 3,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.19361269570787387,
+      "model": "event_mean",
+      "mse": 0.011480352356253812,
+      "observed_count": 3,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.329691784937981,
+      "improvement_vs_global_mean": 0.4594719654112718,
+      "model": "nearest_neighbor",
+      "mse": 0.007695374496203537,
+      "observed_count": 3,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.327274923744009,
+      "improvement_vs_global_mean": 0.45752303922821647,
+      "model": "idw_all",
+      "mse": 0.007723120914306492,
+      "observed_count": 3,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.42924224173705794,
+      "improvement_vs_global_mean": 0.5397481899105292,
+      "model": "coordinate_ridge",
+      "mse": 0.00655250017492411,
+      "observed_count": 3,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.17154783449203737,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012697124732464241,
+      "observed_count": 4,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.14642836548489502,
+      "model": "event_mean",
+      "mse": 0.010837905511531668,
+      "observed_count": 4,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.11782003528566298,
+      "improvement_vs_global_mean": 0.24699620558230573,
+      "model": "nearest_neighbor",
+      "mse": 0.009560983101740325,
+      "observed_count": 4,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.22960264105412131,
+      "improvement_vs_global_mean": 0.34241066709844625,
+      "model": "idw_all",
+      "mse": 0.00834949378258898,
+      "observed_count": 4,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.31128129313232444,
+      "improvement_vs_global_mean": 0.41212924765782866,
+      "model": "coordinate_ridge",
+      "mse": 0.007464268269056144,
+      "observed_count": 4,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.5153758685656282,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012428217412283024,
+      "observed_count": 4,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.34009771387837584,
+      "model": "event_mean",
+      "mse": 0.008201409082782144,
+      "observed_count": 4,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0674000316285357,
+      "improvement_vs_global_mean": 0.38457514883471633,
+      "model": "nearest_neighbor",
+      "mse": 0.0076486338512040675,
+      "observed_count": 4,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.33538827812843053,
+      "improvement_vs_global_mean": 0.5614212053537222,
+      "model": "idw_all",
+      "mse": 0.0054507526122809695,
+      "observed_count": 4,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.46123917006157256,
+      "improvement_vs_global_mean": 0.6444704966508481,
+      "model": "coordinate_ridge",
+      "mse": 0.004418597964104265,
+      "observed_count": 4,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.26204645802036586,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012926112338997578,
+      "observed_count": 6,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.20763614235834815,
+      "model": "event_mean",
+      "mse": 0.010242184237237476,
+      "observed_count": 6,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.17437079230382446,
+      "improvement_vs_global_mean": 0.34580125600823775,
+      "model": "nearest_neighbor",
+      "mse": 0.008456246456868636,
+      "observed_count": 6,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.2879515901383557,
+      "improvement_vs_global_mean": 0.43579857513442355,
+      "model": "idw_all",
+      "mse": 0.007292930999634943,
+      "observed_count": 6,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.46863968181411175,
+      "improvement_vs_global_mean": 0.578969288484534,
+      "model": "coordinate_ridge",
+      "mse": 0.005442290275216995,
+      "observed_count": 6,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.6486734964799898,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.011970351644170782,
+      "observed_count": 6,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.393451764624678,
+      "model": "event_mean",
+      "mse": 0.007260595666593872,
+      "observed_count": 6,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.1257498975311544,
+      "improvement_vs_global_mean": 0.46972514307082724,
+      "model": "nearest_neighbor",
+      "mse": 0.0063475765055045485,
+      "observed_count": 6,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.44255475780345976,
+      "improvement_vs_global_mean": 0.6618825720273196,
+      "model": "idw_all",
+      "mse": 0.004047384509855571,
+      "observed_count": 6,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.3865621596177993,
+      "improvement_vs_global_mean": 0.6279203604037277,
+      "model": "coordinate_ridge",
+      "mse": 0.00445392412560371,
+      "observed_count": 6,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.2594079546141974,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012588826927337019,
+      "observed_count": 8,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.20597611255652548,
+      "model": "event_mean",
+      "mse": 0.00999582929519723,
+      "observed_count": 8,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.1989035658327073,
+      "improvement_vs_global_mean": 0.36391029512538076,
+      "model": "nearest_neighbor",
+      "mse": 0.008007623204927464,
+      "observed_count": 8,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.3421210344556683,
+      "improvement_vs_global_mean": 0.4776283863111981,
+      "model": "idw_all",
+      "mse": 0.006576045836482081,
+      "observed_count": 8,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.552644531786946,
+      "improvement_vs_global_mean": 0.6447890720603751,
+      "model": "coordinate_ridge",
+      "mse": 0.004471688894530719,
+      "observed_count": 8,
+      "seed": 41,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.8837917918998268,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.013211382591786483,
+      "observed_count": 8,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.46915577172597833,
+      "model": "event_mean",
+      "mse": 0.00701318619636974,
+      "observed_count": 8,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.44795928439751587,
+      "improvement_vs_global_mean": 0.7069523723501606,
+      "model": "nearest_neighbor",
+      "mse": 0.0038715643264974156,
+      "observed_count": 8,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4093349169257062,
+      "improvement_vs_global_mean": 0.6864488498070156,
+      "model": "idw_all",
+      "mse": 0.004142444207294223,
+      "observed_count": 8,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4558913678176192,
+      "improvement_vs_global_mean": 0.7111630730519105,
+      "model": "coordinate_ridge",
+      "mse": 0.003815935148547093,
+      "observed_count": 8,
+      "seed": 41,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.25034604769529,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01310678965577002,
+      "observed_count": 1,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.333948813216598,
+      "model": "event_mean",
+      "mse": 0.017483786506394,
+      "observed_count": 1,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.333948813216598,
+      "model": "nearest_neighbor",
+      "mse": 0.017483786506394,
+      "observed_count": 1,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.333948813216598,
+      "model": "idw_all",
+      "mse": 0.017483786506394,
+      "observed_count": 1,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.01706275057061224,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.015469742337396989,
+      "observed_count": 1,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.016776497380362576,
+      "model": "event_mean",
+      "mse": 0.015210214245598763,
+      "observed_count": 1,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.016776497380362576,
+      "model": "nearest_neighbor",
+      "mse": 0.015210214245598763,
+      "observed_count": 1,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.016776497380362576,
+      "model": "idw_all",
+      "mse": 0.015210214245598763,
+      "observed_count": 1,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.04740129596870457,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012994088004537238,
+      "observed_count": 2,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.04975998368264345,
+      "model": "event_mean",
+      "mse": 0.013640673611613844,
+      "observed_count": 2,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.00461575860447061,
+      "improvement_vs_global_mean": -0.05460542235995547,
+      "model": "nearest_neighbor",
+      "mse": 0.013703635668207426,
+      "observed_count": 2,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.08722439639223001,
+      "improvement_vs_global_mean": 0.04180469725079239,
+      "model": "idw_all",
+      "mse": 0.012450874089457406,
+      "observed_count": 2,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.29499284313283525,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.013186234476355215,
+      "observed_count": 2,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.22779496017846035,
+      "model": "event_mean",
+      "mse": 0.010182476718910038,
+      "observed_count": 2,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.07293274526569271,
+      "improvement_vs_global_mean": 0.17147592671627188,
+      "model": "nearest_neighbor",
+      "mse": 0.010925112699624151,
+      "observed_count": 2,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.14771639643711398,
+      "improvement_vs_global_mean": 0.34186230597147627,
+      "model": "idw_all",
+      "mse": 0.00867835795118784,
+      "observed_count": 2,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.10178338804259623,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01287054591133104,
+      "observed_count": 3,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.09238057965588164,
+      "model": "event_mean",
+      "mse": 0.011681557419554641,
+      "observed_count": 3,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.02641453937365701,
+      "improvement_vs_global_mean": 0.11635492857085716,
+      "model": "nearest_neighbor",
+      "mse": 0.01137299446115018,
+      "observed_count": 3,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.16394022507300055,
+      "improvement_vs_global_mean": 0.24117591170772268,
+      "model": "idw_all",
+      "mse": 0.009766480266989674,
+      "observed_count": 3,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.16071824249721034,
+      "improvement_vs_global_mean": 0.23825157774992511,
+      "model": "coordinate_ridge",
+      "mse": 0.009804118041453572,
+      "observed_count": 3,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.213390408409583,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.014420923388873538,
+      "observed_count": 3,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.1758629431472747,
+      "model": "event_mean",
+      "mse": 0.011884817358804867,
+      "observed_count": 3,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.3248643705354691,
+      "improvement_vs_global_mean": 0.44359570935668946,
+      "model": "nearest_neighbor",
+      "mse": 0.008023863648607707,
+      "observed_count": 3,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.3258376680279722,
+      "improvement_vs_global_mean": 0.44439783988760306,
+      "model": "idw_all",
+      "mse": 0.008012296185673526,
+      "observed_count": 3,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.425620972783321,
+      "improvement_vs_global_mean": 0.5266329589917148,
+      "model": "coordinate_ridge",
+      "mse": 0.006826389833198239,
+      "observed_count": 3,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.1606679447321615,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012913173576331852,
+      "observed_count": 4,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.13842714056278826,
+      "model": "event_mean",
+      "mse": 0.01112563988256928,
+      "observed_count": 4,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.14314837508261913,
+      "improvement_vs_global_mean": 0.261759895406511,
+      "model": "nearest_neighbor",
+      "mse": 0.009533022611625105,
+      "observed_count": 4,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.2297166102851823,
+      "improvement_vs_global_mean": 0.33634473734641634,
+      "model": "idw_all",
+      "mse": 0.008569895601491831,
+      "observed_count": 4,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.3031580741578044,
+      "improvement_vs_global_mean": 0.399619909376406,
+      "model": "coordinate_ridge",
+      "mse": 0.007752812321996316,
+      "observed_count": 4,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.4881132939289603,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012420230312272906,
+      "observed_count": 4,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.32800815362668334,
+      "model": "event_mean",
+      "mse": 0.008346293499926105,
+      "observed_count": 4,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.044286791492741506,
+      "improvement_vs_global_mean": 0.3577685164118408,
+      "model": "nearest_neighbor",
+      "mse": 0.007976662939957654,
+      "observed_count": 4,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.33672673597386593,
+      "improvement_vs_global_mean": 0.5542857746570218,
+      "model": "idw_all",
+      "mse": 0.005535873332216094,
+      "observed_count": 4,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4707054298062955,
+      "improvement_vs_global_mean": 0.6443183645001616,
+      "model": "coordinate_ridge",
+      "mse": 0.004417647830753897,
+      "observed_count": 4,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.23352603604459055,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012893617992328169,
+      "observed_count": 6,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.18931585489140723,
+      "model": "event_mean",
+      "mse": 0.010452651679467332,
+      "observed_count": 6,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.19901768788423801,
+      "improvement_vs_global_mean": 0.35065633905532945,
+      "model": "nearest_neighbor",
+      "mse": 0.008372389109960446,
+      "observed_count": 6,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.30261312413094177,
+      "improvement_vs_global_mean": 0.4346395167261402,
+      "model": "idw_all",
+      "mse": 0.007289542099291187,
+      "observed_count": 6,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.4927454419731758,
+      "improvement_vs_global_mean": 0.588776772273587,
+      "model": "coordinate_ridge",
+      "mse": 0.005302155207876543,
+      "observed_count": 6,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.6151343267005407,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01184506887026752,
+      "observed_count": 6,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.38085645047069316,
+      "model": "event_mean",
+      "mse": 0.007333797984756529,
+      "observed_count": 6,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.08986236532956526,
+      "improvement_vs_global_mean": 0.43649415430993954,
+      "model": "nearest_neighbor",
+      "mse": 0.006674765550997108,
+      "observed_count": 6,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.44584686344212954,
+      "improvement_vs_global_mean": 0.6568996600487613,
+      "model": "idw_all",
+      "mse": 0.00406404715613462,
+      "observed_count": 6,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.39303009936449995,
+      "improvement_vs_global_mean": 0.6241985012630857,
+      "model": "coordinate_ridge",
+      "mse": 0.004451394634088501,
+      "observed_count": 6,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.3024146768654792,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012949130900475817,
+      "observed_count": 8,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.23219538464761502,
+      "model": "event_mean",
+      "mse": 0.009942402470187517,
+      "observed_count": 8,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.218547497943393,
+      "improvement_vs_global_mean": 0.399997162242268,
+      "model": "nearest_neighbor",
+      "mse": 0.007769515286781825,
+      "observed_count": 8,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.3606993412214564,
+      "improvement_vs_global_mean": 0.509142003592014,
+      "model": "idw_all",
+      "mse": 0.006356184449032298,
+      "observed_count": 8,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.5579518102710297,
+      "improvement_vs_global_mean": 0.6605933597179299,
+      "model": "coordinate_ridge",
+      "mse": 0.004395021013503235,
+      "observed_count": 8,
+      "seed": 53,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.8465216515287757,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.013132047664839774,
+      "observed_count": 8,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.45844122695659806,
+      "model": "event_mean",
+      "mse": 0.0071117756209181,
+      "observed_count": 8,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.41537811437129235,
+      "improvement_vs_global_mean": 0.683392888924597,
+      "model": "nearest_neighbor",
+      "mse": 0.004157699673669413,
+      "observed_count": 8,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4083633836294155,
+      "improvement_vs_global_mean": 0.6795939999507964,
+      "model": "idw_all",
+      "mse": 0.004207586864746797,
+      "observed_count": 8,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4576432485128842,
+      "improvement_vs_global_mean": 0.7062819431128323,
+      "model": "coordinate_ridge",
+      "mse": 0.0038571195230664066,
+      "observed_count": 8,
+      "seed": 53,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.2846668713504962,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01297602484798214,
+      "observed_count": 1,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.39795007381795133,
+      "model": "event_mean",
+      "mse": 0.018139834894100204,
+      "observed_count": 1,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.39795007381795133,
+      "model": "nearest_neighbor",
+      "mse": 0.018139834894100204,
+      "observed_count": 1,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.39795007381795133,
+      "model": "idw_all",
+      "mse": 0.018139834894100204,
+      "observed_count": 1,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.027383906634998567,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.015450956222290793,
+      "observed_count": 1,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.026654015561417,
+      "model": "event_mean",
+      "mse": 0.015039126194703082,
+      "observed_count": 1,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.026654015561417,
+      "model": "nearest_neighbor",
+      "mse": 0.015039126194703082,
+      "observed_count": 1,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.026654015561417,
+      "model": "idw_all",
+      "mse": 0.015039126194703082,
+      "observed_count": 1,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0213802209666889,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012857413181336597,
+      "observed_count": 2,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": -0.021847321528498442,
+      "model": "event_mean",
+      "mse": 0.013138313221134013,
+      "observed_count": 2,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.029537681594087095,
+      "improvement_vs_global_mean": -0.05203032234957794,
+      "model": "nearest_neighbor",
+      "mse": 0.013526388533743253,
+      "observed_count": 2,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.08727320250333148,
+      "improvement_vs_global_mean": 0.06733256669074505,
+      "model": "idw_all",
+      "mse": 0.011991690550833786,
+      "observed_count": 2,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.3030454620229015,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.013089297455735505,
+      "observed_count": 2,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.2325670675775512,
+      "model": "event_mean",
+      "mse": 0.010045157929804796,
+      "observed_count": 2,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.06519384026992125,
+      "improvement_vs_global_mean": 0.18253516756332477,
+      "model": "nearest_neighbor",
+      "mse": 0.010700040351366624,
+      "observed_count": 2,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.15600061980961166,
+      "improvement_vs_global_mean": 0.35228708069776105,
+      "model": "idw_all",
+      "mse": 0.008478107066669812,
+      "observed_count": 2,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.07348543495152238,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012932182020449545,
+      "observed_count": 3,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.06845499022056212,
+      "model": "event_mean",
+      "mse": 0.012046909626709143,
+      "observed_count": 3,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.04098548579311312,
+      "improvement_vs_global_mean": 0.10663481498452276,
+      "model": "nearest_neighbor",
+      "mse": 0.011553161183352737,
+      "observed_count": 3,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.1590391662002879,
+      "improvement_vs_global_mean": 0.21660713185392289,
+      "model": "idw_all",
+      "mse": 0.0101309791643871,
+      "observed_count": 3,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.15945794598980978,
+      "improvement_vs_global_mean": 0.21699724407704846,
+      "model": "coordinate_ridge",
+      "mse": 0.010125934162109237,
+      "observed_count": 3,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.21281619313972056,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.014298301190137863,
+      "observed_count": 3,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.17547275039986499,
+      "model": "event_mean",
+      "mse": 0.01178933895425871,
+      "observed_count": 3,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.34233195479100287,
+      "improvement_vs_global_mean": 0.4577347755339284,
+      "model": "nearest_neighbor",
+      "mse": 0.007753471504353608,
+      "observed_count": 3,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.33565900789463743,
+      "improvement_vs_global_mean": 0.45223274898274035,
+      "model": "idw_all",
+      "mse": 0.00783214113713863,
+      "observed_count": 3,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4391205561630728,
+      "improvement_vs_global_mean": 0.537539614815885,
+      "model": "coordinate_ridge",
+      "mse": 0.006612397875869647,
+      "observed_count": 3,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.12236794272165663,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012650345663132612,
+      "observed_count": 4,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.10902658394262732,
+      "model": "event_mean",
+      "mse": 0.011271121689787833,
+      "observed_count": 4,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.10447871630794503,
+      "improvement_vs_global_mean": 0.20211434271680617,
+      "model": "nearest_neighbor",
+      "mse": 0.010093529364288164,
+      "observed_count": 4,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.21670795137363497,
+      "improvement_vs_global_mean": 0.30210760766478983,
+      "model": "idw_all",
+      "mse": 0.00882857999871097,
+      "observed_count": 4,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.33615850662601476,
+      "improvement_vs_global_mean": 0.40853487692795254,
+      "model": "coordinate_ridge",
+      "mse": 0.007482238254548672,
+      "observed_count": 4,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.47514187312847467,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012350769635910789,
+      "observed_count": 4,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.3220991023194236,
+      "model": "event_mean",
+      "mse": 0.00837259782322993,
+      "observed_count": 4,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.08506512551807344,
+      "improvement_vs_global_mean": 0.3797648272694365,
+      "model": "nearest_neighbor",
+      "mse": 0.007660381738484527,
+      "observed_count": 4,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.34621006312271596,
+      "improvement_vs_global_mean": 0.5567952148963617,
+      "model": "idw_all",
+      "mse": 0.005473920202348381,
+      "observed_count": 4,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4652401919087924,
+      "improvement_vs_global_mean": 0.6374858460514776,
+      "model": "coordinate_ridge",
+      "mse": 0.0044773288051753,
+      "observed_count": 4,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.241255204053324,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.012576712390000466,
+      "observed_count": 6,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.19436390136815063,
+      "model": "event_mean",
+      "mse": 0.010132253503494818,
+      "observed_count": 6,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.15264706465163924,
+      "improvement_vs_global_mean": 0.31734188700170096,
+      "model": "nearest_neighbor",
+      "mse": 0.008585594747880046,
+      "observed_count": 6,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.29481215148788,
+      "improvement_vs_global_mean": 0.43187521292210806,
+      "model": "idw_all",
+      "mse": 0.007145142048708901,
+      "observed_count": 6,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.4521597935311831,
+      "improvement_vs_global_mean": 0.5586401533867955,
+      "model": "coordinate_ridge",
+      "mse": 0.005550855851348994,
+      "observed_count": 6,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.5924056969880072,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.01199356474292775,
+      "observed_count": 6,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.3720193278060526,
+      "model": "event_mean",
+      "mse": 0.007531726849265397,
+      "observed_count": 6,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.1548391267744894,
+      "improvement_vs_global_mean": 0.4692553067198203,
+      "model": "nearest_neighbor",
+      "mse": 0.0063655208408211665,
+      "observed_count": 6,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4495524326478342,
+      "improvement_vs_global_mean": 0.6543295666466638,
+      "model": "idw_all",
+      "mse": 0.00414582072213913,
+      "observed_count": 6,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.3926985019814636,
+      "improvement_vs_global_mean": 0.6186263970499284,
+      "model": "coordinate_ridge",
+      "mse": 0.004574028998225306,
+      "observed_count": 6,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": -0.27773490607729245,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.013018674471823033,
+      "observed_count": 8,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.21736504556328662,
+      "model": "event_mean",
+      "mse": 0.010188869702081623,
+      "observed_count": 8,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.23351890300653533,
+      "improvement_vs_global_mean": 0.4001251015779177,
+      "model": "nearest_neighbor",
+      "mse": 0.007809576026374998,
+      "observed_count": 8,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.34149044785488913,
+      "improvement_vs_global_mean": 0.48462740666077064,
+      "model": "idw_all",
+      "mse": 0.006709468024382659,
+      "observed_count": 8,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": 0.5401482450285746,
+      "improvement_vs_global_mean": 0.6401039427002958,
+      "model": "coordinate_ridge",
+      "mse": 0.004685369613677419,
+      "observed_count": 8,
+      "seed": 67,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean": -0.8506632378886128,
+      "improvement_vs_global_mean": 0.0,
+      "model": "global_mean",
+      "mse": 0.013238098239526153,
+      "observed_count": 8,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.0,
+      "improvement_vs_global_mean": 0.45965317755980206,
+      "model": "event_mean",
+      "mse": 0.007153164318879135,
+      "observed_count": 8,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4481751411872753,
+      "improvement_vs_global_mean": 0.7018231909970334,
+      "model": "nearest_neighbor",
+      "mse": 0.003947293890329699,
+      "observed_count": 8,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.40821265162186726,
+      "improvement_vs_global_mean": 0.6802295867435655,
+      "model": "idw_all",
+      "mse": 0.004233152144782555,
+      "observed_count": 8,
+      "seed": 67,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean": 0.4525863282813186,
+      "improvement_vs_global_mean": 0.7042067619264889,
+      "model": "coordinate_ridge",
+      "mse": 0.003915739944204688,
+      "observed_count": 8,
+      "seed": 67,
+      "strategy": "space_filling"
+    }
+  ],
+  "seeds": [
+    17,
+    29,
+    41,
+    53,
+    67
+  ],
+  "summary": [
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": -0.3491777050547731,
+      "improvement_vs_global_mean_std": 0.026453276462991684,
+      "model": "event_mean",
+      "mse_mean": 0.01754521285110968,
+      "mse_std": 0.00038331007127275163,
+      "observed_count": 1,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.25852778783872254,
+      "improvement_vs_event_mean_std": 0.014283096137374792,
+      "improvement_vs_global_mean_mean": 0.0,
+      "improvement_vs_global_mean_std": 0.0,
+      "model": "global_mean",
+      "mse_mean": 0.013004799568443559,
+      "mse_std": 0.00016431877227801996,
+      "observed_count": 1,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": -0.3491777050547731,
+      "improvement_vs_global_mean_std": 0.026453276462991684,
+      "model": "idw_all",
+      "mse_mean": 0.01754521285110968,
+      "mse_std": 0.00038331007127275163,
+      "observed_count": 1,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": -0.3491777050547731,
+      "improvement_vs_global_mean_std": 0.026453276462991684,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.01754521285110968,
+      "mse_std": 0.00038331007127275163,
+      "observed_count": 1,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": -0.02383631064233869,
+      "improvement_vs_global_mean_std": 0.038551360897362906,
+      "model": "event_mean",
+      "mse_mean": 0.013152024316756675,
+      "mse_std": 0.0003680742637409245,
+      "observed_count": 2,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.021904717040232047,
+      "improvement_vs_event_mean_std": 0.0365756349442547,
+      "improvement_vs_global_mean_mean": 0.0,
+      "improvement_vs_global_mean_std": 0.0,
+      "model": "global_mean",
+      "mse_mean": 0.01285144487434688,
+      "mse_std": 0.00020002235871013793,
+      "observed_count": 2,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.08731411977049693,
+      "improvement_vs_event_mean_std": 0.004486682565607745,
+      "improvement_vs_global_mean_mean": 0.06541231744615805,
+      "improvement_vs_global_mean_std": 0.03923782376872781,
+      "model": "idw_all",
+      "mse_mean": 0.012004759743528364,
+      "mse_std": 0.00037751395420258706,
+      "observed_count": 2,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.010975815454816984,
+      "improvement_vs_event_mean_std": 0.012115644725396633,
+      "improvement_vs_global_mean_mean": -0.03480474764069104,
+      "improvement_vs_global_mean_std": 0.03315437853395778,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.013294258805884359,
+      "mse_std": 0.0003268108122217976,
+      "observed_count": 2,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.15872079368791353,
+      "improvement_vs_event_mean_std": 0.015044343415921747,
+      "improvement_vs_global_mean_mean": 0.22762416892854268,
+      "improvement_vs_global_mean_std": 0.028384414368618376,
+      "model": "coordinate_ridge",
+      "mse_mean": 0.009852911335110548,
+      "mse_std": 0.00023871297958694403,
+      "observed_count": 3,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": 0.08219091608920281,
+      "improvement_vs_global_mean_std": 0.018011283293154816,
+      "model": "event_mean",
+      "mse_mean": 0.011711484759143787,
+      "mse_std": 0.000171846724954829,
+      "observed_count": 3,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.08996713177307289,
+      "improvement_vs_event_mean_std": 0.02119580453031969,
+      "improvement_vs_global_mean_mean": 0.0,
+      "improvement_vs_global_mean_std": 0.0,
+      "model": "global_mean",
+      "mse_mean": 0.012763390288455412,
+      "mse_std": 0.0002264795601836574,
+      "observed_count": 3,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.15902459479426803,
+      "improvement_vs_event_mean_std": 0.003862275694059834,
+      "improvement_vs_global_mean_mean": 0.2280966680717486,
+      "improvement_vs_global_mean_std": 0.0178527118016482,
+      "model": "idw_all",
+      "mse_mean": 0.00984906556320008,
+      "mse_std": 0.00015102704808562766,
+      "observed_count": 3,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.04065783377004824,
+      "improvement_vs_event_mean_std": 0.011177655032711627,
+      "improvement_vs_global_mean_mean": 0.11940684980645004,
+      "improvement_vs_global_mean_std": 0.02403494961831066,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.011235676002615946,
+      "mse_std": 0.0002278274854414771,
+      "observed_count": 3,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.31760642451721405,
+      "improvement_vs_event_mean_std": 0.011416932256553288,
+      "improvement_vs_global_mean_mean": 0.4068832066104241,
+      "improvement_vs_global_mean_std": 0.004076309003244231,
+      "model": "coordinate_ridge",
+      "mse_mean": 0.00750231271328327,
+      "mse_std": 0.000129678214699236,
+      "observed_count": 4,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": 0.13062703372745021,
+      "improvement_vs_global_mean_std": 0.013220407833096248,
+      "model": "event_mean",
+      "mse_mean": 0.010995637393595341,
+      "mse_std": 0.0001875081075635234,
+      "observed_count": 4,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.15051833525851008,
+      "improvement_vs_event_mean_std": 0.01736364536662678,
+      "improvement_vs_global_mean_mean": 0.0,
+      "improvement_vs_global_mean_std": 0.0,
+      "model": "global_mean",
+      "mse_mean": 0.012648381193866954,
+      "mse_std": 0.00015800199392813644,
+      "observed_count": 4,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.2248730277145235,
+      "improvement_vs_event_mean_std": 0.0053461496219222564,
+      "improvement_vs_global_mean_mean": 0.3260780675131401,
+      "improvement_vs_global_mean_std": 0.013843565623715724,
+      "model": "idw_all",
+      "mse_mean": 0.008523273702545946,
+      "mse_std": 0.00017104890002613728,
+      "observed_count": 4,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.11267241735751551,
+      "improvement_vs_event_mean_std": 0.018174477106999848,
+      "improvement_vs_global_mean_mean": 0.22850765885602903,
+      "improvement_vs_global_mean_std": 0.02232082316525785,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.00975534736304932,
+      "mse_std": 0.00020259049106883224,
+      "observed_count": 4,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.47514060296825267,
+      "improvement_vs_event_mean_std": 0.013926309470640288,
+      "improvement_vs_global_mean_mean": 0.5773797622718193,
+      "improvement_vs_global_mean_std": 0.010035103535423643,
+      "model": "coordinate_ridge",
+      "mse_mean": 0.0053785159795855485,
+      "mse_std": 0.00010705756838710553,
+      "observed_count": 6,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": 0.19470660178996424,
+      "improvement_vs_global_mean_std": 0.006821708780419544,
+      "model": "event_mean",
+      "mse_mean": 0.010249685849218319,
+      "mse_std": 0.00011008414914804531,
+      "observed_count": 6,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.24187341524286454,
+      "improvement_vs_event_mean_std": 0.010622553364382883,
+      "improvement_vs_global_mean_mean": 0.0,
+      "improvement_vs_global_mean_std": 0.0,
+      "model": "global_mean",
+      "mse_mean": 0.012728594667472254,
+      "mse_std": 0.00015755328696262416,
+      "observed_count": 6,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.29573748297104574,
+      "improvement_vs_event_mean_std": 0.004849583965803881,
+      "improvement_vs_global_mean_mean": 0.43288912002438185,
+      "improvement_vs_global_mean_std": 0.00278863392272156,
+      "model": "idw_all",
+      "mse_mean": 0.007218144573926111,
+      "mse_std": 6.125372316734173e-05,
+      "observed_count": 6,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.17885881425060546,
+      "improvement_vs_event_mean_std": 0.01623745794290059,
+      "improvement_vs_global_mean_mean": 0.33877166240479895,
+      "improvement_vs_global_mean_std": 0.01272527672155398,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.008414958498300014,
+      "mse_std": 0.00010392794641925698,
+      "observed_count": 6,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.5458675570482727,
+      "improvement_vs_event_mean_std": 0.008849350487337823,
+      "improvement_vs_global_mean_mean": 0.6436372437574394,
+      "improvement_vs_global_mean_std": 0.009165900361763945,
+      "model": "coordinate_ridge",
+      "mse_mean": 0.004546336894539612,
+      "mse_std": 0.00010252604157878105,
+      "observed_count": 8,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": 0.21528279094724043,
+      "improvement_vs_global_mean_std": 0.01382706263993044,
+      "model": "event_mean",
+      "mse_mean": 0.010011480232181688,
+      "mse_std": 0.00014796082015176796,
+      "observed_count": 8,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.27473822001165943,
+      "improvement_vs_event_mean_std": 0.022350840225284215,
+      "improvement_vs_global_mean_mean": 0.0,
+      "improvement_vs_global_mean_std": 0.0,
+      "model": "global_mean",
+      "mse_mean": 0.012759990423607329,
+      "mse_std": 0.0001852633880932249,
+      "observed_count": 8,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.3467869697126784,
+      "improvement_vs_event_mean_std": 0.007140012582144268,
+      "improvement_vs_global_mean_mean": 0.4873640264622214,
+      "improvement_vs_global_mean_std": 0.012684830573128214,
+      "model": "idw_all",
+      "mse_mean": 0.00653985715792563,
+      "mse_std": 0.00013214501307644226,
+      "observed_count": 8,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.2181451153082526,
+      "improvement_vs_event_mean_std": 0.011071082161306124,
+      "improvement_vs_global_mean_mean": 0.3864234321304327,
+      "improvement_vs_global_mean_std": 0.015635861331427595,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.00782697222778855,
+      "mse_std": 0.00013026878594517676,
+      "observed_count": 8,
+      "seeds": 5,
+      "strategy": "random"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": 0.020260507125539305,
+      "improvement_vs_global_mean_std": 0.010399873864838231,
+      "model": "event_mean",
+      "mse_mean": 0.014971290032068887,
+      "mse_std": 0.00025200158085217296,
+      "observed_count": 1,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.020795061683976,
+      "improvement_vs_event_mean_std": 0.010888609135592881,
+      "improvement_vs_global_mean_mean": 0.0,
+      "improvement_vs_global_mean_std": 0.0,
+      "model": "global_mean",
+      "mse_mean": 0.015281100144299366,
+      "mse_std": 0.00021435962380754085,
+      "observed_count": 1,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": 0.020260507125539305,
+      "improvement_vs_global_mean_std": 0.010399873864838231,
+      "model": "idw_all",
+      "mse_mean": 0.014971290032068887,
+      "mse_std": 0.00025200158085217296,
+      "observed_count": 1,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": 0.020260507125539305,
+      "improvement_vs_global_mean_std": 0.010399873864838231,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.014971290032068887,
+      "mse_std": 0.00025200158085217296,
+      "observed_count": 1,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": 0.23330772285046164,
+      "improvement_vs_global_mean_std": 0.0072833673031070635,
+      "model": "event_mean",
+      "mse_mean": 0.009965535963419824,
+      "mse_std": 0.0001422250831646052,
+      "observed_count": 2,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.30442342565320185,
+      "improvement_vs_event_mean_std": 0.012544726719211413,
+      "improvement_vs_global_mean_mean": 0.0,
+      "improvement_vs_global_mean_std": 0.0,
+      "model": "global_mean",
+      "mse_mean": 0.012998607063976427,
+      "mse_std": 0.00017918457455204246,
+      "observed_count": 2,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.14879871885349177,
+      "improvement_vs_event_mean_std": 0.004179143518342129,
+      "improvement_vs_global_mean_mean": 0.3473797183885072,
+      "improvement_vs_global_mean_std": 0.007925392532850217,
+      "model": "idw_all",
+      "mse_mean": 0.008482530348313352,
+      "mse_std": 0.00011808358983072013,
+      "observed_count": 2,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.07582406809441436,
+      "improvement_vs_event_mean_std": 0.010000879644920978,
+      "improvement_vs_global_mean_mean": 0.17514121813240252,
+      "improvement_vs_global_mean_std": 0.013175868533496537,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.010720896037916343,
+      "mse_std": 0.00016596685917744713,
+      "observed_count": 2,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.4245355337561228,
+      "improvement_vs_event_mean_std": 0.009427365120115562,
+      "improvement_vs_global_mean_mean": 0.5278062289127843,
+      "improvement_vs_global_mean_std": 0.00948551727862741,
+      "model": "coordinate_ridge",
+      "mse_mean": 0.0066911979966486484,
+      "mse_std": 0.0001093560834579777,
+      "observed_count": 3,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": 0.17947989877723328,
+      "improvement_vs_global_mean_std": 0.007187800014566485,
+      "model": "event_mean",
+      "mse_mean": 0.011629035125952213,
+      "mse_std": 0.00018967476441622913,
+      "observed_count": 3,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.21883386267215266,
+      "improvement_vs_event_mean_std": 0.010807882477286914,
+      "improvement_vs_global_mean_mean": 0.0,
+      "improvement_vs_global_mean_std": 0.0,
+      "model": "global_mean",
+      "mse_mean": 0.014173169162434834,
+      "mse_std": 0.00022137832819959903,
+      "observed_count": 3,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.3277589494750684,
+      "improvement_vs_event_mean_std": 0.004119710749164675,
+      "improvement_vs_global_mean_mean": 0.44841437395439776,
+      "improvement_vs_global_mean_std": 0.005751337625174087,
+      "model": "idw_all",
+      "mse_mean": 0.00781713338025535,
+      "mse_std": 0.00011258789632527116,
+      "observed_count": 3,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.3252157697794327,
+      "improvement_vs_event_mean_std": 0.010419237184295303,
+      "improvement_vs_global_mean_mean": 0.4463141251379189,
+      "improvement_vs_global_mean_std": 0.010487834674317653,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.007846194992695624,
+      "mse_std": 0.00013095336382601503,
+      "observed_count": 3,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.46252674075303,
+      "improvement_vs_event_mean_std": 0.0055312444866530705,
+      "improvement_vs_global_mean_mean": 0.6389951095182773,
+      "improvement_vs_global_mean_std": 0.005208246462093582,
+      "model": "coordinate_ridge",
+      "mse_mean": 0.0044461549356735,
+      "mse_std": 2.766072972527069e-05,
+      "observed_count": 4,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": 0.3283331988744684,
+      "improvement_vs_global_mean_std": 0.006374215040376386,
+      "model": "event_mean",
+      "mse_mean": 0.00827292290632613,
+      "mse_std": 7.253618520710625e-05,
+      "observed_count": 4,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.48896880254418534,
+      "improvement_vs_event_mean_std": 0.014262966386165225,
+      "improvement_vs_global_mean_mean": 0.0,
+      "improvement_vs_global_mean_std": 0.0,
+      "model": "global_mean",
+      "mse_mean": 0.012317618568583082,
+      "mse_std": 0.00011386776854496947,
+      "observed_count": 4,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.336676123054206,
+      "improvement_vs_event_mean_std": 0.005334115052135919,
+      "improvement_vs_global_mean_mean": 0.5544752402343837,
+      "improvement_vs_global_mean_std": 0.00489010304186033,
+      "model": "idw_all",
+      "mse_mean": 0.005487312844100719,
+      "mse_std": 2.8557520122839995e-05,
+      "observed_count": 4,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.05840404394377232,
+      "improvement_vs_event_mean_std": 0.01588475316204031,
+      "improvement_vs_global_mean_mean": 0.3675655472583188,
+      "improvement_vs_global_mean_std": 0.012027287618786641,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.00778936975208732,
+      "mse_std": 0.00012711913112000908,
+      "observed_count": 4,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.388112967460071,
+      "improvement_vs_event_mean_std": 0.004238249179382296,
+      "improvement_vs_global_mean_mean": 0.6212379009538738,
+      "improvement_vs_global_mean_std": 0.0049614193123770295,
+      "model": "coordinate_ridge",
+      "mse_mean": 0.0044898212518698225,
+      "mse_std": 5.243005904188956e-05,
+      "observed_count": 6,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": 0.3809850133757933,
+      "improvement_vs_global_mean_std": 0.007576364923737564,
+      "model": "event_mean",
+      "mse_mean": 0.007338065711276915,
+      "mse_std": 0.00010358493117605124,
+      "observed_count": 6,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.6157131779799713,
+      "improvement_vs_event_mean_std": 0.019888161300233423,
+      "improvement_vs_global_mean_mean": 0.0,
+      "improvement_vs_global_mean_std": 0.0,
+      "model": "global_mean",
+      "mse_mean": 0.01185468048400556,
+      "mse_std": 0.0001127029283775143,
+      "observed_count": 6,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.44202841624452366,
+      "improvement_vs_event_mean_std": 0.006850200927651925,
+      "improvement_vs_global_mean_mean": 0.65460251160172,
+      "improvement_vs_global_mean_std": 0.006281667885836745,
+      "model": "idw_all",
+      "mse_mean": 0.004094138971413487,
+      "mse_std": 5.8546164268746587e-05,
+      "observed_count": 6,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.1126499330752865,
+      "improvement_vs_event_mean_std": 0.02461878884140839,
+      "improvement_vs_global_mean_mean": 0.45075601533158693,
+      "improvement_vs_global_mean_std": 0.015372457598384636,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.006509549089241773,
+      "mse_std": 0.00012993886517944877,
+      "observed_count": 6,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.45383814871814365,
+      "improvement_vs_event_mean_std": 0.0027892104106364856,
+      "improvement_vs_global_mean_mean": 0.7070058330416126,
+      "improvement_vs_global_mean_std": 0.002806084949422972,
+      "model": "coordinate_ridge",
+      "mse_mean": 0.0038422177836764603,
+      "mse_std": 4.158728203967049e-05,
+      "observed_count": 8,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.0,
+      "improvement_vs_event_mean_std": 0.0,
+      "improvement_vs_global_mean_mean": 0.46353981947728046,
+      "improvement_vs_global_mean_std": 0.004332858904740438,
+      "model": "event_mean",
+      "mse_mean": 0.007035124920851862,
+      "mse_std": 8.391865418578355e-05,
+      "observed_count": 8,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": -0.8641930413341153,
+      "improvement_vs_event_mean_std": 0.015079203514296825,
+      "improvement_vs_global_mean_mean": 0.0,
+      "improvement_vs_global_mean_std": 0.0,
+      "model": "global_mean",
+      "mse_mean": 0.013113952808392542,
+      "mse_std": 0.00011221185748860845,
+      "observed_count": 8,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.40743105747882274,
+      "improvement_vs_event_mean_std": 0.0029166026938705256,
+      "improvement_vs_global_mean_mean": 0.6821066137810814,
+      "improvement_vs_global_mean_std": 0.003374946602243745,
+      "model": "idw_all",
+      "mse_mean": 0.0041687101989130795,
+      "mse_std": 4.655481638377593e-05,
+      "observed_count": 8,
+      "seeds": 5,
+      "strategy": "space_filling"
+    },
+    {
+      "improvement_vs_event_mean_mean": 0.42761525689297947,
+      "improvement_vs_event_mean_std": 0.01730844425523118,
+      "improvement_vs_global_mean_mean": 0.6929366031982936,
+      "improvement_vs_global_mean_std": 0.00964405006962321,
+      "model": "nearest_neighbor",
+      "mse_mean": 0.0040260934367931135,
+      "mse_std": 0.0001071479958652197,
+      "observed_count": 8,
+      "seeds": 5,
+      "strategy": "space_filling"
+    }
+  ],
+  "task": "track_b_synthetic_field_budget",
+  "theta_points": 512
+}

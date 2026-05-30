@@ -276,6 +276,15 @@ conditions. The first healthy region was around 48 events with replicate structu
 Interpretation: use 12-24 events for schema debugging only; ask for roughly 48 events as
 the first serious pilot, and 96 if resources allow.
 
+The Track B synthetic field-budget test adds a second design constraint: partial
+observations need coverage, not convenience sampling. In a 24-event synthetic field with
+12 observations per event, one random observation per event was worse than a global mean;
+space-filling observations were useful almost immediately. IDW field reconstruction beat
+the event mean by about 15% with two space-filling observations, about 34% with four, and
+about 44% with six. Interpretation: for a real pilot, do not merely ask for final XRD
+files. Ask whether each planned condition or event can have at least 3-4 deliberately
+covered partial observations, and preferably 6-8 if feasible.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
