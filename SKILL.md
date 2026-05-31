@@ -354,6 +354,17 @@ strong at larger budgets, which means the current synthetic field is partly solv
 spatial smoothness. Next stress test regime transfer and discontinuous/nonstationary event
 fields rather than tuning this scaffold.
 
+The first regime-transfer stress test is a productive negative result. Policies trained on
+`source_smooth` transfer well to `matched_smooth`: raw-spectrum set variants reach about
+78-79% target-MSE improvement, and `candidate_set_basic` is the best non-oracle policy at
+budgets 4, 6, and 8. They retain smaller target signal on `abrupt_basin` fields, about
+19-23% target-MSE improvement, but they collapse under `random_axis` and `reversed_time`
+process-coordinate shifts. Coordinate/scalar shortcuts also do not vanish universally:
+`coords_basic` wins reversed-time at budgets 4 and 8. Interpretation: raw-event policies
+are real but not invariant. The next step should be mixed-regime training and held-out
+regime testing, plus richer process-context fields that let a model infer event progress
+axes, rather than tuning the same source-smooth scaffold.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
