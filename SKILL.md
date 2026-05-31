@@ -335,6 +335,15 @@ improvement versus global mean at budget 8 versus 67.9% for space-filling and 74
 oracle. Interpretation: this is the first learned event-feedback win. The next step can be
 a learned event-state encoder plus acquisition head, but only if it beats the forest.
 
+The first neural active policy is a modest architecture win, not a transformer coronation.
+A small set encoder with a 2-layer TransformerEncoder over observed coordinate/spectrum
+tokens predicts oracle acquisition targets about 76.5% better than a train-mean baseline.
+As a deployed held-out-event policy, it beats random and naive active selection at every
+budget, beats the forest at budgets 4 and 8, loses slightly to the forest at budget 3, and
+loses more noticeably at budget 6. Interpretation: learned event-state policies are
+viable, but the architecture has not yet earned default status. Next test whether the set
+encoder survives feature ablations, regime transfer, and provenance shifts before scaling.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
