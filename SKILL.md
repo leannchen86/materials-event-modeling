@@ -365,6 +365,19 @@ are real but not invariant. The next step should be mixed-regime training and he
 regime testing, plus richer process-context fields that let a model infer event progress
 axes, rather than tuning the same source-smooth scaffold.
 
+The focused mixed-regime transfer run tested whether training on multiple synthetic
+event-worlds fixes the source-only collapse. It helps but does not solve transfer. Holding
+out `random_axis`, `reversed_time`, and `abrupt_basin`, mixed training improves raw
+target-prediction collapse for `candidate_set_basic` by about +26.7 percentage points on
+`random_axis` and +194.3 points on `reversed_time` relative to source-only training, but
+the raw-spectrum target scores remain negative on both. At budget 8, `full_neural` improves
+MSE versus source-only on `random_axis` and `reversed_time`, but best non-oracle policies
+are still scalar/coordinate/forest methods: `scalar_full` wins random-axis and
+`coords_basic` wins reversed-time. Interpretation: regime diversity reduces brittleness,
+but the model still needs explicit latent event-progress/geometry inference. Next build a
+policy that infers the current event's progress axis from partial observations, rather
+than only feeding coordinates and spectra into an acquisition head.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
