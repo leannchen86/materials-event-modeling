@@ -344,6 +344,16 @@ loses more noticeably at budget 6. Interpretation: learned event-state policies 
 viable, but the architecture has not yet earned default status. Next test whether the set
 encoder survives feature ablations, regime transfer, and provenance shifts before scaling.
 
+The neural policy ablation strengthens the event-state claim while exposing a synthetic
+shortcut. Removing the observed raw-spectrum set and using only engineered scalar features
+cuts target-MSE improvement from about 76.5% to about 52.6%. Using raw-spectrum set models
+with only basic candidate/budget state still reaches about 74.8-75.0% target-MSE
+improvement, and these policies remain competitive with the full neural model and forest.
+So raw event observations are doing real work. Caveat: coordinate-only policies become
+strong at larger budgets, which means the current synthetic field is partly solvable by
+spatial smoothness. Next stress test regime transfer and discontinuous/nonstationary event
+fields rather than tuning this scaffold.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
