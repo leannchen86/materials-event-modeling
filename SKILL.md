@@ -404,6 +404,22 @@ reconstruction. Do not keep tuning this heuristic in place. The next better dire
 masked event modeling: predict missing raw/event measurements from partial observations,
 then derive acquisition from expected reduction in event-level reconstruction error.
 
+The first masked event model validates that next step, but also warns against looping on
+the synthetic scaffold. A Transformer-style set-to-point model trained on partial events
+predicts missing spectrum embeddings from observed measurements and candidate coordinates.
+The `raw_set` variant beats train-mean target prediction in every held-out regime, about
++30.1% on `abrupt_basin`, +39.5% on `random_axis`, and +35.6% on `reversed_time`, while
+`coord_only` is weak or collapses. Observed raw spectra therefore carry event-specific
+signal beyond coordinates. A `raw_residual` variant that predicts the residual over IDW
+interpolation is strongest on full-spectrum reconstruction for `abrupt_basin`, winning
+7 of 10 budget/mask settings and averaging about +32.6% improvement over event mean. It
+also helps `reversed_time`, but it does not solve `random_axis`, where coordinate ridge
+and the engineered RF baseline dominate. Interpretation: masked event reconstruction with
+strong interpolation baselines is the right objective, but this synthetic benchmark still
+contains coordinate/interpolation shortcuts. Do not keep doing same-shape local neural
+sweeps. Next port the objective to HTEM-like or lab event data, or create a deliberately
+harder scaffold only if it tests a data-design question.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
