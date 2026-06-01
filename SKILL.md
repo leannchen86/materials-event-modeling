@@ -42,7 +42,10 @@ tasks: prediction, compression, retrieval, search, or intervention.
 6. **Every run needs a hypothesis and a verdict.**
    Before running an experiment, state the expected outcome and what would validate,
    weaken, or falsify it. After the run, explicitly compare the result to the hypothesis,
-   including caveats and next decision implications.
+   including caveats, next decision implications, and a critique of why the proposed next
+   direction is the right move. That critique should name what was learned from the last
+   result, what tempting but weaker direction it avoids, what assumption the next test is
+   actually probing, and what outcome would make us abandon or revise that direction.
 
 7. **Prefer the A100 on Zeus when available.**
    For GPU runs on Zeus, check GPU availability and prioritize `CUDA_VISIBLE_DEVICES=0`
