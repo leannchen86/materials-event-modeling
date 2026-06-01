@@ -388,9 +388,21 @@ regressed on coordinates, while `oracle_progress_forest` gets the synthetic hidd
 improvement is only about +6.6% on `abrupt_basin`, -5.0% on `random_axis`, and -52.6% on
 `reversed_time`. At budget 8, latent progress wins `reversed_time` among non-oracle
 methods, but progress policies do not dominate overall. Interpretation: the missing object
-is not a scalar progress axis; it is richer event geometry. Next model candidate-to-
-observed relations, local coverage, transition/basin boundaries, and reconstruction-aware
-value rather than a single monotonic progress coordinate.
+is not a scalar progress axis; it is a learned event field. Do not turn this into a fixed
+knowledge graph or named relation ontology. The relations among observations should be
+learned internally through objective feedback.
+
+The first event-field model validates the representation direction while weakening naive
+uncertainty acquisition. A RandomForestRegressor trained to predict PCA-compressed missing
+spectra from partial event observations beats a train-mean PCA target baseline by about
+31.7% on `abrupt_basin`, 54.1% on `random_axis`, and 14.7% on `reversed_time`. But
+selecting the point with highest forest ensemble variance does not reliably beat
+`space_filling`, `learned_forest`, or `active_hybrid`; the coverage-multiplied variant is
+only competitive in a few budget/regime settings. Interpretation: event-field signal
+exists, but pointwise uncertainty is not the same as expected improvement in whole-event
+reconstruction. Do not keep tuning this heuristic in place. The next better direction is
+masked event modeling: predict missing raw/event measurements from partial observations,
+then derive acquisition from expected reduction in event-level reconstruction error.
 
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or

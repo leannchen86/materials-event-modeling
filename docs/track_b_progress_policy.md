@@ -149,18 +149,20 @@ infer scalar progress z
 to:
 
 ```text
-infer an event geometry graph / relation field
+learn an event field from partial observations
 ```
 
-Concretely, the next experiment should build a policy with features such as:
+This should not become a hand-written relation graph or a new symbolic ontology. The
+relations among observations should be learned through objective feedback, such as missing
+raw-measurement prediction and whole-event reconstruction.
 
-- candidate-to-observed spectral change predicted from partial event context,
-- pairwise coordinate and spectral-distance structure,
-- local neighborhood coverage,
-- inferred transition/basin boundaries,
-- and reconstruction-model-aware acquisition value.
+Concretely, the next experiment should first model:
+
+- candidate measurements from partial event context,
+- local coverage and observed-state summaries,
+- changes in spectra across the event,
+- and reconstruction-aware value.
 
 In research terms:
 
-> The unit is not only a material-making event; it is the geometry of feedback inside the
-> event.
+> The unit is not only a material-making event; it is the feedback field inside the event.
