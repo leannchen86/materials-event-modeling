@@ -378,6 +378,17 @@ but the model still needs explicit latent event-progress/geometry inference. Nex
 policy that infers the current event's progress axis from partial observations, rather
 than only feeding coordinates and spectra into an acquisition head.
 
+The first explicit progress-policy test falsifies the simplest version of that idea. A
+`latent_progress_forest` infers a 1D progress coordinate from observed spectral-change PCA
+regressed on coordinates, while `oracle_progress_forest` gets the synthetic hidden
+`event_progress` coordinate as an upper bound. Oracle progress is not enough: target-MSE
+improvement is only about +6.6% on `abrupt_basin`, -5.0% on `random_axis`, and -52.6% on
+`reversed_time`. At budget 8, latent progress wins `reversed_time` among non-oracle
+methods, but progress policies do not dominate overall. Interpretation: the missing object
+is not a scalar progress axis; it is richer event geometry. Next model candidate-to-
+observed relations, local coverage, transition/basin boundaries, and reconstruction-aware
+value rather than a single monotonic progress coordinate.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
