@@ -48,6 +48,68 @@
         "null"
       ]
     },
+    "event_group_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Replicate or planned-condition group id. Use this for retrieval and held-out-plan splits."
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Collection context that must be logged before interpreting learned representations.",
+      "additionalProperties": true,
+      "properties": {
+        "operator_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lab_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "batch_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "instrument_session_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "measurement_day": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "run_order": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "source_dataset": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "raw_export_profile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
     "process": {
       "type": "object",
       "required": [
@@ -315,6 +377,110 @@
           "items": {
             "type": "object",
             "additionalProperties": true
+          }
+        }
+      }
+    },
+    "observations": {
+      "type": "array",
+      "description": "Event-internal observations: time points, spatial positions, modalities, or partial measurements used for masked event learning.",
+      "items": {
+        "type": "object",
+        "required": [
+          "observation_id",
+          "modality"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "observation_id": {
+            "type": "string"
+          },
+          "modality": {
+            "type": "string",
+            "description": "Examples: xrd, raman, ftir, sem, tem, photo, process_log, human_note."
+          },
+          "stage": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Examples: precursor, in_situ, intermediate, final, aged, after_drying."
+          },
+          "timestamp": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "timepoint_minutes": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "spatial_position": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": true,
+            "properties": {
+              "x": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "y": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "unit": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "file_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "instrument_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "instrument_session_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "raw_export_format": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "include_in_raw_objective": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
           }
         }
       }

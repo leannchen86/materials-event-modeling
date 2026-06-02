@@ -420,6 +420,16 @@ contains coordinate/interpolation shortcuts. Do not keep doing same-shape local 
 sweeps. Next port the objective to HTEM-like or lab event data, or create a deliberately
 harder scaffold only if it tests a data-design question.
 
+The repo is now positioned as a universal event embedding scaffold rather than a
+hand-crafted-feature replacement project. The first event-ingestion audit layer adds
+`observations` and `provenance` to the event schema and introduces
+`scripts/audit_track_b_event_dataset.py`. On the current 6-event calcium-carbonate mock
+set, the audit validates labels-as-probes and some provenance logging, but marks masked
+event reconstruction, missing-modality prediction, provenance stress tests, replicate
+retrieval, and event-native-vs-label baselines as not ready. This is the intended failure:
+the mock set has mostly one final XRD per event. The lab ask must therefore be multiple
+feedback-bearing observations per material-making event, not merely final XRD files.
+
 The small-scale work is allowed to be vibe-sensing only if the vibes are converted into
 objective checks: masked reconstruction, held-out measurement prediction, retrieval, or
 transfer improvement. If opXRD pretraining cannot beat the strongest simple baselines on
