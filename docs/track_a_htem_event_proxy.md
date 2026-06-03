@@ -538,3 +538,104 @@ time points, pH/temperature perturbations, repeated droplets/vials, or measureme
 modalities. The important structure is the same: a material-making event should have
 multiple partial observations so the model can learn to predict missing/future
 measurements before we ask about labels.
+
+## HTEM Masked-Event Reconstruction
+
+### Pre-Run Hypothesis
+
+The sharpest public-data test of Track B is not another static metadata predictor. It is:
+
+```text
+given partial raw XRD observations from one HTEM sample library, predict the missing XRD
+spectra from that same library
+```
+
+Expected result:
+
+- Partial raw observations should make the sample library self-predictive without phase
+  labels.
+- Raw-set neural models should beat coord-only controls if observed spectra carry
+  event-specific signal.
+- IDW may remain very strong because HTEM libraries are spatially smooth; a neural win
+  over IDW is not assumed.
+
+### Command
+
+```bash
+.venv/bin/python scripts/run_htem_masked_event_model.py \
+  --folds 3 \
+  --max-libraries 65 \
+  --observed-counts 8 16 32 \
+  --epochs 12 \
+  --variants raw_set coord_only raw_residual \
+  --train-random-repeats 1 \
+  --eval-random-repeats 1 \
+  --output data/manifests/htem_masked_event_model_cu_s_sn.json
+```
+
+Output manifest:
+
+```text
+data/manifests/htem_masked_event_model_cu_s_sn.json
+```
+
+### Setup
+
+The run used 65 `Cu|S|Sn` sample libraries with 2,860 position-level XRD spectra. Each
+fold held out entire sample libraries for evaluation. For each held-out library, the model
+observed 8, 16, or 32 raw XRD spectra and predicted the remaining spectra.
+
+Models and controls:
+
+- `observed_event_mean`: average of observed XRD spectra from the same library.
+- `idw_all`: inverse-distance weighted interpolation from observed positions.
+- `xy_ridge_linear`: per-library linear coordinate model.
+- `masked_event_coord_only`: neural model with observed spectra zeroed.
+- `masked_event_raw_set`: neural model using observed spectra and coordinates.
+- `masked_event_raw_residual`: neural model predicting the residual over IDW.
+
+### Results
+
+At 32 space-filling observed positions:
+
+| Model | Improvement vs Train Mean | Improvement vs Event Mean | Improvement vs IDW |
+|---|---:|---:|---:|
+| `idw_all` | +58.9% | +17.9% | +0.0% |
+| `masked_event_raw_residual` | +58.9% | +17.7% | -0.3% |
+| `xy_ridge_linear` | +57.9% | +16.6% | -3.0% |
+| `observed_event_mean` | +48.9% | +0.0% | -27.4% |
+| `masked_event_raw_set` | +40.2% | -32.1% | -63.3% |
+| `masked_event_coord_only` | -0.1% | -138.8% | -194.9% |
+
+### Verdict
+
+The event-field hypothesis was validated; the neural-architecture headline was not.
+
+The clean result is:
+
+```text
+In HTEM Cu-S-Sn libraries, partial raw XRD observations inside one sample library can
+predict the library's missing XRD field without phase labels.
+```
+
+This is stronger than saying "we trained a neural feature model" because it identifies the
+unit of learning: the experimental field/event. The sample library is not just a set of
+independent material rows.
+
+The neural result is a useful guardrail. `coord_only` collapses, so coordinates alone are
+not enough for the masked neural model. `raw_residual` nearly matches IDW, but does not
+beat it. That means this public HTEM slice is still dominated by spatial field structure;
+it should be used as a bridge and baseline test, not as evidence that universal event
+embeddings have already been proven.
+
+### Outreach Implication
+
+The short expert-facing phrasing should be:
+
+```text
+Static material-row metadata failed to transfer across held-out Cu-S-Sn HTEM libraries,
+but within one sample library, 32 raw XRD observations predicted the missing XRD field
+17.9% better than the event mean and 58.9% better than the train mean, without phase
+labels. This is why I am asking whether materials data infrastructure preserves enough
+raw event feedback to scale event-native learning objectives.
+```
