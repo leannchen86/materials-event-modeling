@@ -639,3 +639,96 @@ but within one sample library, 32 raw XRD observations predicted the missing XRD
 labels. This is why I am asking whether materials data infrastructure preserves enough
 raw event feedback to scale event-native learning objectives.
 ```
+
+## HTEM Event-Field Hard Controls
+
+### Pre-Run Hypothesis
+
+The strongest expert pushback against the HTEM result is:
+
+```text
+This is just spatial interpolation on a combinatorial library.
+```
+
+So the next useful run should not try to make the neural model look better. It should test
+the boring explanation directly:
+
+- Does correct spatial structure beat the observed event mean?
+- Does the gain shrink on contiguous row/quadrant holdouts?
+- Does IDW collapse or weaken when coordinates are shuffled?
+- Do peak-aware metrics tell a different story than plain MSE?
+
+### Command
+
+```bash
+.venv/bin/python scripts/run_htem_event_field_controls.py \
+  --max-libraries 65 \
+  --observed-count 32 \
+  --output data/manifests/htem_event_field_hard_controls_cu_s_sn.json
+```
+
+Output manifest:
+
+```text
+data/manifests/htem_event_field_hard_controls_cu_s_sn.json
+```
+
+### Setup
+
+The run used the same 65 `Cu|S|Sn` HTEM sample libraries. It compared:
+
+- `random_32`: observe 32 random positions, predict the rest.
+- `space_filling_32`: observe 32 spatially spread positions, predict the rest.
+- `held_out_row`: observe all but one spatial row, predict the held-out row.
+- `held_out_quadrant`: observe three quadrants, predict a contiguous held-out quadrant.
+
+Models:
+
+- `observed_event_mean`
+- `idw_all`
+- `idw_shuffled_coords`
+- `nearest_neighbor`
+- `xy_ridge_linear`
+- `train_mean`
+
+Metrics:
+
+- plain MSE and MAE,
+- intensity-weighted MSE,
+- top-10%-intensity peak MAE.
+
+### Results
+
+| Split | `idw_all` MSE vs Event Mean | `idw_all` MSE vs Shuffled Coords | `idw_all` Peak MAE vs Event Mean |
+|---|---:|---:|---:|
+| `space_filling_32` | +19.9% | +30.3% | +56.7% |
+| `random_32` | +15.1% | +25.4% | +41.5% |
+| `held_out_row` | +11.3% | +13.7% | +23.5% |
+| `held_out_quadrant` | +10.5% | +12.3% | +19.4% |
+
+### Verdict
+
+The hard controls validate the modest claim and weaken the overclaim.
+
+Validated:
+
+```text
+HTEM sample libraries behave like experimental measurement fields. Correct within-event
+spatial structure helps predict missing raw XRD, including on contiguous holdouts and
+peak-aware metrics.
+```
+
+Weakened:
+
+```text
+This is not evidence that a neural event embedding has beaten simple event geometry.
+```
+
+The coordinate-shuffle null is especially useful. `idw_shuffled_coords` is worse than the
+observed event mean on all four splits, while correct-coordinate IDW is better. That means
+the result is not merely "all spectra in a library are similar." The spatial organization
+of the event matters.
+
+But row and quadrant holdouts are harder than space-filling prediction, so the original
+snap result should be phrased as event-field evidence, not as a broad representation
+learning breakthrough.
