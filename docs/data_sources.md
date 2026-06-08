@@ -21,12 +21,20 @@ Current first target:
 - Durham IPA droplet evaporation dataset, because it is small, open, and reportedly
   includes videos plus spreadsheets under controlled humidity.
 - First local audit: `docs/durham_ipa_droplet_audit.md`.
+- First early-trace smoke test: `docs/durham_ipa_droplet_smoke_test.md`.
 
 Local audit command:
 
 ```bash
 python3 scripts/audit_durham_ipa_droplets.py \
   --output data/manifests/durham_ipa_droplet_audit.json
+```
+
+Local smoke-test command:
+
+```bash
+.venv/bin/python scripts/run_durham_droplet_smoke_test.py \
+  --output data/manifests/durham_ipa_droplet_smoke_test.json
 ```
 
 Current interpretation:
@@ -37,6 +45,9 @@ Current interpretation:
   trajectory log.
 - A dataset that cannot support early-trace -> future-observation prediction is still
   useful if it reveals which event fields are missing.
+- Durham is event-like enough for a smoke test: early traces improve over train mean.
+  But metadata-only baselines still win, so the public release is not a decisive benchmark
+  for raw event traces versus compressed conditions.
 
 ## Candidate Public Datasets
 

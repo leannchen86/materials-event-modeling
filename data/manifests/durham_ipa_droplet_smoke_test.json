@@ -1,0 +1,180 @@
+{
+  "archive": "/Users/leannchen/github/materials-event-modeling/data/raw/durham_ipa_droplets/ipa_droplets_in_moist_air.zip",
+  "created_at": "2026-06-08T23:30:18.646505+00:00",
+  "early_fraction": 0.25,
+  "event_count": 9,
+  "events": [
+    {
+      "conditions": {
+        "movie_id": 1,
+        "nozzle_um": 30.0,
+        "relative_humidity_percent": 38.0,
+        "trace_particles": false
+      },
+      "event_id": "durham_movie_1",
+      "file": "Videos/V1-RH38-30umNozzle-onGlass-compressed.avi",
+      "frame_count": 392
+    },
+    {
+      "conditions": {
+        "movie_id": 2,
+        "nozzle_um": 30.0,
+        "relative_humidity_percent": 56.0,
+        "trace_particles": false
+      },
+      "event_id": "durham_movie_2",
+      "file": "Videos/V2-RH56-30umNozzle-onGlass-compressed.avi",
+      "frame_count": 304
+    },
+    {
+      "conditions": {
+        "movie_id": 3,
+        "nozzle_um": 30.0,
+        "relative_humidity_percent": 61.0,
+        "trace_particles": false
+      },
+      "event_id": "durham_movie_3",
+      "file": "Videos/V3-RH61-30umNozzle-onGlass-compressed.avi",
+      "frame_count": 301
+    },
+    {
+      "conditions": {
+        "movie_id": 4,
+        "nozzle_um": 30.0,
+        "relative_humidity_percent": 68.0,
+        "trace_particles": false
+      },
+      "event_id": "durham_movie_4",
+      "file": "Videos/V4-Rh68-30umNozzle-onGlass-compressed.avi",
+      "frame_count": 305
+    },
+    {
+      "conditions": {
+        "movie_id": 5,
+        "nozzle_um": 30.0,
+        "relative_humidity_percent": 74.0,
+        "trace_particles": false
+      },
+      "event_id": "durham_movie_5",
+      "file": "Videos/V5-Rh74-30umNozzle-onGlass-compressed.avi",
+      "frame_count": 380
+    },
+    {
+      "conditions": {
+        "movie_id": 6,
+        "nozzle_um": 50.0,
+        "relative_humidity_percent": 78.0,
+        "trace_particles": false
+      },
+      "event_id": "durham_movie_6",
+      "file": "Videos/V6-RH78-50umNozzle-onGlass-compressed.avi",
+      "frame_count": 1242
+    },
+    {
+      "conditions": {
+        "movie_id": 7,
+        "nozzle_um": 50.0,
+        "relative_humidity_percent": 46.0,
+        "trace_particles": true
+      },
+      "event_id": "durham_movie_7",
+      "file": "Videos/V7-RH46-50umNozzle-onGlass-Particles-compressed.avi",
+      "frame_count": 155
+    },
+    {
+      "conditions": {
+        "movie_id": 8,
+        "nozzle_um": 50.0,
+        "relative_humidity_percent": 54.0,
+        "trace_particles": true
+      },
+      "event_id": "durham_movie_8",
+      "file": "Videos/V8-RH54-50umNozzle-onGlass-Particles-compressed.avi",
+      "frame_count": 200
+    },
+    {
+      "conditions": {
+        "movie_id": 9,
+        "nozzle_um": 50.0,
+        "relative_humidity_percent": 64.0,
+        "trace_particles": true
+      },
+      "event_id": "durham_movie_9",
+      "file": "Videos/V9-RH64-50umNozzle-onGlass-Particles-compressed.avi",
+      "frame_count": 140
+    }
+  ],
+  "frame_size": 64,
+  "hypothesis": "If the released videos contain usable event traces, early video-derived signals should predict late trace summaries better than condition metadata alone. With only nine videos, any positive result is a smoke-test signal, not decisive evidence.",
+  "late_fraction": 0.25,
+  "metadata_features": [
+    "relative_humidity_percent",
+    "nozzle_um",
+    "trace_particles"
+  ],
+  "metrics": {
+    "copy_early_summary": {
+      "mae": 0.9611011147499084,
+      "mae_improvement_vs_train_mean": 0.09891558722930893,
+      "mse": 3.57958722114563,
+      "mse_improvement_vs_train_mean": -0.6187637757505389
+    },
+    "early_plus_metadata_ridge": {
+      "mae": 0.7926193475723267,
+      "mae_improvement_vs_train_mean": 0.25687638023003734,
+      "mse": 1.863420009613037,
+      "mse_improvement_vs_train_mean": 0.1573227234829302
+    },
+    "early_trace_nearest_neighbor": {
+      "mae": 0.6712411046028137,
+      "mae_improvement_vs_train_mean": 0.3706750649998307,
+      "mse": 1.476733922958374,
+      "mse_improvement_vs_train_mean": 0.3321902126631405
+    },
+    "early_trace_ridge": {
+      "mae": 0.787580668926239,
+      "mae_improvement_vs_train_mean": 0.26160041469349915,
+      "mse": 1.8534327745437622,
+      "mse_improvement_vs_train_mean": 0.1618391588569713
+    },
+    "metadata_nearest_neighbor": {
+      "mae": 0.6617629528045654,
+      "mae_improvement_vs_train_mean": 0.3795613462830424,
+      "mse": 1.4132928848266602,
+      "mse_improvement_vs_train_mean": 0.36087956930654697
+    },
+    "metadata_ridge": {
+      "mae": 0.7411519289016724,
+      "mae_improvement_vs_train_mean": 0.305129876160835,
+      "mse": 1.535356879234314,
+      "mse_improvement_vs_train_mean": 0.3056796928226635
+    },
+    "train_mean": {
+      "mae": 1.0666049718856812,
+      "mae_improvement_vs_train_mean": 0.0,
+      "mse": 2.2113091945648193,
+      "mse_improvement_vs_train_mean": 0.0
+    }
+  },
+  "source_url": "https://collections.durham.ac.uk/files/r12801pg44n",
+  "target": "late segment summary: mean, std, last value, and slope per trace feature",
+  "task": "durham_ipa_droplet_early_trace_smoke_test",
+  "timeline_steps": 64,
+  "trace_feature_names": [
+    "mean_intensity",
+    "std_intensity",
+    "q05_intensity",
+    "q50_intensity",
+    "q95_intensity",
+    "contrast_q95_q05",
+    "edge_energy",
+    "dark_fraction_lt_045",
+    "bright_fraction_gt_075"
+  ],
+  "verdict": {
+    "dataset_supports_only_smoke_test": true,
+    "early_trace_beats_metadata_nearest_neighbor_mse": false,
+    "early_trace_beats_metadata_ridge_mse": false,
+    "main_caveat": "Leave-one-video-out has only eight training events per fold, and the released archive lacks replicate groups, failed/ambiguous attempt logs, and session/run-order provenance."
+  }
+}

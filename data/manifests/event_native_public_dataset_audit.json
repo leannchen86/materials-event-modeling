@@ -66,6 +66,14 @@
         ],
         "preliminary_verdict": "Useful first event-trace smoke test, but not a decisive event-native benchmark because repeats, complete released traces, failed/ambiguous attempts, and provenance are incomplete."
       },
+      "smoke_test": {
+        "status": "completed",
+        "manifest": "data/manifests/durham_ipa_droplet_smoke_test.json",
+        "task": "first 25% video-derived trace -> last 25% trace summary",
+        "best_metadata_mse_improvement_vs_train_mean": 0.36087956930654697,
+        "best_early_trace_mse_improvement_vs_train_mean": 0.3321902126631405,
+        "verdict": "Early trace features contain signal but do not beat metadata-only baselines in this 9-video release, so the dataset can prototype the event task but cannot decide the main benchmark question."
+      },
       "priority": "first_audit"
     },
     {

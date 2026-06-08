@@ -74,6 +74,34 @@ tasks: prediction, compression, retrieval, search, or intervention.
     time sequences, failed/ambiguous attempts, process variables, repeated recipes, raw
     files, intervention history, environmental context, provenance, or reusable licensing.
 
+## Current Public Event Dataset Lesson
+
+The first simple-physics audit used the Durham dataset "Evaporation of alcohol droplets on
+surfaces in moist air." It is a useful public event-trace smoke test because it includes 9
+videos plus spreadsheets, with humidity/nozzle/particle conditions recoverable from the
+README and filenames.
+
+The audit validated the expected ceiling:
+
+- event-like traces exist,
+- several supporting movies/data are only available under request,
+- there are no obvious replicate groups,
+- there is no failed/ambiguous attempt log,
+- there is no operator/session/run-order provenance,
+- the archive is organized around paper figures rather than an event manifest.
+
+The first smoke benchmark tested:
+
+```text
+first 25% of video-derived trace -> last 25% trace summary
+```
+
+Early traces improved over train mean, but metadata-only baselines still won. Best
+metadata nearest-neighbor MSE improvement was about 36.1%; best early-trace nearest-neighbor
+improvement was about 33.2%. Interpretation: raw traces contain signal, but this 9-video
+release cannot cleanly test whether raw event traces beat compressed conditions. This is
+evidence for the benchmark/data-structure gap, not a reason to tune architectures.
+
 ## Current NIST Lesson
 
 The first NIST baseline shows that human-label disagreement is structured:
