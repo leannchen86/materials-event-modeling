@@ -59,6 +59,21 @@ tasks: prediction, compression, retrieval, search, or intervention.
    failure mode, or informs Track B. It is drift when it only optimizes dataset-specific
    performance.
 
+9. **Audit whether the feedback signal exists before training another model.**
+   Anubhav Jain's feedback sharpened the bottleneck: public experimental datasets are
+   often scattered or unavailable, lack metadata, and lack clear metrics/problems for
+   judging new ideas. Track B should therefore treat dataset audit and benchmark design as
+   first-class research objects. The question is not only "can a model learn from this?"
+   but "does this dataset preserve enough of the material-making event to define a real
+   feedback task?"
+
+10. **Collect new data only after a structural gap is identified.**
+    Do not collect a dataset merely because the physical system is simple or familiar.
+    First try to reorganize existing data into the event schema. Collect a small "gold"
+    event-native dataset only when existing data lacks something structurally necessary:
+    time sequences, failed/ambiguous attempts, process variables, repeated recipes, raw
+    files, intervention history, environmental context, provenance, or reusable licensing.
+
 ## Current NIST Lesson
 
 The first NIST baseline shows that human-label disagreement is structured:

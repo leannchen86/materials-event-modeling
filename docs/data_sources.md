@@ -1,5 +1,43 @@
 # Data Sources
 
+## Event-Native Public Dataset Strategy
+
+After Anubhav Jain's feedback, Track B should explicitly treat public-data audit as part
+of the research, not just preparation:
+
+- public experimental datasets are often scattered or unavailable,
+- metadata is often incomplete,
+- clear metrics/problems for judging new ideas are often missing.
+
+The updated plan is documented in:
+
+```text
+docs/event_native_public_data_strategy.md
+data/manifests/event_native_public_dataset_audit.json
+```
+
+Current first target:
+
+- Durham IPA droplet evaporation dataset, because it is small, open, and reportedly
+  includes videos plus spreadsheets under controlled humidity.
+- First local audit: `docs/durham_ipa_droplet_audit.md`.
+
+Local audit command:
+
+```bash
+python3 scripts/audit_durham_ipa_droplets.py \
+  --output data/manifests/durham_ipa_droplet_audit.json
+```
+
+Current interpretation:
+
+- MARCO/VMXi/OpenCrystalData are useful, but they may be more label/image-task shaped than
+  event-trace shaped.
+- HTEM remains a bridge dataset for spatial event fields, not a full material-making
+  trajectory log.
+- A dataset that cannot support early-trace -> future-observation prediction is still
+  useful if it reveals which event fields are missing.
+
 ## Candidate Public Datasets
 
 ### NIST Open Combinatorial Diffraction Dataset
