@@ -500,6 +500,20 @@ transfer improvement. If opXRD pretraining cannot beat the strongest simple base
 these checks, including local interpolation where relevant, scale alone has not yet earned a
 stronger claim.
 
+The low-equipment physical-pilot pivot is now part of Track B, not a side quest. Because
+lab outreach is slow, the project can start curating fuller material-making traces with
+cheap process-sensitive systems such as drying droplets, frozen brines, or drying films.
+The first recommended pilot is drying droplets because it is safe, visual, fast, and rich
+in process history: nominally simple recipes can yield rings, crystals, cracks, branching
+patterns, smooth films, or ambiguous mixed outcomes depending on substrate, concentration,
+humidity, disturbance, and drying path. The point is not that droplets are the final
+materials system of interest. The point is to practice and test the core dataset claim:
+early event traces plus process metadata should predict later/final observations better
+than recipe-only, label-only, or single-still baselines. Labels such as `ring`, `crystal`,
+`cracked`, `uniform`, and `failed` should be assigned only after raw video, final images,
+environmental metadata, and notes are frozen. See
+`docs/low_equipment_event_trace_pilot.md`.
+
 ## Next Experiment Direction
 
 Move from label-prediction diagnostics to raw measurement objectives:
