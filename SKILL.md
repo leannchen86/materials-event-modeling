@@ -102,6 +102,17 @@ improvement was about 33.2%. Interpretation: raw traces contain signal, but this
 release cannot cleanly test whether raw event traces beat compressed conditions. This is
 evidence for the benchmark/data-structure gap, not a reason to tune architectures.
 
+The first Dryad gelation audit asked whether a richer active-learning experimental dataset
+escapes the same issue. It partially does and partially does not. Top-level metadata shows
+useful signals: active learning, pH/temperature/concentration variables, time-dependent
+rheology/microrheology/UV-Vis measurements, raw data where applicable, processed CSVs, and
+GPR/modeling scripts. But the public release exposes only one 5.14 GB archive plus a
+README, and the README says the dataset is organized by figure folders. There is no
+top-level event manifest, repeated-condition map, failed/ambiguous attempt log, or
+provenance/session/run-order table. Interpretation: Dryad is richer than Durham, but still
+paper-shaped at the public interface. The next gain is internal archive/file manifest
+inspection or author contact, not architecture tuning.
+
 ## Current NIST Lesson
 
 The first NIST baseline shows that human-label disagreement is structured:

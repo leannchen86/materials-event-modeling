@@ -124,23 +124,26 @@ cannot test whether event traces beat compressed labels.
 
 1. Durham IPA droplet evaporation dataset.
    Small, open, includes videos and spreadsheets, and records controlled humidity. This is
-   the best first audit target for early-trace prediction.
+   the best first audit target for early-trace prediction. Completed audit: trace data
+   exists, but 9 videos are too few and metadata-only baselines remain too strong.
 
-2. MARCO protein crystallization images.
+2. Dryad gelation active-learning dataset.
+   Useful because it comes from an active-learning experimental workflow and may preserve
+   raw/processed data plus response surfaces. Completed top-level audit: richer than
+   Durham at the study level, but still paper-shaped at the public interface because the
+   event structure is buried inside one large archive plus figure-organized README.
+
+3. MARCO protein crystallization images.
    Large, public, source-labeled image classification dataset. Useful as a compression
    negative control: many images and labels, but likely not a full time/process event log.
 
-3. VMXi crystallization micrographs.
+4. VMXi crystallization micrographs.
    Useful for label disagreement because expert agreement metadata exists. Large download,
    more final-image shaped than event-trace shaped.
 
-4. OpenCrystalData.
+5. OpenCrystalData.
    Useful process-analytical-technology image resource for crystallization. Audit whether
    it has sequences, raw instrument context, and repeated process conditions.
-
-5. Dryad gelation active-learning dataset.
-   Useful because it comes from an active-learning experimental workflow and may preserve
-   raw/processed data plus response surfaces.
 
 6. HTEM DB.
    Already audited as an event-proxy bridge. It supports spatial measurement fields but

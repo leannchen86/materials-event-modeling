@@ -180,6 +180,29 @@
         "raw data coverage may vary by figure",
         "large enough to require selective download"
       ],
+      "local_audit": {
+        "status": "api_and_readme_audited",
+        "manifest": "data/manifests/dryad_gelation_audit.json",
+        "top_level_files": 2,
+        "large_archive_size_bytes": 5141068125,
+        "license": "CC0-1.0",
+        "positive_signals": [
+          "active-learning workflow",
+          "process variables including pH, temperature, and concentration",
+          "time-dependent measurements",
+          "raw data included where applicable",
+          "processed CSVs and modeling scripts"
+        ],
+        "limiting_signals": [
+          "top-level release is one large archive plus README",
+          "README says dataset is organized by figure folders",
+          "no top-level event manifest",
+          "no top-level repeated-condition map",
+          "no top-level provenance/session/run-order table",
+          "cannot define event benchmark from top-level metadata alone"
+        ],
+        "preliminary_verdict": "Richer than Durham at the study level, but the public top-level structure remains paper-shaped. A decisive event-native audit requires internal archive inspection or an author-provided event/file manifest."
+      },
       "priority": "second_wave_audit"
     },
     {

@@ -49,6 +49,38 @@ Current interpretation:
   But metadata-only baselines still win, so the public release is not a decisive benchmark
   for raw event traces versus compressed conditions.
 
+### Dryad Gelation Active-Learning Dataset
+
+Active-learning hydrogel dataset. Useful because it is closer to an experiment-as-feedback
+loop than final-label image datasets.
+
+Link: https://datadryad.org/dataset/doi%3A10.5061/dryad.8w9ghx3xn
+
+Local audit:
+
+```bash
+.venv/bin/python scripts/audit_dryad_gelation_dataset.py \
+  --check-downloads \
+  --output data/manifests/dryad_gelation_audit.json
+```
+
+Current audit:
+
+- The public release has 2 top-level files: a 5.14 GB `Dryad_Data.zip` and a small README.
+- The dataset is CC0 licensed and was published Jan 10, 2025.
+- The README includes active learning, pH, concentration, temperature, time-dependent
+  measurement, microrheology, rheology, UV-Vis, GPR, raw data, processed CSVs, and scripts.
+- The README also says the dataset is organized by figure folders.
+- No top-level event manifest, repeated-condition map, failed/ambiguous attempt log, or
+  provenance/session/run-order table is exposed.
+
+Interpretation:
+
+- Dryad is richer than Durham at the study level.
+- It still appears paper-shaped at the public top level.
+- A decisive event-native audit requires either internal archive inspection or an
+  author-provided file/event manifest.
+
 ## Candidate Public Datasets
 
 ### NIST Open Combinatorial Diffraction Dataset
