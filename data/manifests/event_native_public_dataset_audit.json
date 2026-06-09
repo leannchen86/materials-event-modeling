@@ -153,6 +153,33 @@
         "unclear raw sequence depth",
         "ground-truth labels may be case-specific"
       ],
+      "local_audit": {
+        "status": "kaggle_metadata_audited",
+        "manifest": "data/manifests/opencrystaldata_audit.json",
+        "dataset_count": 4,
+        "total_size_bytes": 8990019781,
+        "datasets": [
+          "opencrystaldata/easyviewer-based-image-characterization",
+          "opencrystaldata/agcrystal-images",
+          "opencrystaldata/cephalexin-reactive-crystallization",
+          "opencrystaldata/standard-polystyrene-microspheres-polys"
+        ],
+        "positive_signals": [
+          "programmatic Kaggle metadata",
+          "in-situ images",
+          "process conditions such as concentration, solid loading, batch, seeded slurry, or incremental impurity addition",
+          "auxiliary measurements such as CLD or offline particle size distributions",
+          "raw images in some datasets"
+        ],
+        "limiting_signals": [
+          "public framing is image classification, segmentation, object detection, anomaly detection, or particle-size measurement",
+          "no event manifest visible in metadata",
+          "no time-ordered trace definition visible in metadata",
+          "no failed/ambiguous attempt log visible in metadata",
+          "no provenance/session/run-order table visible in metadata"
+        ],
+        "preliminary_verdict": "OpenCrystalData is image-task-ready and programmatically inspectable, but not obviously event-native from public metadata."
+      },
       "priority": "second_wave_audit"
     },
     {

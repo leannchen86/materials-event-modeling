@@ -81,6 +81,40 @@ Interpretation:
 - A decisive event-native audit requires either internal archive inspection or an
   author-provided file/event manifest.
 
+### OpenCrystalData
+
+Open crystallization image database hosted on Kaggle. Useful for testing whether
+ML-ready public datasets are also event-native.
+
+Kaggle organization: https://www.kaggle.com/opencrystaldata/datasets
+
+Paper: https://doi.org/10.1016/j.dche.2024.100150
+
+Local audit:
+
+```bash
+.venv/bin/python scripts/audit_opencrystaldata.py \
+  --output data/manifests/opencrystaldata_audit.json
+```
+
+Current audit:
+
+- 4 public Kaggle datasets.
+- Total size about 9.0 GB.
+- All are CC BY-SA 4.0.
+- Public metadata exposes in-situ images, process conditions, and auxiliary measurements.
+- Public framing is image classification, segmentation, object detection, anomaly
+  detection, or particle-size measurement.
+- No event manifest, time-ordered trace definition, failed/ambiguous attempt log, or
+  provenance/session/run-order table is visible from metadata.
+
+Interpretation:
+
+- OpenCrystalData is image-task-ready and programmatically inspectable.
+- It is not obviously event-native from public metadata.
+- Use it as a comparison case, not as the main event-native benchmark unless internal file
+  inspection reveals time/order/session structure.
+
 ## Candidate Public Datasets
 
 ### NIST Open Combinatorial Diffraction Dataset

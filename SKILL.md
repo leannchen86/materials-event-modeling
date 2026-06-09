@@ -113,6 +113,16 @@ provenance/session/run-order table. Interpretation: Dryad is richer than Durham,
 paper-shaped at the public interface. The next gain is internal archive/file manifest
 inspection or author contact, not architecture tuning.
 
+The first OpenCrystalData audit asked whether a deliberately ML-oriented public
+crystallization image database is event-native. It is much more programmatically
+inspectable than Dryad: the Kaggle API exposes 4 datasets, about 9 GB total, with in-situ
+images, process conditions, raw images in some datasets, and auxiliary measurements such as
+CLD or offline particle size distributions. But its public framing is image classification,
+segmentation, object detection, anomaly detection, or particle-size measurement. No event
+manifest, time-ordered trace definition, failed/ambiguous attempt log, or
+provenance/session/run-order table is visible from metadata. Interpretation:
+programmatically accessible and ML-ready does not imply event-native.
+
 ## Current NIST Lesson
 
 The first NIST baseline shows that human-label disagreement is structured:
