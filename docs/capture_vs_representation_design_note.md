@@ -96,3 +96,37 @@ outcome sets b's urgency.
   coordinate-ridge / RF on held-out provenance splits.
 - Validation is downstream-operational (missing-measurement error, retrieval, transfer,
   active-measurement utility), never "did we recover the human label."
+
+## Dataset hunt findings (refined-a, 2026-06-14)
+
+Searched for open, per-event-rich, interpolation-resistant *trajectory* data to run the
+masked-event + JEPA test with no rig. **Key meta-finding:** the *science* of operando
+crystallization trajectories is mature and exactly on-thesis, but *open, downloadable, raw*
+deposits are scarce — most are paywalled SI or "available on request." That scarcity is
+itself evidence for Track B being the moat.
+
+Scored against: per-event richness / real temporal trajectory / resists interpolation
+shortcut / downloadable now / on-thesis (crystallization).
+
+| Candidate | Rich | Temporal | Resists interp. | Downloadable | On-thesis |
+| --- | --- | --- | --- | --- | --- |
+| HTEM-DB (NREL, open API/web) | spatial | no (spatial) | no — IDW shortcut | yes | ~ thin-film |
+| Operando battery in-situ XRD + echem (XRDStat ecosystem) | yes | yes | yes | ~yes | no (battery) |
+| In-situ TR-XRD solid-state/mechanochem synth (LLZO, ZnS, UiO-66, FeS) | yes | yes | yes | no — SI/on-request | yes |
+| TR SAXS/WAXS crystallization (CaCO3, gypsum/bassanite, Ca-phosphate; Stawski/Benning, Diamond I22) | yes (multimodal) | yes | yes | no open deposit found | yes (bullseye) |
+| Olympus / SDL optimization benchmarks | — | no | — | yes | knobs->scalar, skip |
+| Text-mined recipes (35,675 procedures) | — | no | — | yes | compressed prose, skip |
+
+Decision:
+
+- **Fast zero-rig falsification → operando battery in-situ XRD+echem.** Accept off-thesis
+  chemistry: the claim is supposed to *generalize*, this is a genuine temporal+multimodal
+  trajectory, and it sidesteps the spatial-interpolation trap that disqualifies HTEM.
+- **On-thesis target → one specific crystallization deposit.** Chase Diamond I22 / Nature
+  Comms / RSC ESI, or request from authors (Stawski/Benning lineage).
+- **HTEM → use only for provenance/shortcut stress + baseline plumbing,** not the
+  falsification (its spatial fields are exactly the `random_axis`/IDW shortcut we already hit).
+- **Meta:** open, per-event-rich, interpolation-resistant *crystallization* trajectory data
+  is genuinely scarce in public repos. So refined-a can de-risk the *method* (battery/HTEM),
+  but the *on-thesis* falsification likely needs Track B's own CaCO3 events. a's outcome
+  (scarce) raises b's urgency — exactly the contingency flagged above.
