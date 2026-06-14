@@ -6,6 +6,41 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-14 · Run 002 · Density sweep + fair interpolation baseline (oleogel WAXS)
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Hypothesis (+ logic)
+Run 001's model "win" over interpolation was an artifact of a 12-anchor sparse baseline.
+With a *fair* baseline, interpolation error should fall monotonically as observed anchor
+density rises, cross below the raw set-model at some density, and at full density
+(interpolating from immediate ~1-frame neighbours) **beat the raw reconstruction model**.
+Logic: a reconstruction objective rewards recovering smooth structure, which dense
+interpolation already nails for free; the set-model has a fixed anchor budget and cannot
+exploit arbitrarily dense neighbours. This is the synthetic `random_axis`/IDW result
+expected to reproduce on real data — and the motivation for the latent (JEPA) objective.
+
+### Setup
+- One run (`s_mopv_1s_10Cmin_10c`), WAXS. eval = every 5th frame; pool = the rest.
+- One set-model trained on random observed subsets k∈[4,48] (max_obs 48).
+- Sweep observed anchor count k ∈ {6,12,24,48}: model vs linear interp vs event_mean,
+  **same k evenly-spaced anchors** for model and interp.
+- Plus `interp_dense_full_pool` = interpolation from the full pool (~1-frame spacing) —
+  the strongest, model-independent baseline.
+- Diagnostic: characterise the intensity oscillation (consecutive-frame shape corr,
+  detrended total-intensity autocorrelation, area-normalisation check).
+
+### Expected result (concrete prediction)
+1. interp MSE decreases monotonically with k.
+2. model MSE roughly flat in k (anchor-budget limited).
+3. Crossover: model wins at k≈6–12 (reproduces Run 001); interp wins by k≈24–48.
+4. `interp_dense_full_pool` is the lowest of all → dense interpolation beats the raw
+   model on real data (motivates JEPA over raw reconstruction).
+5. Oscillation is multiplicative (high consecutive-frame shape corr + oscillating total)
+   → a scale/exposure artifact that area-normalisation largely removes.
+
+---
+
 ## 2026-06-14 · Run 001 · Overfit-one-event sanity (oleogel WAXS)
 
 Status: **DONE** — predictions above left unedited; result below.
