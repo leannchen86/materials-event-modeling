@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-14 · Run 001 · Overfit-one-event sanity (oleogel WAXS)
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions above left unedited; result below.
 
 ### Hypothesis (+ logic)
 The oleogel WAXS frames (zenodo 15268752) parse into clean per-frame diffraction
@@ -43,3 +43,39 @@ reconstruction.
 4. Eval: linear_time_interp competitive with or better than the model on average.
    If the model clearly beats interpolation, that is a surprise worth probing at the
    transition.
+
+### Result
+- Parsing: 300 frames × 2000 q-bins (q 0.53–5.12 Å⁻¹), all finite, 0 zero-frames;
+  dominant peak q≈1.51 with slight drift = real polymorph evolution. PCA(8) keeps 92%.
+- Eval z-space MSE (60 held-out frames, 12 observed anchors): **model 0.422**,
+  event_mean 0.590, **linear_time_interp 0.823**.
+- Training: model explains most PCA-target variance (train MSE 58 vs ~230 mean-baseline)
+  but did not reach ~0.
+
+### Validated / invalidated / surprising
+- ✅ #1 parsing sanity — clean, real evolution.
+- ⚠️ #2 learnability — the model *learns* (explains most train variance) but did NOT
+  memorize to ~0. Reframe: each example has a *random* observed subset, so it's a learned
+  function, not a lookup — "memorize to zero" was the wrong expectation for a
+  stochastic-input task. Learnability holds.
+- ✅ #3 model ≪ event_mean — yes (0.42 < 0.59), but modest (~28%): the persistent
+  amorphous halo dominates variance and event_mean already captures it.
+- ❌ #4 INVALIDATED (surprise) — linear interpolation was the *worst* baseline
+  (0.82 > 0.59), not competitive; the model beat it handily.
+
+### Why the surprise (and the catch)
+The eval gives baselines only **12 sparse anchors** (~25-frame spacing), not the dense
+~1 s neighbours my logic assumed — so this is NOT yet the "dense interpolation is strong"
+regime. Sparse linear interpolation across an oscillating/transitioning signal
+underperforms even the mean, so the model's win is partly an artifact of an
+under-powered interpolation baseline. Also flagged: early frames show a total-intensity
+oscillation (~80k/52k counts) at sub-anchor spacing that aliases and penalises
+interpolation — origin unknown (beam/exposure normalisation? interleaved acquisition?).
+
+### Updated hypothesis / next test
+Pipeline + within-event learnability confirmed, but **the interpolation baseline is not
+yet tuned hard enough to be a fair adversary** (article: tune baselines until it hurts).
+Run 002: sweep observed *density* and plot model vs interpolation MSE against anchor
+spacing — find where dense interpolation wins; that is the honest setting for HJ2. Also
+investigate the intensity oscillation. Only after a tuned interpolation baseline do we
+move to leave-one-run-out (cross-event) and the JEPA latent objective.
