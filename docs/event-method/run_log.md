@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-14 · Run 002 · Density sweep + fair interpolation baseline (oleogel WAXS)
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions below left unedited; result follows the prediction block.
 
 ### Hypothesis (+ logic)
 Run 001's model "win" over interpolation was an artifact of a 12-anchor sparse baseline.
@@ -38,6 +38,48 @@ expected to reproduce on real data — and the motivation for the latent (JEPA) 
    model on real data (motivates JEPA over raw reconstruction).
 5. Oscillation is multiplicative (high consecutive-frame shape corr + oscillating total)
    → a scale/exposure artifact that area-normalisation largely removes.
+
+### Result
+z-space MSE on 60 eval frames; event_mean = 0.590.
+
+| k | spacing (frames) | model | interp |
+| ---: | ---: | ---: | ---: |
+| 6 | 50.0 | 0.464 | 1.018 |
+| 12 | 25.0 | 0.472 | 0.823 |
+| 24 | 12.5 | 0.427 | 0.727 |
+| 48 | 6.25 | 0.411 | 0.906 |
+
+`interp_dense_full_pool` (≈1-frame spacing) = **0.869**. Oscillation: total CV 10%,
+**period-3** (detrended autocorr lag3 = 0.89; every 3rd frame ~52k vs ~80k counts),
+consecutive-frame *shape* corr = 0.9999 (identical shape, pure scale). Area-normalisation
+drives total CV → ~0 and consecutive-frame L2 → ~5e-4.
+
+### Validated / invalidated / surprising
+- ✅ #5 — multiplicative scale artifact removed by area-normalisation; pinned as
+  **period-3** (one low frame in every three; shapes identical → exposure/normalisation,
+  not a different measurement).
+- ✅ #2 — model MSE ~flat in k (0.46 → 0.41).
+- ❌ #1 (interp monotonic) and ❌ #3 (crossover): invalidated — interp is non-monotonic
+  and the model beats interp at *every* density.
+- ❌❌ #4 — the decisive surprise: **dense full-pool interpolation scored 0.869, worse
+  than even event_mean (0.59).** Dense interpolation cannot fail that badly on a smooth
+  signal; it only does because the period-3 scale artifact makes adjacent frames jump ~35%
+  in scale, and per-q z-scoring does not remove a per-frame *global* scale.
+
+### The real conclusion (repeated lesson)
+The density sweep is **confounded**: the interpolation baseline is poisoned by the
+period-3 artifact, so "model beats interpolation" is *again* not evidence for the thesis —
+Run 001 because anchors were sparse, Run 002 because the baseline and the z-metric are
+corrupted by a data artifact. HJ2 still untested. ("Most ML bugs live in the data and fail
+silently" — confirmed twice now.)
+
+### Updated hypothesis / next test (Run 003)
+Remove the artifact first: **area-normalise each frame** (proven to work), as a loader
+option. Then re-run the sweep. Prediction: with the scale artifact gone, dense
+interpolation becomes very strong and should *beat the raw reconstruction model*, and a
+real crossover appears — finally making HJ2 testable. If dense interp then beats the raw
+model, that is the on-data confirmation of the `random_axis`/IDW result and the motivation
+to move to the JEPA latent objective. Also confirm whether SAXS shows the same period-3.
 
 ---
 
