@@ -184,10 +184,16 @@ Draft response logic:
 4. Identify a senior PI/collaborator.
 5. Convert this packet into the portal proposal structure.
 6. Attach or reference current Track B artifacts:
-   - `docs/track_b_event_dataset.md`
+   - `docs/event_dataset.md`
    - `schemas/material_event.schema.json`
    - `templates/calcium_carbonate_event_log.csv`
-   - `docs/track_b_lab_outreach_brief.md`
+   - `docs/lab_outreach_brief.md`
+
+Supporting drafts:
+
+- Portal-style proposal draft: `docs/foundry_standard_proposal_draft.md`
+- PI/collaborator outreach: `docs/foundry_pi_collaborator_outreach.md`
+- User Office email draft: `docs/foundry_user_office_email.md`
 
 ## Sources
 
@@ -203,4 +209,3 @@ Draft response logic:
   https://foundry.lbl.gov/instrumentation/x-ray-diffractometer-xrd/
 - Porous/Crystalline Materials Characterization:
   https://foundry.lbl.gov/instrumentation/porous-crystalline-materials-characterization/
-

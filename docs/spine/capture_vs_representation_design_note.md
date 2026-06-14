@@ -1,7 +1,7 @@
 # Capture vs Representation: Design Note
 
-Context: extends [project_brief.md](project_brief.md), [universal_event_embedding_scaffold.md](universal_event_embedding_scaffold.md),
-and [track_b_masked_event_model.md](track_b_masked_event_model.md). Working frame unchanged:
+Context: extends [project_brief.md](project_brief.md), [universal_event_embedding_scaffold.md](../controlled-collection/universal_event_embedding_scaffold.md),
+and [masked_event_model.md](../event-method/masked_event_model.md). Working frame unchanged:
 pre-taxonomic event modeling — inherited labels are compression layers, not ground truth.
 
 This note records a thread on two questions that kept getting conflated: how we *capture*

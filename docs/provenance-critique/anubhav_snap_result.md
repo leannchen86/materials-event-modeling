@@ -91,7 +91,7 @@ spatial interpolation.
 
 ## Source Artifacts
 
-- HTEM event-proxy and spatial-field notes: `docs/track_a_htem_event_proxy.md`
+- HTEM event-proxy and spatial-field notes: `docs/htem_event_proxy.md`
 - HTEM masked-event script: `scripts/run_htem_masked_event_model.py`
 - HTEM masked-event manifest: `data/manifests/htem_masked_event_model_cu_s_sn.json`
 - HTEM hard-control script: `scripts/run_htem_event_field_controls.py`
