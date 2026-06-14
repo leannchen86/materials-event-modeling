@@ -130,3 +130,33 @@ Decision:
   is genuinely scarce in public repos. So refined-a can de-risk the *method* (battery/HTEM),
   but the *on-thesis* falsification likely needs Track B's own CaCO3 events. a's outcome
   (scarce) raises b's urgency — exactly the contingency flagged above.
+
+### Correction (same day — repository filtering)
+
+The "scarce" read above was an artifact of *search method*. Naive title/keyword search on
+Zenodo returns mostly **paper PDFs**, not raw data. Filtering records by data-file extension
+(`.nxs/.h5/.csv/.xy/.zip`) flips the conclusion: real raw time-resolved trajectory deposits
+DO exist, including on-thesis crystallization ones. The bottleneck is **discoverability /
+indexing, not absence.** refined-a is effectively unblocked.
+
+Concrete runnable on-thesis candidates (all CC-BY):
+
+- **Oleogel polymorphic transitions under shear** — zenodo.org/records/15268752 — 1 s
+  time-resolved WAXS + SR-SAXS/WAXS + microscopy + DSC, CSV, ~200 MB. A *polymorph-selection
+  trajectory*, directly analogous to CaCO3 polymorph choice; multimodal (enables the
+  missing-modality task); small enough to run today. **Primary recommendation.**
+- **Zeolite crystallization** — zenodo.org/records/18972297 — in situ Raman (crystallization +
+  aging, solid + liquid) + PXRD endpoint, NeXus, ML-paired. Almost purpose-built for "raw
+  process (Raman trajectory) vs inherited endpoint label (XRD phase ID)." **Thesis-cleanest
+  backup.**
+- Off-thesis but clean operando: battery operando XAS (zenodo 14922524), simultaneous operando
+  monitoring (zenodo 3514967); CuPd supercrystal in situ scattering (zenodo 10138087, ~15 GB).
+- Caution: "Seeds of imperfection" anhydrite mesocrystal (zenodo 4943234, SAXS/WAXS + microCT +
+  video) is multimodal and CaCO3-adjacent but is *finished-crystal characterization*, not a
+  formation trajectory — wrong axis for the masked-event test.
+
+Updated decision: **run refined-a now on 15268752 (primary), 18972297 as the thesis-cleanest
+backup.** Track B (controlled CaCO3 events) remains the long-term moat but is no longer a
+prerequisite for the first falsification. Lesson for our own future data publishing: deposit
+raw with discoverable file-type metadata, or it is effectively invisible (the same lossy-at-the-
+source problem, one level up at the indexing layer).
