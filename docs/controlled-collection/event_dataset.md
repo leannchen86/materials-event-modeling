@@ -160,12 +160,12 @@ Current working artifacts:
 - Blank event-log template: `templates/calcium_carbonate_event_log.csv`
 - Mock JSON events: `examples/track_b/calcium_carbonate_mock_events.json`
 - Mock CSV event log: `examples/track_b/calcium_carbonate_mock_event_log.csv`
-- Mock event review: `docs/track_b_mock_event_review.md`
-- Lab outreach brief: `docs/track_b_lab_outreach_brief.md`
+- Mock event review: `docs/mock_event_review.md`
+- Lab outreach brief: `docs/lab_outreach_brief.md`
 - Mock event summary script: `scripts/summarize_track_b_mock_events.py`
 - Synthetic event scaffold: `scripts/run_track_b_synthetic_scaffold.py`
 - Synthetic scaffold result: `data/manifests/track_b_synthetic_event_scaffold.json`
-- Synthetic scaffold notes: `docs/track_b_synthetic_scaffold.md`
+- Synthetic scaffold notes: `docs/synthetic_scaffold.md`
 
 The first real result should not be "we made pure calcite." It should be:
 

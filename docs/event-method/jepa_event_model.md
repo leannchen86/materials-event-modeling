@@ -1,7 +1,7 @@
 # Track B JEPA Event Model (design sketch)
 
-Status: design sketch, not yet run. Extends [track_b_masked_event_model.md](track_b_masked_event_model.md)
-and [capture_vs_representation_design_note.md](capture_vs_representation_design_note.md).
+Status: design sketch, not yet run. Extends [masked_event_model.md](masked_event_model.md)
+and [capture_vs_representation_design_note.md](../spine/capture_vs_representation_design_note.md).
 
 ## Purpose
 
@@ -92,4 +92,4 @@ Run on a real time-resolved trajectory dataset, not the current synthetic scaffo
 Primary candidate: oleogel polymorphic-transition data (1 s time-resolved WAXS + SAXS + microscopy
 + DSC, zenodo 15268752); thesis-cleanest backup: zeolite crystallization (in situ Raman trajectory
 + PXRD endpoint, zenodo 18972297). See the dataset hunt in
-[capture_vs_representation_design_note.md](capture_vs_representation_design_note.md).
+[capture_vs_representation_design_note.md](../spine/capture_vs_representation_design_note.md).

@@ -39,7 +39,7 @@ candidate system is calcium carbonate polymorph crystallization, pending lab SOP
 review. Each row should be a material-making event with raw process logs, raw measurement
 files, and later human labels recorded only as downstream probes.
 
-Detailed plan: [track_b_event_dataset.md](track_b_event_dataset.md)
+Detailed plan: [event_dataset.md](../controlled-collection/event_dataset.md)
 
 ## Initial Questions
 

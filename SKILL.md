@@ -512,7 +512,7 @@ early event traces plus process metadata should predict later/final observations
 than recipe-only, label-only, or single-still baselines. Labels such as `ring`, `crystal`,
 `cracked`, `uniform`, and `failed` should be assigned only after raw video, final images,
 environmental metadata, and notes are frozen. See
-`docs/low_equipment_event_trace_pilot.md`.
+`docs/controlled-collection/low_equipment_event_trace_pilot.md`.
 
 ## Next Experiment Direction
 
