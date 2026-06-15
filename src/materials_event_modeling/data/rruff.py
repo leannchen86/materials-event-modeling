@@ -54,7 +54,11 @@ def load(zip_path, *, gmin=150.0, gmax=1300.0, n_grid=600, wavelength="532",
     with zipfile.ZipFile(zip_path) as zf:
         for name in zf.namelist():
             base = name.split("/")[-1]
-            if not base.endswith(".txt") or filetype not in base or f"__{wavelength}__" not in base:
+            if not base.endswith(".txt"):
+                continue
+            if filetype not in (None, "any") and filetype not in base:
+                continue
+            if wavelength not in (None, "any") and f"__{wavelength}__" not in base:
                 continue
             meta, xs, ys = _parse(zf.read(name).decode("latin-1"))
             if xs.size < 20 or not meta.get("NAMES"):

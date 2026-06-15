@@ -6,6 +6,38 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-15 · Run 010 · RRUFF polymorph probe (raw vs constant composition)
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Why
+Run 009 showed the mineral label ≈ composition for common minerals, so raw barely beat the
+proxy. The thesis bites only where composition is **constant** — same-composition polymorphs,
+where the label encodes structure that only the raw measurement can recover. Run 009's CaCO3
+sub-probe was underpowered (n=14). This run powers it up: Processed spectra at **all
+wavelengths**, several same-composition groups, specimen-grouped, averaged over seeds.
+
+### Method
+Groups (identical formula within each): CaCO3 (calcite/aragonite/vaterite), TiO2
+(rutile/anatase/brookite), FeS2 (pyrite/marcasite), C (diamond/graphite), Al2SiO5
+(kyanite/andalusite/sillimanite), SiO2 (quartz/cristobalite/tridymite/coesite/...). Per group,
+keep polymorphs with ≥2 specimens; raw-spectrum k-NN (k=1), specimen-grouped split, top-1
+accuracy averaged over 5 seeds. Baselines: **majority** (= the best a constant-composition
+predictor can do) and **label-shuffled**.
+
+### Prediction
+1. In well-populated groups (CaCO3 cal/arag, TiO2 rut/ana, FeS2 py/marc, C dia/graph, SiO2),
+   raw k-NN ≫ majority — e.g. raw > 0.9 vs majority ~0.5–0.75. Raman is highly structure-
+   sensitive, so same-composition polymorphs separate cleanly.
+2. shuffled ≈ majority (control).
+→ This is the clean, adequately-powered demonstration that the inherited polymorph label carries
+structural information **composition fundamentally cannot**, and the raw measurement recovers it
+— on CaCO3 among others. Caveat: this confirms a known-chemistry premise of the thesis (raw >
+constant-composition proxy); it is not yet the stronger claim (raw reps MORE useful than labels,
+or labels are lossy). Those are the next probes (solid-solution continua; `##STATUS` ambiguity).
+
+---
+
 ## 2026-06-15 · Run 009 · RRUFF label-probe (representation vs inherited label, at scale)
 
 Status: **DONE** — predictions below left unedited; result follows the prediction block.
