@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-15 · Run 011 · RRUFF labels-are-lossy probe (solid-solution species vs family)
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions below left unedited; result follows the prediction block.
 
 ### Why (and a recon finding)
 Run 010 showed polymorph labels are natural coordinates of raw Raman. The novel claim is the
@@ -37,6 +37,48 @@ secondary confusion check.
 Honest caveat: if species_acc is ALSO high (RRUFF endmembers spectrally distinct), the continuum
 isn't exposed by endmember labels → the lossy claim would need intermediate-rich compositions /
 measured chemistry (a different dataset). That outcome is itself informative.
+
+### Result
+Garnet (almandine 24 / pyrope 23 / spessartine 14 / grossular 42 / andradite 27; specimen-grouped
+k-NN, 5 seeds):
+- **family (pyralspite vs ugrandite) acc = 1.000**
+- **species (5-way) acc = 0.728** (majority 0.323, shuffled 0.160)
+- **within_family_error_frac = 1.000** — every species error stays within the true family
+- family − species = 0.272.
+Olivine (forsterite 25 / fayalite 9 / tephroite 9): species acc 0.938 (majority 0.581).
+
+### Validated / invalidated
+- ✅✅ #1 — family is a perfect natural coordinate (1.0).
+- ✅✅ #2 — species labels are lossy: species 0.728 < family 1.0, and **100%** of species errors
+  stay within-family (predicted >0.7). The species boundary is fuzzy on a continuum raw Raman
+  represents continuously; the family boundary is crisp.
+- ✅ #3 — contrast holds: solid-solution species (0.728, within-family blend) are measurably
+  lossier than Run 010 polymorph labels (0.91–1.0, clean).
+- Olivine: endmembers separate (0.938) — the predicted "endmember caveat": with only endmembers
+  the continuum is not exposed. Garnet (with varied/intermediate compositions) is where it shows.
+
+### Conclusion — the campaign's synthesis
+The relationship between raw measurement and inherited label is now characterised:
+- **Structure-determined labels** (polymorphs, Run 010): *natural coordinates* of raw Raman — raw
+  recovers them where composition cannot.
+- **Continuum-bin labels** (solid-solution species, Run 011): *lossy* — raw recovers the
+  structural family perfectly (1.0) but treats species as fuzzy bins on a continuous axis
+  (errors 100% within-family).
+So inherited labels are natural coordinates when they track structure, and lossy projections when
+they discretise a continuum; the raw representation recovers the underlying coordinate (structural
+family + continuous within-family axis) the discrete label compresses. This is the direct,
+evidence-backed answer to the project's core question.
+
+### Caveat / not-yet-earned
+Garnet "species" correlate with composition (Fe/Mg/Mn/Ca), so within-family confusion is
+composition-adjacent — consistent with "species discretise a compositional continuum raw Raman
+represents continuously." Still not shown: raw reps are MORE USEFUL than labels for a defined
+downstream task with stakes (the strongest claim).
+
+### Next
+Closes a coherent arc. Options: (1) fold the RRUFF positive (009–011) into findings_summary.md as
+the capstone complement to the oleogel negative; (2) the strongest-claim probe (raw rep more
+useful than the label on a real downstream task); (3) controlled-collection.
 
 ---
 

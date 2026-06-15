@@ -617,6 +617,14 @@ Newly established (RRUFF label-probe, Runs 009–010):
 > (0.91–1.0) while the proxy is stuck at majority (0.40–0.74) — i.e. raw carries structure/label
 > information the compositional proxy fundamentally cannot.
 
+Newly established (RRUFF labels-are-lossy, Run 011):
+
+> Inherited labels are natural coordinates of raw Raman when they track *structure* (polymorphs)
+> and *lossy* when they discretise a *continuum*: for garnet the structural family (pyralspite
+> vs ugrandite) is recovered perfectly (1.0) while the species labels blend (0.73), with 100% of
+> species errors staying within-family. The raw representation recovers the underlying coordinate
+> (structural family + continuous within-family axis) that the discrete species label compresses.
+
 Not yet earned:
 
 > A learned raw/event representation has discovered the true materials ontology.
