@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-14 · Run 003 · Artifact-free density sweep (area-normalised oleogel WAXS)
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions below left unedited; result follows the prediction block.
 
 ### Hypothesis (+ logic)
 Removing the period-3 scale artifact (per-frame area-normalisation, shown in Run 002 to
@@ -32,6 +32,43 @@ flag; the raw loader stays raw.
 4. A real crossover appears: model wins at k≈6; interpolation wins by k≈24–48.
 5. Net: dense interpolation **beats** the raw reconstruction model → HJ2-relevant
    on-data confirmation of `random_axis`/IDW → motivates the JEPA latent objective.
+
+### Result
+Post-norm: total-CV ≈ 0, lag-3 autocorr 0.043 (period-3 artifact gone), shape corr 0.9999.
+event_mean = 0.596; `interp_dense_full_pool` = **0.224** (was 0.869 pre-norm).
+
+| k | spacing | model | interp |
+| ---: | ---: | ---: | ---: |
+| 6 | 50.0 | 0.176 | 0.313 |
+| 12 | 25.0 | 0.174 | 0.289 |
+| 24 | 12.5 | 0.174 | 0.266 |
+| 48 | 6.25 | 0.174 | 0.272 |
+
+### Validated / invalidated / surprising
+- ✅ artifact removed — `interp_dense` 0.869 → 0.224, total-CV → 0. The fix worked.
+- ✅ #2 — interpolation improves with density (0.313 → 0.266).
+- ❌ #4 / #5 — INVALIDATED: interpolation did **not** win. The model beats interp at every
+  density and beats dense full-pool interp (0.174 vs 0.224).
+- 🔎 The real catch: **model MSE is essentially constant (0.176 → 0.174) across anchor
+  counts 6 → 48** — the model barely uses its observed set. It has learned a within-event
+  *time → spectrum* regression and maps candidate-time → spectrum (a *learned within-event
+  interpolation*, smoother than piecewise-linear). That beats interpolation but is NOT
+  "event-context representation" — it is effectively a memorised trajectory curve.
+
+### The conclusion (third honest non-result)
+With a fair, artifact-free, densely-tuned interpolation baseline the model wins — but the
+within-event setup **cannot distinguish a useful representation from a memorised
+time → spectrum curve** (the model ignores its anchors). So this is still not the HJ2 test.
+The within-event design is exhausted.
+
+### Updated hypothesis / next test (Run 004)
+**Leave-one-run-out across the 6 events.** Train on 5 runs, test on the held-out run: the
+model cannot memorise the test event's curve, so it must use the test event's *observed
+anchors* to predict its held-out frames. Predictions: (a) cross-event model MSE now varies
+with anchor count (forced to use context); (b) dense within-test-event interpolation is the
+strong adversary; (c) if the cross-event model still beats dense interpolation → genuine
+evidence for event-native representation; if interpolation wins → the `random_axis`/IDW
+result on real data → go to the JEPA latent objective. Either way, finally a real HJ2 test.
 
 ---
 
