@@ -6,6 +6,45 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-15 · Run 006 · Ablation: is the SAXS→WAXS win real cross-modal signal?
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Why this run
+Run 005 beat the WAXS-mean on 3/6 folds. Before believing that is cross-modal signal, we
+must exclude every cheaper explanation. One time-only baseline is not enough — run the full
+ablation suite (cross-event leave-one-run-out, same data as Run 005).
+
+### Models (each kills one alternative cause)
+- `waxs_mean` — floor.
+- `time_only` (input: normalised timestamp) — kills "it's just a clock".
+- `time_sample` (timestamp + material one-hot) — kills "it's just the material's typical curve".
+- `saxs_only` (SAXS-PCA(30)) — the Run 005 claim, reproduced.
+- `saxs_time` (SAXS-PCA + timestamp) — tests whether SAXS adds info *beyond* the clock.
+- `saxs_shuffled` (SAXS rows permuted in time within each event) — negative control; kills
+  "the signal is in SAXS marginal stats, not the SAXS↔WAXS correspondence".
+Both Ridge and MLP fit for each; MLP is the headline (more robust per Run 005).
+
+### Exclusion logic (SAXS is real cross-modal only if ALL hold)
+1. `saxs_time` < `time_only` (adds beyond the clock).
+2. `saxs_only` < `time_sample` (beyond identifying the material).
+3. `saxs_only` < `saxs_shuffled` (signal is in the correspondence).
+
+### Hypothesis (+ logic) and prediction
+The trajectories are smooth, so `time_only` will be a *strong* baseline, and material identity
+explains a lot of between-event WAXS differences — so I expect **much of Run 005's win to be
+the time/material prior**, with only a small, inconsistent genuine cross-modal contribution
+across these 6 events. Concrete prediction:
+1. `saxs_shuffled` ≈ `waxs_mean` (sanity: scrambling destroys the signal).
+2. `time_only` already beats `waxs_mean` on most folds.
+3. `saxs_time` beats `time_only` in only ~2–3/6 folds (small, inconsistent).
+4. `saxs_only` does **not** consistently beat `time_sample`.
+→ Net: the cross-modal signal is real but modest; Run 005's apparent win was largely the
+time/material prior. (If instead `saxs_only` cleanly beats `time_sample` and `saxs_shuffled`
+on most folds, that is a genuine positive worth chasing.)
+
+---
+
 ## 2026-06-15 · Run 005 · Cross-event missing-modality (predict WAXS from SAXS)
 
 Status: **DONE** — predictions below left unedited; result follows the prediction block.
