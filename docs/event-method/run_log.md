@@ -6,6 +6,36 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-15 · Run 012 · RRUFF robustness ablations (provenance, difficulty, error bars)
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Why
+Before locking the Runs 009–011 interpretation, exclude the explanations that could overturn it.
+
+### Tests
+A. **Provenance — single wavelength:** re-run polymorph (010) + garnet (011) probes on 532 nm
+   only (010/011 had mixed 532+785). Must survive, else a wavelength↔label shortcut was at work.
+B. **Provenance — structure-blind control:** classify on a heavily Gaussian-blurred spectrum
+   (sharp Raman peaks removed, broad envelope kept). If blurred ≈ full → signal is broad/baseline
+   (suspect); if it collapses → signal is in the real peaks (genuine structure).
+C. **Multi-class difficulty control:** 5 distinct-structure minerals, 5-way k-NN. If they hit
+   ~0.95 while garnet species sit at 0.73, the gap is the continuum, not "5-way is hard".
+D. **Error bars + balanced accuracy:** multi-seed mean±std and balanced accuracy for polymorph
+   groups, garnet species/family, and Run 009 raw-vs-composition.
+
+### Prediction
+A. Polymorph + family separations survive at 532-only (perhaps lower n/acc); garnet species stays
+   ~0.7 with within-family errors.
+B. Blurred ≪ full (signal is in the sharp peaks → real structure, not provenance).
+C. distinct-5 ~0.9–1.0 ≫ garnet species 0.73 → confirms continuum, not difficulty.
+D. raw ≈ composition (009) overlaps within error bars; balanced accuracy does not overturn the
+   polymorph/family wins.
+If instead blurred ≈ full, OR 532-only collapses, OR distinct-5 ≈ garnet species → the
+interpretation is threatened and must be revised.
+
+---
+
 ## 2026-06-15 · Run 011 · RRUFF labels-are-lossy probe (solid-solution species vs family)
 
 Status: **DONE** — predictions below left unedited; result follows the prediction block.
