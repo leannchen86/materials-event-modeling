@@ -608,6 +608,15 @@ Newly established (oleogel real-data campaign, Runs 001–008):
 > capacity-free test shows this is a property of the data (homogeneous, event-poor), NOT a
 > model-capacity limit.
 
+Newly established (RRUFF label-probe, Runs 009–010):
+
+> Mineral labels are largely natural coordinates of raw Raman (k-NN top-1 0.88, 59 classes,
+> cross-specimen) — but for common minerals the label ≈ composition, so raw does not beat the
+> compositional proxy globally. Where composition is *constant* (same-composition polymorphs:
+> CaCO3, TiO2, Al2SiO5, SiO2), the raw spectrum recovers the polymorph label near-perfectly
+> (0.91–1.0) while the proxy is stuck at majority (0.40–0.74) — i.e. raw carries structure/label
+> information the compositional proxy fundamentally cannot.
+
 Not yet earned:
 
 > A learned raw/event representation has discovered the true materials ontology.

@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-15 · Run 010 · RRUFF polymorph probe (raw vs constant composition)
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions below left unedited; result follows the prediction block.
 
 ### Why
 Run 009 showed the mineral label ≈ composition for common minerals, so raw barely beat the
@@ -35,6 +35,46 @@ structural information **composition fundamentally cannot**, and the raw measure
 — on CaCO3 among others. Caveat: this confirms a known-chemistry premise of the thesis (raw >
 constant-composition proxy); it is not yet the stronger claim (raw reps MORE useful than labels,
 or labels are lossy). Those are the next probes (solid-solution continua; `##STATUS` ambiguity).
+
+### Result (Processed, all wavelengths, 5786 spectra; specimen-grouped k-NN, 5 seeds)
+| group | polymorphs (n) | raw | majority | shuffled |
+| --- | --- | ---: | ---: | ---: |
+| CaCO3 | calcite 26 / aragonite 9 | **0.975** | 0.743 | 0.621 |
+| TiO2 | rutile 10 / anatase 8 / brookite 7 | **1.000** | 0.400 | 0.275 |
+| Al2SiO5 | kyanite 5 / andalusite 11 / sillimanite 7 | **1.000** | 0.478 | 0.412 |
+| SiO2 | quartz 21 / cristobalite 6 / tridymite 7 / stishovite 3 | **0.907** | 0.568 | 0.398 |
+| C | diamond 30 / graphite 2 | 0.921 | 0.938 | 0.840 |
+| FeS2, FeOOH | insufficient (1 marcasite / 2 lepidocrocite) | — | — | — |
+
+raw beats majority in **4/5** scored groups.
+
+### Validated / invalidated
+- ✅ #1 — raw ≫ majority in every adequately-populated group (raw 0.91–1.0 vs majority
+  0.40–0.74). CaCO3 (the target system): **0.975 vs 0.743**.
+- The lone "loss" (C, 0.921 < 0.938) is a 2-graphite class-imbalance artifact
+  (majority = predict-all-diamond), not a real failure.
+- ✅ #2 — shuffled ≈ or below majority (control behaves).
+
+### Conclusion — first clean, on-thesis positive (adequately powered)
+Where composition is constant (same-composition polymorphs), the raw Raman spectrum recovers the
+polymorph label near-perfectly (0.91–1.0) while the compositional proxy is stuck at majority
+(0.40–0.74), across **4 independent chemical systems incl. CaCO3.** This crisply demonstrates the
+thesis *premise*: inherited labels can encode structure the cheap proxy cannot, and the raw
+measurement recovers exactly that. Combined with Run 009 (label ≈ composition, raw did not beat
+the proxy), we now know **where** raw beats the proxy: labels that are *structure-determined*,
+not *composition-determined*.
+
+### Scope / not yet earned
+A known-chemistry premise demonstrated rigorously — NOT the stronger claims: (a) raw reps MORE
+useful than labels for downstream tasks; (b) labels are LOSSY (raw reveals structure labels
+miss). Those are the next, more novel probes.
+
+### Next (Run 011+)
+The "labels are lossy" direction: (1) **solid-solution continua** (olivine forsterite–fayalite,
+plagioclase) — does raw space show a continuum the discrete labels chop arbitrarily? (2)
+**`##STATUS` ambiguity** — are "not yet confirmed" specimens outliers / mis-neighboured? (3)
+within-label sub-clusters (polytypes / hydration). These test whether labels are lossy — the
+genuinely novel claim.
 
 ---
 

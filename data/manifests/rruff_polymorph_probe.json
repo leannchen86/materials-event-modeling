@@ -1,0 +1,114 @@
+{
+  "created_at": "2026-06-15T19:54:49.153917+00:00",
+  "task": "rruff_polymorph_probe",
+  "n_spectra_total": 5786,
+  "seeds": 5,
+  "n_groups_scored": 5,
+  "n_groups_raw_beats_majority": 4,
+  "groups": [
+    {
+      "formula": "CaCO3",
+      "polymorphs": [
+        "Calcite",
+        "Aragonite"
+      ],
+      "counts": {
+        "Calcite": 26,
+        "Aragonite": 9
+      },
+      "n_specimens": 14,
+      "raw_acc_mean": 0.975,
+      "majority_baseline": 0.743,
+      "shuffled_acc_mean": 0.621,
+      "raw_beats_majority": true
+    },
+    {
+      "formula": "TiO2",
+      "polymorphs": [
+        "Rutile",
+        "Anatase",
+        "Brookite"
+      ],
+      "counts": {
+        "Rutile": 10,
+        "Anatase": 8,
+        "Brookite": 7
+      },
+      "n_specimens": 12,
+      "raw_acc_mean": 1.0,
+      "majority_baseline": 0.4,
+      "shuffled_acc_mean": 0.275,
+      "raw_beats_majority": true
+    },
+    {
+      "formula": "FeS2",
+      "status": "insufficient",
+      "counts": {
+        "Pyrite": 7,
+        "Marcasite": 1
+      }
+    },
+    {
+      "formula": "C",
+      "polymorphs": [
+        "Diamond",
+        "Graphite"
+      ],
+      "counts": {
+        "Diamond": 30,
+        "Graphite": 2
+      },
+      "n_specimens": 15,
+      "raw_acc_mean": 0.921,
+      "majority_baseline": 0.938,
+      "shuffled_acc_mean": 0.84,
+      "raw_beats_majority": false
+    },
+    {
+      "formula": "Al2SiO5",
+      "polymorphs": [
+        "Kyanite",
+        "Andalusite",
+        "Sillimanite"
+      ],
+      "counts": {
+        "Kyanite": 5,
+        "Andalusite": 11,
+        "Sillimanite": 7
+      },
+      "n_specimens": 15,
+      "raw_acc_mean": 1.0,
+      "majority_baseline": 0.478,
+      "shuffled_acc_mean": 0.412,
+      "raw_beats_majority": true
+    },
+    {
+      "formula": "SiO2",
+      "polymorphs": [
+        "Quartz",
+        "Cristobalite",
+        "Tridymite",
+        "Stishovite"
+      ],
+      "counts": {
+        "Quartz": 21,
+        "Cristobalite": 6,
+        "Tridymite": 7,
+        "Stishovite": 3
+      },
+      "n_specimens": 19,
+      "raw_acc_mean": 0.907,
+      "majority_baseline": 0.568,
+      "shuffled_acc_mean": 0.398,
+      "raw_beats_majority": true
+    },
+    {
+      "formula": "FeOOH",
+      "status": "insufficient",
+      "counts": {
+        "Goethite": 6,
+        "Lepidocrocite": 2
+      }
+    }
+  ]
+}
