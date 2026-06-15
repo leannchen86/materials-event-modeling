@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-15 · Run 006 · Ablation: is the SAXS→WAXS win real cross-modal signal?
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions below left unedited; result follows the prediction block.
 
 ### Why this run
 Run 005 beat the WAXS-mean on 3/6 folds. Before believing that is cross-modal signal, we
@@ -42,6 +42,48 @@ across these 6 events. Concrete prediction:
 → Net: the cross-modal signal is real but modest; Run 005's apparent win was largely the
 time/material prior. (If instead `saxs_only` cleanly beats `time_sample` and `saxs_shuffled`
 on most folds, that is a genuine positive worth chasing.)
+
+### Result — median WAXS z-MSE over 6 folds (MLP)
+waxs_mean 0.557 · **time_only 0.360** · time_sample 0.351 · saxs_only 0.984 · saxs_time 0.764
+· saxs_shuffled 0.955. **The clock is the best predictor in the median; adding SAXS makes it
+worse.** Exclusion checks (folds passing /6): saxs_time<time_only **3** · saxs_only<time_sample
+**3** · saxs_only<saxs_shuffled **3** · time_only<mean **6** · saxs_shuffled≈mean **4**.
+
+Per-fold (mean | time | time+samp | saxs | saxs+time | saxs_shuf):
+- `dmhr_25s` 0.41 | 0.18 | 0.26 | **0.15** | 0.16 | 0.42 — SAXS wins, all 3 exclusions pass.
+- `dmhr_50s` 0.55 | 0.35 | 0.14 | **0.11** | 0.10 | 0.34 — SAXS clearly wins, all 3 pass.
+- `dmhr_1s` 0.67 | 0.52 | **0.40** | 1.00 | 0.79 | 0.75 — SAXS hurts; time/sample best.
+- `mopv_1s` 0.56 | **0.37** | 0.87 | 1.17 | 1.22 | 1.16 — clock best; SAXS much worse.
+- `mopv_50s` 0.28 | **0.08** | 0.30 | 0.97 | 0.73 | 1.19 — clock alone nails it; SAXS terrible.
+- `mopv_25s_redo` ~8–11 everywhere — still inflated, uninterpretable.
+
+### Validated / invalidated
+- ✅ #1 saxs_shuffled ≈ mean (4/6) — negative control behaves.
+- ✅✅ #2 time_only beats mean **6/6** — the time-prior is strong.
+- ✅ #3 saxs_time beats time_only only **3/6** — inconsistent, as predicted.
+- ✅ #4 saxs_only does not consistently beat time_sample (3/6).
+- ✅ **Net prediction confirmed:** Run 005's "win" was largely the time/material prior; the
+  genuine cross-modal signal is **narrow — only the two higher-shear DMHR folds** — does not
+  transfer to MOPV, and on the median SAXS *hurts* vs the clock.
+
+### Conclusion — we correctly excluded the wrong cause
+The ablation did its job: Run 005's apparent cross-modal win shrinks to a narrow,
+non-transferable real signal (clean on dmhr_25s/50s), while the **clock is the dominant
+predictor**. Across 6 experiments that all follow a similar cool/shear crystallisation,
+"fraction of process complete" predicts WAXS better than the actual SAXS does. Fourth time
+the discipline prevented a false positive — this time by right-sizing one.
+
+### Standing conclusion after 6 runs (evidence-backed, not a hunch)
+This dataset — 6 *similar* experiments — is **too small and too homogeneous** to carry the
+thesis. We have now rigorously shown: frame-prediction is time/interpolation-solvable; cross-
+modal prediction is mostly the time-prior. Both point to the same need: **more, more-diverse
+events.** This is the empirical case for controlled-collection / a richer dataset.
+
+### Next
+1. (Cheap confirm) Run 007: time-*residual* cross-modal — predict (WAXS − time_only) from
+   SAXS, isolating "does SAXS explain what the clock cannot." Expect small / DMHR-only.
+2. Move to a larger, more-diverse deposit (zeolite, zenodo 18972297) — check event count.
+3. Treat the 6-event ceiling as a finding: the empirical argument for controlled-collection.
 
 ---
 
