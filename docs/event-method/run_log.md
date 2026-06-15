@@ -6,6 +6,37 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-15 · Run 007 · Model-free dependence: SAXS↔WAXS beyond the clock
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Why this run
+Run 006 used trained models, so "no transferable signal" could *in principle* be a model-
+capacity problem, not a data problem. This run removes the model entirely. A capacity-free
+dependence measure (**distance correlation** + permutation test) asks: within each event, does
+SAXS carry information about WAXS *beyond the shared time-course*? This cleanly separates "does
+cross-modal signal EXIST" from "can a tuned model exploit/transfer it".
+
+### Method (no tunable model)
+- Per event, build a **model-free time-prior** (leave-one-event-out: average of the OTHER
+  events' spectra interpolated onto this event's normalised times), for SAXS and WAXS.
+- Residual = spectra − time-prior (this event's deviation from the population at each instant).
+- **Distance correlation** dCor(SAXS_resid, WAXS_resid) within the event, with a 200-perm null
+  (shuffle WAXS_resid in time). p = P(permuted dCor ≥ observed). Sanity: raw (un-residualised)
+  dCor should be high (both ride the clock).
+
+### Hypothesis + prediction
+If "data/transfer limit, not model capacity" is right, cross-modal signal should EXIST beyond
+the clock *within* events even though it didn't transfer in Run 006:
+1. Raw dCor high & significant in all 6 events (sanity).
+2. Residual dCor significant (p<0.05) in several events — clearly the two DMHR shear-25s/50s
+   events, weaker/null for MOPV — mirroring Run 006.
+→ Significant residual dCor ⇒ the signal EXISTS and the limit is data/transfer (6 events),
+NOT model capacity. If residual dCor is null everywhere ⇒ the modalities are largely
+time-redundant and the clock genuinely is the story (a more sobering, more-data-won't-help read).
+
+---
+
 ## 2026-06-15 · Run 006 · Ablation: is the SAXS→WAXS win real cross-modal signal?
 
 Status: **DONE** — predictions below left unedited; result follows the prediction block.
