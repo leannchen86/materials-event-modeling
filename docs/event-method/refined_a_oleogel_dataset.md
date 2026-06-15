@@ -65,3 +65,17 @@ Write ingestion `MAGs/<run>` → `material_event` events (reuse
 masked-frame prediction on SAXS+WAXS**, baselines (`event_mean`/IDW/`coordinate_ridge`/RF)
 tuned hard, then the JEPA variant; d-spacings used as a label probe only. Overfit a single
 event first (Karpathy) before any scale-up.
+
+## Dataset scouting update (2026-06-15, after Runs 001–008)
+
+The zeolite backup ([zenodo 18972297](https://zenodo.org/records/18972297)) was inspected: its
+NeXus groups (`data_S0h`, `S16h`, … `S144h`) are **timepoints of a single crystallization
+run**, monitored by Raman (cryst/aging × solid/liquid) + ex-situ PXRD — i.e. **one event, not
+many.** So it is *worse* than oleogel for cross-event work.
+
+**Conclusion:** both open candidates we found are modality- and time-rich but **event-poor**
+(oleogel = 6 near-identical runs; zeolite = 1 run). This is the empirical case for
+**controlled-collection** — independent events across varied conditions/outcomes — which no
+public in-situ crystallization deposit we found provides. See run_log Runs 006–008: on oleogel,
+SAXS↔WAXS is largely time-redundant (not a model-capacity limit), so squeezing it further is
+not the move.
