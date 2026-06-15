@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-15 · Run 007 · Model-free dependence: SAXS↔WAXS beyond the clock
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE (but invalidated by a confound — see fix → Run 008).**
 
 ### Why this run
 Run 006 used trained models, so "no transferable signal" could *in principle* be a model-
@@ -34,6 +34,24 @@ the clock *within* events even though it didn't transfer in Run 006:
 → Significant residual dCor ⇒ the signal EXISTS and the limit is data/transfer (6 events),
 NOT model capacity. If residual dCor is null everywhere ⇒ the modalities are largely
 time-redundant and the clock genuinely is the story (a more sobering, more-data-won't-help read).
+
+### Result
+Residual dCor high in **all 6 events** (0.55–0.93); raw dCor 0.88–0.95; permutation p = 0.005
+(the 1/201 floor) everywhere → "6/6 significant".
+
+### The catch — a wrong cause we must exclude
+The time-shuffle permutation null is **too weak**. Both residual series are still *smooth in
+time*, so each distance matrix is dominated by temporal proximity (near-in-time ⇒ similar).
+Two *independent* smooth series would therefore also show high dCor and beat a shuffle null
+that destroys autocorrelation. So this result conflates "SAXS↔WAXS coupling" with "both are
+smooth in time" — it is **not trustworthy** as evidence of cross-modal signal, and the 6/6 is
+likely the smoothness artifact (prediction #2's MOPV-weak guess is moot under the confound).
+
+### Fix → Run 008
+Use a smoothness-preserving control: (a) **circular time-shift null** (keeps each series'
+autocorrelation, breaks only cross-modal phase alignment) and (b) a **cross-event baseline**
+(SAXS_resid of event A vs WAXS_resid of a *different* event B — same smoothness, no shared
+event). Real signal only if within-event dCor ≫ shifted / cross-event dCor.
 
 ---
 
