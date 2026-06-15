@@ -6,6 +6,38 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-15 · Run 005 · Cross-event missing-modality (predict WAXS from SAXS)
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Why this run (the pivot from Runs 001–004)
+"Guess a hidden frame from its time-neighbours" is solved by interpolation on these smooth,
+densely-sampled trajectories, so it cannot discriminate any model (Run 004: interp beats the
+model 6/6 cross-event). This run changes the *task* to one interpolation cannot do: predict
+the WAXS frame (crystalline-structure view) from the SAXS frame (nanostructure view) at the
+*same instant*. No before/after to interpolate — only a learned cross-modal mapping helps.
+
+### Hypothesis (+ logic)
+SAXS and WAXS evolve together as the material crystallises (coupled physics), so SAXS[t]
+should predict WAXS[t] well above the trivial mean — even across unseen events. A nonlinear
+model may or may not beat plain linear regression, depending on how nonlinear the coupling is.
+
+### Setup
+- SAXS + WAXS for all 6 runs, frame-aligned, area-normalised, z-scored (train-fit, clipped
+  to ±15 to fix the Run 004 blow-up). Cross-event leave-one-run-out (6 folds).
+- Input: SAXS → PCA(30). Target: WAXS → PCA(8). Score = WAXS z-space MSE on the held-out run.
+- Models: `ridge` (linear cross-modal) and a small `mlp` (nonlinear). Baseline = predict the
+  train WAXS mean. Time-interpolation cannot enter (no WAXS observed for the test event).
+
+### Expected result (concrete prediction)
+1. ridge and mlp both beat the WAXS-mean baseline in ≥4/6 folds (SAXS carries cross-modal
+   information that transfers across events). This would be the first positive signal.
+2. mlp ≈ ridge or modestly better (coupling likely near-linear in PCA space).
+3. If neither beats the mean: SAXS→WAXS coupling does not transfer across these 6 events
+   (too few / too diverse) → push to the label-probe and/or more events.
+
+---
+
 ## 2026-06-15 · Run 004 · Leave-one-run-out cross-event (the real HJ2 test)
 
 Status: **DONE** — predictions below left unedited; result follows the prediction block.
