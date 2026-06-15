@@ -74,6 +74,12 @@ def run(args):
     field = load_run(args.zip, args.run, args.modality)
     spectra, times = field.spectra, field.coords[:, 0]
     n_frames, n_q = spectra.shape
+    if args.normalize == "area":
+        # remove the period-3 per-frame exposure/scale artifact (Run 002): rescale each
+        # frame to the median total intensity. Shapes are identical (corr 0.9999), so this
+        # is a pure scale correction, not a change of signal.
+        tot = spectra.sum(1, keepdims=True)
+        spectra = (spectra * (np.median(tot) / np.clip(tot, 1e-6, None))).astype(np.float32)
     mu = spectra.mean(0, keepdims=True)
     sd = spectra.std(0, keepdims=True) + 1e-6
     spec_z = ((spectra - mu) / sd).astype(np.float32)
@@ -112,6 +118,7 @@ def run(args):
         "created_at": datetime.now(timezone.utc).isoformat(),
         "task": "oleogel_density_sweep",
         "run": args.run,
+        "normalize": args.normalize,
         "conditions": parse_run_conditions(args.run),
         "n_frames": int(n_frames),
         "n_q": int(n_q),
@@ -132,6 +139,7 @@ def parse_args():
     p.add_argument("--zip", type=Path, default=DEFAULT_ZIP)
     p.add_argument("--run", default="s_mopv_1s_10Cmin_10c")
     p.add_argument("--modality", default="WAXS")
+    p.add_argument("--normalize", choices=["none", "area"], default="area")
     p.add_argument("--pca", type=int, default=8)
     p.add_argument("--max-obs", type=int, default=48)
     p.add_argument("--k-list", type=int, nargs="+", default=[6, 12, 24, 48])

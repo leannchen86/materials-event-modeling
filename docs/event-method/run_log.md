@@ -6,6 +6,35 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-14 · Run 003 · Artifact-free density sweep (area-normalised oleogel WAXS)
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Hypothesis (+ logic)
+Removing the period-3 scale artifact (per-frame area-normalisation, shown in Run 002 to
+drive total-CV → ~0) makes adjacent frames genuinely smooth in time, so interpolation
+should behave as physics expects: error falls monotonically with anchor density, and the
+densest interpolation (≈1-frame spacing) becomes the *best* predictor — **beating the raw
+reconstruction set-model**. That is the on-data version of the synthetic `random_axis`/IDW
+result, and the concrete reason the next objective should predict in *latent* space (JEPA)
+rather than reconstruct raw spectra. Normalisation is an explicit, logged preprocessing
+flag; the raw loader stays raw.
+
+### Setup
+- Same as Run 002 (one run, WAXS, eval every 5th, model trained on k∈[4,48]) plus
+  `--normalize area`: each frame scaled to the median total intensity before z-scoring.
+
+### Expected result (concrete prediction)
+1. Post-norm total-CV ≈ 0; the artifact's effect on interpolation is gone.
+2. `interp_mse` now decreases ~monotonically with k.
+3. `interp_dense_full_pool` drops sharply (well below event_mean 0.59 and below the model)
+   — likely into ~0.05–0.2.
+4. A real crossover appears: model wins at k≈6; interpolation wins by k≈24–48.
+5. Net: dense interpolation **beats** the raw reconstruction model → HJ2-relevant
+   on-data confirmation of `random_axis`/IDW → motivates the JEPA latent objective.
+
+---
+
 ## 2026-06-14 · Run 002 · Density sweep + fair interpolation baseline (oleogel WAXS)
 
 Status: **DONE** — predictions below left unedited; result follows the prediction block.
