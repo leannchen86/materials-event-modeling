@@ -44,9 +44,12 @@ artifacts. Raw-objective reconstruction is viable but source-transfer plateaus.
 ## Branch: event-method
 **Deliverable:** the core methodological paper — *event-native representations predict
 missing/future measurements better than inherited labels.*
-**Status:** harness built and validated on synthetic scaffolds; **no affirmative result on
-real data yet.** All current wins live in a sandbox explicitly ruled inadmissible as
-evidence (partly interpolation-solvable). The unblocking move is the real-trajectory run.
+**Status:** synthetic harness built; **real-data campaign (Runs 001–008 on oleogel SAXS/WAXS)
+complete.** Result: raw masked-frame reconstruction is interpolation/clock-solvable, and
+SAXS↔WAXS are largely time-redundant — a capacity-free test shows this is a *data* limit
+(homogeneous, event-poor), not a model limit. No affirmative thesis result yet; the
+discriminating tasks (label-probe, diverse events) need a different dataset. See
+`docs/event-method/findings_summary.md` + `run_log.md`.
 
 - **Docs:** `docs/event-method/` — masked event model, event-field model, active-learning
   policies (`*active*`, `*policy*`), regime transfer, synthetic scaffold/field-budget,
@@ -56,9 +59,11 @@ evidence (partly interpolation-solvable). The unblocking move is the real-trajec
   neural active policy + ablation, regime / mixed-regime transfer, progress policy,
   synthetic scaffold, field budget, pilot-size, counterbalanced, event analysis).
 - **Code:** `src/materials_event_modeling/track_b/`.
-- **Real-data stage (refined-a):** run masked-event + JEPA on a real time-resolved
-  trajectory deposit — oleogel polymorphic WAXS/SAXS (zenodo 15268752) or zeolite
-  Raman+PXRD (zenodo 18972297). Dataset hunt: `docs/spine/capture_vs_representation_design_note.md`.
+- **Real-data stage (refined-a): done (Runs 001–008).** Conclusion: not a model-capacity
+  problem; need a labeled / event-diverse dataset. Next: label-probe on **RRUFF** (~4216
+  specimens, Raman+XRD, validated labels — also lets cross-modal be retried at N≈4000) or
+  **opXRD**; avoid SimXRD-4M (simulated → no lossy-label problem). Controlled-collection remains
+  the moat. Summary: `docs/event-method/findings_summary.md`.
 - **Candidate to promote later:** *active-measurement* (own assessment calls it the
   highest-impact paper). Split into its own branch only once it has a real result.
 
