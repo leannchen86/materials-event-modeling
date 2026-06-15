@@ -6,6 +6,40 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-15 · Run 011 · RRUFF labels-are-lossy probe (solid-solution species vs family)
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Why (and a recon finding)
+Run 010 showed polymorph labels are natural coordinates of raw Raman. The novel claim is the
+opposite — labels that are LOSSY. Recon first ruled out two candidates on RRUFF:
+- `##STATUS` ambiguity is **confounded**: unconfirmed specimens are overwhelmingly in rare
+  minerals (median 1 specimen/mineral vs 2 for confirmed; only 51/445 in minerals with ≥3
+  specimens), so any mis-neighbouring is frequency, not ambiguity. Dropped.
+- plagioclase has only endmembers (albite 8, anorthite 9), no intermediates → can't sample a
+  continuum.
+Garnet is well-populated and has TWO solid-solution sub-families: pyralspite (almandine Fe /
+pyrope Mg / spessartine Mn) and ugrandite (grossular Ca-Al / andradite Ca-Fe). Clean lossy-label
+test: if species labels are lossy bins on a within-family continuum, raw space should separate
+the FAMILIES (a real structural/Ca distinction) but BLEND species within a family.
+
+### Method
+Garnet species (5-way) vs family (2-way: pyralspite/ugrandite), specimen-grouped k-NN, 5 seeds.
+Metrics: species_acc, family_acc, and the fraction of species-errors that stay WITHIN the true
+family. Controls: majority, shuffled. Olivine (forsterite/fayalite/tephroite, one family) as a
+secondary confusion check.
+
+### Prediction
+1. family_acc HIGH (~0.85–1.0) — Ca vs Fe/Mg/Mn is a natural coordinate.
+2. species_acc LOWER than family, species-errors predominantly WITHIN family (>0.7) → species
+   labels blend within the continuum = lossy discretisation.
+3. Contrast with Run 010 polymorphs (0.91–1.0, labels natural).
+Honest caveat: if species_acc is ALSO high (RRUFF endmembers spectrally distinct), the continuum
+isn't exposed by endmember labels → the lossy claim would need intermediate-rich compositions /
+measured chemistry (a different dataset). That outcome is itself informative.
+
+---
+
 ## 2026-06-15 · Run 010 · RRUFF polymorph probe (raw vs constant composition)
 
 Status: **DONE** — predictions below left unedited; result follows the prediction block.
