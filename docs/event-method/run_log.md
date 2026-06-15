@@ -6,6 +6,39 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-15 · Run 004 · Leave-one-run-out cross-event (the real HJ2 test)
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Hypothesis (+ logic)
+Cross-event is the only setup that forces the model to *use* its observed anchors: trained
+on 5 events, it cannot have memorised the held-out event's time→spectrum curve (Run 003's
+confound), so it must read the test event's anchors to predict its missing frames.
+Logic + prediction: dense within-test-event interpolation (~1-frame spacing, ≈0.22 in
+Run 003) is a strong adversary; a model that must *transfer* across events will likely do
+worse than within-event memorisation, so **dense interpolation probably beats the
+cross-event model on average** — the `random_axis`/IDW result on real data, motivating the
+JEPA latent objective. The alternative (model beats dense interp cross-event) would be
+strong positive evidence for event-native representation.
+
+### Setup
+- All 6 runs, WAXS, area-normalised. Leave-one-run-out (6 folds). z-scoring + PCA fit on
+  *train events only* (no leakage). Model: `train_set_model_multi` on the 5 train events.
+- Eval per fold: held-out event, every-5th frame as candidates, rest as pool. model given
+  k∈{6,12,24,48} evenly-spaced anchors from the test pool; vs `interp_dense` (full test
+  pool, ~1-frame spacing); vs `event_mean` (test-pool mean).
+
+### Expected result (concrete prediction)
+1. **Diagnostic:** cross-event model MSE now *decreases with k* (must use context) — unlike
+   Run 003's flat curve. If it is still flat, the model is learning a generic time→spectrum
+   prior, not using anchors.
+2. `interp_dense` ≈ 0.2–0.3 per fold (same as within-event).
+3. Cross-event model (k=48) worse than the within-event 0.174 — likely ~0.3–0.5.
+4. **Decisive:** dense interpolation beats the cross-event model in ≥4/6 folds on average.
+5. Caveat: only 6 folds, 2 samples × 3 shear — suggestive, not conclusive.
+
+---
+
 ## 2026-06-14 · Run 003 · Artifact-free density sweep (area-normalised oleogel WAXS)
 
 Status: **DONE** — predictions below left unedited; result follows the prediction block.

@@ -52,21 +52,33 @@ def build_index_examples(pool_idx, *, max_obs, n_examples, rng, min_obs=4):
     return obs_idx, obs_mask, cand_idx
 
 
-def train_set_model(
-    spec_z, times, targets, pool_idx, *, max_obs=48, n_examples=6000, epochs=120,
-    batch_size=256, lr=2e-4, seed=0, device="cpu",
-):
-    rng = np.random.default_rng(seed)
+def build_index_examples_multi(event_pools, *, max_obs, n_examples, rng, min_obs=4):
+    """Cross-event examples: each example's observed set + candidate come from the SAME event."""
+    obs_idx = np.zeros((n_examples, max_obs), np.int64)
+    obs_mask = np.zeros((n_examples, max_obs), np.float32)
+    cand_idx = np.zeros(n_examples, np.int64)
+    n_events = len(event_pools)
+    for n in range(n_examples):
+        pool = event_pools[int(rng.integers(n_events))]
+        cand = int(rng.choice(pool))
+        others = pool[pool != cand]
+        k = int(rng.integers(min_obs, max_obs + 1))
+        obs = rng.choice(others, size=min(k, others.size), replace=False)
+        obs_idx[n, : obs.size] = obs
+        obs_mask[n, : obs.size] = 1.0
+        cand_idx[n] = cand
+    return obs_idx, obs_mask, cand_idx
+
+
+def _fit(spec_z, times, targets, obs_idx, obs_mask, cand_idx, *, epochs, batch_size, lr, seed, device):
     torch.manual_seed(seed)
-    obs_idx, obs_mask, cand_idx = build_index_examples(
-        pool_idx, max_obs=max_obs, n_examples=n_examples, rng=rng
-    )
     spec_t = torch.from_numpy(spec_z).to(device)
     time_t = torch.from_numpy(times.astype(np.float32)).to(device)
     targ_t = torch.from_numpy(targets).to(device)
     oi = torch.from_numpy(obs_idx)
     om = torch.from_numpy(obs_mask).to(device)
     ci = torch.from_numpy(cand_idx)
+    n_examples = obs_idx.shape[0]
     model = TinySetModel(spec_z.shape[1], targets.shape[1]).to(device)
     opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
     loss_fn = nn.MSELoss()
@@ -85,6 +97,24 @@ def train_set_model(
             loss.backward()
             opt.step()
     return model
+
+
+def train_set_model(spec_z, times, targets, pool_idx, *, max_obs=48, n_examples=6000,
+                    epochs=120, batch_size=256, lr=2e-4, seed=0, device="cpu"):
+    rng = np.random.default_rng(seed)
+    obs_idx, obs_mask, cand_idx = build_index_examples(
+        pool_idx, max_obs=max_obs, n_examples=n_examples, rng=rng)
+    return _fit(spec_z, times, targets, obs_idx, obs_mask, cand_idx,
+                epochs=epochs, batch_size=batch_size, lr=lr, seed=seed, device=device)
+
+
+def train_set_model_multi(spec_z, times, targets, event_pools, *, max_obs=48, n_examples=12000,
+                          epochs=120, batch_size=256, lr=2e-4, seed=0, device="cpu"):
+    rng = np.random.default_rng(seed)
+    obs_idx, obs_mask, cand_idx = build_index_examples_multi(
+        event_pools, max_obs=max_obs, n_examples=n_examples, rng=rng)
+    return _fit(spec_z, times, targets, obs_idx, obs_mask, cand_idx,
+                epochs=epochs, batch_size=batch_size, lr=lr, seed=seed, device=device)
 
 
 def model_predict(model, spec_z, times, anchors, cand_times, pca, *, max_obs, device="cpu"):
