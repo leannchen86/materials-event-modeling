@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-15 · Run 008 · Smoothness-controlled dependence (fixes Run 007)
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions below left unedited; result follows the prediction block.
 
 ### Why
 Run 007's permutation null was confounded by shared temporal smoothness. This run uses two
@@ -32,6 +32,53 @@ likely the DMHR shear-25s/50s events (consistent with Run 006), not all six. If 
 there, that is the clean, capacity-free confirmation that real cross-modal signal exists for
 *some* conditions but the cross-event **transfer** is the limit (data), not model capacity.
 If it vanishes on all events, the apparent signal was smoothness all along.
+
+### Result — n_real_signal = **1/6**
+obs_dcor vs cross_event_dcor: dmhr_1s .707/.716 · dmhr_25s .818/.840 · **dmhr_50s .889/.807
+(+.082 ✓)** · mopv_1s .847/.842 · mopv_25s_redo .55/.705 · mopv_50s .931/.910. circular-shift
+p = 0.005 everywhere (but see below).
+
+### What the controls show
+- **Within-event dCor (.7–.93) ≈ cross-event dCor (.7–.91):** SAXS_resid of event E predicts a
+  *different* event's WAXS_resid about as well as event E's own → the high dCor is **shared
+  smooth residual shape, not event-specific coupling.**
+- The circular-shift null says "significant" everywhere, but that only shows SAXS and WAXS
+  follow a *similar smooth shape* over the normalised interval — and that shape is shared
+  across events, so it is not coupling. **The cross-event baseline is the decisive control**,
+  and it removes essentially all the apparent signal. (Lesson: even the circular-shift null
+  was not enough; the cross-event baseline was.)
+- Only **dmhr_50s** shows a small genuine excess (+0.082).
+
+### Validated / invalidated
+- Predicted shrink-from-6/6 to a DMHR subset: directionally right but stronger — shrank to
+  **1/6** (only dmhr_50s; dmhr_25s did NOT survive). I over-predicted the surviving signal.
+- Run 007's "6/6 strong signal" was almost entirely the smoothness artifact — now excluded.
+
+### Conclusion — the rigorous answer to "model or data?"
+**NOT model capacity** (no tunable model was used). And **not "signal exists but won't
+transfer"** (Run 007's read) — properly controlled, there is barely any event-specific
+cross-modal signal: SAXS and WAXS are **largely time-redundant** on this system (both mostly
+track the crystallisation clock). Only 1/6 events shows a whisper of genuine excess. This is
+the "more-data-of-the-same-kind won't help" branch — the cross-modal signal we hoped for is
+genuinely weak *here*, not hidden by a weak model.
+
+### Scope (do not over-conclude)
+This is for SAXS→WAXS on THIS homogeneous oleogel set. It does **not** say "raw data carries no
+usable signal" in general. The thesis could still hold via (a) the polymorph/d-spacing
+**label-probe**, or (b) a dataset where conditions/outcomes vary (so the clock is not
+everything) and modalities are genuinely complementary. The binding issue here is dataset
+homogeneity + modality redundancy, not model capacity.
+
+### Wrong causes now excluded (Runs 001–008)
+sparse-anchor (001) · data artifact (002) · memorisation (003/004) · time-prior (006) · model
+capacity & smoothness artifact (007→008). **What stands:** oleogel SAXS/WAXS are largely
+time-redundant; ~1 event shows a faint real excess.
+
+### Next
+Evidence points *away* from squeezing this dataset. Best moves: (1) **label-probe** on a
+dataset with real labels; (2) a dataset with **diverse conditions/outcomes** (not 6 identical
+protocols) and genuinely complementary modalities; (3) controlled-collection. Avoid: more
+models on oleogel, more oleogel-like events.
 
 ---
 
