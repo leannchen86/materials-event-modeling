@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-15 · Run 005 · Cross-event missing-modality (predict WAXS from SAXS)
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions below left unedited; result follows the prediction block.
 
 ### Why this run (the pivot from Runs 001–004)
 "Guess a hidden frame from its time-neighbours" is solved by interpolation on these smooth,
@@ -35,6 +35,42 @@ model may or may not beat plain linear regression, depending on how nonlinear th
 2. mlp ≈ ridge or modestly better (coupling likely near-linear in PCA space).
 3. If neither beats the mean: SAXS→WAXS coupling does not transfer across these 6 events
    (too few / too diverse) → push to the label-probe and/or more events.
+
+### Result (median over 6 folds; but per-fold matters — it is bimodal)
+WAXS z-MSE: waxs_mean 0.557 · ridge 2.54 · mlp 0.984. ridge beats mean **3/6**, mlp **3/6**.
+Per fold splits into two groups:
+- **Wins** (cross-modal helps a lot): dmhr_25s (mean .407 → ridge .149), dmhr_50s
+  (.551 → .124) — ~3–4× better than the mean, which time-interpolation could never achieve.
+- **Losses** (the learned map extrapolates badly): dmhr_1s (ridge 4.72), mopv_1s (ridge
+  8.32), mopv_50s (.277 → .362). mlp is far less catastrophic than ridge (1.0 vs 4.7; 1.2 vs
+  8.3) but still loses on these folds.
+- redo fold: scale still inflated (mean 11; ±15 clip helped vs Run 004 but the replicate's
+  normalisation is still off).
+
+### Validated / invalidated / surprising
+- ❌ #1 — only 3/6 folds beat the mean (predicted ≥4/6). Not the clean positive signal.
+- ✅-ish #2 — mlp ≈ ridge where both work, and far more *robust* on the failing folds →
+  linear extrapolation is the dominant failure mode.
+- 🔎 The real finding: the result is **bimodal** — big, real, interpolation-proof cross-modal
+  wins on half the folds, and extrapolation failures on the other half. With only 6 events
+  (2 samples × 3 shear) each fold removes a unique condition the others may not cover, so
+  cross-event transfer is unreliable. **We have hit the dataset's 6-event ceiling** (flagged
+  in the dataset audit).
+
+### Conclusion
+The cross-modal task is the *right* kind of test — interpolation cannot do it, and the model
+wins big on the folds it transfers to — but **6 events is too thin to establish cross-event
+generalisation.** This is the first genuine positive *signal* and, simultaneously, the
+empirical case for controlled-collection (more events).
+
+### Updated hypothesis / next tests
+1. **Time-only ablation (Run 006a):** does SAXS beat a model given only the candidate *time*?
+   Cleanly attributes any win to cross-modal info vs the smooth time-prior. Cheap, decisive.
+2. **Label-probe (Run 006b):** does a frozen representation predict the d-spacing/polymorph
+   label better than baselines — the most direct "representation vs inherited label" test,
+   and within-modality, so less exposed to cross-event scarcity.
+3. **Dataset ceiling:** more events (controlled-collection) or a richer deposit (zeolite,
+   zenodo 18972297) are needed to settle transfer. Also fix the replicate fold's z-scoring.
 
 ---
 
