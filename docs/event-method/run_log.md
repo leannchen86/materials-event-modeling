@@ -6,6 +6,35 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-15 · Run 008 · Smoothness-controlled dependence (fixes Run 007)
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Why
+Run 007's permutation null was confounded by shared temporal smoothness. This run uses two
+smoothness-preserving controls so any remaining dependence is genuine cross-modal *alignment*.
+
+### Method
+Per event, residualise SAXS and WAXS against the leave-one-event-out time-prior (as Run 007).
+Then for each event:
+- observed dCor(SAXS_resid, WAXS_resid).
+- **circular-shift null**: roll WAXS_resid by random time offsets (preserves its
+  autocorrelation exactly; breaks only cross-modal phase alignment); p = P(shifted dCov ≥ obs).
+- **cross-event baseline**: dCor(SAXS_resid[E], WAXS_resid[other event, interpolated to E's
+  grid]) — same smoothness, no shared event; report the median over other events.
+Signal is real for an event only if observed dCor > circular-shift null (p<0.05) AND observed
+clearly exceeds the cross-event baseline.
+
+### Prediction
+Given the Run 007 confound and the Run 006 model results, I expect the controlled signal to
+**shrink from 6/6**: significant and above the cross-event baseline on a *subset* — most
+likely the DMHR shear-25s/50s events (consistent with Run 006), not all six. If it survives
+there, that is the clean, capacity-free confirmation that real cross-modal signal exists for
+*some* conditions but the cross-event **transfer** is the limit (data), not model capacity.
+If it vanishes on all events, the apparent signal was smoothness all along.
+
+---
+
 ## 2026-06-15 · Run 007 · Model-free dependence: SAXS↔WAXS beyond the clock
 
 Status: **DONE (but invalidated by a confound — see fix → Run 008).**
