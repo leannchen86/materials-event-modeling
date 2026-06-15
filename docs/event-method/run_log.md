@@ -6,6 +6,38 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-15 · Run 009 · RRUFF label-probe (representation vs inherited label, at scale)
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Why
+The oleogel campaign (001–008) hit a 6-event ceiling and showed the limit is data, not model.
+RRUFF gives thousands of curated Raman spectra across ~1,958 mineral labels (266 with ≥10
+spectra), each with composition (`##IDEAL CHEMISTRY`) and an ambiguity flag (`##STATUS`) — and
+includes the CaCO3 polymorphs (calcite 52, aragonite 18). First dataset large enough to test
+the core thesis: are inherited labels natural coordinates of the raw measurement, and does a
+raw representation carry label info beyond the compositional proxy? Capacity-free (kNN),
+gap-over-controls, cross-specimen.
+
+### Method
+Excellent unoriented, Processed, 532 nm; resample to 150–1300 cm⁻¹ (600 pts), max-normalise.
+Keep minerals with ≥5 spectra across ≥2 specimens. Split by **specimen** (GroupShuffleSplit) to
+avoid leakage. k-NN (k=1) top-1 accuracy for: `raw_spectrum` (claim) · `composition`
+(element one-hot — trivial-structure baseline) · `label-shuffled` and `chance` (null controls).
+Sub-probe — CaCO3 polymorphs: calcite vs aragonite (identical composition), raw-spectrum binary
+accuracy vs the majority/composition baseline.
+
+### Prediction
+1. raw kNN top-1 ≫ shuffled (~chance) — labels are largely natural coordinates of raw Raman
+   (the at-scale positive we could not get at N=6). Expect raw top-1 > 0.7.
+2. raw ≥ composition, composition much lower (many minerals share elements).
+3. calcite vs aragonite: raw > 0.9, composition ≈ majority chance (~0.74) → raw carries
+   structure/label info composition fundamentally cannot (the on-thesis polymorph case, CaCO3).
+Caveat: Raman mineral-ID is known-easy, so #1 mainly validates scale/pipeline; the
+thesis-advancing parts are #3 (polymorphs) and the later ambiguity (`##STATUS`) probe.
+
+---
+
 ## 2026-06-15 · Run 008 · Smoothness-controlled dependence (fixes Run 007)
 
 Status: **DONE** — predictions below left unedited; result follows the prediction block.
