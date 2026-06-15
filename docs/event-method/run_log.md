@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-15 · Run 012 · RRUFF robustness ablations (provenance, difficulty, error bars)
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions below left unedited; result follows the prediction block.
 
 ### Why
 Before locking the Runs 009–011 interpretation, exclude the explanations that could overturn it.
@@ -33,6 +33,39 @@ D. raw ≈ composition (009) overlaps within error bars; balanced accuracy does 
    polymorph/family wins.
 If instead blurred ≈ full, OR 532-only collapses, OR distinct-5 ≈ garnet species → the
 interpretation is threatened and must be revised.
+
+### Result
+- **A. Single wavelength (532 only):** CaCO3 0.875±0.10 · TiO2 1.0 · Al2SiO5 1.0 · SiO2 0.946;
+  garnet species 0.75±0.08, family 1.0 → all **survive**.
+- **B. Structure-blind (full vs blurred, σ≈48 cm⁻¹):** garnet 0.736→0.713 · CaCO3 0.944→0.933 ·
+  TiO2 1.0→0.875 → blurred ≈ full (**not** the predicted collapse).
+- **C. Difficulty control:** distinct-5 minerals **0.992±0.01** vs garnet 5-way species **0.736**.
+- **D. Error bars / balanced acc:** polymorphs CaCO3 0.944 (bal 0.92) · TiO2 1.0 · Al2SiO5 1.0 ·
+  SiO2 0.909; garnet species 0.736±0.06 (bal 0.75), family 1.0; run009 raw 0.764±0.024 vs
+  composition 0.722±0.016 (273 classes).
+
+### Validated / invalidated
+- ✅ **A** — survives single wavelength → no wavelength↔label provenance shortcut.
+- ⚠️ **B — INCONCLUSIVE (prediction wrong):** blurred ≈ full. But σ≈48 cm⁻¹ was too gentle — it
+  smears fine splitting yet keeps the major-band envelope (itself real structure), so it neither
+  confirms nor excludes a broad-feature/baseline contribution. An imperfect control; needs the
+  complement (peaks-only) → Run 013.
+- ✅✅ **C** — distinct-5 (0.992) ≫ garnet species (0.736) → the low species accuracy is the
+  **continuum, not "5-way is hard"**. Decisively supports the lossy-species claim.
+- ✅ **D** — polymorph + family wins robust under error bars AND balanced accuracy (not
+  majority-inflated); raw ≈ composition holds (raw a reliable but small ~4-pt edge).
+
+### Conclusion
+Three of four controls pass and strengthen the interpretation; the novel lossy-species claim is
+**decisively** supported by the difficulty control (C). The one loose end is the structure-blind
+control (B): the blur was too gentle to prove the signal lives in the sharp Raman peaks vs broad
+features. A (single-wavelength) already gives provenance assurance, but to fully close "Raman
+fingerprint vs broad/baseline artifact?" run the complement.
+
+### Next (Run 013)
+**Peaks-only (high-pass / derivative) representation:** if peaks-only ≈ full, the Raman fingerprint
+carries the signal → provenance/baseline excluded. Pair with a heavier blur (removing major bands)
+as the negative control. Closes B; then the interpretation is locked.
 
 ---
 
