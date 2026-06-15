@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-15 · Run 009 · RRUFF label-probe (representation vs inherited label, at scale)
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions below left unedited; result follows the prediction block.
 
 ### Why
 The oleogel campaign (001–008) hit a 6-event ceiling and showed the limit is data, not model.
@@ -35,6 +35,35 @@ accuracy vs the majority/composition baseline.
    structure/label info composition fundamentally cannot (the on-thesis polymorph case, CaCO3).
 Caveat: Raman mineral-ID is known-easy, so #1 mainly validates scale/pipeline; the
 thesis-advancing parts are #3 (polymorphs) and the later ambiguity (`##STATUS`) probe.
+
+### Result
+2910 Processed/532 nm spectra; after ≥5-spectra / ≥2-specimen filter → 450 spectra, 59 minerals.
+Global (specimen-grouped k-NN top-1): **raw 0.879 · composition 0.843 · shuffled 0.021 · chance
+0.038**. CaCO3 sub-probe: raw 0.833 but only n_test=6 (10 calcite + 4 aragonite in this subset).
+
+### Validated / invalidated
+- ✅ #1 — raw ≫ shuffled/chance (0.879 vs 0.021/0.038): mineral labels are largely natural
+  coordinates of raw Raman, cross-specimen, at 59-class scale. The at-scale positive we could
+  not get at N=6.
+- ❌ #2 — INVALIDATED: composition is nearly as good (0.843). For common distinct-chemistry
+  minerals the label ≈ composition, so raw barely beats the compositional proxy. (The strong
+  baseline did its job again.)
+- ⚠️ #3 — inconclusive: the polymorph sub-probe is underpowered (Processed/532 has only 10
+  calcite + 4 aragonite; test=6; 0.833 = 5/6, not meaningful).
+
+### Conclusion
+At scale, raw Raman predicts the mineral label well — but so does composition, so the global
+probe does **not** show raw beating the inherited proxy. The thesis bites only where composition
+is *constant*: same-composition polymorphs / solid-solutions, where only structure (raw) can
+separate the label. That is exactly the case Run 009 left underpowered.
+
+### Next (Run 010)
+**Polymorph / same-composition probe, powered.** Relax filters (all wavelengths + RAW&Processed)
+to maximise n, and pool several constant-composition groups (CaCO3 calcite/aragonite/vaterite;
+TiO2 rutile/anatase/brookite; FeS2 pyrite/marcasite; C diamond/graphite; Al2SiO5
+kyanite/andalusite/sillimanite). Test: raw-spectrum separability within each constant-composition
+group vs the composition (= chance) baseline — the clean "raw carries label info composition
+cannot". Then the `##STATUS` ambiguity probe.
 
 ---
 

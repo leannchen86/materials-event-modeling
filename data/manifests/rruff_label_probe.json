@@ -1,0 +1,23 @@
+{
+  "created_at": "2026-06-15T19:11:05.072376+00:00",
+  "task": "rruff_label_probe",
+  "n_spectra_total": 2910,
+  "n_spectra_used": 450,
+  "n_classes_used": 59,
+  "min_spectra": 5,
+  "n_elements_vocab": 69,
+  "global_probe": {
+    "raw_spectrum_top1": 0.879,
+    "composition_top1": 0.843,
+    "label_shuffled_top1": 0.021,
+    "chance_majority": 0.0378,
+    "n_test": 140
+  },
+  "caco3_polymorph_subprobe": {
+    "calcite_vs_aragonite_raw_top1": 0.833,
+    "composition_majority_baseline": 0.714,
+    "n_test": 6,
+    "n_calcite": 10,
+    "n_aragonite": 4
+  }
+}
