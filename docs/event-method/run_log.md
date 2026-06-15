@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-15 · Run 004 · Leave-one-run-out cross-event (the real HJ2 test)
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions below left unedited; result follows the prediction block.
 
 ### Hypothesis (+ logic)
 Cross-event is the only setup that forces the model to *use* its observed anchors: trained
@@ -36,6 +36,45 @@ strong positive evidence for event-native representation.
 3. Cross-event model (k=48) worse than the within-event 0.174 — likely ~0.3–0.5.
 4. **Decisive:** dense interpolation beats the cross-event model in ≥4/6 folds on average.
 5. Caveat: only 6 folds, 2 samples × 3 shear — suggestive, not conclusive.
+
+### Result (robust = per-fold; aggregate mean corrupted by one degenerate fold)
+5 clean folds + 1 degenerate (`mopv_25s_redo`: train-only z-scoring blew up in q-bins where
+train variance ≈ 0 → MSE in the 100s; relative ordering unaffected). Median over clean folds
+(z-space MSE): **model (any k) 0.173 · interp_dense 0.023 · event_mean 0.261**. Interpolation
+beats the model in **6/6** folds. Per clean fold the model MSE was **flat across k = 6→48**
+(e.g. dmhr_1s: 0.288 / 0.286 / 0.286 / 0.287).
+
+### Validated / invalidated / surprising
+- ✅✅ #4 — dense interpolation beats the model in **6/6** folds (~7× better median). Decisive.
+- ❌ #2 — interp far better than predicted (~0.02 vs my 0.2–0.3): dense interpolation on
+  smooth, artifact-free trajectories is near-perfect.
+- ❌ #1 **+ the key finding** — model MSE is **flat in k even cross-event**: the model ignores
+  its anchors entirely. It collapsed to a *time-conditioned population mean* (≈ the average
+  spectrum at normalised time t across events) — the easiest way to minimise cross-event
+  reconstruction MSE. The raw-reconstruction objective does not use event context at all.
+- ⚠️ methodological: guard train-sd / clip z (the degenerate fold) before reusing the harness.
+
+### The conclusion — HJ2 answered (a clean, expected negative result)
+On real artifact-free cross-event data, the raw-reconstruction masked-event objective (a) is
+decisively beaten by dense time-interpolation and (b) collapses to a population-mean prior
+that ignores observed context. **Raw reconstruction is the wrong objective** — the synthetic
+`random_axis`/IDW result, now confirmed on real data. Green light for the latent (JEPA)
+objective.
+
+### Updated hypothesis / next test — and a task pivot
+Deeper realisation: **the masked-frame task is interpolation-solvable on densely-sampled
+smooth trajectories** (interp ≈ 0.02), so it is a poor discriminator for *any* model —
+including JEPA — because there is little event-specific, non-interpolable signal at ~1 s
+spacing. The thesis-relevant tasks are the ones interpolation *cannot* do:
+1. **Missing-modality** — predict the WAXS frame from the same-timepoint SAXS frame (and
+   vice versa). Time-interpolation is irrelevant; only a cross-modal representation helps.
+2. **Label-probe** — does a frozen event representation predict the d-spacing / polymorph
+   label better than baselines? (The actual "representation vs inherited label" question.)
+3. **Replicate retrieval** (the `_redo` pair).
+Run 005: run the JEPA objective (per `jepa_event_model.md`) but **evaluate on
+missing-modality + label-probe, not masked-frame reconstruction**, and fix the z-score
+guard. This pivots from "predict a held-out frame" (interpolation wins) to "use cross-modal /
+cross-event structure" (interpolation has nothing to say).
 
 ---
 
