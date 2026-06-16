@@ -6,6 +6,30 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-15 · Run 013 · RRUFF peaks-only vs heavy-blur (closes Run 012 B)
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Why
+Run 012's blur was too gentle to separate the sharp Raman peaks (real fingerprint) from the
+broad envelope (possible baseline/provenance). Run 013 splits the spectrum cleanly and tests each.
+
+### Method
+Three representations, same specimen-grouped k-NN (8 seeds):
+- `full`
+- `peaks_only` = full − Gaussian-blur(σ≈15 pts), renormalised — sharp peaks kept, broad shape removed.
+- `heavy_blur` = Gaussian-blur(σ≈100 pts), renormalised — broad shape only, fingerprint destroyed.
+Cases: garnet species, garnet family, CaCO3, TiO2, distinct-5 (reference). Majority reported.
+
+### Prediction
+- `peaks_only` ≈ `full` → the signal IS the Raman fingerprint → provenance/broad-feature worry
+  excluded.
+- `heavy_blur` ≪ `full`, dropping toward majority → broad shape alone carries little.
+If instead peaks_only collapses OR heavy_blur stays high → the signal lives in broad features and
+the interpretation must be revised.
+
+---
+
 ## 2026-06-15 · Run 012 · RRUFF robustness ablations (provenance, difficulty, error bars)
 
 Status: **DONE** — predictions below left unedited; result follows the prediction block.
