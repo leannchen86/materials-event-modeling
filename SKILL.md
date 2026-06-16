@@ -628,7 +628,9 @@ Newly established (RRUFF labels-are-lossy, Run 011):
 > Ablation-validated (Runs 012–013): survives single-wavelength (no laser shortcut); the low
 > garnet-species accuracy is the continuum not multi-class difficulty (distinct-5 minerals 0.99);
 > and the signal is the sharp Raman fingerprint, not broad/baseline/provenance (peaks-only ≈ full,
-> heavy-blur collapses below majority for CaCO3).
+> heavy-blur collapses below majority for CaCO3). **Modality-general (Run 014):** the same pattern
+> reproduces on powder XRD (garnet family 1.0 / species 0.66 / 100% within-family errors;
+> CaCO3 polymorph 1.0) — so it is not a Raman artifact.
 
 Not yet earned:
 

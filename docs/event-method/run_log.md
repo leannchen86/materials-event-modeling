@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-15 · Run 014 · Cross-modality generalisation: the taxonomy on XRD
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions below left unedited; result follows the prediction block.
 
 ### Why
 The taxonomy (Runs 009–013) rests on one modality (Raman). Replicate the two load-bearing probes
@@ -31,6 +31,28 @@ generality (meets the project's own "prove it on ≥2 datasets" bar). XRD covera
 - distinct-5 high (~0.9+).
 → If the lossy (family ≫ species, within-family errors) pattern reproduces on XRD, the taxonomy is
 **modality-general**, not a Raman artifact. If it breaks, it was Raman-specific.
+
+### Result (powder XRD; specimen-grouped k-NN, 8 seeds)
+- **Garnet (key test):** family (2-way) **1.0** · species (5-way) **0.664±0.043** (bal 0.60) ·
+  **within-family-error 1.0**. (counts alm6/pyr7/spess6/gross15/andr9)
+- **CaCO3 polymorph (low power):** raw **1.0** vs majority 0.818 (n11, aragonite=2).
+- **distinct-5 reference:** 0.971±0.037.
+
+### Validated / invalidated
+- ✅✅ Garnet lossy pattern **REPRODUCES on XRD**: family 1.0 (crisp), species 0.664 (blend),
+  100% of species errors within-family — identical structure to Raman (Run 011). Prediction exact.
+- ✅ Polymorph reproduces: CaCO3 raw 1.0 ≫ majority (XRD is the definitive polymorph tool; n=11
+  low power but consistent).
+- ✅ Difficulty control reproduces: distinct-5 0.971 ≫ garnet species 0.664 → the garnet low
+  accuracy is the **continuum, not multi-class difficulty**, on XRD too.
+
+### Conclusion — the taxonomy is MODALITY-GENERAL
+The redundant / natural-coordinate / lossy taxonomy holds across **two independent physical
+measurements** (Raman AND XRD) of the same minerals and labels; the lossy-species signature
+(family crisp, species blend, errors within-family) is identical in both. So it is not a Raman
+artifact — it is a general property of how inherited materials labels relate to raw structural
+measurements. Meets the project's ≥2-dataset bar. **The campaign's central result is now robust
+across modality** — a clean place to consolidate.
 
 ---
 

@@ -76,6 +76,7 @@ specimen-grouped, gap-over-controls throughout.
 | 011 | solid-solution species vs family | garnet **family 1.0** but **species 0.73**, with **100% of species errors within-family** → species labels are lossy bins on a continuum |
 | 012 | robustness ablations | survives single-wavelength; distinct-5 minerals 0.99 vs garnet species 0.73 (the gap is the continuum, not difficulty); robust under error bars + balanced accuracy |
 | 013 | peaks-only vs heavy-blur | **peaks-only ≈ full** everywhere; broad-shape-only collapses (CaCO3 below majority) → the signal is the genuine Raman fingerprint, not lab/baseline artifacts |
+| 014 | cross-modality (powder XRD) | the pattern **reproduces on XRD**: garnet family 1.0 / species 0.66 / 100% within-family errors; CaCO3 polymorph 1.0 → the taxonomy is **modality-general**, not a Raman quirk |
 
 ### The three-way taxonomy (the finding)
 An inherited label is —
@@ -85,8 +86,9 @@ An inherited label is —
 - **lossy** when it bins a continuum (solid-solution species, Run 011 — raw keeps the continuous
   axis the discrete name discards).
 
-Fully stress-tested (Runs 012–013): not a laser/provenance shortcut, not multi-class difficulty,
-robust to error bars, and reading the real Raman fingerprint.
+Fully stress-tested (Runs 012–014): not a laser/provenance shortcut, not multi-class difficulty,
+robust to error bars, reading the real Raman fingerprint — and **reproduced on a second modality
+(powder XRD)**, so it is not technique-specific.
 
 ## The synthesis (the campaign's answer)
 **Raw data's value appears precisely where the inherited label is lossy.** On homogeneous
