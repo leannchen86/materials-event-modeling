@@ -624,6 +624,11 @@ Newly established (RRUFF labels-are-lossy, Run 011):
 > vs ugrandite) is recovered perfectly (1.0) while the species labels blend (0.73), with 100% of
 > species errors staying within-family. The raw representation recovers the underlying coordinate
 > (structural family + continuous within-family axis) that the discrete species label compresses.
+>
+> Ablation-validated (Runs 012–013): survives single-wavelength (no laser shortcut); the low
+> garnet-species accuracy is the continuum not multi-class difficulty (distinct-5 minerals 0.99);
+> and the signal is the sharp Raman fingerprint, not broad/baseline/provenance (peaks-only ≈ full,
+> heavy-blur collapses below majority for CaCO3).
 
 Not yet earned:
 

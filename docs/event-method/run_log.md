@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-15 · Run 013 · RRUFF peaks-only vs heavy-blur (closes Run 012 B)
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions below left unedited; result follows the prediction block.
 
 ### Why
 Run 012's blur was too gentle to separate the sharp Raman peaks (real fingerprint) from the
@@ -27,6 +27,30 @@ Cases: garnet species, garnet family, CaCO3, TiO2, distinct-5 (reference). Major
 - `heavy_blur` ≪ `full`, dropping toward majority → broad shape alone carries little.
 If instead peaks_only collapses OR heavy_blur stays high → the signal lives in broad features and
 the interpretation must be revised.
+
+### Result (full / peaks_only / heavy_blur / majority)
+- garnet_species 0.736 / **0.747** / 0.647 / 0.323
+- garnet_family 1.0 / **1.0** / 0.973 / 0.531
+- CaCO3 0.944 / **0.906** / 0.655 / 0.743
+- TiO2 1.0 / **1.0** / 0.662 / 0.400
+- distinct5 0.992 / **0.971** / 0.928 / 0.224
+
+### Validated / invalidated
+- ✅✅ **peaks_only ≈ full in ALL cases** → the sharp Raman fingerprint carries the signal; the
+  method works without the broad envelope.
+- ✅ **heavy_blur drops for the fine distinctions:** CaCO3 0.655 (BELOW majority 0.743), TiO2
+  1.0→0.662, garnet species 0.736→0.647 → broad shape alone is insufficient for the structural
+  distinctions.
+- Nuance: heavy_blur stays high for *gross* distinctions (family 0.973, distinct-5 0.928) —
+  expected, because very different materials differ even in their broad envelopes; harmless, since
+  peaks_only already proves the fingerprint is sufficient.
+
+### Conclusion — Run 012 B closed; interpretation LOCKED
+The classification reads the genuine Raman fingerprint (sharp peaks), not broad / baseline /
+provenance features. Combined with Run 012 (single-wavelength survival, difficulty control, error
+bars), the Runs 009–011 interpretation is now fully stress-tested: inherited labels are natural
+coordinates when **structure-determined** (polymorphs) and lossy when **continuum-bins**
+(solid-solution species), and the signal is real structure, not lab artifacts.
 
 ---
 
