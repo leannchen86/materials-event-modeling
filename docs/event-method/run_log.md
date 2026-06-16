@@ -8,7 +8,7 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ## 2026-06-15 · Run 015 · Severson battery: is cycle_life a lossy summary of the trajectory?
 
-Status: **BEFORE** (expectation on record; result pending).
+Status: **DONE** — predictions below left unedited; result follows the prediction block.
 
 ### Why
 First test of the process/event half of the thesis on public many-event data. `cycle_life`
@@ -33,6 +33,38 @@ label, the garnet/metastability pattern in a process domain.
   early_distance tracks |Δcl| more (early behaviour → lifetime). Nearest-in-life shape ratio ≈ 1.
 Caveat: charging `policy` is a confound (same-policy cells may share both trajectory and lifetime)
 → flagged for Run 016; batch1 only (46 cells). If shape_dist tracks |Δcl| strongly → NOT lossy.
+
+### Result (46 cells; cycle_life 534–1227; 23 policies)
+- **A:** LOO early→cycle_life Spearman **0.61** (shuffle −0.06).
+- **B:** Spearman(|Δcl|, shape_dist) **0.31** · Spearman(|Δcl|, early_dist) 0.239 ·
+  nearest-in-life shape ratio **0.633**.
+
+### Validated / invalidated
+- ✅ A — early trajectory carries lifetime info (0.61 ≫ shuffle). Natural-coordinate sanity holds.
+- ⚠️ B — only a **partial** lossy signal: lifetime captures *some* aging-shape structure
+  (nearest-in-life cells 37% closer in shape than random; Spearman 0.31), not none and not all.
+  Not the crisp garnet-style lossy result.
+- ❌ contrast prediction wrong: shape tracked |Δcl| slightly *more* than early distance (0.31 vs 0.24).
+
+### The confound (as pre-flagged) — and the insight
+**23 charging policies / 46 cells.** Policy co-determines BOTH lifetime AND degradation shape, so
+neither A nor B can be cleanly attributed to "raw trajectory vs label" — policy could drive both.
+Also 46 cells is low power and capacity-vs-fraction-of-life is a noisy shape representation.
+**Key insight:** the lossy-label phenomenon is *crisp* when the label collapses an **intrinsic
+continuum** (composition → garnet species, metastability); it is *murky* when an **extrinsic
+planned variable** (charging policy) co-determines both the trajectory and the label. Cleanly
+testing process-label lossiness therefore needs **controlled conditions** (hold policy, vary one
+thing) — exactly what controlled-collection provides and uncontrolled public process data lacks.
+
+### Conclusion
+Suggestive but inconclusive: a weak, partial, policy-confounded lossy signal. The clean mineral
+result does **not** straightforwardly reproduce in an uncontrolled process dataset — which is
+itself informative, and reinforces the controlled-collection case for the process half.
+
+### Next (only if judged worth it — not a rabbit hole)
+Control for policy (within-policy / policy-as-covariate), use full 124 cells (3 more 3 GB
+downloads), and the Severson ΔQ(V) within-cycle feature. Otherwise this stands as: lossy-labels
+are clean for intrinsic-continuum labels, confound-dominated for uncontrolled process labels.
 
 ---
 
