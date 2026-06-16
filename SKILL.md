@@ -641,3 +641,22 @@ Target claim:
 > Raw/event-trained representations become more useful than inherited labels for
 > prediction, compression, retrieval, or search, while inherited labels remain useful as
 > human-facing probes.
+
+## Reframe under consideration (2026-06-16)
+
+The RRUFF result + the "is chemistry itself lossy?" discussion suggest a deeper framing, recorded
+in `docs/spine/ontology_and_rawness_gradient.md`:
+- Our natural-coordinate/lossy taxonomy is an empirical **natural-kinds vs conventional-kinds**
+  probe (polymorphs/elements = real joints; solid-solution species = continuum bins).
+- Chemistry is lossy in a *graded* way: element/Z = a real natural kind (not lossy); formula =
+  lossy (polymorphs); "similarity"/groups = a soft hand-built embedding.
+- **Atom2Vec/Mat2Vec are mirrors, not aliens** — they learn from human artifacts (compound lists,
+  paper text), so they re-derive the human ontology. A faithful representation must train on raw
+  physical reality.
+- **Rawness gradient:** text → compound lists → DFT → raw spectra → raw unbiased sampling. Less
+  inherited ontology + higher possible fidelity as you descend, but no view from nowhere (even raw
+  spectra are human-curated *sampling*).
+- **Reframed thesis (falsifiable):** does a representation get more faithful (recovers joints,
+  blends bins) the further down the rawness gradient it is trained? Doable now on RRUFF:
+  unsupervised raw-spectrum embedding vs composition-derived embedding, measured against the
+  natural-kind taxonomy.
