@@ -6,6 +6,34 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-15 · Run 014 · Cross-modality generalisation: the taxonomy on XRD
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Why
+The taxonomy (Runs 009–013) rests on one modality (Raman). Replicate the two load-bearing probes
+on RRUFF **powder XRD** — *same minerals, same labels, different physical measurement* — to test
+generality (meets the project's own "prove it on ≥2 datasets" bar). XRD coverage is smaller
+(1,484 patterns); some groups are low-power (aragonite 2; TiO2 anatase 0).
+
+### Tests (XRD XY_Processed, specimen-grouped k-NN, 8 seeds, balanced acc)
+- **Solid-solution (lossy) — the key test:** garnet species (5-way) vs family (2-way) +
+  within-family error fraction. (almandine 6/pyrope 7/spessartine 6/grossular 15/andradite 9)
+- **Polymorph (natural coordinate) — secondary, low power:** CaCO3 calcite (9) vs aragonite (2).
+- **Difficulty reference:** distinct-5 minerals (Diamond/Beryl/Muscovite/Epidote/Calcite).
+
+### Prediction
+- Garnet: **family acc high, species acc lower, within-family-error ≈ 1.0** — the lossy pattern
+  reproduces on XRD, because XRD peak positions shift continuously with composition (Vegard's law)
+  just like Raman. This is the decisive generalisation test.
+- Polymorph: raw XRD separates calcite/aragonite (XRD is *the* polymorph tool) — but aragonite=2
+  makes it fragile; high if it runs, with a power caveat.
+- distinct-5 high (~0.9+).
+→ If the lossy (family ≫ species, within-family errors) pattern reproduces on XRD, the taxonomy is
+**modality-general**, not a Raman artifact. If it breaks, it was Raman-specific.
+
+---
+
 ## 2026-06-15 · Run 013 · RRUFF peaks-only vs heavy-blur (closes Run 012 B)
 
 Status: **DONE** — predictions below left unedited; result follows the prediction block.
