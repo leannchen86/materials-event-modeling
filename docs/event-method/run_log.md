@@ -6,6 +6,36 @@ Newest entry on top. Every run is bracketed per the run-log protocol: **hypothes
 
 ---
 
+## 2026-06-15 · Run 015 · Severson battery: is cycle_life a lossy summary of the trajectory?
+
+Status: **BEFORE** (expectation on record; result pending).
+
+### Why
+First test of the process/event half of the thesis on public many-event data. `cycle_life`
+(cycles-to-80%) is a single threshold on a continuous degradation curve — a candidate lossy
+label, the garnet/metastability pattern in a process domain.
+
+### Method (46 batch1 cells, capacity-free)
+- Representations: `early_features` = first-100-cycle [QDischarge, IR, chargetime] (z-scored);
+  `life_shape` = QDischarge vs *fraction-of-life* resampled to 100 pts, relative to initial
+  capacity (so lifetime is normalised out of the x-axis → what remains is the aging *shape*).
+- **A (natural coordinate / sanity):** leave-one-out k-NN regression of cycle_life from
+  early_features; Spearman(pred, true) vs a shuffled-label control.
+- **B (lossy):** over all cell pairs, Spearman(|Δcycle_life|, shape_distance) and
+  Spearman(|Δcycle_life|, early_distance); plus the nearest-in-lifetime shape-distance ratio
+  vs all-pairs.
+
+### Prediction
+- A: early features predict cycle_life above shuffle (Spearman ~0.3–0.7) — the trajectory
+  carries lifetime info.
+- B: Spearman(|Δcl|, shape_dist) **low** (~0–0.3) → cells close in lifetime are NOT close in
+  aging-shape → the single number discards the degradation-mode coordinate → **lossy**. Contrast:
+  early_distance tracks |Δcl| more (early behaviour → lifetime). Nearest-in-life shape ratio ≈ 1.
+Caveat: charging `policy` is a confound (same-policy cells may share both trajectory and lifetime)
+→ flagged for Run 016; batch1 only (46 cells). If shape_dist tracks |Δcl| strongly → NOT lossy.
+
+---
+
 ## 2026-06-15 · Run 014 · Cross-modality generalisation: the taxonomy on XRD
 
 Status: **DONE** — predictions below left unedited; result follows the prediction block.
