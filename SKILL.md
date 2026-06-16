@@ -660,3 +660,11 @@ in `docs/spine/ontology_and_rawness_gradient.md`:
   blends bins) the further down the rawness gradient it is trained? Doable now on RRUFF:
   unsupervised raw-spectrum embedding vs composition-derived embedding, measured against the
   natural-kind taxonomy.
+
+**Decision (2026-06-16):** that raw-vs-composition run was **rejected as a proxy** of Runs 010/011
+(a restatement, not a new fact). No clean new discovery remains in public data; genuine,
+faithful-to-reality novelty lives at the **rawness floor** — un-curated raw measurement, which
+public datasets cannot provide. The **public-data campaign (Runs 001–015) is complete**; the next
+genuine step is the rawness floor = **controlled-collection / operando**. The reframe upgrades
+that path from "fallback" to "the frontier." (User deliberating; recommendation on record: invest
+in the lab floor, don't manufacture public-data proxies.)

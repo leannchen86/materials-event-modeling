@@ -71,3 +71,27 @@ composition): doable, novel in framing, and **not a mirror** (the raw side never
 ontology). Optional middle rung: DFT (Materials Project, needs an API key).
 **Ceiling:** RRUFF *sampling* is still human-curated → a step down the gradient, not the floor; the
 true floor needs un-curated raw streams (controlled-collection / operando), which we do not have.
+
+## Decision: where this leaves the program (2026-06-16)
+
+- The recast experiment (unsupervised raw-spectrum embedding vs composition embedding) was
+  considered and **rejected as a proxy** of Runs 010/011 — a tidier *restatement* of a known
+  result, not a new fact.
+- Candidate public-data "discovery" options, and why they fall short:
+  - *raw audits the ontology* (flag mislabels / unrecognised sub-structure): discovery-shaped, but
+    essentially a known outlier/mislabel-detection technique with a story; hard to validate without
+    the physical samples; still sampling-bounded.
+  - *raw experiment vs DFT (Materials Project) disagreement*: faithful framing but high-effort, and
+    the headline ("DFT has errors") is partly known.
+- **Conclusion:** there is **no clean new discovery left in public data**. Genuine,
+  maximally-faithful novelty lives at the rawness gradient's **floor** — un-curated raw measurement
+  of materials *as they form/exist* — which public datasets (all human-curated sampling) cannot
+  provide. So the public-data campaign (Runs 001–015) is treated as **complete**: a validated,
+  modality-general finding **plus** this reframe.
+- **The sharpened rationale for controlled-collection:** not "collect events because public data
+  was thin," but "**the only un-mirrored, faithful representation of reality must be trained on data
+  that no human ontology has pre-compressed — and that data does not exist publicly.**" The rawness
+  floor and the controlled-collection moat are the same frontier.
+- Status: user deliberating between (a) one public-data swing at *raw-audits-ontology* despite the
+  ceiling, and (b) resting the public thread and investing in the lab floor. Recommendation on
+  record: **(b)** — do not manufacture proxies; the next real discovery needs the rawness floor.

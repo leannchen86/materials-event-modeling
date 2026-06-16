@@ -110,3 +110,20 @@ options, no forced order:
 - **controlled-collection** remains the moat for the *process/event* half of the thesis (the
   oleogel negative is its empirical justification);
 - any usefulness probe stays plural and need-driven, not benchmark-driven.
+
+## Postscript (2026-06-16): process-domain probe + the rawness-floor conclusion
+- **Run 015 (battery, Severson):** extended the lens to the *process* domain (124-cell public
+  set; 46 used). `cycle_life` (cycles-to-80%) is a thresholded summary of a degradation curve.
+  Result: early-trajectory predicts lifetime (Spearman 0.61, sanity ✅), but the lossy signal is
+  **weak and confounded by charging policy** (23 policies / 46 cells co-determine lifetime *and*
+  shape). Insight: lossy-labels are *crisp* for **intrinsic-continuum** labels (composition) and
+  *murky* for **extrinsic process** labels — cleanly testing the latter needs *controlled*
+  conditions.
+- **Reframe + decision (see `docs/spine/ontology_and_rawness_gradient.md`):** the campaign's
+  question generalises to "how faithful is each chart on the materials manifold?" Our result is an
+  empirical *natural-kinds vs conventional-kinds* probe. Chemistry itself is lossy in a graded way
+  (formula lossy, element/Z not). Learned embeddings (Atom2Vec/Mat2Vec) are *mirrors* (trained on
+  human artifacts), not aliens. Genuine, faithful novelty lives at the **rawness floor**
+  (un-curated raw measurement) — which public data cannot reach. **The public-data campaign is
+  therefore treated as complete; the next genuine discovery requires the rawness floor =
+  controlled-collection / operando.**

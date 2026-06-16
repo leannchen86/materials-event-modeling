@@ -44,12 +44,17 @@ artifacts. Raw-objective reconstruction is viable but source-transfer plateaus.
 ## Branch: event-method
 **Deliverable:** the core methodological paper — *event-native representations predict
 missing/future measurements better than inherited labels.*
-**Status:** synthetic harness built; **real-data campaign (Runs 001–008 on oleogel SAXS/WAXS)
-complete.** Result: raw masked-frame reconstruction is interpolation/clock-solvable, and
-SAXS↔WAXS are largely time-redundant — a capacity-free test shows this is a *data* limit
-(homogeneous, event-poor), not a model limit. No affirmative thesis result yet; the
-discriminating tasks (label-probe, diverse events) need a different dataset. See
-`docs/event-method/findings_summary.md` + `run_log.md`.
+**Status:** **public-data campaign (Runs 001–015) complete.** Oleogel (001–008): raw recon is
+interpolation/clock-solvable, SAXS↔WAXS time-redundant — a *data* limit, not a model limit
+(capacity-free test). RRUFF (009–014): the validated, modality-general finding — inherited labels
+are *natural coordinates* where they track structure (polymorphs; raw 0.91–1.0 on Raman AND XRD)
+and *lossy* where they bin a continuum (solid-solution species; family 1.0 / species 0.73, errors
+100% within-family); stress-tested against provenance, difficulty, error bars, and structure-blind
+controls. Battery (015): the process-domain extension — lossy signal is weak and confounded by an
+extrinsic planned variable (charging policy). **Conclusion:** no clean new discovery left in
+public data; genuine faithful novelty needs the *rawness floor* (un-curated raw measurement). See
+`docs/event-method/findings_summary.md`, `run_log.md`, and the reframe in
+`docs/spine/ontology_and_rawness_gradient.md`.
 
 - **Docs:** `docs/event-method/` — masked event model, event-field model, active-learning
   policies (`*active*`, `*policy*`), regime transfer, synthetic scaffold/field-budget,
@@ -59,11 +64,14 @@ discriminating tasks (label-probe, diverse events) need a different dataset. See
   neural active policy + ablation, regime / mixed-regime transfer, progress policy,
   synthetic scaffold, field budget, pilot-size, counterbalanced, event analysis).
 - **Code:** `src/materials_event_modeling/track_b/`.
-- **Real-data stage (refined-a): done (Runs 001–008).** Conclusion: not a model-capacity
-  problem; need a labeled / event-diverse dataset. Next: label-probe on **RRUFF** (~4216
-  specimens, Raman+XRD, validated labels — also lets cross-modal be retried at N≈4000) or
-  **opXRD**; avoid SimXRD-4M (simulated → no lossy-label problem). Controlled-collection remains
-  the moat. Summary: `docs/event-method/findings_summary.md`.
+- **Public-data stage: done (Runs 001–015).** refined-a (oleogel) → label-probe + ablations
+  (RRUFF, Raman + XRD) → battery process probe. The label taxonomy (redundant / natural / lossy)
+  is validated and modality-general; the public-data discovery ceiling is reached (a candidate
+  raw-vs-composition embedding run was rejected as a proxy of Runs 010/011). Genuine new discovery
+  now requires the **rawness floor** = un-curated raw measurement (controlled-collection /
+  operando). Summary: `docs/event-method/findings_summary.md`; reframe + decision:
+  `docs/spine/ontology_and_rawness_gradient.md`. (Materials Project key is available for an
+  optional DFT gradient-rung, env-var only — not committed.)
 - **Candidate to promote later:** *active-measurement* (own assessment calls it the
   highest-impact paper). Split into its own branch only once it has a real result.
 
@@ -85,8 +93,11 @@ argument for collecting our own.
   `audit_dryad_gelation_dataset.py`, `audit_opencrystaldata.py`,
   `run_durham_droplet_smoke_test.py`, `download_data.py`.
 - **Artifacts:** `schemas/material_event.schema.json`, `templates/`, `examples/track_b/`.
-- **Next step:** keep outreach running, but it is no longer a prerequisite — the
-  event-method real-data run (refined-a) is the faster first falsification.
+- **Next step / sharpened rationale (2026-06-16):** this is no longer just "public data is thin."
+  Per the rawness-gradient reframe (`docs/spine/ontology_and_rawness_gradient.md`), controlled,
+  un-curated raw measurement is **where the only remaining genuine, faithful-to-reality discovery
+  lives** — the rawness floor that public datasets (all human-curated sampling) cannot reach. The
+  public-data campaign closing (Runs 001–015) elevates this from "fallback" to "the frontier."
 
 ## Spine (cross-cutting)
 `docs/spine/` — thesis & framing (`project_brief.md`, `capture_vs_representation_design_note.md`),
