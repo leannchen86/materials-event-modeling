@@ -77,53 +77,32 @@ measurement datasets (pre-label, ideally process/operando) we could test the "ra
 ---
 ## Personalized first-contact drafts — top 3 (2026-06-16)
 Per the first-message principles in `outreach_personalization_plan.md`: their-work-first, light,
-one soft ask. Each is ~80 words by design. Fill [Name]. Do not send without Leann's approval.
+one soft ask. ~3 sentences, ~40-50 words — *tease* the idea, don't explain it (let curiosity pull
+the reply). Fill [Name]. Do not send without Leann's approval.
 
 ### Gerbrand Ceder (UC Berkeley/LBNL — A-Lab / Radical AI)
 > **Subject:** Dara's multiple phase hypotheses
 >
-> Hi Professor Ceder,
->
-> Dara stuck with me — surfacing *several* phase hypotheses when a powder pattern is genuinely
-> ambiguous, instead of forcing one best-match label, feels like exactly the right instinct: don't
-> let the label compress the raw measurement before the data has had its say.
->
-> I've been poking at the same seam from the data side, and it turns out to be measurable on public
-> mineral spectra — labels are faithful coordinates of the raw signal where they mark real
-> structure, and lossy bins where they cut up a continuum.
->
-> Could I grab 20 minutes sometime? Mostly I'd love to hear how you think about that raw-stream →
-> phase-call boundary.
+> Hi Professor Ceder — Dara surfacing *several* phase hypotheses instead of forcing one label
+> really stuck with me; it's the cleanest version I've seen of something I keep chasing from the
+> data side. Could I grab 20 minutes sometime to trade notes?
 >
 > — [Name]
 
 ### Ekin Dogus Cubuk (Periodic Labs — co-founder/co-CEO)
 > **Subject:** "what you see in real life is the signal"
 >
-> Hi Dogus,
->
-> Your line — "theory and simulations are not enough; what you see in real life is the signal" — is
-> basically the thesis I've been testing from the other direction. On public mineral data it turns
-> out you can *measure* when an inherited label is a faithful coordinate of the raw signal vs. a
-> lossy bin of a continuum (cleanly, across both Raman and XRD).
->
-> Your move from GNoME to generating real data is the answer to the "why" I keep bumping into. Up
-> for a short call sometime — genuinely just to compare notes, no data ask?
+> Hi Dogus — "what you see in real life is the signal" is the exact conclusion I've been reaching
+> from the opposite direction. Your GNoME → real-data move answers a "why" I keep bumping into.
+> Quick call sometime to compare notes?
 >
 > — [Name]
 
 ### Benji Maruyama (AFRL — ARES)
 > **Subject:** ARES reading the raw growth signal
 >
-> Hi Dr. Maruyama,
->
-> ARES is the example I keep pointing to — the CNT growth rate the optimizer chases comes straight
-> out of the in-situ Raman during synthesis, so the raw signal *is* the target, with no human label
-> in between.
->
-> I've been studying, from the data side, exactly what gets lost when a label *does* sit in the
-> middle — and on public mineral spectra it's measurable. Your 2025 perspective mentioned welcoming
-> collaboration; could I grab 20 minutes to hear how you think about keeping the loop on the raw
-> signal?
+> Hi Dr. Maruyama — ARES chasing the CNT growth rate straight from the in-situ Raman, no human
+> label in the loop, is the example I always point to. I've been poking at what gets lost when a
+> label *does* sit in between. Could I grab 20 minutes sometime?
 >
 > — [Name]
