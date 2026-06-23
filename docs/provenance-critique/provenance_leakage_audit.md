@@ -66,9 +66,12 @@ not assumed away by normalization.
 ## Adding a dataset
 
 Write one adapter returning `{feature_sets, labels, control_pairs, meta}` and register it
-in `DATASETS` in the CLI. No change to the core. Natural next target: NIST or HTEM (both
-already audited in `data/manifests/`), to make this a *protocol applied across ≥2
-datasets* rather than a single-dataset diagnostic.
+in `DATASETS` in the CLI. No change to the core.
+
+Already done — a **text/pretraining-corpus** adapter (`--dataset text`) reusing the same
+core: see [provenance_leakage_text_corpus.md](provenance_leakage_text_corpus.md). It shows
+document *source* (web / wikipedia / code / science) is recoverable at "severe" even from
+trivial surface stats — the pretraining-curation analog of this materials result.
 
 ## Scope / honest limits
 

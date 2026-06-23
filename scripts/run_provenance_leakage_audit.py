@@ -21,13 +21,15 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
 import numpy as np
 import pandas as pd
-from sklearn.decomposition import PCA
+from sklearn.decomposition import PCA, TruncatedSVD
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, TfidfVectorizer
 
 from materials_event_modeling.audit.provenance_leakage import (
     audit_feature_sets,
@@ -175,8 +177,122 @@ def load_opxrd(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+# --------------------------------------------------------------------------------------
+# Text adapter — the pretraining-corpus analog. The provenance label is the document
+# SOURCE (web / wikipedia / code / science). Feature sets escalate from trivial surface
+# statistics to topical content, so the report shows at which level source identity
+# leaks. This is the text version of opXRD's "metadata recovers the lab": if even
+# function-word style or surface stats recover the source, the corpus carries a
+# pervasive source fingerprint that a balanced mix, a quality filter, or a naive
+# train/eval split will silently encode.
+# --------------------------------------------------------------------------------------
+
+_WORD_RE = re.compile(r"[a-z]+")
+_STOP_WORDS = sorted(ENGLISH_STOP_WORDS)
+
+
+def _surface_metadata(texts: list[str]) -> np.ndarray:
+    rows = []
+    for text in texts:
+        n_chars = len(text)
+        words = text.split()
+        n_words = len(words)
+        word_lens = np.array([len(w) for w in words], dtype=np.float32) if words else np.zeros(1)
+        denom_c = max(n_chars, 1)
+        rows.append([
+            np.log1p(n_chars),
+            np.log1p(n_words),
+            float(word_lens.mean()),
+            float(word_lens.std()),
+            len(set(words)) / max(n_words, 1),                     # type-token ratio
+            sum(c in ".,;:!?'\"-()[]{}" for c in text) / denom_c,  # punctuation rate
+            sum(c.isdigit() for c in text) / denom_c,              # digit rate
+            sum(c.isupper() for c in text) / denom_c,              # uppercase rate
+            sum(c.isspace() for c in text) / denom_c,              # whitespace rate
+            sum(ord(c) > 127 for c in text) / denom_c,             # non-ascii rate
+            sum(c in "{}[]()=;_" for c in text) / denom_c,         # code-ish symbol rate
+            n_words / max(text.count(".") + text.count("!") + text.count("?"), 1),  # sent len
+        ])
+    return np.asarray(rows, dtype=np.float32)
+
+
+def _function_word_rates(texts: list[str]) -> np.ndarray:
+    """Per-doc rate of each English stop word: a topic-agnostic style/register fingerprint."""
+    index = {w: i for i, w in enumerate(_STOP_WORDS)}
+    out = np.zeros((len(texts), len(_STOP_WORDS)), dtype=np.float32)
+    for r, text in enumerate(texts):
+        tokens = _WORD_RE.findall(text.lower())
+        if not tokens:
+            continue
+        inv = 1.0 / len(tokens)
+        for tok in tokens:
+            j = index.get(tok)
+            if j is not None:
+                out[r, j] += inv
+    return out
+
+
+def _tfidf_svd(
+    texts: list[str], *, analyzer: str, ngram_range: tuple[int, int],
+    max_features: int, components: int, seed: int, stop_words=None, sublinear: bool = False,
+) -> np.ndarray:
+    vec = TfidfVectorizer(
+        analyzer=analyzer, ngram_range=ngram_range, max_features=max_features,
+        min_df=2, stop_words=stop_words, sublinear_tf=sublinear,
+    )
+    matrix = vec.fit_transform(texts)
+    k = min(components, matrix.shape[1] - 1, matrix.shape[0] - 1)
+    return TruncatedSVD(n_components=k, random_state=seed).fit_transform(matrix).astype(np.float32)
+
+
+def load_text(args: argparse.Namespace) -> dict[str, Any]:
+    """Return feature sets + provenance (source) labels for a multi-source text corpus."""
+    path = project_root() / args.corpus
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Corpus {args.corpus} missing. Build it with "
+            "`.venv/bin/python scripts/fetch_text_corpus.py`."
+        )
+    records = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+    sources = pd.Series([r["source"] for r in records])
+    counts = sources.value_counts()
+    kept = set(counts[counts >= args.min_source_samples].index)
+    records = [r for r in records if r["source"] in kept]
+    texts = [r["text"] for r in records]
+    labels = np.array([r["source"] for r in records])
+
+    feature_sets = {
+        "surface_metadata": _surface_metadata(texts),
+        "function_words": _function_word_rates(texts),
+        "char_ngram_svd": _tfidf_svd(
+            texts, analyzer="char_wb", ngram_range=(3, 5),
+            max_features=args.max_features, components=args.svd_components, seed=args.seed,
+        ),
+        "content_tfidf_svd": _tfidf_svd(
+            texts, analyzer="word", ngram_range=(1, 2), stop_words="english",
+            max_features=args.max_features, components=args.svd_components, seed=args.seed,
+            sublinear=True,
+        ),
+    }
+    return {
+        "feature_sets": feature_sets,
+        "labels": labels,
+        # Honest framing: there is no single normalization that removes a source
+        # fingerprint present at the surface/style level, so we claim no remediation
+        # control — the layered feature sets ARE the finding.
+        "control_pairs": [],
+        "meta": {
+            "dataset_id": "text",
+            "corpus": str(args.corpus),
+            "documents": len(texts),
+            "sources": {str(k): int(v) for k, v in sources.value_counts().items() if k in kept},
+        },
+    }
+
+
 DATASETS: dict[str, Callable[[argparse.Namespace], dict[str, Any]]] = {
     "opxrd": load_opxrd,
+    "text": load_text,
 }
 
 
@@ -225,7 +341,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
 
     print_report(report, bundle["meta"], efficacy)
 
-    output = project_root() / args.output if args.output else None
+    rel = args.output or Path(f"data/manifests/provenance_leakage_audit_{args.dataset}.json")
+    output = project_root() / rel
     if output is not None:
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
@@ -245,8 +362,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--peak-threshold", type=float, default=0.05)
     parser.add_argument("--min-coverage-fraction", type=float, default=0.95)
     parser.add_argument("--min-crop-points", type=int, default=256)
-    parser.add_argument("--output", type=Path,
-                        default=Path("data/manifests/provenance_leakage_audit_opxrd.json"))
+    # text adapter
+    parser.add_argument("--corpus", type=Path, default=Path("data/raw/text_corpus/mix.jsonl"))
+    parser.add_argument("--svd-components", type=int, default=64)
+    parser.add_argument("--max-features", type=int, default=20000)
+    parser.add_argument("--output", type=Path, default=None,
+                        help="Default: data/manifests/provenance_leakage_audit_<dataset>.json")
     return parser.parse_args()
 
 

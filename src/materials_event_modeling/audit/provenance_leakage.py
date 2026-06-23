@@ -186,13 +186,15 @@ def audit_feature_sets(
     recommendation = {
         "severe": (
             "FAIL: provenance is strongly recoverable. A representation built on this "
-            "would let a model shortcut on source/collection identity. Apply a control "
-            "(crop to shared coverage, derivative/whitening) and re-audit, or stratify "
-            "splits by source before training/eval."
+            "lets a model shortcut on source/collection identity. Stratify splits by the "
+            "provenance label (leave-one-source-out) before training/eval, and treat any "
+            "quality filter or dedup step as potentially source-confounded; if a "
+            "normalization control exists, apply it and re-audit."
         ),
         "elevated": (
-            "WARN: provenance is partially recoverable. Treat source as a confound: "
-            "report leave-one-source-out metrics and consider a normalization control."
+            "WARN: provenance is partially recoverable. Treat the source as a confound: "
+            "report leave-one-source-out metrics and consider a normalization/whitening "
+            "control before relying on these features."
         ),
         "clean": (
             "PASS: no provenance leakage detected above the chosen threshold for the "
