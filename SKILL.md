@@ -1,38 +1,57 @@
 ---
 name: materials-event-modeling
-description: Project operating memo for pre-taxonomic materials event modeling. Use when resuming this repo, choosing next experiments, interpreting results, or deciding whether a proposed analysis stays aligned with the Bitter Lesson framing.
+description: Project operating memo for provenance-stressed materials event modeling. Use when resuming this repo, choosing next experiments, interpreting results, or deciding whether a proposed analysis serves an active direction.
 ---
 
 # Materials Event Modeling
 
 ## Core Stance
 
-The project asks whether inherited materials terms such as `phase`, `two-phase region`,
-`phase impurity`, `failure`, `metastability`, and `ambiguous XRD` are useful human
-interfaces rather than the native coordinate system for discovery.
+The project asks when inherited materials terms such as `phase`, `two-phase region`,
+`phase impurity`, `failure`, `metastability`, and `ambiguous XRD` are sufficient or lossy
+for a specified measurement task. Neither labels nor raw measurements are presumed to be
+the privileged coordinate system in advance.
 
-Do not require learned representations to be human-interpretable at the beginning. That
-would sneak the old ontology back in as the judge. Instead, require objective feedback
-tasks: prediction, compression, retrieval, search, or intervention.
+Require objective feedback tasks—prediction, compression, retrieval, search, or
+intervention—and compare against labels, process variables, interpolation/time priors, and
+collection-provenance baselines. Interpretability is useful only after the task and controls
+are credible.
+
+## Current Scope Decision (2026-06-26)
+
+Two directions are active:
+
+1. **Provenance-stressed XRD evaluation.** Turn the opXRD source-recoverability result into
+   a reusable protocol and test it on a second appropriate dataset. Source recoverability is
+   a risk signal, not proof that a model has used a shortcut.
+2. **Controlled event collection.** Finalize schema v1 and collect the smallest balanced
+   real pilot that can test one pre-registered partial-event task beyond interpolation,
+   time/recipe, event identity, and provenance baselines.
+
+The synthetic event-method sequence is a reference archive. Do not run new synthetic
+architecture, active-policy, JEPA, regime-transfer, or scaling experiments unless real data
+creates a specific, pre-registered need. Generic text/pretraining-corpus curation is out of
+scope for this repository.
 
 ## Decision Pivots
 
-1. **Labels are probes, not ground truth.**
-   Human and machine labels are useful for auditing learned spaces, but they should not
-   be the main objective forever.
+1. **Labels are comparators and probes, not presumed truth or presumed error.**
+   Human and machine labels may be useful for a task; test their adequacy against raw and
+   process information rather than declaring them obsolete in advance.
 
 2. **Objective tasks come before interpretability.**
-   The Bitter Lesson-compatible question is not "can we name the latent axes?" It is
-   "does the representation become more useful as data and compute scale?"
+   Ask whether a representation adds predictive or operational value under strict
+   controls before assigning meaning to latent axes.
 
-3. **Raw/event prediction is the main path.**
-   Prefer objectives such as masked XRD reconstruction, neighboring-measurement
-   prediction, held-out spectrum prediction, trajectory forecasting, and active-sampling
-   usefulness.
+3. **Raw/event prediction is a candidate path, not a default win.**
+   Prefer objectives such as neighboring-measurement prediction, held-out spectrum
+   prediction, trajectory forecasting, and active-sampling usefulness only when they beat
+   interpolation, time/recipe, event-identity, and provenance baselines.
 
-4. **Old taxonomies are downstream projections.**
-   After training on raw/event objectives, inspect where phase labels, two-phase labels,
-   failure labels, and disagreement land inside the representation.
+4. **Interpret labels conditionally.**
+   After a credible evaluation, inspect where phase labels, two-phase labels, failure
+   labels, and disagreement are informative, redundant, or insufficient. Do not infer a
+   universal ontology from a local task.
 
 5. **Controls matter without becoming the philosophy.**
    Composition, temperature, sample index, instrument artifacts, and preprocessing can

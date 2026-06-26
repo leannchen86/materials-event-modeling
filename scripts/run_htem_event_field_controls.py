@@ -12,7 +12,6 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-import pandas as pd
 
 from run_htem_event_proxy import (
     HTEM_API_BASE_URL,

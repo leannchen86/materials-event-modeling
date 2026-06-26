@@ -1,9 +1,8 @@
 # Projects Index
 
-This repo is organized by **research branch** (what each thread is trying to ship), not by
-data source. The old "Track A / Track B" axis is retired because it cut across the real
-seams — in particular "Track B" was two unrelated projects (building the method vs.
-collecting the dataset).
+This repo is organized by research purpose, not by data source. Only two directions are
+active. Completed and synthetic work stays available as evidence, but is not an invitation
+to keep extending every exploratory thread.
 
 Code (`src/`, `scripts/`) and data (`data/`) are shared infrastructure and stay in standard
 package layout. The branch split lives in `docs/` and this index.
@@ -12,22 +11,24 @@ package layout. The branch split lives in `docs/` and this index.
 
 | Old term | Now |
 | --- | --- |
-| Track A | **provenance-critique** (+ the HTEM event-field work that bridges to event-method) |
-| Track B (modeling) | **event-method** |
+| Track A | **provenance-critique** |
+| Track B (modeling) | **event-method** reference archive |
 | Track B (dataset/lab/outreach) | **controlled-collection** |
-| "refined-a" | a *stage* of event-method (real-trajectory falsification), not its own branch |
+| "refined-a" | archived public-data falsification work, not a new research branch |
 
 ---
 
 ## Branch: provenance-critique
-**Deliverable:** methods/benchmark paper — *"When experimental XRD models learn the
-laboratory."*
-**Status:** closest to publishable. Findings are real but currently a local diagnostic on
-one dataset; needs to become a reusable protocol applied across ≥2 datasets / ≥2 model
-families.
-**Core claim:** source/instrument/preprocessing identity is strongly recoverable from public
-experimental XRD even after normalization, so representation gains can be silent collection
-artifacts. Raw-objective reconstruction is viable but source-transfer plateaus.
+**Deliverable:** a methods/benchmark protocol for provenance-stressed experimental-XRD
+evaluation.
+**Status:** active and closest to publishable. The opXRD finding is real, but currently
+local: source labels are recoverable from metadata and spectra after normalization. It must
+be replicated on a second appropriate dataset and connected to downstream evaluation before
+it supports a broad shortcut claim.
+**Core claim:** collection provenance can be recoverable from public experimental XRD, so
+representation results should report provenance probes, coverage controls, strong simple
+baselines, and strict source/session-held-out performance. Recoverability is a risk signal,
+not proof that a downstream task is contaminated.
 
 - **Docs:** `docs/provenance-critique/` (`htem_event_proxy.md`,
   `ontology_stress_tests.md`, `anubhav_snap_result.md`), plus the strategy/positioning in
@@ -37,16 +38,18 @@ artifacts. Raw-objective reconstruction is viable but source-transfer plateaus.
   `run_opxrd_source_transfer.py`, `run_opxrd_conv_*`, `run_xrd_*`, `train_xrd_encoder.py`,
   `run_ontology_tests.py`, `run_htem_*` (event proxy, spatial field, sampling curve).
 - **Manifests/data:** `data/manifests/opxrd_*`, `nist_*`, `htem_*`.
-- **Next step:** package the provenance checks (source-predictability, coverage-controlled
-  perf, interpolation baseline, leave-one-source-out) as a standalone diagnostic and run it
-  on a second dataset.
+- **Next step:** package source recoverability, coverage-controlled performance,
+  interpolation/time baselines, and leave-one-source/session-out evaluation as one
+  protocol; apply it to one second experimental dataset. Do not run another model-scaling
+  sweep first.
 
-## Branch: event-method
-**Deliverable:** the core methodological paper — *event-native representations predict
-missing/future measurements better than inherited labels.*
-**Status:** harness built and validated on synthetic scaffolds; **no affirmative result on
-real data yet.** All current wins live in a sandbox explicitly ruled inadmissible as
-evidence (partly interpolation-solvable). The unblocking move is the real-trajectory run.
+## Reference archive: event-method
+**Purpose:** retain the synthetic event-field, active-measurement, and representation
+experiments as design evidence.
+**Status:** closed to new architecture, policy, JEPA, regime-transfer, and synthetic-scaling
+work. These experiments established useful requirements—counterbalancing, provenance
+splits, coverage-aware observations, and interpolation/time controls—but they are not
+evidence for a materials method.
 
 - **Docs:** `docs/event-method/` — masked event model, event-field model, active-learning
   policies (`*active*`, `*policy*`), regime transfer, synthetic scaffold/field-budget,
@@ -56,19 +59,18 @@ evidence (partly interpolation-solvable). The unblocking move is the real-trajec
   neural active policy + ablation, regime / mixed-regime transfer, progress policy,
   synthetic scaffold, field budget, pilot-size, counterbalanced, event analysis).
 - **Code:** `src/materials_event_modeling/track_b/`.
-- **Real-data stage (refined-a):** run masked-event + JEPA on a real time-resolved
-  trajectory deposit — oleogel polymorphic WAXS/SAXS (zenodo 15268752) or zeolite
-  Raman+PXRD (zenodo 18972297). Dataset hunt: `docs/spine/capture_vs_representation_design_note.md`.
-- **Candidate to promote later:** *active-measurement* (own assessment calls it the
-  highest-impact paper). Split into its own branch only once it has a real result.
+- **Reactivation rule:** only reopen a specific method when a real dataset and
+  pre-registered task show signal beyond interpolation, a time/recipe prior, event identity,
+  and provenance controls. Active measurement is an application layer, not a standalone
+  research direction, until then.
 
 ## Branch: controlled-collection
 **Deliverable:** data paper + the dataset itself — a controlled material-making event
 dataset (raw process/measurement trajectories, negatives/ambiguous outcomes, labels frozen
 after raw data).
-**Status:** outreach in flight; schema + harness exist; **no real material-making events
-collected yet.** Public-data audits keep failing the event-nativeness bar — which is the
-argument for collecting our own.
+**Status:** active. The schema and audit harness exist; no real material-making events have
+yet been collected. Public-data audits identify the structural requirements for collection,
+but are not a reason to run another public benchmark.
 
 - **Docs:** `docs/controlled-collection/` — event dataset plan, universal event embedding
   scaffold (schema + ingestion/audit), low-equipment droplet pilot, MPS provenance-store
@@ -80,12 +82,20 @@ argument for collecting our own.
   `audit_dryad_gelation_dataset.py`, `audit_opencrystaldata.py`,
   `run_durham_droplet_smoke_test.py`, `download_data.py`.
 - **Artifacts:** `schemas/material_event.schema.json`, `templates/`, `examples/track_b/`.
-- **Next step:** keep outreach running, but it is no longer a prerequisite — the
-  event-method real-data run (refined-a) is the faster first falsification.
+- **Next step:** finalize schema v1, remove transitional duplicate fields, and
+  pre-register one pilot objective and its split/baseline rules before collection. The pilot
+  needs counterbalanced operator, batch, lot, session, and run-order variation; a high count
+  of poorly balanced events is not a substitute.
 
 ## Spine (cross-cutting)
-`docs/spine/` — thesis & framing (`project_brief.md`, `capture_vs_representation_design_note.md`),
-data strategy (`event_native_public_data_strategy.md`), publication assessments
-(`provenance_publication_assessment.md`, `event_publication_assessment.md`), and infra
-(`data_sources.md`, `compute.md`). The operating memo
-is `SKILL.md` at the repo root.
+`docs/spine/` — concise thesis, strategy, publication assessments, and infrastructure.
+The operating memo is `SKILL.md` at the repo root.
+
+## Explicitly out of scope
+
+- Generic text/pretraining-corpus curation and decontamination. It has a different user,
+  data model, and validation problem; it remains outside this repository.
+- Universal claims about natural kinds, rawness, or a label-free "native coordinate system."
+  The project tests task-specific adequacy under stated measurement conditions.
+- Further public-dataset or synthetic architecture sweeps that do not change a collection
+  decision or test a new provenance/evaluation control.
