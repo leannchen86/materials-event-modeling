@@ -109,9 +109,51 @@ Run command:
   --output data/manifests/provenance_leakage_audit_opxrd_r2.json
 ```
 
-### Revision 2 results
+### Revision 2 results (run 2026-07-03, commit `eeb559d`, manifest `provenance_leakage_audit_opxrd_r2.json`)
 
-*(to be filled by the run — verdict against H1–H4 goes here)*
+6 sources, 4,093 spectra, chance bal-acc 0.167, 3-fold × 3 seed repeats, PCA in-fold.
+These are the externally quotable numbers.
+
+| feature set | recoverability | bal-acc ± std | risk |
+| --- | ---: | ---: | --- |
+| metadata (no `is_labeled`) | 0.972 | 0.976 ± 0.012 | severe |
+| metadata_plus_curation (old 8-feature set) | 0.977 | 0.981 ± 0.009 | severe |
+| coverage_mask_pca | 0.887 | 0.906 ± 0.018 | severe |
+| xrd_pca (raw spectra) | 0.743 | 0.786 ± 0.055 | severe |
+| spectrum_summary | 0.597 | 0.664 ± 0.061 | severe |
+| crop_xrd_derivative_pca (strongest control) | 0.409 | 0.508 ± 0.030 | elevated |
+
+Single-feature ablation (each metadata feature audited alone): `points` 0.728 (severe);
+`theta_min` 0.477, `theta_span` 0.435, `phase_count` 0.400, `theta_max` 0.343 (elevated);
+`intensity_max` 0.202, `is_labeled` 0.200 (elevated); `intensity_min` 0.126 (clean).
+
+**Control efficacy:** `full_xrd_pca` (0.743) → `crop_xrd_derivative_pca` (0.409) = 45%
+recoverability reduction, still elevated.
+
+### Verdict against the pre-registered hypotheses
+
+- **H1 validated.** In-fold PCA left raw-spectra recoverability essentially unchanged:
+  `xrd_pca` 0.743 / bal-acc 0.786 (predicted 0.70–0.79). The severe verdict on spectra
+  survives honest evaluation; the transductive fitting had negligible effect on the
+  strong sets.
+- **H2 validated.** Dropping `is_labeled` moved metadata recoverability from 0.977 to
+  0.972 (predicted ≥ 0.85). The headline metadata claim was **not** the curation-flag
+  tautology; it is carried by acquisition bookkeeping.
+- **H3 partially validated.** The strongest single carrier is `points` (0.728, severe),
+  then the theta-coverage family (0.343–0.477, elevated). `is_labeled` alone is weak
+  (0.200: it separates the three fully-labeled from the three unlabeled sources as
+  groups but cannot distinguish within groups). No single feature approaches the
+  combined 0.972 — the lab fingerprint is a *combination* of bookkeeping fields, which
+  is exactly why per-field normalization does not remove it.
+- **H4 validated with a twist.** The borderline claim was the one number transductive
+  PCA had inflated: the honest in-fold value is 0.409 ± ~0.04 (was 0.467), now ~2.5 std
+  *below* the 0.50 severe cutoff rather than 0.7 std under it. The remediation verdict
+  becomes cleaner, not murkier: control efficacy improves from 37% to 45% reduction, and
+  "elevated, not severe" is now a defensible statement with uncertainty attached.
+- **Decision:** the tool is fit to carry to the second dataset unchanged, and Revision 2
+  numbers replace Revision 1 anywhere the result is quoted. Belief update: the finding
+  is robust to all three fixes; the one number that moved (0.467 → 0.409) moved in the
+  direction the review predicted, which is evidence the review process itself works.
 
 ## Adding a dataset
 
