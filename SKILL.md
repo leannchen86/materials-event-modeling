@@ -65,6 +65,10 @@ scope for this repository.
    direction is the right move. That critique should name what was learned from the last
    result, what tempting but weaker direction it avoids, what assumption the next test is
    actually probing, and what outcome would make us abandon or revise that direction.
+   The expanded checklist (nulls, baselines, seed floors, leakage hygiene, ablation
+   exhaustion, ladder placement) is Run Discipline v2 in
+   `docs/spine/event_grammar_validation_note.md`, alongside the event-grammar validation
+   ladder and candidate top claims.
 
 7. **Prefer the A100 on Zeus when available.**
    For GPU runs on Zeus, check GPU availability and prioritize `CUDA_VISIBLE_DEVICES=0`
