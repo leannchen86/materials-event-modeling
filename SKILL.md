@@ -97,6 +97,44 @@ scope for this repository.
     time sequences, failed/ambiguous attempts, process variables, repeated recipes, raw
     files, intervention history, environmental context, provenance, or reusable licensing.
 
+## Research Practice
+
+Standing research-methodology principles adopted 2026-06-14 (memory:
+`research-methodology-principles`). These supplement the Decision Pivots above; where a pivot
+already covers one, it is noted rather than repeated.
+
+1. **Reason backward from a wanted outcome; do not absorb problems.** Originality comes from
+   chasing a result we actually want to exist, not from improving whatever is trending. For
+   each direction, state why it matters and what outcome would make us drop it.
+
+2. **Train taste: predict before running.** Extends pivot 6. Before a run, write the
+   *expected number*, not just the hypothesis; after, log the miss and update. Guess a
+   paper's results from its method before reading its results section.
+
+3. **Tighten the loop; tooling is first-class.** Research speed is the speed of discovering
+   we are wrong. Runs should be one command, reproducible from config, with two-run
+   comparison in seconds. Shrink a problem until cheap (Shannon), get it right, then spend
+   compute. Overfit a single batch before any scaled or neural run (Karpathy) — do this
+   before the JEPA / refined-a runs.
+
+4. **Stare at the outputs, not the loss curve.** Extends pivot 9 from metadata audit to the
+   signals themselves: inspect raw data by hand before modeling, and after a run pull the
+   worst cases, sort them into piles, and attack the biggest — never stop at aggregate MSE.
+   Most bugs are silent data bugs. One strange transcript beats the next decimal of accuracy.
+
+5. **Upgrade inputs.** Read primary deposits and papers — appendix and limitations are the
+   honest parts — not thread summaries. Mine old/underpriced ideas (Bitter Lesson) and borrow
+   from neighboring fields (SSL/JEPA, dynamical-systems/Koopman, mechanism design for active
+   measurement).
+
+6. **Log and publish.** Keep the dated design-note habit as a running
+   hypothesis -> setup -> expectation -> result -> updated-belief log. Treat a clear public
+   writeup (e.g. the provenance protocol) as a real deliverable, not overhead.
+
+7. **Baselines until it hurts; ablate to the carrier.** Reinforces the stop rules. Tune
+   baselines (event_mean / IDW / coordinate_ridge / RF) until it hurts, and ablate until we
+   know the single component carrying a result — usually not the one in the title.
+
 ## Current Public Event Dataset Lesson
 
 The first simple-physics audit used the Durham dataset "Evaporation of alcohol droplets on
@@ -555,12 +593,67 @@ Move from label-prediction diagnostics to raw measurement objectives:
    - inspect high-disagreement regions,
    - test whether labels split, merge, or smear.
 
+## Oleogel Real-Data Campaign — Lessons (Runs 001–008, 2026-06-15)
+
+The refined-a stage ran 8 logged runs on the oleogel SAXS/WAXS set (zenodo 15268752); detail in
+`docs/event-method/run_log.md`, summary in `docs/event-method/findings_summary.md`. Lessons:
+
+1. **The masked-frame task is interpolation/clock-solvable** on dense smooth trajectories → a
+   poor discriminator for any model. Do not headline it.
+2. **The normalised-time "clock" is a dominant baseline** for trajectory data — it beat the mean
+   6/6 and beat SAXS on the median. Always include it; many apparent wins are the time-prior in
+   disguise. (Extends "baselines until it hurts".)
+3. **Cross-event (leave-one-run-out) is mandatory.** Within-event lets the model memorise the
+   trajectory curve and ignore its observed context (Run 003: flat across anchor counts).
+4. **Characterise raw signal before modeling.** A silent period-3 exposure artifact poisoned
+   interpolation in Run 002; caught via total-intensity CV + autocorrelation + shape-vs-scale.
+5. **Smooth time-series need smoothness-preserving nulls.** A plain shuffle/permutation null is
+   confounded by autocorrelation (Run 007); use a circular-shift null AND a cross-event baseline
+   (Run 008) — the cross-event baseline was the decisive control.
+6. **Use capacity-free dependence measures to answer "model vs data".** Distance correlation
+   with proper controls separated "signal exists" from "model good enough" with no tunable model.
+7. **Empirical result:** on oleogel, SAXS↔WAXS are largely *time-redundant* — only 1/6 events
+   shows genuine cross-modal excess. A data property (homogeneous, event-poor), NOT model capacity.
+8. **Open in-situ crystallization deposits are event-poor** (oleogel 6 near-identical; zeolite
+   18972297 = 1 run) → the empirical case for controlled-collection / a labeled, diverse dataset.
+
 ## Claim Discipline
 
 Safe current claim:
 
 > In NIST, label disagreement is systematic and related to both experimental coordinates
 > and raw diffraction structure.
+
+Newly established (oleogel real-data campaign, Runs 001–008):
+
+> On the oleogel SAXS/WAXS set, raw masked-frame reconstruction is beaten by time-interpolation,
+> and SAXS/WAXS are largely time-redundant (1/6 events show genuine cross-modal excess). A
+> capacity-free test shows this is a property of the data (homogeneous, event-poor), NOT a
+> model-capacity limit.
+
+Newly established (RRUFF label-probe, Runs 009–010):
+
+> Mineral labels are largely natural coordinates of raw Raman (k-NN top-1 0.88, 59 classes,
+> cross-specimen) — but for common minerals the label ≈ composition, so raw does not beat the
+> compositional proxy globally. Where composition is *constant* (same-composition polymorphs:
+> CaCO3, TiO2, Al2SiO5, SiO2), the raw spectrum recovers the polymorph label near-perfectly
+> (0.91–1.0) while the proxy is stuck at majority (0.40–0.74) — i.e. raw carries structure/label
+> information the compositional proxy fundamentally cannot.
+
+Newly established (RRUFF labels-are-lossy, Run 011):
+
+> Inherited labels are natural coordinates of raw Raman when they track *structure* (polymorphs)
+> and *lossy* when they discretise a *continuum*: for garnet the structural family (pyralspite
+> vs ugrandite) is recovered perfectly (1.0) while the species labels blend (0.73), with 100% of
+> species errors staying within-family. The raw representation recovers the underlying coordinate
+> (structural family + continuous within-family axis) that the discrete species label compresses.
+>
+> Ablation-validated (Runs 012–013): survives single-wavelength (no laser shortcut); the low
+> garnet-species accuracy is the continuum not multi-class difficulty (distinct-5 minerals 0.99);
+> and the signal is the sharp Raman fingerprint, not broad/baseline/provenance (peaks-only ≈ full,
+> heavy-blur collapses below majority for CaCO3). **Modality-general (Run 014):** the same pattern
+> reproduces on powder XRD (garnet family 1.0 / species 0.66 / 100% within-family errors;
+> CaCO3 polymorph 1.0) — so it is not a Raman artifact.
 
 Not yet earned:
 
@@ -571,3 +664,30 @@ Target claim:
 > Raw/event-trained representations become more useful than inherited labels for
 > prediction, compression, retrieval, or search, while inherited labels remain useful as
 > human-facing probes.
+
+## Reframe under consideration (2026-06-16)
+
+The RRUFF result + the "is chemistry itself lossy?" discussion suggest a deeper framing, recorded
+in `docs/spine/ontology_and_rawness_gradient.md`:
+- Our natural-coordinate/lossy taxonomy is an empirical **natural-kinds vs conventional-kinds**
+  probe (polymorphs/elements = real joints; solid-solution species = continuum bins).
+- Chemistry is lossy in a *graded* way: element/Z = a real natural kind (not lossy); formula =
+  lossy (polymorphs); "similarity"/groups = a soft hand-built embedding.
+- **Atom2Vec/Mat2Vec are mirrors, not aliens** — they learn from human artifacts (compound lists,
+  paper text), so they re-derive the human ontology. A faithful representation must train on raw
+  physical reality.
+- **Rawness gradient:** text → compound lists → DFT → raw spectra → raw unbiased sampling. Less
+  inherited ontology + higher possible fidelity as you descend, but no view from nowhere (even raw
+  spectra are human-curated *sampling*).
+- **Reframed thesis (falsifiable):** does a representation get more faithful (recovers joints,
+  blends bins) the further down the rawness gradient it is trained? Doable now on RRUFF:
+  unsupervised raw-spectrum embedding vs composition-derived embedding, measured against the
+  natural-kind taxonomy.
+
+**Decision (2026-06-16):** that raw-vs-composition run was **rejected as a proxy** of Runs 010/011
+(a restatement, not a new fact). No clean new discovery remains in public data; genuine,
+faithful-to-reality novelty lives at the **rawness floor** — un-curated raw measurement, which
+public datasets cannot provide. The **public-data campaign (Runs 001–015) is complete**; the next
+genuine step is the rawness floor = **controlled-collection / operando**. The reframe upgrades
+that path from "fallback" to "the frontier." (User deliberating; recommendation on record: invest
+in the lab floor, don't manufacture public-data proxies.)

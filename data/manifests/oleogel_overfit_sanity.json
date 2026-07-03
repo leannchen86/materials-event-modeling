@@ -1,0 +1,31 @@
+{
+  "created_at": "2026-06-14T23:19:51.581532+00:00",
+  "task": "oleogel_overfit_sanity",
+  "run": "s_mopv_1s_10Cmin_10c",
+  "conditions": {
+    "sample": "mopv",
+    "shear": "1s",
+    "cooling": "10Cmin",
+    "temperature": "10c",
+    "replicate": false
+  },
+  "modality": "WAXS",
+  "n_frames": 300,
+  "n_q": 2000,
+  "q_range": [
+    0.5325247049331665,
+    5.12443208694458
+  ],
+  "spectra_finite": true,
+  "zero_frames": 0,
+  "eval_candidates": 60,
+  "pca_explained_var": 0.9216993451118469,
+  "train_mse_final": 58.31647491455078,
+  "eval_mse_zspace": {
+    "model": 0.42238844074308873,
+    "linear_time_interp": 0.823294774008294,
+    "event_mean": 0.5904165213306745
+  },
+  "model_beats_event_mean": true,
+  "model_beats_interp": true
+}

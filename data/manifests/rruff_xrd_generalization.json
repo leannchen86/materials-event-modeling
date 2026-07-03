@@ -1,0 +1,52 @@
+{
+  "created_at": "2026-06-16T01:11:10.246310+00:00",
+  "task": "rruff_xrd_generalization",
+  "modality": "powder_xray_diffraction",
+  "n_spectra_total": 1369,
+  "garnet": {
+    "counts": {
+      "Almandine": 6,
+      "Pyrope": 7,
+      "Spessartine": 6,
+      "Grossular": 15,
+      "Andradite": 9
+    },
+    "species_5way": {
+      "acc": 0.664,
+      "std": 0.043,
+      "bal_acc": 0.602,
+      "n": 43
+    },
+    "family_2way": {
+      "acc": 1.0,
+      "std": 0.0,
+      "bal_acc": 1.0,
+      "n": 43
+    },
+    "within_family_error_frac": 1.0
+  },
+  "caco3_polymorph": {
+    "acc": 1.0,
+    "std": 0.0,
+    "bal_acc": 1.0,
+    "n": 11,
+    "counts": {
+      "Calcite": 9,
+      "Aragonite": 2
+    },
+    "majority": 0.818
+  },
+  "distinct5": {
+    "acc": 0.971,
+    "std": 0.037,
+    "bal_acc": 0.979,
+    "n": 36,
+    "minerals": [
+      "Diamond",
+      "Beryl",
+      "Muscovite",
+      "Epidote",
+      "Calcite"
+    ]
+  }
+}

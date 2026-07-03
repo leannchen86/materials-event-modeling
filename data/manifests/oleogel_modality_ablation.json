@@ -1,0 +1,113 @@
+{
+  "created_at": "2026-06-15T08:34:11.053541+00:00",
+  "task": "oleogel_modality_ablation",
+  "saxs_pca": 30,
+  "waxs_pca": 8,
+  "medians_over_folds": {
+    "waxs_mean_mse": 0.557,
+    "time_only__mlp": 0.36,
+    "time_sample__mlp": 0.351,
+    "saxs_only__mlp": 0.984,
+    "saxs_time__mlp": 0.764,
+    "saxs_shuffled__mlp": 0.955,
+    "time_only__ridge": 0.416,
+    "time_sample__ridge": 0.399,
+    "saxs_only__ridge": 2.54,
+    "saxs_time__ridge": 2.502,
+    "saxs_shuffled__ridge": 0.93
+  },
+  "exclusion_checks_mlp": {
+    "saxs_time_beats_time_only": 3,
+    "saxs_only_beats_time_sample": 3,
+    "saxs_only_beats_saxs_shuffled": 3,
+    "time_only_beats_mean": 6,
+    "saxs_shuffled_approx_mean": 4,
+    "n_folds": 6
+  },
+  "folds": [
+    {
+      "test_run": "s_dmhr_1s_10Cmin_10c",
+      "waxs_mean_mse": 0.6722592115402222,
+      "time_only__ridge": 0.5701367855072021,
+      "time_only__mlp": 0.5196126699447632,
+      "time_sample__ridge": 0.44366562366485596,
+      "time_sample__mlp": 0.40008485317230225,
+      "saxs_only__ridge": 4.717728614807129,
+      "saxs_only__mlp": 1.0027621984481812,
+      "saxs_time__ridge": 4.625880241394043,
+      "saxs_time__mlp": 0.7943614721298218,
+      "saxs_shuffled__ridge": 1.2863688468933105,
+      "saxs_shuffled__mlp": 0.7467129230499268
+    },
+    {
+      "test_run": "s_dmhr_25s_10Cmin_10c",
+      "waxs_mean_mse": 0.4067849814891815,
+      "time_only__ridge": 0.24501599371433258,
+      "time_only__mlp": 0.18007582426071167,
+      "time_sample__ridge": 0.3184205889701843,
+      "time_sample__mlp": 0.26052990555763245,
+      "saxs_only__ridge": 0.1489950567483902,
+      "saxs_only__mlp": 0.15178294479846954,
+      "saxs_time__ridge": 0.14826232194900513,
+      "saxs_time__mlp": 0.15998904407024384,
+      "saxs_shuffled__ridge": 0.38888922333717346,
+      "saxs_shuffled__mlp": 0.42257270216941833
+    },
+    {
+      "test_run": "s_dmhr_50s_10Cmin_10c",
+      "waxs_mean_mse": 0.550600528717041,
+      "time_only__ridge": 0.40875333547592163,
+      "time_only__mlp": 0.35157522559165955,
+      "time_sample__ridge": 0.1894494742155075,
+      "time_sample__mlp": 0.13772034645080566,
+      "saxs_only__ridge": 0.12429551035165787,
+      "saxs_only__mlp": 0.11398448050022125,
+      "saxs_time__ridge": 0.1231917142868042,
+      "saxs_time__mlp": 0.10065160691738129,
+      "saxs_shuffled__ridge": 0.34296441078186035,
+      "saxs_shuffled__mlp": 0.3424097001552582
+    },
+    {
+      "test_run": "s_mopv_1s_10Cmin_10c",
+      "waxs_mean_mse": 0.5625059008598328,
+      "time_only__ridge": 0.4226561486721039,
+      "time_only__mlp": 0.36808300018310547,
+      "time_sample__ridge": 0.9208070039749146,
+      "time_sample__mlp": 0.8684990406036377,
+      "saxs_only__ridge": 8.32004165649414,
+      "saxs_only__mlp": 1.1709481477737427,
+      "saxs_time__ridge": 6.564809799194336,
+      "saxs_time__mlp": 1.2216098308563232,
+      "saxs_shuffled__ridge": 3.821131706237793,
+      "saxs_shuffled__mlp": 1.1627765893936157
+    },
+    {
+      "test_run": "s_mopv_25s_10Cmin_10C_redo",
+      "waxs_mean_mse": 11.055567741394043,
+      "time_only__ridge": 10.913992881774902,
+      "time_only__mlp": 10.839027404785156,
+      "time_sample__ridge": 9.640560150146484,
+      "time_sample__mlp": 9.580656051635742,
+      "saxs_only__ridge": 7.191841125488281,
+      "saxs_only__mlp": 8.304353713989258,
+      "saxs_time__ridge": 7.189533233642578,
+      "saxs_time__mlp": 8.584186553955078,
+      "saxs_shuffled__ridge": 7.462579250335693,
+      "saxs_shuffled__mlp": 8.117158889770508
+    },
+    {
+      "test_run": "s_mopv_50s_10Cmin_10c",
+      "waxs_mean_mse": 0.2767254412174225,
+      "time_only__ridge": 0.14384818077087402,
+      "time_only__mlp": 0.0823836550116539,
+      "time_sample__ridge": 0.3543316125869751,
+      "time_sample__mlp": 0.3015606999397278,
+      "saxs_only__ridge": 0.36155813932418823,
+      "saxs_only__mlp": 0.9661768674850464,
+      "saxs_time__ridge": 0.37752485275268555,
+      "saxs_time__mlp": 0.7327187657356262,
+      "saxs_shuffled__ridge": 0.573378324508667,
+      "saxs_shuffled__mlp": 1.1900017261505127
+    }
+  ]
+}

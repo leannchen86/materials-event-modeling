@@ -194,6 +194,22 @@ reply_status
 - For senior PIs, lead with proposal/collaborator fit and make clear they do not need to
   own the ML implementation.
 
+## First-Message Principles (their-work-first, lightweight) — emphasised 2026-06-16
+
+These sharpen the Drafting Rules above and are non-negotiable for first contact:
+
+- **Center their work, not ours (not egocentric).** Open with a specific, genuine observation about
+  *their* work, and let our finding enter only as something their work *influenced or resonates
+  with* — "your X is the cleanest version of something I've been chasing," not "here is my project."
+  The recipient should feel *seen*, not pitched.
+- **Lightweight, never a wall of text.** No front-loaded paragraph dump. A few sentences. Aim for a
+  message that's easy to read and easy to reply to — *light but insightful enough that they want
+  to*. Hold detail in reserve for the reply, not the first contact.
+- **One small, low-friction ask** (20 minutes or a pointer), framed as wanting *their* perspective —
+  never "send me data" / "run experiments for us."
+- **Litmus test:** would a busy person read it in 15 seconds and feel a small pull to reply, rather
+  than a burden? If it reads as "about me," rewrite it to be "about them."
+
 ## Avoid
 
 - "Can your lab run experiments for us?" as a first message.

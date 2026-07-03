@@ -1,0 +1,63 @@
+{
+  "created_at": "2026-06-15T08:56:56.155921+00:00",
+  "task": "oleogel_dcor_control",
+  "n_shift": 200,
+  "margin": 0.05,
+  "n_real_signal": 1,
+  "folds": [
+    {
+      "run": "s_dmhr_1s_10Cmin_10c",
+      "sample": "dmhr",
+      "observed_dcor": 0.707,
+      "p_circular_shift": 0.005,
+      "cross_event_dcor_median": 0.716,
+      "obs_minus_cross": -0.009,
+      "real_signal": false
+    },
+    {
+      "run": "s_dmhr_25s_10Cmin_10c",
+      "sample": "dmhr",
+      "observed_dcor": 0.818,
+      "p_circular_shift": 0.005,
+      "cross_event_dcor_median": 0.84,
+      "obs_minus_cross": -0.022,
+      "real_signal": false
+    },
+    {
+      "run": "s_dmhr_50s_10Cmin_10c",
+      "sample": "dmhr",
+      "observed_dcor": 0.889,
+      "p_circular_shift": 0.005,
+      "cross_event_dcor_median": 0.807,
+      "obs_minus_cross": 0.082,
+      "real_signal": true
+    },
+    {
+      "run": "s_mopv_1s_10Cmin_10c",
+      "sample": "mopv",
+      "observed_dcor": 0.847,
+      "p_circular_shift": 0.005,
+      "cross_event_dcor_median": 0.842,
+      "obs_minus_cross": 0.006,
+      "real_signal": false
+    },
+    {
+      "run": "s_mopv_25s_10Cmin_10C_redo",
+      "sample": "mopv",
+      "observed_dcor": 0.55,
+      "p_circular_shift": 0.005,
+      "cross_event_dcor_median": 0.705,
+      "obs_minus_cross": -0.155,
+      "real_signal": false
+    },
+    {
+      "run": "s_mopv_50s_10Cmin_10c",
+      "sample": "mopv",
+      "observed_dcor": 0.931,
+      "p_circular_shift": 0.005,
+      "cross_event_dcor_median": 0.91,
+      "obs_minus_cross": 0.021,
+      "real_signal": false
+    }
+  ]
+}

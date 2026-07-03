@@ -1,0 +1,42 @@
+{
+  "created_at": "2026-06-15T20:20:41.267806+00:00",
+  "task": "rruff_lossy_probe",
+  "seeds": 5,
+  "garnet": {
+    "species_kept": [
+      "Almandine",
+      "Pyrope",
+      "Spessartine",
+      "Grossular",
+      "Andradite"
+    ],
+    "counts": {
+      "Almandine": 24,
+      "Pyrope": 23,
+      "Spessartine": 14,
+      "Grossular": 42,
+      "Andradite": 27
+    },
+    "species_acc_5way": 0.728,
+    "family_acc_2way": 1.0,
+    "majority_species": 0.323,
+    "majority_family": 0.531,
+    "shuffled_species": 0.16,
+    "within_family_error_frac": 1.0,
+    "family_minus_species": 0.272
+  },
+  "olivine": {
+    "species_kept": [
+      "Forsterite",
+      "Fayalite",
+      "Tephroite"
+    ],
+    "counts": {
+      "Forsterite": 25,
+      "Fayalite": 9,
+      "Tephroite": 9
+    },
+    "species_acc_3way": 0.938,
+    "majority": 0.581
+  }
+}
