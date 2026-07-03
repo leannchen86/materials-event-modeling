@@ -81,6 +81,111 @@ Run command:
 .venv/bin/python scripts/run_severson_representation_ab.py
 ```
 
-## Results
+## Findings (run 2026-07-03, commit `0372df8`, manifest `severson_representation_ab.json`)
 
-*(to be filled by the run — verdict against H1–H5 goes here)*
+**Claim that survives adversarial verification:** the paper-shaped projection is
+*structurally* unable to do two things the grammar-preserved record does — distinguish
+replicates of the same recipe (B is forced to 0.500 on within-policy ranking by
+construction; A reaches 0.69–0.77) and represent truncated runs (the censored cells add
+1 of 17 resolvable pairs, correctly scored). **Claim that does not yet survive:** the
+*statistical margins* on 46 cells are model- and seed-fragile; H1 misses its own
+pre-registered threshold under ridge, and only the ridge variant's ranking CI excludes
+chance. Verdict: structural lossiness demonstrated; effect sizes need the batch 2–3
+extension before any external claim.
+
+An independent adversarial review (no leakage on any task, censoring logic verified by
+hand-enumeration of all 24 pairs, manifest bit-identical on re-run, pre-registration
+commit verified to precede the run) constrains the verdict below; its caveats are
+incorporated verbatim.
+
+### Task results
+
+Cycle-life regression, k=100, Spearman (mean ± std over 3 seeds):
+
+| split | representation | ridge | forest |
+| --- | --- | ---: | ---: |
+| random-cell | B (policy) | 0.578 ± 0.089 | 0.358 ± 0.101 |
+| random-cell | A (trajectory) | 0.570 ± 0.062 | 0.558 ± 0.104 |
+| random-cell | A-full | 0.665 ± 0.046 | 0.584 ± 0.111 |
+| held-out-policy | B (policy) | 0.536 ± 0.018 | 0.214 ± 0.012 |
+| held-out-policy | A (trajectory) | 0.591 ± 0.042 | 0.531 ± 0.067 |
+| held-out-policy | A-full | 0.552 ± 0.120 | 0.543 ± 0.069 |
+
+Within-policy replicate ranking (17 resolvable pairs, leave-one-policy-out scores,
+bootstrap 95% CI over pairs):
+
+| representation | model | accuracy | CI |
+| --- | --- | ---: | --- |
+| B (policy) | either | 0.500 | forced tie, by construction (verified bitwise) |
+| A-full | ridge | **0.765** | **[0.529, 0.941]**, exact binomial p = 0.0245 (13/17) |
+| A-full | forest | 0.686 | [0.471, 0.882] — includes 0.50 |
+| A (trajectory) | forest | 0.745 | pooled CI excludes 0.50, per-seed CIs do NOT — not claimable |
+| A (trajectory) | ridge | 0.706 | [0.471, 0.941] — includes 0.50 |
+
+Trajectory forecast (QDischarge, RMSE in Ah; per-cell linear extrapolation on cycles
+50–100 is the strong baseline):
+
+| horizon | train-mean | extrapolation | B best | A-full ridge |
+| --- | ---: | ---: | ---: | ---: |
+| cycle 200 | 0.0100 | 0.00182 | 0.0107 | 0.00153 (2/3 seeds beat extrap) |
+| cycle 300 | 0.0134 | 0.00489 | 0.0133 | 0.00424 (2/3 seeds beat extrap) |
+
+### Verdict against the pre-registered hypotheses
+
+- **H1 — mixed, not confirmable as registered.** The ≥0.10 Spearman margin holds for
+  forest (+0.226) but fails for ridge (+0.087), and the pre-registration named no
+  primary model. Per-seed deltas swing 0.011–0.343. Both expected ranges also missed
+  low (B 0.578 vs predicted 0.60–0.75 at best; A-full 0.665 vs predicted 0.80–0.90):
+  summary-scalar trajectory features are weaker than the full within-cycle curves the
+  literature uses. The falsifier (A ≤ B) did not fire — A-full beats B in all four
+  model × split cells — but the registered margin was not met.
+- **H2 — confirmed under ridge, qualified.** 0.765 with CI excluding chance and exact
+  binomial p = 0.0245; the forest variant's CI includes 0.50. The point estimates of
+  all four A variants (0.69–0.77) land inside the pre-registered 0.65 ± 0.10. The
+  structural half of H2 — B cannot exceed 0.500 no matter the model — is verified
+  mechanically, and that half is the thesis-relevant one: the projection deletes
+  exactly the information that distinguishes replicates.
+- **H3 — mixed, as the registered uncertainty allowed.** The predicted short/long split
+  was wrong: A-full ridge beats extrapolation at *both* horizons on the mean (by ~16%
+  and ~13%) but only in 2 of 3 seeds; forest never beats extrapolation. No clean story
+  without cherry-picking; extrapolation confirmed as the baseline that keeps everyone
+  honest.
+- **H4 — directional only.** Advantage stays positive on the mean for both models, but
+  the mechanism prediction was wrong in an informative way: the forest advantage *grew*
+  out-of-policy (B collapsed 0.358 → 0.214 while trajectory held ~0.53–0.59) — recipe
+  features memorize the policy–lifetime map and fail on unseen policies, while
+  trajectory features transfer. Ridge's margin flips sign at seed 0 (−0.164), so no
+  confirmed claim; but the falsifier ("trajectory signal is policy identity in
+  disguise") is affirmatively contradicted by A-trajectory alone beating B out-of-policy
+  under both models.
+- **H5 — confirmed at n = 1, as a count.** 16 EOL pairs + exactly 1 censored-resolved
+  pair (truncated record at ≥906 cycles vs sibling's 788), correctly ranked. B cannot
+  represent the pair at all. Registered as counts; no accuracy claim made.
+
+### Caveats (mandatory when quoting these results)
+
+- **Do not quote ridge regression RMSE at k=50/100.** One cell
+  (`EL150800453240`) has a single-cycle sensor glitch (QDischarge 2.88 Ah at cycle 40,
+  physically impossible, z ≈ +762 after fold scaling) that makes ridge extrapolate into
+  nonsense; Spearman and ranking are unaffected, and the glitch *penalizes* A (dropping
+  the cell raises A's numbers and would make ranking 14/17). Forest RMSEs are the
+  quotable RMSEs.
+- Ridge "3 seeds" are cosmetic (deterministic solver); the seed spread on ridge rows is
+  fold-assignment only.
+- 17 pairs and 46 cells is thin; every marginal claim above is explicitly one dataset,
+  one batch.
+
+### Belief update and decision
+
+The A/B framing works and produced its intended separation: the *architectural* losses
+of paper-shaping (replicate blindness, censoring blindness) are now demonstrated on real
+data with pre-registered, adversarially-verified analysis — that is the rung-3 result.
+The *statistical* margins are under-powered at 46 cells and were over-predicted. Next
+step, in order: (1) download Severson batches 2–3 (~6 GB), extend the adapter (the
+batch-1→2 continuation linkage also converts several censored cells into resolved
+long-life cells), and re-run this exact pre-registered analysis at 124 cells with a
+held-out-batch split — the confirmation experiment; (2) fold the glitch-cell lesson into
+grammar v1.1 thinking: observation-level quality flags (`include_in_raw_objective`)
+should be set by adapters using simple physical-bounds checks, so honest raw records
+don't smuggle sensor artifacts into features. No claim leaves this repo before the
+124-cell run.

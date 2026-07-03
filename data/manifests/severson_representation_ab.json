@@ -1,0 +1,502 @@
+{
+  "created_at": "2026-07-03T10:05:30.446190+00:00",
+  "forecast": {
+    "h200": {
+      "A_full|forest_rmse": {
+        "mean": 0.0054181085282750925,
+        "std": 0.00026892648722026344
+      },
+      "A_full|ridge_rmse": {
+        "mean": 0.001525975899169857,
+        "std": 0.00033689883026035106
+      },
+      "B_policy|forest_rmse": {
+        "mean": 0.010700533708955342,
+        "std": 0.0008388581754049606
+      },
+      "B_policy|ridge_rmse": {
+        "mean": 0.011049523476170373,
+        "std": 0.0011399412152540897
+      },
+      "baseline_extrapolation_rmse": 0.0018234257605657445,
+      "baseline_train_mean_rmse": 0.010020233950557908,
+      "n_cells": 46
+    },
+    "h300": {
+      "A_full|forest_rmse": {
+        "mean": 0.008629264370129485,
+        "std": 0.0007241618747876701
+      },
+      "A_full|ridge_rmse": {
+        "mean": 0.004239770026304494,
+        "std": 0.0006806057290700229
+      },
+      "B_policy|forest_rmse": {
+        "mean": 0.013290413776152699,
+        "std": 0.0012455640907122999
+      },
+      "B_policy|ridge_rmse": {
+        "mean": 0.013914792944591222,
+        "std": 0.0016933821588307728
+      },
+      "baseline_extrapolation_rmse": 0.004891463407493016,
+      "baseline_train_mean_rmse": 0.013422284959535452,
+      "n_cells": 46
+    }
+  },
+  "n_cells": 46,
+  "n_censored": 10,
+  "pre_registration": "docs/controlled-collection/severson_representation_ab.md",
+  "ranking": {
+    "A_full|forest": {
+      "accuracy_eol_pairs_only": 0.6666666666666666,
+      "bootstrap_ci95": [
+        0.47058823529411764,
+        0.8823529411764706
+      ],
+      "pairwise_accuracy": 0.6862745098039216
+    },
+    "A_full|ridge": {
+      "accuracy_eol_pairs_only": 0.75,
+      "bootstrap_ci95": [
+        0.5294117647058824,
+        0.9411764705882353
+      ],
+      "pairwise_accuracy": 0.7647058823529411
+    },
+    "A_trajectory|forest": {
+      "accuracy_eol_pairs_only": 0.7291666666666666,
+      "bootstrap_ci95": [
+        0.5485294117647058,
+        0.9215686274509803
+      ],
+      "pairwise_accuracy": 0.7450980392156863
+    },
+    "A_trajectory|ridge": {
+      "accuracy_eol_pairs_only": 0.6875,
+      "bootstrap_ci95": [
+        0.47058823529411764,
+        0.9411764705882353
+      ],
+      "pairwise_accuracy": 0.7058823529411765
+    },
+    "B_policy|forest": {
+      "accuracy_eol_pairs_only": 0.5,
+      "bootstrap_ci95": [
+        0.5,
+        0.5
+      ],
+      "pairwise_accuracy": 0.5
+    },
+    "B_policy|ridge": {
+      "accuracy_eol_pairs_only": 0.5,
+      "bootstrap_ci95": [
+        0.5,
+        0.5
+      ],
+      "pairwise_accuracy": 0.5
+    },
+    "pair_counts": {
+      "censored_resolved": 1,
+      "eol_eol": 16,
+      "unresolvable": 7
+    },
+    "pairs_eol_only": 16,
+    "pairs_total": 17
+  },
+  "regression": {
+    "n_eol_cells": 36,
+    "results": {
+      "baseline_train_mean": {
+        "note": "predicting the mean: RMSE = std of targets; Spearman undefined",
+        "rmse_log10": {
+          "mean": 0.08089887569025227,
+          "std": 0.0
+        }
+      },
+      "k100|A_full|forest|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.0686190818264489,
+          "std": 0.0026547450283941868
+        },
+        "spearman": {
+          "mean": 0.5431844555230344,
+          "std": 0.06901063739372096
+        }
+      },
+      "k100|A_full|forest|random_cell": {
+        "rmse_log10": {
+          "mean": 0.0646746228864034,
+          "std": 0.006105933658838779
+        },
+        "spearman": {
+          "mean": 0.5835585923830008,
+          "std": 0.1105353119560394
+        }
+      },
+      "k100|A_full|ridge|held_out_policy": {
+        "rmse_log10": {
+          "mean": 6.188794520786409,
+          "std": 5.101995993282928
+        },
+        "spearman": {
+          "mean": 0.5521946242165444,
+          "std": 0.12015223797894559
+        }
+      },
+      "k100|A_full|ridge|random_cell": {
+        "rmse_log10": {
+          "mean": 3.0070416237923205,
+          "std": 0.8457021310587762
+        },
+        "spearman": {
+          "mean": 0.6650362607114559,
+          "std": 0.046218833953040814
+        }
+      },
+      "k100|A_trajectory|forest|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.06869856699282588,
+          "std": 0.00324855549375345
+        },
+        "spearman": {
+          "mean": 0.5312138028302282,
+          "std": 0.06664525738883845
+        }
+      },
+      "k100|A_trajectory|forest|random_cell": {
+        "rmse_log10": {
+          "mean": 0.06536577311385765,
+          "std": 0.005352719587123129
+        },
+        "spearman": {
+          "mean": 0.5580726866499296,
+          "std": 0.10444048323371838
+        }
+      },
+      "k100|A_trajectory|ridge|held_out_policy": {
+        "rmse_log10": {
+          "mean": 6.212368858269477,
+          "std": 3.6907324910817265
+        },
+        "spearman": {
+          "mean": 0.5913244996855023,
+          "std": 0.042247452321881596
+        }
+      },
+      "k100|A_trajectory|ridge|random_cell": {
+        "rmse_log10": {
+          "mean": 5.671994898668203,
+          "std": 3.551250441224587
+        },
+        "spearman": {
+          "mean": 0.5697430003862854,
+          "std": 0.06230919252870019
+        }
+      },
+      "k100|B_policy|forest|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.08341879819721075,
+          "std": 0.0012913772459825132
+        },
+        "spearman": {
+          "mean": 0.21390359756282226,
+          "std": 0.01156541066336102
+        }
+      },
+      "k100|B_policy|forest|random_cell": {
+        "rmse_log10": {
+          "mean": 0.0756307982744392,
+          "std": 0.004406648734754359
+        },
+        "spearman": {
+          "mean": 0.3575904311126465,
+          "std": 0.10129909423509562
+        }
+      },
+      "k100|B_policy|ridge|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.06756235458689817,
+          "std": 0.0004701391945998137
+        },
+        "spearman": {
+          "mean": 0.5357773944097772,
+          "std": 0.01776731392612079
+        }
+      },
+      "k100|B_policy|ridge|random_cell": {
+        "rmse_log10": {
+          "mean": 0.06339964185855947,
+          "std": 0.004501293546992845
+        },
+        "spearman": {
+          "mean": 0.5777067270740078,
+          "std": 0.08910818457598499
+        }
+      },
+      "k10|A_full|forest|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.08756921391456285,
+          "std": 0.0026511578923319387
+        },
+        "spearman": {
+          "mean": -0.022053460516496034,
+          "std": 0.10782097681540893
+        }
+      },
+      "k10|A_full|forest|random_cell": {
+        "rmse_log10": {
+          "mean": 0.08266549771289723,
+          "std": 0.004559488971871344
+        },
+        "spearman": {
+          "mean": 0.1578924799624618,
+          "std": 0.11173826748504227
+        }
+      },
+      "k10|A_full|ridge|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.06903801552690036,
+          "std": 0.006750880188175862
+        },
+        "spearman": {
+          "mean": 0.5327584031776871,
+          "std": 0.07233763776392796
+        }
+      },
+      "k10|A_full|ridge|random_cell": {
+        "rmse_log10": {
+          "mean": 0.06545956873338536,
+          "std": 0.010742244157642154
+        },
+        "spearman": {
+          "mean": 0.5893937492511787,
+          "std": 0.09401119450838592
+        }
+      },
+      "k10|A_trajectory|forest|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.09131750719714112,
+          "std": 0.0027993923866405195
+        },
+        "spearman": {
+          "mean": -0.1791307347400212,
+          "std": 0.10668123459380967
+        }
+      },
+      "k10|A_trajectory|forest|random_cell": {
+        "rmse_log10": {
+          "mean": 0.08616912956506008,
+          "std": 0.0028430177192566245
+        },
+        "spearman": {
+          "mean": 0.07873171215519495,
+          "std": 0.07695237218501691
+        }
+      },
+      "k10|A_trajectory|ridge|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.07936998660074696,
+          "std": 0.005195456120395617
+        },
+        "spearman": {
+          "mean": 0.3311022467038907,
+          "std": 0.12329354446004281
+        }
+      },
+      "k10|A_trajectory|ridge|random_cell": {
+        "rmse_log10": {
+          "mean": 0.08003524442272641,
+          "std": 0.0077649409383481974
+        },
+        "spearman": {
+          "mean": 0.4244647565947377,
+          "std": 0.04126560814428604
+        }
+      },
+      "k10|B_policy|forest|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.08341879819721075,
+          "std": 0.0012913772459825132
+        },
+        "spearman": {
+          "mean": 0.21390359756282226,
+          "std": 0.01156541066336102
+        }
+      },
+      "k10|B_policy|forest|random_cell": {
+        "rmse_log10": {
+          "mean": 0.0756307982744392,
+          "std": 0.004406648734754359
+        },
+        "spearman": {
+          "mean": 0.3575904311126465,
+          "std": 0.10129909423509562
+        }
+      },
+      "k10|B_policy|ridge|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.06756235458689817,
+          "std": 0.0004701391945998137
+        },
+        "spearman": {
+          "mean": 0.5357773944097772,
+          "std": 0.01776731392612079
+        }
+      },
+      "k10|B_policy|ridge|random_cell": {
+        "rmse_log10": {
+          "mean": 0.06339964185855947,
+          "std": 0.004501293546992845
+        },
+        "spearman": {
+          "mean": 0.5777067270740078,
+          "std": 0.08910818457598499
+        }
+      },
+      "k50|A_full|forest|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.07501499927005832,
+          "std": 0.000500996032329134
+        },
+        "spearman": {
+          "mean": 0.42652422372468285,
+          "std": 0.027985810651644485
+        }
+      },
+      "k50|A_full|forest|random_cell": {
+        "rmse_log10": {
+          "mean": 0.0727232793059353,
+          "std": 0.007991174709513375
+        },
+        "spearman": {
+          "mean": 0.424078606507873,
+          "std": 0.14519020114886783
+        }
+      },
+      "k50|A_full|ridge|held_out_policy": {
+        "rmse_log10": {
+          "mean": 4.677045051549984,
+          "std": 3.083547636696451
+        },
+        "spearman": {
+          "mean": 0.532972931003723,
+          "std": 0.09901264024934693
+        }
+      },
+      "k50|A_full|ridge|random_cell": {
+        "rmse_log10": {
+          "mean": 4.9662365151292,
+          "std": 1.2487944793931716
+        },
+        "spearman": {
+          "mean": 0.6662805221024645,
+          "std": 0.03435173998475549
+        }
+      },
+      "k50|A_trajectory|forest|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.07199324738231876,
+          "std": 0.0005462231706623664
+        },
+        "spearman": {
+          "mean": 0.5128931264867577,
+          "std": 0.030598196403878487
+        }
+      },
+      "k50|A_trajectory|forest|random_cell": {
+        "rmse_log10": {
+          "mean": 0.07188942248933063,
+          "std": 0.00806212224764142
+        },
+        "spearman": {
+          "mean": 0.4365212204179583,
+          "std": 0.13535645721514736
+        }
+      },
+      "k50|A_trajectory|ridge|held_out_policy": {
+        "rmse_log10": {
+          "mean": 5.99410277453524,
+          "std": 3.3662943843200663
+        },
+        "spearman": {
+          "mean": 0.42858369085462805,
+          "std": 0.12211112303302647
+        }
+      },
+      "k50|A_trajectory|ridge|random_cell": {
+        "rmse_log10": {
+          "mean": 6.915101555160121,
+          "std": 1.782591595071925
+        },
+        "spearman": {
+          "mean": 0.5303127859608772,
+          "std": 0.03991006395075905
+        }
+      },
+      "k50|B_policy|forest|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.08341879819721075,
+          "std": 0.0012913772459825132
+        },
+        "spearman": {
+          "mean": 0.21390359756282226,
+          "std": 0.01156541066336102
+        }
+      },
+      "k50|B_policy|forest|random_cell": {
+        "rmse_log10": {
+          "mean": 0.0756307982744392,
+          "std": 0.004406648734754359
+        },
+        "spearman": {
+          "mean": 0.3575904311126465,
+          "std": 0.10129909423509562
+        }
+      },
+      "k50|B_policy|ridge|held_out_policy": {
+        "rmse_log10": {
+          "mean": 0.06756235458689817,
+          "std": 0.0004701391945998137
+        },
+        "spearman": {
+          "mean": 0.5357773944097772,
+          "std": 0.01776731392612079
+        }
+      },
+      "k50|B_policy|ridge|random_cell": {
+        "rmse_log10": {
+          "mean": 0.06339964185855947,
+          "std": 0.004501293546992845
+        },
+        "spearman": {
+          "mean": 0.5777067270740078,
+          "std": 0.08910818457598499
+        }
+      }
+    }
+  },
+  "run_identity": {
+    "argv": [
+      "scripts/run_severson_representation_ab.py"
+    ],
+    "captured_at": "2026-07-03T10:05:31.301548+00:00",
+    "git_commit": "0372df835aa013909e93b5bfe7e0f9bc0d80428f",
+    "git_dirty": false,
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.3",
+      "scipy": "1.17.1",
+      "sklearn": "1.8.0",
+      "torch": "2.12.0"
+    },
+    "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+    "python": "3.13.0"
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "task": "severson_representation_ab"
+}
