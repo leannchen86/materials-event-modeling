@@ -1,477 +1,1287 @@
 {
-  "created_at": "2026-07-03T10:05:30.446190+00:00",
+  "created_at": "2026-07-03T19:19:46.549807+00:00",
   "forecast": {
     "h200": {
       "A_full|forest_rmse": {
-        "mean": 0.0054181085282750925,
-        "std": 0.00026892648722026344
+        "mean": 0.005017276393028453,
+        "std": 0.0003667742582231843
       },
       "A_full|ridge_rmse": {
-        "mean": 0.001525975899169857,
-        "std": 0.00033689883026035106
+        "mean": 0.0023889592827298777,
+        "std": 0.00015016818793233512
       },
       "B_policy|forest_rmse": {
-        "mean": 0.010700533708955342,
-        "std": 0.0008388581754049606
+        "mean": 0.012182462913379358,
+        "std": 0.0002739311840725599
       },
       "B_policy|ridge_rmse": {
-        "mean": 0.011049523476170373,
-        "std": 0.0011399412152540897
+        "mean": 0.013996344585085758,
+        "std": 0.00027066022385447515
       },
-      "baseline_extrapolation_rmse": 0.0018234257605657445,
-      "baseline_train_mean_rmse": 0.010020233950557908,
-      "n_cells": 46
+      "baseline_extrapolation_rmse": 0.004445081526110829,
+      "baseline_train_mean_rmse": 0.017550792487682734,
+      "n_cells": 134
     },
     "h300": {
       "A_full|forest_rmse": {
-        "mean": 0.008629264370129485,
-        "std": 0.0007241618747876701
+        "mean": 0.01261589494247063,
+        "std": 0.000850149516263383
       },
       "A_full|ridge_rmse": {
-        "mean": 0.004239770026304494,
-        "std": 0.0006806057290700229
+        "mean": 0.007295634099453503,
+        "std": 0.0005634292872559975
       },
       "B_policy|forest_rmse": {
-        "mean": 0.013290413776152699,
-        "std": 0.0012455640907122999
+        "mean": 0.018086518664914803,
+        "std": 0.0009507869508347393
       },
       "B_policy|ridge_rmse": {
-        "mean": 0.013914792944591222,
-        "std": 0.0016933821588307728
+        "mean": 0.02110916059072265,
+        "std": 0.0006401423681146648
       },
-      "baseline_extrapolation_rmse": 0.004891463407493016,
-      "baseline_train_mean_rmse": 0.013422284959535452,
-      "n_cells": 46
+      "baseline_extrapolation_rmse": 0.013956058104497848,
+      "baseline_train_mean_rmse": 0.027208378890905528,
+      "n_cells": 134
     }
   },
-  "n_cells": 46,
-  "n_censored": 10,
+  "n_cells": 135,
+  "n_censored": 7,
   "pre_registration": "docs/controlled-collection/severson_representation_ab.md",
   "ranking": {
     "A_full|forest": {
-      "accuracy_eol_pairs_only": 0.6666666666666666,
-      "bootstrap_ci95": [
-        0.47058823529411764,
-        0.8823529411764706
+      "accuracy_eol_pairs_only": 0.582766439909297,
+      "bootstrap_ci95_clusters": [
+        0.4987794949225804,
+        0.6737180490349504
       ],
-      "pairwise_accuracy": 0.6862745098039216
+      "bootstrap_ci95_pairs": [
+        0.5229166666666666,
+        0.668802083333333
+      ],
+      "pairwise_accuracy": 0.5958333333333334,
+      "per_seed_accuracy": [
+        0.5625,
+        0.61875,
+        0.60625
+      ]
     },
     "A_full|ridge": {
-      "accuracy_eol_pairs_only": 0.75,
-      "bootstrap_ci95": [
-        0.5294117647058824,
-        0.9411764705882353
+      "accuracy_eol_pairs_only": 0.7414965986394558,
+      "bootstrap_ci95_clusters": [
+        0.6783176593521422,
+        0.795456657654613
       ],
-      "pairwise_accuracy": 0.7647058823529411
+      "bootstrap_ci95_pairs": [
+        0.6875,
+        0.81875
+      ],
+      "pairwise_accuracy": 0.75625,
+      "per_seed_accuracy": [
+        0.75625,
+        0.75625,
+        0.75625
+      ]
     },
     "A_trajectory|forest": {
-      "accuracy_eol_pairs_only": 0.7291666666666666,
-      "bootstrap_ci95": [
-        0.5485294117647058,
-        0.9215686274509803
+      "accuracy_eol_pairs_only": 0.5782312925170068,
+      "bootstrap_ci95_clusters": [
+        0.519995337995338,
+        0.6607160364145658
       ],
-      "pairwise_accuracy": 0.7450980392156863
+      "bootstrap_ci95_pairs": [
+        0.51875,
+        0.6666666666666666
+      ],
+      "pairwise_accuracy": 0.5916666666666666,
+      "per_seed_accuracy": [
+        0.575,
+        0.6,
+        0.6
+      ]
     },
     "A_trajectory|ridge": {
-      "accuracy_eol_pairs_only": 0.6875,
-      "bootstrap_ci95": [
-        0.47058823529411764,
-        0.9411764705882353
+      "accuracy_eol_pairs_only": 0.7142857142857143,
+      "bootstrap_ci95_clusters": [
+        0.6346153846153846,
+        0.7872406914893617
       ],
-      "pairwise_accuracy": 0.7058823529411765
+      "bootstrap_ci95_pairs": [
+        0.65625,
+        0.79375
+      ],
+      "pairwise_accuracy": 0.725,
+      "per_seed_accuracy": [
+        0.725,
+        0.725,
+        0.725
+      ]
     },
     "B_policy|forest": {
       "accuracy_eol_pairs_only": 0.5,
-      "bootstrap_ci95": [
+      "bootstrap_ci95_clusters": [
         0.5,
         0.5
       ],
-      "pairwise_accuracy": 0.5
+      "bootstrap_ci95_pairs": [
+        0.5,
+        0.5
+      ],
+      "pairwise_accuracy": 0.5,
+      "per_seed_accuracy": [
+        0.5,
+        0.5,
+        0.5
+      ]
     },
     "B_policy|ridge": {
       "accuracy_eol_pairs_only": 0.5,
-      "bootstrap_ci95": [
+      "bootstrap_ci95_clusters": [
         0.5,
         0.5
       ],
-      "pairwise_accuracy": 0.5
+      "bootstrap_ci95_pairs": [
+        0.5,
+        0.5
+      ],
+      "pairwise_accuracy": 0.5,
+      "per_seed_accuracy": [
+        0.5,
+        0.5,
+        0.5
+      ]
     },
     "pair_counts": {
-      "censored_resolved": 1,
-      "eol_eol": 16,
-      "unresolvable": 7
+      "censored_resolved": 13,
+      "eol_eol": 147,
+      "unresolvable": 5
     },
-    "pairs_eol_only": 16,
-    "pairs_total": 17
+    "pairs_eol_only": 147,
+    "pairs_total": 160
   },
   "regression": {
-    "n_eol_cells": 36,
+    "n_eol_cells": 128,
     "results": {
       "baseline_train_mean": {
         "note": "predicting the mean: RMSE = std of targets; Spearman undefined",
         "rmse_log10": {
-          "mean": 0.08089887569025227,
+          "mean": 0.19087953745491923,
           "std": 0.0
+        }
+      },
+      "k100|A_full|forest|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": -0.44819074851271573,
+            "std": 0.015902681152444437
+          },
+          "2017-06-30": {
+            "mean": 0.21124704464876484,
+            "std": 0.011521661382664862
+          },
+          "2018-04-12": {
+            "mean": 0.4649212448709006,
+            "std": 0.006940470691147772
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.26955807433809653,
+          "std": 0.0007832520884809104
+        },
+        "spearman": {
+          "mean": 0.07599251366898324,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.00685039815845476
+        },
+        "spearman_pooled": {
+          "mean": -0.5231233044639212,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.009006957921591476
         }
       },
       "k100|A_full|forest|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.0686190818264489,
-          "std": 0.0026547450283941868
+          "mean": 0.12854686575937854,
+          "std": 0.009734904055018813
         },
         "spearman": {
-          "mean": 0.5431844555230344,
-          "std": 0.06901063739372096
+          "mean": 0.7507894520580294,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.04441436531203022
+        },
+        "spearman_pooled": {
+          "mean": 0.7720640516577754,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.03375264157910165
         }
       },
       "k100|A_full|forest|random_cell": {
         "rmse_log10": {
-          "mean": 0.0646746228864034,
-          "std": 0.006105933658838779
+          "mean": 0.10471773828517002,
+          "std": 0.0018205309939223978
         },
         "spearman": {
-          "mean": 0.5835585923830008,
-          "std": 0.1105353119560394
+          "mean": 0.8128865652493954,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.008543024912735757
+        },
+        "spearman_pooled": {
+          "mean": 0.8360670044570045,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.005278662428507266
+        }
+      },
+      "k100|A_full|ridge|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": 0.5725736277895875,
+            "std": 0.0
+          },
+          "2017-06-30": {
+            "mean": 0.41700649924349836,
+            "std": 0.0
+          },
+          "2018-04-12": {
+            "mean": 0.48585221496740777,
+            "std": 0.0
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.21937717203626003,
+          "std": 0.0
+        },
+        "spearman": {
+          "mean": 0.49181078066683126,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.0
+        },
+        "spearman_pooled": {
+          "mean": 0.31126510913182237,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.0
         }
       },
       "k100|A_full|ridge|held_out_policy": {
         "rmse_log10": {
-          "mean": 6.188794520786409,
-          "std": 5.101995993282928
+          "mean": 0.1167217576362789,
+          "std": 0.015060583604053225
         },
         "spearman": {
-          "mean": 0.5521946242165444,
-          "std": 0.12015223797894559
+          "mean": 0.8044446417789061,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.005816863485135562
+        },
+        "spearman_pooled": {
+          "mean": 0.8319210757786514,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.008092066015917472
         }
       },
       "k100|A_full|ridge|random_cell": {
         "rmse_log10": {
-          "mean": 3.0070416237923205,
-          "std": 0.8457021310587762
+          "mean": 0.12257623952558046,
+          "std": 0.017542734096201624
         },
         "spearman": {
-          "mean": 0.6650362607114559,
-          "std": 0.046218833953040814
+          "mean": 0.8397537518306711,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.0067159048546878795
+        },
+        "spearman_pooled": {
+          "mean": 0.8553965504713098,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.003150999352445359
+        }
+      },
+      "k100|A_trajectory|forest|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": -0.4694197666662047,
+            "std": 0.018589865694260972
+          },
+          "2017-06-30": {
+            "mean": 0.2053315232602448,
+            "std": 0.0006407854909393869
+          },
+          "2018-04-12": {
+            "mean": 0.4310229397651096,
+            "std": 0.02166366646257173
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.2560151220805285,
+          "std": 0.0014030715029610394
+        },
+        "spearman": {
+          "mean": 0.055644898786383235,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.011873261023745058
+        },
+        "spearman_pooled": {
+          "mean": -0.5061285257384609,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.005999989860998013
         }
       },
       "k100|A_trajectory|forest|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.06869856699282588,
-          "std": 0.00324855549375345
+          "mean": 0.12106637480669269,
+          "std": 0.0038561920337731475
         },
         "spearman": {
-          "mean": 0.5312138028302282,
-          "std": 0.06664525738883845
+          "mean": 0.7751997900455713,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.010656331232533138
+        },
+        "spearman_pooled": {
+          "mean": 0.8067612877558868,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.006241025603906484
         }
       },
       "k100|A_trajectory|forest|random_cell": {
         "rmse_log10": {
-          "mean": 0.06536577311385765,
-          "std": 0.005352719587123129
+          "mean": 0.11134175261550684,
+          "std": 0.002388102529726591
         },
         "spearman": {
-          "mean": 0.5580726866499296,
-          "std": 0.10444048323371838
+          "mean": 0.8005030469934855,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.011913021601158749
+        },
+        "spearman_pooled": {
+          "mean": 0.8253430978410847,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.007349309207028222
+        }
+      },
+      "k100|A_trajectory|ridge|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": 0.5631643228898195,
+            "std": 0.0
+          },
+          "2017-06-30": {
+            "mean": 0.32872678218162776,
+            "std": 0.0
+          },
+          "2018-04-12": {
+            "mean": 0.3329222314340055,
+            "std": 0.0
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.22312037190428965,
+          "std": 0.0
+        },
+        "spearman": {
+          "mean": 0.4082711121684843,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.0
+        },
+        "spearman_pooled": {
+          "mean": 0.5215973127718657,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.0
         }
       },
       "k100|A_trajectory|ridge|held_out_policy": {
         "rmse_log10": {
-          "mean": 6.212368858269477,
-          "std": 3.6907324910817265
+          "mean": 0.13152915085854322,
+          "std": 0.00877995999225311
         },
         "spearman": {
-          "mean": 0.5913244996855023,
-          "std": 0.042247452321881596
+          "mean": 0.7897370408013549,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.006191987483730346
+        },
+        "spearman_pooled": {
+          "mean": 0.818458014075492,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.006266954439703139
         }
       },
       "k100|A_trajectory|ridge|random_cell": {
         "rmse_log10": {
-          "mean": 5.671994898668203,
-          "std": 3.551250441224587
+          "mean": 0.1345994088143924,
+          "std": 0.016343314984402415
         },
         "spearman": {
-          "mean": 0.5697430003862854,
-          "std": 0.06230919252870019
+          "mean": 0.8403240323374591,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.008005407058847702
+        },
+        "spearman_pooled": {
+          "mean": 0.8424818920324828,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.003088003295426663
+        }
+      },
+      "k100|B_policy|forest|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": 0.2788593654519293,
+            "std": 0.035507982259269204
+          },
+          "2017-06-30": {
+            "mean": 0.22846640043018385,
+            "std": 0.0773394944664833
+          },
+          "2018-04-12": {
+            "mean": 0.5181752682181207,
+            "std": 0.01506996100143093
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.29382391262821356,
+          "std": 0.0008322453963579372
+        },
+        "spearman": {
+          "mean": 0.34183367803341125,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.022216219245078175
+        },
+        "spearman_pooled": {
+          "mean": -0.583977564220112,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.004919308924396969
         }
       },
       "k100|B_policy|forest|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.08341879819721075,
-          "std": 0.0012913772459825132
+          "mean": 0.19905912475111717,
+          "std": 0.006727507685967725
         },
         "spearman": {
-          "mean": 0.21390359756282226,
-          "std": 0.01156541066336102
+          "mean": 0.2567748840105133,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.07316320895671007
+        },
+        "spearman_pooled": {
+          "mean": 0.1825298449675339,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.00893025703000056
         }
       },
       "k100|B_policy|forest|random_cell": {
         "rmse_log10": {
-          "mean": 0.0756307982744392,
-          "std": 0.004406648734754359
+          "mean": 0.13916252041718438,
+          "std": 0.0014842434654930019
         },
         "spearman": {
-          "mean": 0.3575904311126465,
-          "std": 0.10129909423509562
+          "mean": 0.6494252941687333,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.008176899252980149
+        },
+        "spearman_pooled": {
+          "mean": 0.6463479594295743,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.01621360722837218
+        }
+      },
+      "k100|B_policy|ridge|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": -0.7710924289602077,
+            "std": 0.0
+          },
+          "2017-06-30": {
+            "mean": -0.24123867069486404,
+            "std": 0.0
+          },
+          "2018-04-12": {
+            "mean": 0.28421741014176377,
+            "std": 0.0
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.2878861315598262,
+          "std": 0.0
+        },
+        "spearman": {
+          "mean": -0.24270456317110267,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.0
+        },
+        "spearman_pooled": {
+          "mean": -0.7396744613011116,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 1.1102230246251565e-16
         }
       },
       "k100|B_policy|ridge|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.06756235458689817,
-          "std": 0.0004701391945998137
+          "mean": 0.18645391003218567,
+          "std": 0.0007206949200840097
         },
         "spearman": {
-          "mean": 0.5357773944097772,
-          "std": 0.01776731392612079
+          "mean": 0.23966321237818147,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.048064209409140315
+        },
+        "spearman_pooled": {
+          "mean": 0.19132763854419635,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.0053152366828485625
         }
       },
       "k100|B_policy|ridge|random_cell": {
         "rmse_log10": {
-          "mean": 0.06339964185855947,
-          "std": 0.004501293546992845
+          "mean": 0.1749641751629705,
+          "std": 0.0017684388599712997
         },
         "spearman": {
-          "mean": 0.5777067270740078,
-          "std": 0.08910818457598499
+          "mean": 0.3274758893687967,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.02186228390602261
+        },
+        "spearman_pooled": {
+          "mean": 0.31025436384931226,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.009661810792878582
+        }
+      },
+      "k10|A_full|forest|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": -0.14729627917167723,
+            "std": 0.03145700974952631
+          },
+          "2017-06-30": {
+            "mean": 0.15533907441939082,
+            "std": 0.03240217042953519
+          },
+          "2018-04-12": {
+            "mean": 0.34034556089584206,
+            "std": 0.0031095925790747083
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.26843731649847985,
+          "std": 0.0009846796134417735
+        },
+        "spearman": {
+          "mean": 0.11612945204785186,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.02158365490022202
+        },
+        "spearman_pooled": {
+          "mean": -0.5045958578327527,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.005150632584443272
         }
       },
       "k10|A_full|forest|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.08756921391456285,
-          "std": 0.0026511578923319387
+          "mean": 0.13034783389081914,
+          "std": 0.007475991559364608
         },
         "spearman": {
-          "mean": -0.022053460516496034,
-          "std": 0.10782097681540893
+          "mean": 0.7119658888919055,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.07135327938929042
+        },
+        "spearman_pooled": {
+          "mean": 0.7276958432112627,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.03564758104387594
         }
       },
       "k10|A_full|forest|random_cell": {
         "rmse_log10": {
-          "mean": 0.08266549771289723,
-          "std": 0.004559488971871344
+          "mean": 0.10487491579360703,
+          "std": 0.004307775444394907
         },
         "spearman": {
-          "mean": 0.1578924799624618,
-          "std": 0.11173826748504227
+          "mean": 0.8274975594536276,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.006318194436577633
+        },
+        "spearman_pooled": {
+          "mean": 0.8446278178494359,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.010498078741534616
+        }
+      },
+      "k10|A_full|ridge|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": 0.6045478398100955,
+            "std": 0.0
+          },
+          "2017-06-30": {
+            "mean": 0.12399939727595514,
+            "std": 1.3877787807814457e-17
+          },
+          "2018-04-12": {
+            "mean": 0.42172028638888426,
+            "std": 0.0
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.2734524862757259,
+          "std": 0.0
+        },
+        "spearman": {
+          "mean": 0.3834225078249783,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.0
+        },
+        "spearman_pooled": {
+          "mean": 0.17389724450260388,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.0
         }
       },
       "k10|A_full|ridge|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.06903801552690036,
-          "std": 0.006750880188175862
+          "mean": 0.12729152036649485,
+          "std": 0.015585826501060577
         },
         "spearman": {
-          "mean": 0.5327584031776871,
-          "std": 0.07233763776392796
+          "mean": 0.7939629978309614,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.003705761066915392
+        },
+        "spearman_pooled": {
+          "mean": 0.8349721054179549,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.00702924973266168
         }
       },
       "k10|A_full|ridge|random_cell": {
         "rmse_log10": {
-          "mean": 0.06545956873338536,
-          "std": 0.010742244157642154
+          "mean": 0.1673268890370867,
+          "std": 0.002364867099906329
         },
         "spearman": {
-          "mean": 0.5893937492511787,
-          "std": 0.09401119450838592
+          "mean": 0.8264663400615824,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.0065421724412365
+        },
+        "spearman_pooled": {
+          "mean": 0.8534394661262485,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.006621905489031832
+        }
+      },
+      "k10|A_trajectory|forest|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": -0.19701458160501936,
+            "std": 0.034582994148258536
+          },
+          "2017-06-30": {
+            "mean": -0.2523787976225591,
+            "std": 0.004937006287598795
+          },
+          "2018-04-12": {
+            "mean": 0.21934059235812234,
+            "std": 0.02388541865047158
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.25634139248814125,
+          "std": 0.0014405104947785513
+        },
+        "spearman": {
+          "mean": -0.07668426228981871,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.00840224553678691
+        },
+        "spearman_pooled": {
+          "mean": -0.5055639088124003,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.009496390735803719
         }
       },
       "k10|A_trajectory|forest|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.09131750719714112,
-          "std": 0.0027993923866405195
+          "mean": 0.13862511591981333,
+          "std": 0.005689119512569244
         },
         "spearman": {
-          "mean": -0.1791307347400212,
-          "std": 0.10668123459380967
+          "mean": 0.681779989331392,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.03880881840391063
+        },
+        "spearman_pooled": {
+          "mean": 0.6977701923852474,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.01835456426427958
         }
       },
       "k10|A_trajectory|forest|random_cell": {
         "rmse_log10": {
-          "mean": 0.08616912956506008,
-          "std": 0.0028430177192566245
+          "mean": 0.11661639135534252,
+          "std": 0.0049927033621789225
         },
         "spearman": {
-          "mean": 0.07873171215519495,
-          "std": 0.07695237218501691
+          "mean": 0.7876903526988638,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.009125664743043126
+        },
+        "spearman_pooled": {
+          "mean": 0.8039506018080821,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.016390346961671635
+        }
+      },
+      "k10|A_trajectory|ridge|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": 0.6467154654720189,
+            "std": 0.0
+          },
+          "2017-06-30": {
+            "mean": 0.016311735573450857,
+            "std": 0.0
+          },
+          "2018-04-12": {
+            "mean": 0.2388385779699079,
+            "std": 2.7755575615628914e-17
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.250051368396499,
+          "std": 0.0
+        },
+        "spearman": {
+          "mean": 0.30062192633845924,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.0
+        },
+        "spearman_pooled": {
+          "mean": 0.2609073832939918,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.0
         }
       },
       "k10|A_trajectory|ridge|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.07936998660074696,
-          "std": 0.005195456120395617
+          "mean": 0.14363696810147952,
+          "std": 0.017596881930463912
         },
         "spearman": {
-          "mean": 0.3311022467038907,
-          "std": 0.12329354446004281
+          "mean": 0.7529647219268467,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.00954344008097225
+        },
+        "spearman_pooled": {
+          "mean": 0.7986487344229968,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.014279117849226987
         }
       },
       "k10|A_trajectory|ridge|random_cell": {
         "rmse_log10": {
-          "mean": 0.08003524442272641,
-          "std": 0.0077649409383481974
+          "mean": 0.16395276843682763,
+          "std": 0.011443384809105747
         },
         "spearman": {
-          "mean": 0.4244647565947377,
-          "std": 0.04126560814428604
+          "mean": 0.8014267820740261,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.009057338908036358
+        },
+        "spearman_pooled": {
+          "mean": 0.8187832410548613,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.010604977791036412
+        }
+      },
+      "k10|B_policy|forest|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": 0.2788593654519293,
+            "std": 0.035507982259269204
+          },
+          "2017-06-30": {
+            "mean": 0.22846640043018385,
+            "std": 0.0773394944664833
+          },
+          "2018-04-12": {
+            "mean": 0.5181752682181207,
+            "std": 0.01506996100143093
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.29382391262821356,
+          "std": 0.0008322453963579372
+        },
+        "spearman": {
+          "mean": 0.34183367803341125,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.022216219245078175
+        },
+        "spearman_pooled": {
+          "mean": -0.583977564220112,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.004919308924396969
         }
       },
       "k10|B_policy|forest|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.08341879819721075,
-          "std": 0.0012913772459825132
+          "mean": 0.19905912475111717,
+          "std": 0.006727507685967725
         },
         "spearman": {
-          "mean": 0.21390359756282226,
-          "std": 0.01156541066336102
+          "mean": 0.2567748840105133,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.07316320895671007
+        },
+        "spearman_pooled": {
+          "mean": 0.1825298449675339,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.00893025703000056
         }
       },
       "k10|B_policy|forest|random_cell": {
         "rmse_log10": {
-          "mean": 0.0756307982744392,
-          "std": 0.004406648734754359
+          "mean": 0.13916252041718438,
+          "std": 0.0014842434654930019
         },
         "spearman": {
-          "mean": 0.3575904311126465,
-          "std": 0.10129909423509562
+          "mean": 0.6494252941687333,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.008176899252980149
+        },
+        "spearman_pooled": {
+          "mean": 0.6463479594295743,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.01621360722837218
+        }
+      },
+      "k10|B_policy|ridge|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": -0.7710924289602077,
+            "std": 0.0
+          },
+          "2017-06-30": {
+            "mean": -0.24123867069486404,
+            "std": 0.0
+          },
+          "2018-04-12": {
+            "mean": 0.28421741014176377,
+            "std": 0.0
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.2878861315598262,
+          "std": 0.0
+        },
+        "spearman": {
+          "mean": -0.24270456317110267,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.0
+        },
+        "spearman_pooled": {
+          "mean": -0.7396744613011116,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 1.1102230246251565e-16
         }
       },
       "k10|B_policy|ridge|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.06756235458689817,
-          "std": 0.0004701391945998137
+          "mean": 0.18645391003218567,
+          "std": 0.0007206949200840097
         },
         "spearman": {
-          "mean": 0.5357773944097772,
-          "std": 0.01776731392612079
+          "mean": 0.23966321237818147,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.048064209409140315
+        },
+        "spearman_pooled": {
+          "mean": 0.19132763854419635,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.0053152366828485625
         }
       },
       "k10|B_policy|ridge|random_cell": {
         "rmse_log10": {
-          "mean": 0.06339964185855947,
-          "std": 0.004501293546992845
+          "mean": 0.1749641751629705,
+          "std": 0.0017684388599712997
         },
         "spearman": {
-          "mean": 0.5777067270740078,
-          "std": 0.08910818457598499
+          "mean": 0.3274758893687967,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.02186228390602261
+        },
+        "spearman_pooled": {
+          "mean": 0.31025436384931226,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.009661810792878582
+        }
+      },
+      "k50|A_full|forest|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": -0.13637683891762542,
+            "std": 0.038226955191548236
+          },
+          "2017-06-30": {
+            "mean": 0.07297487874604018,
+            "std": 0.0049651623999448545
+          },
+          "2018-04-12": {
+            "mean": 0.33529487787592166,
+            "std": 0.021595340252559485
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.27051855415741016,
+          "std": 0.0003548871762934653
+        },
+        "spearman": {
+          "mean": 0.09063097256811213,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.01848037133773242
+        },
+        "spearman_pooled": {
+          "mean": -0.5908162959235019,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.0059064625116416565
         }
       },
       "k50|A_full|forest|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.07501499927005832,
-          "std": 0.000500996032329134
+          "mean": 0.135774330690456,
+          "std": 0.008810099523506693
         },
         "spearman": {
-          "mean": 0.42652422372468285,
-          "std": 0.027985810651644485
+          "mean": 0.7162991010157076,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.05115807308789575
+        },
+        "spearman_pooled": {
+          "mean": 0.7385628115483126,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.02676280975736781
         }
       },
       "k50|A_full|forest|random_cell": {
         "rmse_log10": {
-          "mean": 0.0727232793059353,
-          "std": 0.007991174709513375
+          "mean": 0.10782376458327252,
+          "std": 0.0034163572053550403
         },
         "spearman": {
-          "mean": 0.424078606507873,
-          "std": 0.14519020114886783
+          "mean": 0.8223122508710178,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.011228898708744744
+        },
+        "spearman_pooled": {
+          "mean": 0.8334289463193638,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.005794266041720152
+        }
+      },
+      "k50|A_full|ridge|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": 0.6114305720978889,
+            "std": 0.0
+          },
+          "2017-06-30": {
+            "mean": 0.17089563704962632,
+            "std": 2.7755575615628914e-17
+          },
+          "2018-04-12": {
+            "mean": 0.5153810919722444,
+            "std": 0.0
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.23641212572070783,
+          "std": 2.7755575615628914e-17
+        },
+        "spearman": {
+          "mean": 0.4325691003732532,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.0
+        },
+        "spearman_pooled": {
+          "mean": -0.02399431186795722,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.0
         }
       },
       "k50|A_full|ridge|held_out_policy": {
         "rmse_log10": {
-          "mean": 4.677045051549984,
-          "std": 3.083547636696451
+          "mean": 0.11969903153611473,
+          "std": 0.011522077861242777
         },
         "spearman": {
-          "mean": 0.532972931003723,
-          "std": 0.09901264024934693
+          "mean": 0.7797479420620922,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.010773130883067849
+        },
+        "spearman_pooled": {
+          "mean": 0.8260431465298153,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.01346953312653279
         }
       },
       "k50|A_full|ridge|random_cell": {
         "rmse_log10": {
-          "mean": 4.9662365151292,
-          "std": 1.2487944793931716
+          "mean": 0.1139958221448419,
+          "std": 0.0024862930185347064
         },
         "spearman": {
-          "mean": 0.6662805221024645,
-          "std": 0.03435173998475549
+          "mean": 0.8285620116945477,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.010486332570102912
+        },
+        "spearman_pooled": {
+          "mean": 0.8495081300295908,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.0031268290423404612
+        }
+      },
+      "k50|A_trajectory|forest|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": -0.13085903666158863,
+            "std": 0.045547352308369815
+          },
+          "2017-06-30": {
+            "mean": 0.09311282389844865,
+            "std": 0.022945082049649967
+          },
+          "2018-04-12": {
+            "mean": 0.36924016607957233,
+            "std": 0.01812439606314787
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.25736347496042017,
+          "std": 0.0009174079285140893
+        },
+        "spearman": {
+          "mean": 0.11049798443881077,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.019368289461984014
+        },
+        "spearman_pooled": {
+          "mean": -0.5431147493746554,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.0030091566132984305
         }
       },
       "k50|A_trajectory|forest|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.07199324738231876,
-          "std": 0.0005462231706623664
+          "mean": 0.13109544897228467,
+          "std": 0.004756338910302245
         },
         "spearman": {
-          "mean": 0.5128931264867577,
-          "std": 0.030598196403878487
+          "mean": 0.7415063224127652,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.024363923743946494
+        },
+        "spearman_pooled": {
+          "mean": 0.7387850340884684,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.013949788140431957
         }
       },
       "k50|A_trajectory|forest|random_cell": {
         "rmse_log10": {
-          "mean": 0.07188942248933063,
-          "std": 0.00806212224764142
+          "mean": 0.11588836163123452,
+          "std": 0.0034246789093908365
         },
         "spearman": {
-          "mean": 0.4365212204179583,
-          "std": 0.13535645721514736
+          "mean": 0.7960415937245465,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.008109318818353839
+        },
+        "spearman_pooled": {
+          "mean": 0.8116215712950835,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.006812869469342017
+        }
+      },
+      "k50|A_trajectory|ridge|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": 0.6514201179219029,
+            "std": 0.0
+          },
+          "2017-06-30": {
+            "mean": 0.06169762946069144,
+            "std": 6.938893903907228e-18
+          },
+          "2018-04-12": {
+            "mean": 0.5511117378945647,
+            "std": 0.0
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.19478631242247735,
+          "std": 0.0
+        },
+        "spearman": {
+          "mean": 0.4214098284257197,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.0
+        },
+        "spearman_pooled": {
+          "mean": 0.313428202355311,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.0
         }
       },
       "k50|A_trajectory|ridge|held_out_policy": {
         "rmse_log10": {
-          "mean": 5.99410277453524,
-          "std": 3.3662943843200663
+          "mean": 0.11962059893049781,
+          "std": 0.0091609986629741
         },
         "spearman": {
-          "mean": 0.42858369085462805,
-          "std": 0.12211112303302647
+          "mean": 0.7803597213277,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.016102634408015317
+        },
+        "spearman_pooled": {
+          "mean": 0.8223359404629279,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.015942406395733983
         }
       },
       "k50|A_trajectory|ridge|random_cell": {
         "rmse_log10": {
-          "mean": 6.915101555160121,
-          "std": 1.782591595071925
+          "mean": 0.1103384513747257,
+          "std": 0.005520040742609905
         },
         "spearman": {
-          "mean": 0.5303127859608772,
-          "std": 0.03991006395075905
+          "mean": 0.8264271388189011,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.0027412884470833926
+        },
+        "spearman_pooled": {
+          "mean": 0.8387174612771435,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.005142247425607681
+        }
+      },
+      "k50|B_policy|forest|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": 0.2788593654519293,
+            "std": 0.035507982259269204
+          },
+          "2017-06-30": {
+            "mean": 0.22846640043018385,
+            "std": 0.0773394944664833
+          },
+          "2018-04-12": {
+            "mean": 0.5181752682181207,
+            "std": 0.01506996100143093
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.29382391262821356,
+          "std": 0.0008322453963579372
+        },
+        "spearman": {
+          "mean": 0.34183367803341125,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.022216219245078175
+        },
+        "spearman_pooled": {
+          "mean": -0.583977564220112,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.004919308924396969
         }
       },
       "k50|B_policy|forest|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.08341879819721075,
-          "std": 0.0012913772459825132
+          "mean": 0.19905912475111717,
+          "std": 0.006727507685967725
         },
         "spearman": {
-          "mean": 0.21390359756282226,
-          "std": 0.01156541066336102
+          "mean": 0.2567748840105133,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.07316320895671007
+        },
+        "spearman_pooled": {
+          "mean": 0.1825298449675339,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.00893025703000056
         }
       },
       "k50|B_policy|forest|random_cell": {
         "rmse_log10": {
-          "mean": 0.0756307982744392,
-          "std": 0.004406648734754359
+          "mean": 0.13916252041718438,
+          "std": 0.0014842434654930019
         },
         "spearman": {
-          "mean": 0.3575904311126465,
-          "std": 0.10129909423509562
+          "mean": 0.6494252941687333,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.008176899252980149
+        },
+        "spearman_pooled": {
+          "mean": 0.6463479594295743,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.01621360722837218
+        }
+      },
+      "k50|B_policy|ridge|held_out_batch": {
+        "per_batch_spearman": {
+          "2017-05-12": {
+            "mean": -0.7710924289602077,
+            "std": 0.0
+          },
+          "2017-06-30": {
+            "mean": -0.24123867069486404,
+            "std": 0.0
+          },
+          "2018-04-12": {
+            "mean": 0.28421741014176377,
+            "std": 0.0
+          }
+        },
+        "rmse_log10": {
+          "mean": 0.2878861315598262,
+          "std": 0.0
+        },
+        "spearman": {
+          "mean": -0.24270456317110267,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.0
+        },
+        "spearman_pooled": {
+          "mean": -0.7396744613011116,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 1.1102230246251565e-16
         }
       },
       "k50|B_policy|ridge|held_out_policy": {
         "rmse_log10": {
-          "mean": 0.06756235458689817,
-          "std": 0.0004701391945998137
+          "mean": 0.18645391003218567,
+          "std": 0.0007206949200840097
         },
         "spearman": {
-          "mean": 0.5357773944097772,
-          "std": 0.01776731392612079
+          "mean": 0.23966321237818147,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.048064209409140315
+        },
+        "spearman_pooled": {
+          "mean": 0.19132763854419635,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.0053152366828485625
         }
       },
       "k50|B_policy|ridge|random_cell": {
         "rmse_log10": {
-          "mean": 0.06339964185855947,
-          "std": 0.004501293546992845
+          "mean": 0.1749641751629705,
+          "std": 0.0017684388599712997
         },
         "spearman": {
-          "mean": 0.5777067270740078,
-          "std": 0.08910818457598499
+          "mean": 0.3274758893687967,
+          "note": "mean of per-fold Spearman (the quotable statistic)",
+          "std": 0.02186228390602261
+        },
+        "spearman_pooled": {
+          "mean": 0.31025436384931226,
+          "note": "pooled out-of-fold; INVALID for held_out_batch (between-fold target shifts) \u2014 use per-fold",
+          "std": 0.009661810792878582
         }
       }
     }
@@ -480,9 +1290,9 @@
     "argv": [
       "scripts/run_severson_representation_ab.py"
     ],
-    "captured_at": "2026-07-03T10:05:31.301548+00:00",
-    "git_commit": "0372df835aa013909e93b5bfe7e0f9bc0d80428f",
-    "git_dirty": false,
+    "captured_at": "2026-07-03T19:19:47.826032+00:00",
+    "git_commit": "1c7af84ac3e1d491f643fe460389be5887401d2c",
+    "git_dirty": true,
     "packages": {
       "numpy": "2.4.6",
       "pandas": "3.0.3",

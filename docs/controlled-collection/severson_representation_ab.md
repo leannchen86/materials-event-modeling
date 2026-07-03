@@ -232,6 +232,118 @@ Hypotheses (same structure as the batch-1 run, bars sharpened where power allows
   registered caveats); if not, rung 3 needs a different dataset or task family before
   any claim.
 
-### Replication results
+### Replication results (runs 2026-07-03; final instrument commit `1c7af84`)
 
-*(to be filled by the run)*
+**Findings first.** On 135 events across three collection batches: the paper-shaped
+projection's structural losses replicate decisively — B is forced to 0.500 on replicate
+ranking (verified bitwise) while the grammar representation reaches 0.756 with a
+cluster-bootstrap CI of [0.678, 0.795] under ridge, and censored events now contribute
+13 of 160 resolvable pairs that B cannot represent at all. Trajectory features beat
+recipe features by +0.16 to +0.56 Spearman on every registered split in both model
+families. The two humbling results: the forest-family ranking arm sits at chance's edge
+(0.596, CI touching 0.499), so H2r's "both families" bar is NOT met as registered; and
+the grammar representation itself carries a provenance fingerprint — the collection
+batch is 94.5% identifiable from trajectory features alone (chance 34%), which is why
+cross-batch transfer works only for the linear model and why this project's provenance
+protocol applies to its own representations.
+
+**Instrument revision after adversarial review (commit `1c7af84`, before the corrected
+run).** The reviewer verified the pre-registration ordering (no full analysis could have
+completed before the prereg commit), reproduced both events and manifest bit-identically,
+and cleared the leakage attacks (feature truncation test: 0 mismatches across all k;
+censored logic: 13/13 pairs valid). It ruled two things broken: (1) pooled cross-fold
+Spearman under held-out-batch is metric-invalid (between-batch target shifts dominate the
+pooled ranks — the previously printed forest "collapse to −0.58" was pure pooling
+artifact, and B's −0.74 was magnitude-inflated); (2) the quality-flag net missed
+chargetime spikes (~420 min vs the protocol's ~10–13) and zero-IR readings, which
+poisoned specific ridge folds. Fixes: per-fold Spearman is now the quotable statistic,
+ranking CIs use a cluster bootstrap over policy groups (82% of pairs come from 5 batch-3
+groups), and the adapter flags all three fields (84 observations flagged). Rulings below
+are on the corrected instrument; where a ruling moved across revisions it is said so.
+
+Cycle-life regression, k=100, per-fold Spearman (mean ± std over 3 seeds):
+
+| split | representation | ridge | forest |
+| --- | --- | ---: | ---: |
+| random-cell | B (policy) | 0.327 | 0.649 |
+| random-cell | A-full | **0.840** | **0.813** |
+| held-out-policy | B (policy) | 0.240 | 0.257 |
+| held-out-policy | A-full | **0.804** | **0.751** |
+| held-out-batch | B (policy) | −0.243 | 0.342 |
+| held-out-batch | A-full | **0.492** | 0.076 |
+
+Held-out-batch per-fold detail (the only valid view): ridge A-full is positive in every
+fold (0.573 / 0.417 / 0.486) while ridge B is negative in two of three (−0.771 / −0.241 /
++0.284 — the recipe→lifetime map learned on two batches genuinely anti-predicts batch 1);
+forest A-full fails one fold badly (−0.448) and loses to forest B on the mean.
+
+Replicate ranking (160 pairs: 147 EOL + 13 censored-resolved; cluster-bootstrap CIs):
+
+| representation | model | accuracy | cluster CI95 | per-seed |
+| --- | --- | ---: | --- | --- |
+| B (policy) | either | 0.500 | forced tie, by construction | — |
+| A-full | ridge | **0.756** | **[0.678, 0.795]** | 0.756 / 0.756 / 0.756 |
+| A-full | forest | 0.596 | [0.499, 0.674] | 0.562 / 0.619 / 0.606 |
+| A (trajectory) | ridge | 0.725 | [0.635, 0.787] | — |
+| A (trajectory) | forest | 0.592 | [0.520, 0.661] | — |
+
+Trajectory forecast (RMSE, Ah; per-cell extrapolation baseline): h200 — A-full ridge
+0.00239 ± 0.00015 vs extrapolation 0.00445; h300 — 0.00730 ± 0.00056 vs 0.01396. With the
+glitches flagged, ridge beats extrapolation in every seed at both horizons (was 2/3 with
+one glitch-shadowed seed before the fix).
+
+### Verdict against the replication pre-registration
+
+- **H1r CONFIRMED.** A-full − B ≥ 0.10 in both families at k=100 random-cell: ridge
+  +0.513, forest +0.164; every per-seed margin ≥ 0.10. Caveat: absolute Spearman ~0.84
+  is inflated by the batch fingerprint (below) and must not be quoted as pure physics —
+  the *margin over B* under the registered split is the honest claim.
+- **H2r NOT CONFIRMED AS REGISTERED — ridge arm confirmed, forest arm at chance's edge.**
+  The registered bar demanded ≥0.60 with CI excluding 0.50 in both families. Ridge:
+  0.756, cluster CI [0.678, 0.795], identical in all seeds, stable across both instrument
+  revisions (0.750 → 0.756) — robust. Forest: 0.610 → 0.596 across revisions, corrected
+  CI [0.499, 0.674] — cannot be claimed. The structural half (B forced to 0.500; the 13
+  censored pairs unrepresentable in B) holds for any model.
+- **H3r CONFIRMED (strengthened by the instrument fix).** A-full ridge beats per-cell
+  extrapolation at both horizons in 3/3 seeds on the corrected instrument (registered
+  minimum was 2/3, which the pre-fix run met with the failing seed traced to an unflagged
+  chargetime glitch).
+- **H4r CONFIRMED.** Held-out-policy: ridge 0.804 vs 0.240; forest 0.751 vs 0.257,
+  forest margins positive in every seed (~+0.5). Caveat: policies nest within batches,
+  so part of this margin can ride the batch fingerprint.
+- **H5r CONFIRMED.** All 5 barcode continuations resolved as EOL successes (1,422–2,229
+  cycles); batch-1 censored count 10 → 5 exactly as predicted; censored bounds now
+  resolve 13 pairs (predicted ≥1) — 8% of the ranking evidence exists only because the
+  grammar retains truncated runs.
+- **H6r: ridge arm CONFIRMED, forest falsifier FIRES — and the diagnosis is the
+  project's own thesis.** Per-fold: ridge A-full transfers positively to every held-out
+  batch (mean +0.49) while ridge B is anti-predictive (−0.24); forest A-full (+0.08)
+  loses to forest B (+0.34). The registered falsifier interpretation — trajectory
+  features encode collection style — is supported: batch is 94.5% identifiable from
+  trajectory features (chance 34%), and batch median lifetimes differ by 0.32 log10.
+  The failure is model-specific (trees cannot extrapolate across the shift; the linear
+  model can), not representation-fatal — but the grammar representation demonstrably
+  carries provenance, and any downstream use needs exactly the provenance-stressed
+  evaluation this repo's other branch builds.
+
+### Decision (per the registered rule)
+
+The registered claimability gate was "H1r and H2r hold." H1r holds; H2r holds in one of
+two families. Therefore the unqualified external claim is **not** released. What is
+supportable, with the qualifications attached: (1) the structural claim — paper-shaping
+provably deletes replicate-discrimination and censored-run information on real data
+(model-independent, pre-registered, adversarially verified twice); (2) the ridge-family
+statistical claim — within-recipe outcome ranking at 0.756 [0.678, 0.795] where the
+paper shape is chance-bound; (3) the transfer claim — trajectory generalizes across
+recipes and (linearly) across collection batches where recipes anti-predict. The
+batch-fingerprint finding (94.5%) connects rung 3 to the provenance-critique branch: raw
+event representations are not automatically innocent, which is the thesis said twice.
+
+Follow-ons, in priority order: (a) port the provenance-leakage audit (revision 2) to run
+directly on A-representation feature matrices as a standard step of the A/B protocol —
+the 94.5% number should come from the protocol tool, not an ad-hoc probe; (b) a
+model-family-robust ranking test (e.g. gradient boosting or rank-objective models) to
+settle whether the forest arm's fragility is about trees or about the signal; (c) only
+then the second-dataset A/B (oleogel reframing or HTEM within-library) — do not fan out
+before the Severson protocol is airtight. Field-level (not observation-level) quality
+flags go on the grammar v1.1 list alongside the incidental-vs-deliberate L3 distinction.
