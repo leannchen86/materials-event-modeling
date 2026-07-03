@@ -27,6 +27,7 @@ from statistics import mean, pstdev
 from typing import Any
 
 import numpy as np
+from sklearn.decomposition import PCA
 from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, confusion_matrix
@@ -77,6 +78,8 @@ def evaluate_recoverability(
     classes: list[Any] | None = None,
     n_splits: int = 3,
     seed: int = 17,
+    n_repeats: int = 1,
+    pca_components: int | None = None,
 ) -> dict[str, Any]:
     """Cross-validated recoverability of ``labels`` from ``features``.
 
@@ -84,18 +87,22 @@ def evaluate_recoverability(
     baseline) under stratified k-fold. Returns the standard metrics plus the derived
     ``leakage_score`` and ``severity``. Mirrors the estimator used by the original
     opXRD source-predictability scripts so results reproduce.
+
+    ``pca_components`` puts PCA *inside* the fold pipeline (fit on the train split
+    only). Passing pre-reduced features instead would leak: components fit on the full
+    matrix let test rows shape the basis. ``n_repeats`` repeats the whole CV with
+    shifted seeds and pools fold metrics, so ``balanced_accuracy["std"]`` reflects both
+    fold and seed variation — required before quoting any threshold-adjacent verdict.
     """
     features = np.asarray(features, dtype=np.float32)
     labels = np.asarray(labels)
     if classes is None:
         classes = sorted(set(labels.tolist()))
 
-    classifier = make_pipeline(
-        StandardScaler(),
-        LogisticRegression(max_iter=2000, class_weight="balanced", random_state=seed),
-    )
-    baseline = DummyClassifier(strategy="most_frequent")
-    cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)
+    reduce_to: int | None = None
+    if pca_components is not None:
+        min_train = (len(labels) * (n_splits - 1)) // n_splits
+        reduce_to = max(1, min(pca_components, features.shape[1], min_train - 1))
 
     accuracy: list[float] = []
     balanced_accuracy: list[float] = []
@@ -103,19 +110,36 @@ def evaluate_recoverability(
     baseline_balanced_accuracy: list[float] = []
     confusion = np.zeros((len(classes), len(classes)), dtype=np.int64)
 
-    for train_idx, test_idx in cv.split(features, labels):
-        classifier.fit(features[train_idx], labels[train_idx])
-        prediction = classifier.predict(features[test_idx])
-        baseline.fit(features[train_idx], labels[train_idx])
-        baseline_prediction = baseline.predict(features[test_idx])
-
-        accuracy.append(float(accuracy_score(labels[test_idx], prediction)))
-        balanced_accuracy.append(float(balanced_accuracy_score(labels[test_idx], prediction)))
-        baseline_accuracy.append(float(accuracy_score(labels[test_idx], baseline_prediction)))
-        baseline_balanced_accuracy.append(
-            float(balanced_accuracy_score(labels[test_idx], baseline_prediction))
+    for repeat in range(max(1, n_repeats)):
+        repeat_seed = seed + repeat
+        steps: list[Any] = []
+        if reduce_to is not None:
+            steps.append(PCA(n_components=reduce_to, random_state=repeat_seed))
+        steps.append(StandardScaler())
+        steps.append(
+            LogisticRegression(max_iter=2000, class_weight="balanced", random_state=repeat_seed)
         )
-        confusion += confusion_matrix(labels[test_idx], prediction, labels=classes)
+        classifier = make_pipeline(*steps)
+        baseline = DummyClassifier(strategy="most_frequent")
+        cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=repeat_seed)
+
+        for train_idx, test_idx in cv.split(features, labels):
+            classifier.fit(features[train_idx], labels[train_idx])
+            prediction = classifier.predict(features[test_idx])
+            baseline.fit(features[train_idx], labels[train_idx])
+            baseline_prediction = baseline.predict(features[test_idx])
+
+            accuracy.append(float(accuracy_score(labels[test_idx], prediction)))
+            balanced_accuracy.append(
+                float(balanced_accuracy_score(labels[test_idx], prediction))
+            )
+            baseline_accuracy.append(
+                float(accuracy_score(labels[test_idx], baseline_prediction))
+            )
+            baseline_balanced_accuracy.append(
+                float(balanced_accuracy_score(labels[test_idx], baseline_prediction))
+            )
+            confusion += confusion_matrix(labels[test_idx], prediction, labels=classes)
 
     per_class_recall = {}
     for idx, class_name in enumerate(classes):
@@ -132,6 +156,8 @@ def evaluate_recoverability(
 
     return {
         "features": int(features.shape[1]),
+        "pca_components": reduce_to,
+        "n_repeats": max(1, n_repeats),
         "accuracy": metric_summary(accuracy),
         "balanced_accuracy": metric_summary(balanced_accuracy),
         "baseline_accuracy": metric_summary(baseline_accuracy),
@@ -151,11 +177,15 @@ def audit_feature_sets(
     *,
     n_splits: int = 3,
     seed: int = 17,
+    n_repeats: int = 1,
+    pca_components: dict[str, int] | None = None,
 ) -> dict[str, Any]:
     """Audit provenance recoverability and rank feature sets by heuristic risk.
 
     Returns a report with per-feature-set results (sorted worst-first), the worst
-    observed leakage, and a plain-language recommendation.
+    observed leakage, and a plain-language recommendation. ``pca_components`` maps a
+    feature-set name to a PCA size fit inside each fold (train split only); feature
+    sets not named are audited as passed.
     """
     labels = np.asarray(labels)
     classes = sorted(set(labels.tolist()))
@@ -166,6 +196,7 @@ def audit_feature_sets(
     if max_splits < 2:
         raise ValueError("each provenance class needs at least two records")
     effective_splits = min(n_splits, max_splits)
+    pca_components = pca_components or {}
 
     results: dict[str, dict[str, Any]] = {}
     for name, features in feature_sets.items():
@@ -175,6 +206,8 @@ def audit_feature_sets(
             classes=classes,
             n_splits=effective_splits,
             seed=seed,
+            n_repeats=n_repeats,
+            pca_components=pca_components.get(name),
         )
         result["feature_set"] = name
         results[name] = result
@@ -209,6 +242,8 @@ def audit_feature_sets(
         "class_counts": class_counts,
         "n_splits": effective_splits,
         "seed": seed,
+        "n_repeats": max(1, n_repeats),
+        "in_fold_pca": {k: int(v) for k, v in pca_components.items()},
         "severity_thresholds": SEVERITY_THRESHOLDS,
         "worst_feature_set": worst["feature_set"] if worst else None,
         "worst_leakage_score": worst["leakage_score"] if worst else 0.0,
@@ -222,9 +257,11 @@ def audit_feature_sets(
                 "provenance_recoverability_score": r["leakage_score"],
                 "severity": r["severity"],
                 "balanced_accuracy": r["balanced_accuracy"]["mean"],
+                "balanced_accuracy_std": r["balanced_accuracy"]["std"],
                 "chance_balanced_accuracy": r["chance_balanced_accuracy"],
                 "accuracy": r["accuracy"]["mean"],
                 "features": r["features"],
+                "pca_components": r["pca_components"],
                 "per_class_recall": r["per_class_recall"],
             }
             for r in ranked

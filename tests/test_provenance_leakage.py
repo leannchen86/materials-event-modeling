@@ -63,3 +63,38 @@ def test_control_efficacy_reports_reduction() -> None:
     assert eff["control_leakage_score"] < eff["baseline_leakage_score"]
     assert eff["relative_reduction"] > 0.5
     assert eff["control_severity"] != "severe"
+
+
+def test_in_fold_pca_reduces_and_still_detects_leak() -> None:
+    rng = np.random.default_rng(2)
+    n = 120
+    labels = _two_class_labels(n)
+    # Wide matrix: one leaky direction embedded in 40 noise dimensions.
+    signal = np.where(labels == "a", 0.0, 8.0)[:, None]
+    wide = np.hstack([signal + rng.normal(0, 0.2, (n, 1)), rng.normal(0, 1.0, (n, 40))])
+    report = audit_feature_sets(
+        {"wide_pca": wide},
+        labels,
+        n_splits=3,
+        seed=2,
+        pca_components={"wide_pca": 4},
+    )
+    result = report["detail"]["wide_pca"]
+    assert result["pca_components"] == 4
+    assert result["severity"] == "severe"  # PCA in-fold must still surface the leak
+    assert report["in_fold_pca"] == {"wide_pca": 4}
+
+
+def test_cv_repeats_pool_fold_metrics() -> None:
+    rng = np.random.default_rng(3)
+    n = 90
+    labels = _two_class_labels(n)
+    noise = rng.normal(0, 1.0, (n, 5))
+    report = audit_feature_sets({"noise": noise}, labels, n_splits=3, seed=3, n_repeats=3)
+    assert report["n_repeats"] == 3
+    detail = report["detail"]["noise"]
+    assert detail["n_repeats"] == 3
+    # Pooled fold metrics across repeats produce a spread statement.
+    assert detail["balanced_accuracy"]["std"] >= 0.0
+    compact = report["results"][0]
+    assert "balanced_accuracy_std" in compact

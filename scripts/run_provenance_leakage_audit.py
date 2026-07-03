@@ -29,13 +29,14 @@ from typing import Any, Callable
 
 import numpy as np
 import pandas as pd
-from sklearn.decomposition import PCA, TruncatedSVD
+from sklearn.decomposition import TruncatedSVD
 from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS, TfidfVectorizer
 
 from materials_event_modeling.audit.provenance_leakage import (
     audit_feature_sets,
     control_efficacy,
 )
+from materials_event_modeling.run_identity import run_identity
 
 
 def project_root() -> Path:
@@ -75,13 +76,19 @@ def _spectrum_summary_features(xrd: np.ndarray, peak_threshold: float) -> np.nda
     return np.column_stack([*features, quantiles]).astype(np.float32)
 
 
-def _metadata_features(samples: pd.DataFrame) -> np.ndarray:
-    raw = samples[
+def _metadata_frame(samples: pd.DataFrame) -> pd.DataFrame:
+    """Measurement-metadata features.
+
+    ``is_labeled`` is deliberately excluded: it is a dataset-curation flag that is
+    near-deterministic per opXRD source (labeled fraction 1.0/1.0/1.0/0.04/0.0/0.0),
+    so including it partly turns "recover the lab" into a bookkeeping identity. It is
+    audited separately as ``metadata_plus_curation`` and in ``--feature-ablation``.
+    """
+    frame = samples[
         ["points", "theta_min", "theta_max", "intensity_min", "intensity_max", "phase_count"]
     ].copy()
-    raw["theta_span"] = raw["theta_max"] - raw["theta_min"]
-    raw["is_labeled"] = samples["is_labeled"].astype(bool).astype(float)
-    return raw.fillna(0).to_numpy(dtype=np.float32)
+    frame["theta_span"] = frame["theta_max"] - frame["theta_min"]
+    return frame.fillna(0)
 
 
 def _coverage_mask(theta: np.ndarray, samples: pd.DataFrame) -> np.ndarray:
@@ -103,11 +110,6 @@ def _row_l1(x: np.ndarray, eps: float = 1e-6) -> np.ndarray:
 
 def _derivative(x: np.ndarray) -> np.ndarray:
     return np.diff(x, axis=1).astype(np.float32)
-
-
-def _pca(x: np.ndarray, components: int, seed: int) -> np.ndarray:
-    n_components = min(components, x.shape[0] - 1, x.shape[1])
-    return PCA(n_components=n_components, random_state=seed).fit_transform(x).astype(np.float32)
 
 
 def load_opxrd(args: argparse.Namespace) -> dict[str, Any]:
@@ -133,11 +135,30 @@ def load_opxrd(args: argparse.Namespace) -> dict[str, Any]:
     samples = samples.loc[keep_mask].reset_index(drop=True)
     labels = samples["top_level_source"].to_numpy()
 
+    metadata = _metadata_frame(samples)
+    is_labeled = samples["is_labeled"].astype(bool).astype(float).to_numpy(dtype=np.float32)
+
     feature_sets: dict[str, np.ndarray] = {
-        "metadata": _metadata_features(samples),
+        "metadata": metadata.to_numpy(dtype=np.float32),
+        # The original headline set (metadata + the is_labeled curation flag), kept so
+        # the curation-flag contribution is measured rather than silently dropped.
+        "metadata_plus_curation": np.column_stack(
+            [metadata.to_numpy(dtype=np.float32), is_labeled]
+        ),
         "spectrum_summary": _spectrum_summary_features(xrd, args.peak_threshold),
-        "xrd_pca": _pca(xrd, args.pca_components, args.seed),
+        "xrd_pca": xrd,
     }
+    # Sets named here are raw matrices; PCA is fit INSIDE each CV fold (train split
+    # only) by the audit core. Pre-reducing on the full matrix would let test rows
+    # shape the basis — the exact leakage this tool exists to catch.
+    pca_spec: dict[str, int] = {"xrd_pca": args.pca_components}
+
+    if args.feature_ablation:
+        for column in metadata.columns:
+            feature_sets[f"metadata_only_{column}"] = metadata[[column]].to_numpy(
+                dtype=np.float32
+            )
+        feature_sets["metadata_only_is_labeled"] = is_labeled[:, None]
 
     control_pairs: list[tuple[str, str]] = []
     if args.include_controls:
@@ -160,7 +181,8 @@ def load_opxrd(args: argparse.Namespace) -> dict[str, Any]:
             "crop_xrd_l1_pca": _row_l1(cropped),
             "crop_xrd_derivative_pca": _derivative(_row_zscore(cropped)),
         }.items():
-            feature_sets[name] = _pca(matrix, args.pca_components, args.seed)
+            feature_sets[name] = matrix
+            pca_spec[name] = args.pca_components
         # Does the strongest control reduce source recoverability in the raw representation?
         control_pairs.append(("full_xrd_pca", "crop_xrd_derivative_pca"))
 
@@ -168,6 +190,7 @@ def load_opxrd(args: argparse.Namespace) -> dict[str, Any]:
         "feature_sets": feature_sets,
         "labels": labels,
         "control_pairs": control_pairs,
+        "pca_spec": pca_spec,
         "meta": {
             "dataset_id": "opxrd",
             "spectra": int(xrd.shape[0]),
@@ -186,6 +209,10 @@ def load_opxrd(args: argparse.Namespace) -> dict[str, Any]:
 # or surface stats recover the source, the corpus carries a pervasive source fingerprint
 # that a balanced mix, a quality filter, or a naive train/eval split will silently
 # encode.
+#
+# Known limitation (archived as-is with the 2026-06 text result): tfidf/SVD here are
+# fit on the full corpus before CV (transductive), unlike the opXRD path where PCA is
+# fit in-fold. Re-fit in-fold before quoting new text numbers.
 # --------------------------------------------------------------------------------------
 
 _WORD_RE = re.compile(r"[a-z]+")
@@ -302,14 +329,16 @@ def print_report(report: dict[str, Any], meta: dict[str, Any], efficacy: list[di
     print(
         f"\nProvenance-recoverability audit — {meta.get('dataset_id', '?')}  "
         f"({report['n_classes']} sources, {report['n_items']} items, "
-        f"chance bal-acc {chance:.3f}, {report['n_splits']}-fold)\n"
+        f"chance bal-acc {chance:.3f}, {report['n_splits']}-fold x "
+        f"{report.get('n_repeats', 1)} repeats)\n"
     )
-    print(f"  {'feature_set':<32}{'recover':>9}{'bal_acc':>9}  risk")
-    print(f"  {'-' * 32}{'-' * 9}{'-' * 9}  {'-' * 8}")
+    print(f"  {'feature_set':<32}{'recover':>9}{'bal_acc':>9}{'+-std':>7}  risk")
+    print(f"  {'-' * 32}{'-' * 9}{'-' * 9}{'-' * 7}  {'-' * 8}")
     for r in report["results"]:
         print(
             f"  {r['feature_set']:<32}{r['leakage_score']:>9.3f}"
-            f"{r['balanced_accuracy']:>9.3f}  {r['severity']}"
+            f"{r['balanced_accuracy']:>9.3f}{r.get('balanced_accuracy_std', 0.0):>7.3f}"
+            f"  {r['severity']}"
         )
     print(
         f"\n  worst: {report['worst_feature_set']} "
@@ -329,7 +358,12 @@ def print_report(report: dict[str, Any], meta: dict[str, Any], efficacy: list[di
 def run(args: argparse.Namespace) -> dict[str, Any]:
     bundle = DATASETS[args.dataset](args)
     report = audit_feature_sets(
-        bundle["feature_sets"], bundle["labels"], n_splits=args.n_splits, seed=args.seed
+        bundle["feature_sets"],
+        bundle["labels"],
+        n_splits=args.n_splits,
+        seed=args.seed,
+        n_repeats=args.cv_repeats,
+        pca_components=bundle.get("pca_spec"),
     )
     efficacy = [
         control_efficacy(report, baseline, control)
@@ -339,6 +373,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     report["dataset_meta"] = bundle["meta"]
     report["control_efficacy"] = efficacy
     report["created_at"] = datetime.now(timezone.utc).isoformat()
+    report["run_identity"] = run_identity()
 
     print_report(report, bundle["meta"], efficacy)
 
@@ -359,9 +394,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dataset", choices=sorted(DATASETS), default="opxrd")
     parser.add_argument("--include-controls", action="store_true",
                         help="Also audit normalization/coverage controls and report efficacy.")
+    parser.add_argument("--feature-ablation", action="store_true",
+                        help="Also audit each metadata feature alone (incl. is_labeled) "
+                        "to decompose the metadata recoverability.")
     parser.add_argument("--min-source-samples", type=int, default=15)
     parser.add_argument("--n-splits", type=int, default=3)
     parser.add_argument("--seed", type=int, default=17)
+    parser.add_argument("--cv-repeats", type=int, default=1,
+                        help="Repeat the CV with shifted seeds and pool fold metrics; "
+                        "use >=3 for any threshold-adjacent verdict.")
     parser.add_argument("--pca-components", type=int, default=32)
     parser.add_argument("--peak-threshold", type=float, default=0.05)
     parser.add_argument("--min-coverage-fraction", type=float, default=0.95)
