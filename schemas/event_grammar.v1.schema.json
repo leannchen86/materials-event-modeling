@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EventGrammarV1",
+  "description": "Universal experiment-event envelope. Standardizes the outer structure of a material-making/measuring event (intent, observations, outcome, provenance, labels-after-raw); domain payloads stay namespaced and free-form inside observation.payload. Design note: docs/spine/event_grammar_validation_note.md. The CaCO3 pilot schema (material_event.schema.json) is a domain instance; this envelope is the cross-domain core that dataset adapters target.",
+  "type": "object",
+  "required": [
+    "event_id",
+    "system",
+    "observations",
+    "outcome",
+    "provenance"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "system": {
+      "type": "string",
+      "description": "Material system or domain, e.g. calcium_carbonate, drying_droplet, li_ion_cell, thin_film_library."
+    },
+    "created_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "intent": {
+      "type": ["object", "null"],
+      "description": "What was planned BEFORE execution: the recipe/design settings, stated separately from what was observed. Null when the source dataset records no plan.",
+      "additionalProperties": true,
+      "properties": {
+        "plan_id": {
+          "type": ["string", "null"]
+        },
+        "event_group_id": {
+          "type": ["string", "null"],
+          "description": "Replicate / planned-condition group id, for retrieval and held-out-plan splits."
+        },
+        "planned": {
+          "type": ["object", "null"],
+          "description": "Domain-specific planned parameters, namespaced keys encouraged (e.g. droplet.substrate, cell.charge_policy).",
+          "additionalProperties": true
+        }
+      }
+    },
+    "observations": {
+      "type": "array",
+      "description": "The trajectory: time-, space-, cycle-, or order-indexed observations. Raw payloads inline (payload) or by reference (file_path). Process readings, measurements, and notes are all observations (kind).",
+      "items": {
+        "type": "object",
+        "required": ["observation_id", "modality"],
+        "additionalProperties": true,
+        "properties": {
+          "observation_id": {
+            "type": "string"
+          },
+          "modality": {
+            "type": "string",
+            "description": "e.g. xrd, raman, saxs, waxs, video, photo, rheology, cycling, process_log, human_note."
+          },
+          "kind": {
+            "type": ["string", "null"],
+            "enum": ["process", "measurement", "note", null]
+          },
+          "stage": {
+            "type": ["string", "null"],
+            "description": "e.g. precursor, in_situ, intermediate, final, aged."
+          },
+          "timestamp": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "timepoint_minutes": {
+            "type": ["number", "null"]
+          },
+          "time_s": {
+            "type": ["number", "null"]
+          },
+          "cycle_index": {
+            "type": ["number", "null"]
+          },
+          "frame_index": {
+            "type": ["number", "null"]
+          },
+          "order_index": {
+            "type": ["number", "null"],
+            "description": "Fallback ordering when no physical time/space coordinate exists."
+          },
+          "spatial_position": {
+            "type": ["object", "null"],
+            "additionalProperties": true,
+            "properties": {
+              "x": {"type": ["number", "null"]},
+              "y": {"type": ["number", "null"]},
+              "unit": {"type": ["string", "null"]}
+            }
+          },
+          "payload": {
+            "type": ["object", "null"],
+            "description": "Inline raw data, domain-namespaced (e.g. {\"xrd\": {\"two_theta\": [...], \"intensity\": [...]}}).",
+            "additionalProperties": true
+          },
+          "file_path": {
+            "type": ["string", "null"],
+            "description": "Reference to the raw payload on disk, relative to the dataset root."
+          },
+          "instrument_id": {
+            "type": ["string", "null"]
+          },
+          "instrument_session_id": {
+            "type": ["string", "null"]
+          },
+          "raw_export_format": {
+            "type": ["string", "null"]
+          },
+          "include_in_raw_objective": {
+            "type": ["boolean", "null"]
+          },
+          "notes": {
+            "type": ["string", "null"]
+          }
+        }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "description": "What happened in the end. failed / ambiguous / aborted are first-class citizens, not missing rows.",
+      "required": ["status"],
+      "additionalProperties": true,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["success", "failure", "ambiguous", "aborted", "unknown"]
+        },
+        "summary": {
+          "type": ["object", "null"],
+          "description": "Domain-specific outcome summary, namespaced keys encouraged.",
+          "additionalProperties": true
+        },
+        "notes": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Collection context. Fields may be null, but the object is required so absence is an explicit recorded fact, not an omission.",
+      "additionalProperties": true,
+      "properties": {
+        "operator_id": {"type": ["string", "null"]},
+        "lab_id": {"type": ["string", "null"]},
+        "batch_id": {"type": ["string", "null"]},
+        "lot_id": {"type": ["string", "null"]},
+        "instrument_id": {"type": ["string", "null"]},
+        "instrument_session_id": {"type": ["string", "null"]},
+        "measurement_day": {"type": ["string", "null"]},
+        "run_order": {"type": ["number", "null"]},
+        "source_dataset": {"type": ["string", "null"]},
+        "raw_export_profile": {"type": ["string", "null"]}
+      }
+    },
+    "labels": {
+      "type": ["object", "null"],
+      "description": "Human/machine labels attached AFTER the raw record is frozen; downstream probes, never the primary record.",
+      "additionalProperties": true,
+      "properties": {
+        "assigned_after_raw_data_frozen": {
+          "type": ["boolean", "null"]
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["labeler_id", "label"],
+            "additionalProperties": true,
+            "properties": {
+              "labeler_id": {"type": "string"},
+              "label": {"type": "string"},
+              "confidence": {"type": ["number", "null"]},
+              "stage": {"type": ["string", "null"]},
+              "notes": {"type": ["string", "null"]}
+            }
+          }
+        }
+      }
+    }
+  }
+}
