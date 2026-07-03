@@ -1,10 +1,24 @@
-"""Adapt the Severson et al. 2019 battery cycling batch (matr.io) into event-grammar v1 envelopes.
+"""Adapt the Severson et al. 2019 battery cycling batches (matr.io) into event-grammar v1 envelopes.
 
-Source: data/raw/severson/batch1.mat — MATLAB v7.3 (HDF5) batch file, the only batch downloaded
-locally (46 cells; the full study is 124 cells across three batches, the other two ~3 GB files
-were deliberately not downloaded — see docs/event-method/severson_battery_audit.md). One event
-per cell, ALL 46 cells in the file (no sampling within the batch). LFP/graphite cells cycled to
-end of life under a fast-charging policy sweep on a multi-channel cycler.
+Source: every ``data/raw/severson/batch*.mat`` present — MATLAB v7.3 (HDF5) batch files
+(batch1 = 2017-05-12, batch2 = 2017-06-30, batch3 = 2018-04-12; the full study is 124 usable
+cells). One event per physical cell (barcode), ALL cells in every available file. LFP/graphite
+cells cycled to end of life under a fast-charging policy sweep on a multi-channel cycler.
+
+Continuation linkage (in-data, no external assumption): cells sharing a barcode across batch
+files are the same physical cell whose test continued in a later batch. Records are merged into
+one event in batch-date order; if the continuation's cycle numbering restarts, it is re-indexed
+by the primary record's last cycle (mechanical re-indexing, recorded in the event notes). Each
+observation carries ``instrument_session_id`` = the batch date and ``instrument_id`` = the
+channel of the file it came from, so merged trajectories honestly record that they span
+collection sessions. Same-barcode records with DIFFERENT policies are never merged (kept as
+separate events with a warning).
+
+Observation quality flags (grammar v1.1 lesson from the first A/B run): per-cycle QDischarge
+outside (0.5, 1.3) Ah is physically implausible for a 1.1 Ah nominal cell (a sensor glitch of
+2.88 Ah at one cycle was found to poison ridge features); such observations get
+``include_in_raw_objective: false`` with the reason in ``notes``. The data stays; the flag
+tells consumers to exclude it from learned features.
 
 Slot mapping (what was derived, and from where)
 ------------------------------------------------
@@ -51,9 +65,9 @@ labels
     assigned after a frozen raw record; treating it as ``labels`` would fabricate freezing
     metadata the source does not have.
 
-Caps/sampling: batch1 only (46 of 124 cells) because only batch1.mat is locally available; all
-46 cells and all 38,811 cycle observations in it are used. Determinism: reads only
-data/raw/severson/batch1.mat, iterates cells in file order, no network.
+Caps/sampling: none — every cell in every locally present batch file is used. Determinism:
+reads only data/raw/severson/batch*.mat, iterates files by name and cells in file order, no
+network.
 
 Usage:
     .venv/bin/python scripts/adapters/adapt_severson_battery.py \
@@ -70,7 +84,11 @@ from pathlib import Path
 import h5py
 import numpy as np
 
-RAW_REL = Path("data/raw/severson/batch1.mat")
+RAW_DIR = Path("data/raw/severson")
+
+# Physically plausible per-cycle discharge capacity for a 1.1 Ah nominal LFP cell.
+# Outside this window = sensor/logging artifact -> include_in_raw_objective: false.
+QD_PLAUSIBLE_AH = (0.5, 1.3)
 
 NOMINAL_CAPACITY_AH = 1.1
 EOL_CAPACITY_AH = 0.8 * NOMINAL_CAPACITY_AH  # 0.88 Ah, the dataset's cycle-life criterion
@@ -91,7 +109,13 @@ SUMMARY_FIELDS = (
 )
 
 # e.g. 5_4C-40PER_3_6C -> first rate 5.4C until 40% SOC, then 3.6C (underscores = decimal points).
-_POLICY_RE = re.compile(r"^(?P<c1>[0-9_]+)C-(?P<soc>\d+)PER_(?P<c2>[0-9_]+)C$")
+# batch1 writes '3_6C-80PER_3_6C' (hyphen before the SOC switch); batches 2-3 write
+# '3_6C_30PER_6C' (underscore); batch3 adds a '_NEWSTRUCTURE' protocol tag and one string
+# omits the trailing 'C'. All mean: c1 to soc%, then c2 (underscores = decimals). The full
+# original string stays as the policy/group id; only the numeric parameters are parsed out.
+_POLICY_RE = re.compile(
+    r"^(?P<c1>[0-9_]+)C[-_](?P<soc>\d+)PER_(?P<c2>[0-9_]+?)C?(?:_NEWSTRUCTURE)?$"
+)
 
 _MCOS_MAGIC = 3707764736  # first uint32 of a MATLAB opaque-string reference
 
@@ -132,68 +156,120 @@ def parse_policy(policy: str) -> dict:
     }
 
 
-def cycle_observations(f: h5py.File, summary_ref, barcode: str) -> list[dict]:
-    """One cycling observation per cycle from the summary group, inline scalar payload."""
+def cycle_observations(
+    f: h5py.File, summary_ref, barcode: str, batch_date: str, channel: str, rel_path: str
+) -> list[dict]:
+    """One cycling observation per cycle: inline scalars, session/instrument, quality flag."""
     summary = f[summary_ref]
     cycles = np.array(summary["cycle"]).ravel().astype(int)
     series = {key: np.array(summary[name]).ravel().astype(float) for name, key in SUMMARY_FIELDS}
     observations = []
     for j, cycle in enumerate(cycles):
         payload = {key: round(float(values[j]), 6) for key, values in series.items()}
+        qd = payload["qdischarge_ah"]
+        plausible = QD_PLAUSIBLE_AH[0] <= qd <= QD_PLAUSIBLE_AH[1]
         observations.append({
-            "observation_id": f"{barcode}:cycling:{cycle:04d}",
+            "observation_id": f"{barcode}:{batch_date}:cycling:{cycle:04d}",
             "modality": "cycling",
             "kind": "measurement",
             "cycle_index": int(cycle),
             "payload": {"cycling": payload},
-            "file_path": str(RAW_REL),
+            "file_path": rel_path,
+            "instrument_id": f"channel_{channel}",
+            "instrument_session_id": batch_date,
             "raw_export_format": "matlab v7.3 hdf5; within-cycle curves at batch.cycles{cell}",
+            "include_in_raw_objective": True if plausible else False,
+            "notes": None if plausible else (
+                f"physical-bounds flag: qdischarge_ah={qd} outside "
+                f"{QD_PLAUSIBLE_AH} Ah — sensor/logging artifact, exclude from features"
+            ),
         })
     return observations
 
 
-def cell_event(f: h5py.File, batch: h5py.Group, batch_date: str, i: int) -> dict:
-    barcode = mat_string(f, batch["barcode"][i, 0])
-    channel = mat_string(f, batch["channel_id"][i, 0])
-    policy = mat_string(f, batch["policy"][i, 0])
-    policy_readable = mat_string(f, batch["policy_readable"][i, 0])
-    cycle_life = float(np.array(f[batch["cycle_life"][i, 0]]).ravel()[0])
-    observations = cycle_observations(f, batch["summary"][i, 0], barcode)
+def load_batch_cells(path: Path, rel_path: str) -> list[dict]:
+    """Raw per-cell records (not yet events) from one batch file."""
+    records = []
+    with h5py.File(path, "r") as f:
+        batch_date = mat_string(f, f["batch_date"].ref) if "batch_date" in f else "unknown"
+        batch = f["batch"]
+        n = batch["cycle_life"].shape[0]
+        for i in range(n):
+            barcode = mat_string(f, batch["barcode"][i, 0])
+            channel = mat_string(f, batch["channel_id"][i, 0])
+            policy = mat_string(f, batch["policy"][i, 0])
+            records.append({
+                "barcode": barcode,
+                "batch_date": batch_date,
+                "channel": channel,
+                "policy": policy,
+                "policy_readable": mat_string(f, batch["policy_readable"][i, 0]),
+                "file_cycle_life": float(np.array(f[batch["cycle_life"][i, 0]]).ravel()[0]),
+                "cell_index": i,
+                "rel_path": rel_path,
+                "observations": cycle_observations(
+                    f, batch["summary"][i, 0], barcode, batch_date, channel, rel_path
+                ),
+            })
+    return records
 
-    n_cycles = len(observations)
-    if n_cycles != int(cycle_life) - 1:
-        print(f"  warning: cell {i} ({barcode}) trajectory length {n_cycles} != "
-              f"cycle_life - 1 ({int(cycle_life) - 1}); 'completed run' reading is weaker here")
 
-    # Outcome from the capacity data itself: did this record actually reach the 80% EOL
-    # criterion, or does it end above it (truncated run)?
-    qd = np.array([o["payload"]["cycling"]["qdischarge_ah"] for o in observations], dtype=float)
-    valid = qd[qd >= ARTIFACT_FLOOR_AH]
-    min_qd = float(valid.min()) if valid.size else float("nan")
-    eol_reached = valid.size > 0 and min_qd <= EOL_CAPACITY_AH + EOL_TOLERANCE_AH
-    if eol_reached:
-        outcome = {
+def derive_outcome(observations: list[dict], file_cycle_life: float, merged: bool) -> dict:
+    """Outcome from the (possibly merged) capacity data itself, artifact-flagged cycles excluded."""
+    usable = [o for o in observations if o["include_in_raw_objective"]]
+    qd = np.array([o["payload"]["cycling"]["qdischarge_ah"] for o in usable], dtype=float)
+    cyc = np.array([o["cycle_index"] for o in usable], dtype=float)
+    valid = qd >= ARTIFACT_FLOOR_AH
+    min_qd = float(qd[valid].min()) if valid.any() else float("nan")
+    eol_mask = valid & (qd <= EOL_CAPACITY_AH + EOL_TOLERANCE_AH)
+    merged_note = " (record merged across batch files via barcode continuation)" if merged else ""
+    if eol_mask.any():
+        eol_cycle = float(cyc[eol_mask].min())
+        return {
             "status": "success",
-            "summary": {"cell.cycle_life_cycles": cycle_life,
+            "summary": {"cell.cycle_life_cycles": eol_cycle,
+                        "cell.file_recorded_cycle_life": file_cycle_life,
                         "cell.min_qdischarge_ah": round(min_qd, 4)},
             "notes": "success = QDischarge reached the 0.88 Ah (80%-of-nominal) end-of-life "
-                     "criterion within this record; cycle_life is the file's recorded value",
+                     "criterion; cycle_life derived as the first cycle at/below the criterion"
+                     + merged_note,
         }
-    else:
-        outcome = {
-            "status": "ambiguous",
-            "summary": {"cell.cycle_life_cycles": cycle_life,
-                        "cell.min_qdischarge_ah": round(min_qd, 4),
-                        "cell.record_truncated": True},
-            "notes": "record ends above the 0.88 Ah EOL criterion: run truncated in this batch "
-                     "file (several batch-1 cells continue cycling in a later batch of the "
-                     "original study); the recorded cycle_life is not confirmed by this record",
-        }
+    return {
+        "status": "ambiguous",
+        "summary": {"cell.cycle_life_cycles": None,
+                    "cell.file_recorded_cycle_life": file_cycle_life,
+                    "cell.min_qdischarge_ah": round(min_qd, 4),
+                    "cell.record_truncated": True},
+        "notes": "record ends above the 0.88 Ah EOL criterion: run truncated (no later "
+                 "continuation found by barcode); the file-recorded cycle_life is not confirmed "
+                 "by this record" + merged_note,
+    }
 
-    planned = {"cell.charge_policy": policy, "cell.charge_policy_readable": policy_readable}
+
+def assemble_event(records: list[dict]) -> dict:
+    """One event from a barcode's records (batch-date-ordered; later records re-indexed)."""
+    records = sorted(records, key=lambda r: r["batch_date"])
+    primary = records[0]
+    observations = list(primary["observations"])
+    merged_from = [primary["batch_date"]]
+    for cont in records[1:]:
+        offset = max(o["cycle_index"] for o in observations)
+        cont_min = min(o["cycle_index"] for o in cont["observations"])
+        shift = offset if cont_min <= offset else 0
+        for o in cont["observations"]:
+            o = dict(o)
+            o["cycle_index"] = int(o["cycle_index"] + shift)
+            observations.append(o)
+        merged_from.append(cont["batch_date"])
+    merged = len(records) > 1
+    outcome = derive_outcome(observations, primary["file_cycle_life"], merged)
+
+    policy = primary["policy"]
+    planned = {"cell.charge_policy": policy,
+               "cell.charge_policy_readable": primary["policy_readable"]}
     planned.update({f"cell.{k}": v for k, v in parse_policy(policy).items()})
     return {
-        "event_id": f"severson:batch1:{barcode}",
+        "event_id": f"severson:{primary['barcode']}",
         "system": "li_ion_cell",
         "created_at": None,
         "intent": {"plan_id": None, "event_group_id": policy, "planned": planned},
@@ -202,27 +278,69 @@ def cell_event(f: h5py.File, batch: h5py.Group, batch_date: str, i: int) -> dict
         "provenance": {
             "operator_id": None,
             "lab_id": None,
-            "batch_id": batch_date,
+            "batch_id": primary["batch_date"],
             "lot_id": None,
-            "instrument_id": f"channel_{channel}",
-            "instrument_session_id": None,
+            "instrument_id": f"channel_{primary['channel']}",
+            "instrument_session_id": primary["batch_date"],
             "measurement_day": None,
             "run_order": None,
-            "source_dataset": "severson_2019_matr_io_batch1",
-            "raw_export_profile": "matlab v7.3 hdf5 batch file; per-cycle summary scalars inline, "
-                                  "within-cycle curves by archive reference",
+            "source_dataset": "severson_2019_matr_io",
+            "raw_export_profile": "matlab v7.3 hdf5 batch files; per-cycle summary scalars "
+                                  "inline, within-cycle curves by archive reference",
         },
         "labels": None,
-        "source_ref": {"file_path": str(RAW_REL), "batch_cell_index": i},
+        "source_ref": {
+            "files": [r["rel_path"] for r in records],
+            "batch_cell_indices": [r["cell_index"] for r in records],
+            "merged_from_batches": merged_from if merged else None,
+        },
     }
 
 
 def build_events(root: Path) -> list[dict]:
-    with h5py.File(root / RAW_REL, "r") as f:
-        batch_date = mat_string(f, f["batch_date"].ref) if "batch_date" in f else None
-        batch = f["batch"]
-        n = batch["cycle_life"].shape[0]
-        return [cell_event(f, batch, batch_date, i) for i in range(n)]
+    batch_paths = sorted((root / RAW_DIR).glob("batch*.mat"))
+    if not batch_paths:
+        raise FileNotFoundError(f"no batch*.mat files under {RAW_DIR}")
+    print(f"reading {len(batch_paths)} batch file(s): {[p.name for p in batch_paths]}")
+    all_records: list[dict] = []
+    for path in batch_paths:
+        rel = str(RAW_DIR / path.name)
+        records = load_batch_cells(path, rel)
+        print(f"  {path.name}: {len(records)} cells (batch_date {records[0]['batch_date']})")
+        all_records.extend(records)
+
+    by_barcode: dict[str, list[dict]] = {}
+    for record in all_records:
+        by_barcode.setdefault(record["barcode"], []).append(record)
+
+    events = []
+    merged_count = 0
+    for barcode in sorted(by_barcode):
+        records = by_barcode[barcode]
+        policies = sorted({r["policy"] for r in records}, key=len, reverse=True)
+        # Continuation records in a later batch may carry a truncated policy label that is
+        # a strict suffix of the primary's (e.g. '80PER_3_6C' for '3_6C-80PER_3_6C': same
+        # SOC switch and final rate, first stage omitted because the continuation starts
+        # past it). Suffix-compatible labels are the same protocol; merge with the full
+        # policy string as canonical. Genuinely different policies are never merged.
+        compatible = all(policies[0].endswith(p) for p in policies[1:])
+        if len(policies) > 1 and not compatible:
+            print(f"  warning: barcode {barcode} has {len(records)} records with "
+                  f"INCOMPATIBLE policies {policies}; kept as separate events (no merge)")
+            for r in records:
+                event = assemble_event([r])
+                event["event_id"] = f"severson:{barcode}:{r['batch_date']}"
+                events.append(event)
+            continue
+        if len(records) > 1:
+            merged_count += 1
+            canonical = policies[0]
+            for r in records:
+                r["policy"] = canonical
+        events.append(assemble_event(records))
+    if merged_count:
+        print(f"  merged {merged_count} barcode continuation(s) across batch files")
+    return events
 
 
 def main() -> None:

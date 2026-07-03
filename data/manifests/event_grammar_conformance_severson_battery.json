@@ -4,9 +4,9 @@
     "A dataset with no negative outcomes fails L2 by design: from the outside, 'all successes' and 'failures filtered out' are indistinguishable.",
     "trace_richness is reported but not gated: single-observation events are valid, but a dataset of them is a measurement archive, not event traces."
   ],
-  "created_at": "2026-07-03T09:46:51.279000+00:00",
+  "created_at": "2026-07-03T18:52:22.073461+00:00",
   "dataset": "severson_battery",
-  "event_count": 46,
+  "event_count": 135,
   "events_path": "data/interim/event_grammar_v1/severson_battery/events.json",
   "grammar_version": "v1",
   "level": 3,
@@ -20,14 +20,14 @@
         "unique_event_ids": true
       },
       "evidence": {
-        "event_count": 46,
+        "event_count": 135,
         "events_with_payload_fraction": 1.0,
-        "multi_observation_events": 46,
+        "multi_observation_events": 135,
         "orderable_multi_obs_fraction": 1.0
       },
       "passed": true,
       "trace_richness": {
-        "median_observations_per_event": 857.5,
+        "median_observations_per_event": 787,
         "multi_observation_fraction": 1.0
       }
     },
@@ -39,7 +39,7 @@
         "axis_coverage": {
           "batch_id": 1.0,
           "instrument_id": 1.0,
-          "instrument_session_id": 0.0,
+          "instrument_session_id": 1.0,
           "lab_id": 0.0,
           "lot_id": 0.0,
           "measurement_day": 0.0,
@@ -47,9 +47,9 @@
           "run_order": 0.0
         },
         "axis_distinct_values": {
-          "batch_id": 1,
-          "instrument_id": 46,
-          "instrument_session_id": 0,
+          "batch_id": 3,
+          "instrument_id": 48,
+          "instrument_session_id": 3,
           "lab_id": 0,
           "lot_id": 0,
           "measurement_day": 0,
@@ -58,7 +58,8 @@
         },
         "logged_axes": [
           "batch_id",
-          "instrument_id"
+          "instrument_id",
+          "instrument_session_id"
         ]
       },
       "passed": true
@@ -73,7 +74,7 @@
         "events_with_outcome_status_fraction": 1.0,
         "frozen_label_fraction": null,
         "labeled_event_count": 0,
-        "negative_outcome_count": 10
+        "negative_outcome_count": 7
       },
       "passed": true
     },
@@ -83,9 +84,9 @@
         "replicated_plan_groups": true
       },
       "evidence": {
-        "groups_with_provenance_variation": 22,
-        "plan_group_count": 23,
-        "replicated_group_count": 22
+        "groups_with_provenance_variation": 31,
+        "plan_group_count": 72,
+        "replicated_group_count": 31
       },
       "passed": true
     }
@@ -98,9 +99,9 @@
       "--dataset",
       "severson_battery"
     ],
-    "captured_at": "2026-07-03T09:46:52.811440+00:00",
-    "git_commit": "5de272b1f5ea5dc2579cc2c186f706bbed991548",
-    "git_dirty": false,
+    "captured_at": "2026-07-03T18:52:25.403198+00:00",
+    "git_commit": "bc002b512b6906571524fc4eea82c7efb263bf22",
+    "git_dirty": true,
     "packages": {
       "numpy": "2.4.6",
       "pandas": "3.0.3",

@@ -51,7 +51,11 @@ def load_cells(path: Path) -> list[dict]:
     events = json.loads(path.read_text())
     cells = []
     for event in events:
-        obs = sorted(event["observations"], key=lambda o: o["cycle_index"])
+        # Respect adapter quality flags: artifact-flagged observations never enter features.
+        obs = sorted(
+            (o for o in event["observations"] if o.get("include_in_raw_objective") is not False),
+            key=lambda o: o["cycle_index"],
+        )
         series = {
             key: np.array([o["payload"]["cycling"][key] for o in obs], dtype=float)
             for key in ("qdischarge_ah", "qcharge_ah", "ir_ohm", "tavg_c", "tmax_c",
@@ -63,6 +67,7 @@ def load_cells(path: Path) -> list[dict]:
         cells.append({
             "event_id": event["event_id"],
             "policy": event["intent"]["event_group_id"],
+            "batch": event["provenance"]["batch_id"],
             "policy_features": [event["intent"]["planned"][k] for k in POLICY_KEYS],
             "series": series,
             "cycles": cycles,
@@ -128,18 +133,29 @@ def regression_task(cells: list[dict]) -> dict:
     eol = [c for c in cells if not c["censored"]]
     y = np.log10([c["cycle_life"] for c in eol])
     groups = np.array([c["policy"] for c in eol])
+    batches = np.array([c["batch"] for c in eol])
+    split_names = ["random_cell", "held_out_policy"]
+    if len(set(batches)) >= 2:
+        split_names.append("held_out_batch")
     results: dict = {}
     for k in K_CYCLES:
         for rep in ("B_policy", "A_trajectory", "A_full"):
             X = np.array([representation(c, rep, k) for c in eol])
             for model_name in ("ridge", "forest"):
-                for split_name in ("random_cell", "held_out_policy"):
+                for split_name in split_names:
                     rmses, rhos = [], []
                     for seed in SEEDS:
                         if split_name == "random_cell":
                             folds = list(
                                 KFold(N_FOLDS, shuffle=True, random_state=seed).split(X)
                             )
+                        elif split_name == "held_out_batch":
+                            # One fold per collection batch (deterministic; seeds only
+                            # affect model randomness).
+                            folds = [
+                                (np.where(batches != b)[0], np.where(batches == b)[0])
+                                for b in sorted(set(batches))
+                            ]
                         else:
                             # Assign whole policies to folds (seed-shuffled), so test
                             # cells never share a policy with training cells.
@@ -353,7 +369,10 @@ def main() -> None:
     print(f"wrote {args.output}")
 
     reg = report["regression"]["results"]
-    for split in ("random_cell", "held_out_policy"):
+    splits = ["random_cell", "held_out_policy"]
+    if any(key.endswith("held_out_batch") for key in reg):
+        splits.append("held_out_batch")
+    for split in splits:
         for rep in ("B_policy", "A_trajectory", "A_full"):
             r = reg[f"k100|{rep}|ridge|{split}"]
             print(f"  k100 {split:<16} {rep:<13} ridge  spearman "

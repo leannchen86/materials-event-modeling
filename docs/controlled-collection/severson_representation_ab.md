@@ -189,3 +189,49 @@ grammar v1.1 thinking: observation-level quality flags (`include_in_raw_objectiv
 should be set by adapters using simple physical-bounds checks, so honest raw records
 don't smuggle sensor artifacts into features. No claim leaves this repo before the
 124-cell run.
+
+---
+
+## Replication pre-registration (2026-07-03, committed before the full-set run)
+
+Setup deltas from the batch-1 run, all instrument-level:
+
+- Batches 2–3 downloaded (checksums in `data/manifests/severson_download.json`); adapter
+  now reads all `batch*.mat`, merges same-barcode continuations across batches (5 found,
+  batch1→batch2, suffix-compatible policy labels), and derives cycle life as the first
+  cycle at/below the EOL criterion on the merged record. Resulting dataset: **135 events**
+  (128 EOL, 7 censored), 72 policies (31 replicated), grades L3. The literature's
+  canonical 124-cell subset drops noisy cells; we retain everything and let quality flags
+  and data-derived outcomes handle it.
+- Observation-level quality flags active (QDischarge outside 0.5–1.3 Ah → excluded from
+  features; 50 observations flagged including the batch-1 glitch cycle).
+- New split: held-out-batch (train on two collection batches, test on the third) — the
+  provenance-stressed evaluation this dataset could not support at one batch.
+
+Hypotheses (same structure as the batch-1 run, bars sharpened where power allows):
+
+- **H1r:** random-cell k=100, A-full − B Spearman ≥ 0.10 in **both** model families
+  (stricter than run 1: n grows 36 → 128 EOL cells). Expected: B 0.45–0.65 (72 policies
+  are harder to memorize), A-full 0.65–0.80.
+- **H2r:** within-policy ranking with ~3× the pairs (predict 45–90 resolvable): A-full
+  ≥ 0.60 with bootstrap CI excluding 0.50 in **both** model families; B stays 0.500 by
+  construction. *Falsifier:* CI includes 0.50 in both families at this power → the
+  within-replicate signal does not replicate and the claim-3 arm on Severson dies.
+- **H3r:** A-full ridge beats per-cell extrapolation at both forecast horizons in ≥2/3
+  seeds (carried forward unchanged).
+- **H4r:** held-out-policy: A-full > B in both families with every-seed-positive margins
+  for forest.
+- **H5r:** the 5 merged continuations resolve as EOL successes (batch-1 censored count
+  10 → ~5 among batch-1 cells); censored bounds add ≥1 resolvable pair. Counts reported.
+- **H6r (new, held-out-batch):** A-full > B on Spearman under held-out-batch in both
+  families, with A-full dropping vs random-cell (batch effects are real). *Falsifier:*
+  A-full ≤ B under held-out-batch → trajectory features encode batch/collection style
+  rather than cell physics — the provenance-shortcut failure mode inside the grammar
+  representation itself.
+- **Decision:** if H1r/H2r hold, the rung-3 result is claimable externally (with the
+  registered caveats); if not, rung 3 needs a different dataset or task family before
+  any claim.
+
+### Replication results
+
+*(to be filled by the run)*

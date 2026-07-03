@@ -1,0 +1,25 @@
+{
+  "dataset": "severson_2019_matr_io",
+  "project": "https://data.matr.io/1/projects/5c48dd2bc625d700019f3204",
+  "files": {
+    "batch1.mat": {
+      "url": "https://data.matr.io/1/api/v1/file/5c86c0b5fa2ede00015ddf66/download",
+      "batch_date": "2017-05-12",
+      "bytes": 3025320241,
+      "sha256": "9d928ab978f0e3c70b31cb833a749fedd35094d01af76475d69b40aa3497f5ba"
+    },
+    "batch2.mat": {
+      "url": "https://data.matr.io/1/api/v1/file/5c86bf13fa2ede00015ddd82/download",
+      "batch_date": "2017-06-30",
+      "bytes": 2007331155,
+      "sha256": "63ab200d09ecb237fee5ef3a5c5db76e3212e3206a0bd92f769e1427fed338b8"
+    },
+    "batch3.mat": {
+      "url": "https://data.matr.io/1/api/v1/file/5c86bd64fa2ede00015ddbb2/download",
+      "batch_date": "2018-04-12",
+      "bytes": 3236690412,
+      "sha256": "62c30e413b63e6144720e016deed3661fac8468641794a5807b123fe84717998"
+    }
+  },
+  "created_at": "2026-07-03T18:49:55.180536+00:00"
+}
