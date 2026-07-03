@@ -86,9 +86,18 @@ import numpy as np
 
 RAW_DIR = Path("data/raw/severson")
 
-# Physically plausible per-cycle discharge capacity for a 1.1 Ah nominal LFP cell.
-# Outside this window = sensor/logging artifact -> include_in_raw_objective: false.
-QD_PLAUSIBLE_AH = (0.5, 1.3)
+# Physically plausible per-cycle ranges for a 1.1 Ah nominal LFP cell on a fast-charge
+# protocol. Outside any window = sensor/logging artifact -> include_in_raw_objective:
+# false. QD: nominal ~1.07, EOL 0.88. IR: ~0.015-0.02 Ohm (0.0 = missing reading).
+# chargetime: protocols run ~10-13 min (419.9-min spikes observed = same glitch class as
+# the 2.88 Ah QD spike). Flags are observation-level because the grammar has no
+# field-level flag yet — a v1.1 candidate; the cost is dropping a healthy QD point when a
+# sibling field glitches (~tens of points out of ~800/cell).
+PLAUSIBLE_RANGES = {
+    "qdischarge_ah": (0.5, 1.3),
+    "ir_ohm": (0.001, 0.1),
+    "chargetime_min": (3.0, 120.0),
+}
 
 NOMINAL_CAPACITY_AH = 1.1
 EOL_CAPACITY_AH = 0.8 * NOMINAL_CAPACITY_AH  # 0.88 Ah, the dataset's cycle-life criterion
@@ -166,8 +175,11 @@ def cycle_observations(
     observations = []
     for j, cycle in enumerate(cycles):
         payload = {key: round(float(values[j]), 6) for key, values in series.items()}
-        qd = payload["qdischarge_ah"]
-        plausible = QD_PLAUSIBLE_AH[0] <= qd <= QD_PLAUSIBLE_AH[1]
+        violations = [
+            f"{key}={payload[key]} outside {bounds}"
+            for key, bounds in PLAUSIBLE_RANGES.items()
+            if not bounds[0] <= payload[key] <= bounds[1]
+        ]
         observations.append({
             "observation_id": f"{barcode}:{batch_date}:cycling:{cycle:04d}",
             "modality": "cycling",
@@ -178,10 +190,10 @@ def cycle_observations(
             "instrument_id": f"channel_{channel}",
             "instrument_session_id": batch_date,
             "raw_export_format": "matlab v7.3 hdf5; within-cycle curves at batch.cycles{cell}",
-            "include_in_raw_objective": True if plausible else False,
-            "notes": None if plausible else (
-                f"physical-bounds flag: qdischarge_ah={qd} outside "
-                f"{QD_PLAUSIBLE_AH} Ah — sensor/logging artifact, exclude from features"
+            "include_in_raw_objective": not violations,
+            "notes": None if not violations else (
+                "physical-bounds flag: " + "; ".join(violations)
+                + " — sensor/logging artifact, exclude from features"
             ),
         })
     return observations

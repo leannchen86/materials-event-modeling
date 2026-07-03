@@ -143,7 +143,8 @@ def regression_task(cells: list[dict]) -> dict:
             X = np.array([representation(c, rep, k) for c in eol])
             for model_name in ("ridge", "forest"):
                 for split_name in split_names:
-                    rmses, rhos = [], []
+                    rmses, rhos, fold_rho_means = [], [], []
+                    per_batch_rhos: dict[str, list[float]] = {}
                     for seed in SEEDS:
                         if split_name == "random_cell":
                             folds = list(
@@ -168,17 +169,43 @@ def regression_task(cells: list[dict]) -> dict:
                                 for f in range(N_FOLDS)
                             ]
                         pred = np.zeros_like(y)
-                        for tr, te in folds:
+                        fold_rhos = []
+                        for fold_idx, (tr, te) in enumerate(folds):
                             model = make_model(model_name, seed)
                             model.fit(X[tr], y[tr])
                             pred[te] = model.predict(X[te])
+                            # Per-fold rank correlation: the only valid Spearman when
+                            # folds have heterogeneous target distributions (pooling
+                            # across batch folds mixes between-batch shifts into the
+                            # rank statistic — a Simpson-style artifact).
+                            if len(te) >= 3 and len(set(y[te])) > 1:
+                                fold_rho = float(spearmanr(pred[te], y[te]).statistic)
+                                fold_rhos.append(fold_rho)
+                                if split_name == "held_out_batch":
+                                    batch_name = sorted(set(batches))[fold_idx]
+                                    per_batch_rhos.setdefault(batch_name, []).append(fold_rho)
                         rmses.append(float(np.sqrt(np.mean((pred - y) ** 2))))
                         rhos.append(float(spearmanr(pred, y).statistic))
+                        fold_rho_means.append(float(np.mean(fold_rhos)))
                     key = f"k{k}|{rep}|{model_name}|{split_name}"
                     results[key] = {
                         "rmse_log10": {"mean": float(np.mean(rmses)), "std": float(np.std(rmses))},
-                        "spearman": {"mean": float(np.mean(rhos)), "std": float(np.std(rhos))},
+                        "spearman_pooled": {
+                            "mean": float(np.mean(rhos)), "std": float(np.std(rhos)),
+                            "note": "pooled out-of-fold; INVALID for held_out_batch "
+                                    "(between-fold target shifts) — use per-fold",
+                        },
+                        "spearman": {
+                            "mean": float(np.mean(fold_rho_means)),
+                            "std": float(np.std(fold_rho_means)),
+                            "note": "mean of per-fold Spearman (the quotable statistic)",
+                        },
                     }
+                    if per_batch_rhos:
+                        results[key]["per_batch_spearman"] = {
+                            b: {"mean": float(np.mean(v)), "std": float(np.std(v))}
+                            for b, v in sorted(per_batch_rhos.items())
+                        }
     # Train-mean baseline (split-independent for Spearman: undefined; report RMSE only).
     results["baseline_train_mean"] = {
         "rmse_log10": {"mean": float(np.std(y)), "std": 0.0},
@@ -260,6 +287,23 @@ def bootstrap_ci(values: np.ndarray, seed: int = 0) -> tuple[float, float]:
     return float(np.percentile(stats, 2.5)), float(np.percentile(stats, 97.5))
 
 
+def cluster_bootstrap_ci(
+    values: np.ndarray, clusters: list[str], seed: int = 0
+) -> tuple[float, float]:
+    """Bootstrap over CLUSTERS (policy groups), not pairs. Pairs within a replicate
+    group share cells, so a pair-level bootstrap understates variance — most pairs come
+    from a few large groups. This is the quotable CI."""
+    rng = np.random.default_rng(seed)
+    uniq = sorted(set(clusters))
+    idx = {g: np.where(np.array(clusters) == g)[0] for g in uniq}
+    stats = []
+    for _ in range(BOOTSTRAP):
+        sampled = rng.choice(uniq, size=len(uniq), replace=True)
+        vals = np.concatenate([values[idx[g]] for g in sampled])
+        stats.append(float(vals.mean()))
+    return float(np.percentile(stats, 2.5)), float(np.percentile(stats, 97.5))
+
+
 def ranking_task(cells: list[dict]) -> dict:
     k = 100
     pairs_all, counts = ranking_pairs(cells)
@@ -267,6 +311,8 @@ def ranking_task(cells: list[dict]) -> dict:
     pairs_eol_only = [p for p in pairs_all if p[0] in eol_ids and p[1] in eol_ids]
     out: dict = {"pair_counts": counts,
                  "pairs_total": len(pairs_all), "pairs_eol_only": len(pairs_eol_only)}
+    policy_of = {c["event_id"]: c["policy"] for c in cells}
+    pair_clusters = [policy_of[w] for w, _ in pairs_all]
     for rep in ("B_policy", "A_trajectory", "A_full"):
         for model_name in ("ridge", "forest"):
             per_pair_accs = []
@@ -279,9 +325,12 @@ def ranking_task(cells: list[dict]) -> dict:
                 per_pair_accs.append(per_pair)
             mean_per_pair = np.mean(per_pair_accs, axis=0)
             lo, hi = bootstrap_ci(mean_per_pair)
+            clo, chi = cluster_bootstrap_ci(mean_per_pair, pair_clusters)
             out[f"{rep}|{model_name}"] = {
                 "pairwise_accuracy": float(mean_per_pair.mean()),
-                "bootstrap_ci95": [lo, hi],
+                "per_seed_accuracy": [float(p.mean()) for p in per_pair_accs],
+                "bootstrap_ci95_pairs": [lo, hi],
+                "bootstrap_ci95_clusters": [clo, chi],
                 "accuracy_eol_pairs_only": float(np.mean([
                     v for (w, l), v in zip(pairs_all, mean_per_pair)
                     if w in eol_ids and l in eol_ids
@@ -380,8 +429,9 @@ def main() -> None:
                   f"rmse {r['rmse_log10']['mean']:.3f}")
     for key, val in report["ranking"].items():
         if isinstance(val, dict) and "pairwise_accuracy" in val:
+            clo, chi = val["bootstrap_ci95_clusters"]
             print(f"  ranking {key:<24} acc {val['pairwise_accuracy']:.3f} "
-                  f"CI {val['bootstrap_ci95']}")
+                  f"cluster-CI [{clo:.3f}, {chi:.3f}]")
 
 
 if __name__ == "__main__":
