@@ -1,0 +1,120 @@
+{
+  "caveats": [
+    "Levels grade what the dataset RECORDS, not the quality of the science.",
+    "A dataset with no negative outcomes fails L2 by design: from the outside, 'all successes' and 'failures filtered out' are indistinguishable.",
+    "trace_richness is reported but not gated: single-observation events are valid, but a dataset of them is a measurement archive, not event traces."
+  ],
+  "created_at": "2026-07-03T09:21:36.456098+00:00",
+  "dataset": "nist",
+  "event_count": 44,
+  "events_path": "data/interim/event_grammar_v1/nist/events.json",
+  "grammar_version": "v1",
+  "level": 0,
+  "level_name": "l0_raw_trace",
+  "levels": {
+    "l0_raw_trace": {
+      "checks": {
+        "nonempty": true,
+        "orderable_fraction": true,
+        "payload_fraction": true,
+        "unique_event_ids": true
+      },
+      "evidence": {
+        "event_count": 44,
+        "events_with_payload_fraction": 1.0,
+        "multi_observation_events": 44,
+        "orderable_multi_obs_fraction": 1.0
+      },
+      "passed": true,
+      "trace_richness": {
+        "median_observations_per_event": 8.0,
+        "multi_observation_fraction": 1.0
+      }
+    },
+    "l1_provenance": {
+      "checks": {
+        "at_least_two_axes_logged": false
+      },
+      "evidence": {
+        "axis_coverage": {
+          "batch_id": 0.0,
+          "instrument_id": 0.0,
+          "instrument_session_id": 0.0,
+          "lab_id": 0.0,
+          "lot_id": 0.0,
+          "measurement_day": 0.0,
+          "operator_id": 0.0,
+          "run_order": 0.0
+        },
+        "axis_distinct_values": {
+          "batch_id": 0,
+          "instrument_id": 0,
+          "instrument_session_id": 0,
+          "lab_id": 0,
+          "lot_id": 0,
+          "measurement_day": 0,
+          "operator_id": 0,
+          "run_order": 0
+        },
+        "logged_axes": []
+      },
+      "passed": false
+    },
+    "l2_negatives_frozen_labels": {
+      "checks": {
+        "labels_frozen_after_raw": false,
+        "negative_outcomes_retained": false,
+        "outcome_status_fraction": true
+      },
+      "evidence": {
+        "events_with_outcome_status_fraction": 1.0,
+        "frozen_label_fraction": 0.0,
+        "labeled_event_count": 24,
+        "negative_outcome_count": 0
+      },
+      "passed": false
+    },
+    "l3_counterbalanced": {
+      "checks": {
+        "provenance_varies_within_groups": false,
+        "replicated_plan_groups": false
+      },
+      "evidence": {
+        "groups_with_provenance_variation": 0,
+        "plan_group_count": 0,
+        "replicated_group_count": 0
+      },
+      "passed": false
+    }
+  },
+  "run_identity": {
+    "argv": [
+      "scripts/audit_event_grammar.py",
+      "--events",
+      "data/interim/event_grammar_v1/nist/events.json",
+      "--dataset",
+      "nist"
+    ],
+    "captured_at": "2026-07-03T09:21:39.466812+00:00",
+    "git_commit": "38eab2fd3a32927b818a59c507c2902df4a167e1",
+    "git_dirty": false,
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.3",
+      "scipy": "1.17.1",
+      "sklearn": "1.8.0",
+      "torch": "2.12.0"
+    },
+    "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+    "python": "3.13.0"
+  },
+  "task": "event_grammar_conformance",
+  "thresholds": {
+    "frozen_label_fraction": 0.9,
+    "min_replicated_groups": 4,
+    "orderable_fraction": 0.9,
+    "outcome_fraction": 0.9,
+    "payload_fraction": 0.9,
+    "provenance_fraction": 0.9
+  }
+}

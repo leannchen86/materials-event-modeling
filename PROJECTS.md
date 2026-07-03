@@ -93,9 +93,14 @@ A public writeup draft exists at `docs/writeup/when_is_a_label_faithful.md`.
 **Deliverable:** data paper + the dataset itself — a controlled material-making event
 dataset (raw process/measurement trajectories, negatives/ambiguous outcomes, labels frozen
 after raw data).
-**Status:** active. The schema and audit harness exist; no real material-making events have
-yet been collected. Public-data audits identify the structural requirements for collection,
-but are not a reason to run another public benchmark.
+**Status:** active. Grammar v1 is frozen (envelope `schemas/event_grammar.v1.schema.json` +
+L0–L3 conformance in `src/materials_event_modeling/grammar/`), and the adapter-coverage
+study (`docs/controlled-collection/event_grammar_coverage_study.md`, 2026-07-03) graded six
+public datasets: Severson L3, HTEM L1, Durham/oleogel/NIST/RRUFF L0 — falsifying the
+pre-registered "no public dataset exceeds L1" and identifying Severson + oleogel as the
+Phase 2 A/B datasets. No real material-making events have yet been collected; the audits
+identify the structural requirements for collection, not a reason to run another public
+benchmark.
 
 - **Docs:** `docs/controlled-collection/` — event dataset plan, universal event embedding
   scaffold (schema + ingestion/audit), low-equipment droplet pilot, MPS provenance-store

@@ -57,7 +57,89 @@ Predicted conformance levels:
   representation A/B test, and which datasets qualify for it (predicted: oleogel and
   Severson — the only ones with both traces and any provenance/intent).
 
-## Results
+## Results (2026-07-03)
 
-*(to be filled after the adapters run — conformance table, per-dataset mapping gaps,
-verdict against H1–H4)*
+Six adapters built (`scripts/adapters/adapt_*.py`), each independently verified by an
+adversarial agent that traced slot values back to the raw source and re-ran the grading
+CLI. One fabrication was caught and fixed (Severson outcomes, below); several silent
+field drops were disclosed or repaired. Conformance manifests:
+`data/manifests/event_grammar_conformance_<dataset>.json` (with run identity); events are
+regenerable deterministically from `data/raw/` via the adapters.
+
+| dataset | events | median obs/event | multi-obs | level | predicted |
+| --- | ---: | ---: | ---: | --- | --- |
+| durham_droplets | 9 | 305 | 1.00 | L0 | L0 ✓ |
+| oleogel | 9 | 596 | 1.00 | L0 | L0 ✓ |
+| severson_battery | 46 | 857.5 | 1.00 | **L3** | L1 ✗ |
+| htem | 95 | 131 | 1.00 | **L1** | L0 ✗ |
+| nist | 44 | 8 | 1.00 | L0 | L0 ✓ |
+| rruff | 3,230 | 2 | 0.69 | L0 | L0 ~ |
+
+Not graded (access friction, the finding itself): **Dryad gelation** — one 5.14 GB
+monolithic zip organized by paper figures, never locally downloadable in this study; no
+event manifest at the public interface. **OpenCrystalData** — Kaggle-auth-gated; framed
+as image-ML tasks, no event structure visible from metadata.
+
+### Verdict against the pre-registered hypotheses
+
+- **H1 (coverage) validated.** All six datasets mapped into the envelope with zero
+  changes to the schema — including the stress case. The grammar's five slots were
+  sufficient; every gap was a *content* gap in the source, not a *structure* gap in the
+  envelope. Grammar v1 freezes as-is.
+- **H2 (no dataset exceeds L1) FALSIFIED — the study's most informative result.**
+  Severson grades L3: real intent (the charging-policy sweep, 22 replicated policy
+  groups), two logged provenance axes (batch date, cycler channel), and — after honest
+  outcome derivation — retained negatives (10 of 46 cells whose records end 0.913–1.04 Ah,
+  well above the 0.88 Ah EOL criterion: truncated runs, distinguishable from the file's
+  own capacity data). HTEM also beat its prediction, reaching L1: its public records
+  carry real `operator_id` and `instrument_id` fields. Public data is not uniformly
+  provenance-blind; *designed sweeps born on automated equipment* (cyclers, combinatorial
+  deposition) record more of the grammar than manual-experiment deposits.
+- **H3 (gap pattern) partially validated.** Negative outcomes and provenance axes are
+  indeed the modal blockers (Durham, oleogel, NIST, RRUFF all fail L1 on axes and L2 on
+  negatives). But intent was derivable in 4 of 6 datasets (Durham's README/filename
+  conditions, oleogel's material×shear sweep, Severson's policies, HTEM's deposition
+  recipes) — more than predicted. The scarce slots are outcome and provenance, not
+  intent.
+- **H4 (RRUFF degenerate) partially validated.** RRUFF grades L0 as predicted, but it is
+  richer than predicted: 69% of specimens have ≥2 observations (multiple laser
+  wavelengths — genuine measurement multiplicity), median 2 obs/event, not ~1. It is a
+  *shallow-trace* archive, not a single-shot one; the richness metrics (not the level)
+  are what separates it from true event traces (median 305–857 obs/event).
+
+### What the verification stage caught (rung-2 evidence that audits have teeth)
+
+1. **A fabricated outcome (fixed).** The Severson adapter initially marked all 46 cells
+   `success`, "cycled to the 80% EOL criterion" — but 10 records end far above the
+   criterion. Fixed by deriving status from the capacity data (clean gap: completed runs
+   end 0.880–0.883 Ah, truncated runs 0.913+). The counterintuitive consequence: honest
+   outcome derivation *raised* the dataset's grade (L1 → L3), because truncated runs are
+   retained negatives. Honesty about outcomes is rewarded by the ladder, by design.
+2. **Silent drops (disclosed or repaired):** RRUFF's non-matching filenames (94 → 4,
+   now counted and printed, including the archive's only anomalous-outcome annotation,
+   `laser_phase_change`, now preserved on its observation), UTF-8 headers decoded as
+   latin-1 (fixed), dropped header fields (measured chemistry, cell parameters,
+   description — now carried), Durham scalebars and payload prose (documented), oleogel
+   docstring counts and zip-mtime dates (documented).
+
+### Checker lessons (v1.1 candidates — recorded, not retro-applied)
+
+- **L3 is satisfiable by incidental variation.** Severson's within-group provenance
+  variation is the cycler's channel assignment — recorded, real, but not *deliberate*
+  counterbalancing, and only one axis varies (batch is constant). A v1.1 candidate:
+  require ≥2 varying axes, or distinguish "incidentally counterbalanced" from
+  "deliberately counterbalanced". The lab pilot should be held to the deliberate bar
+  regardless.
+- **Richness needs a reporting tier.** L0 admits both 857-obs traces and 2-obs archives;
+  the richness metrics carry the distinction but no level does. Keep richness as
+  reported metrics for now; revisit after the Phase 2 A/B shows which richness floor the
+  tasks actually need.
+
+### Decision
+
+Grammar v1 is frozen (H1 held). Phase 2 (representation A/B + slot ablations) proceeds
+with **Severson** as the primary dataset (L3, real intent, retained negatives, 857
+obs/event, 46 events) and **oleogel** as the trajectory-rich secondary (596 obs/event,
+real intent, but only 9 events); HTEM (95 events, L1, spatial fields) is the transfer
+stretch. The pre-registered prediction named oleogel + Severson; the study confirms the
+pair but reverses their order.
