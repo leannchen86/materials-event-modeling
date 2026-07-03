@@ -14,7 +14,7 @@ package layout. The branch split lives in `docs/` and this index.
 | Track A | **provenance-critique** |
 | Track B (modeling) | **event-method** reference archive |
 | Track B (dataset/lab/outreach) | **controlled-collection** |
-| "refined-a" | archived public-data falsification work, not a new research branch |
+| "refined-a" | archived public-data falsification campaign (Runs 001–015, merged 2026-07-03); record in `docs/event-method/findings_summary.md` + `run_log.md` |
 
 ---
 
@@ -30,8 +30,10 @@ representation results should report provenance probes, coverage controls, stron
 baselines, and strict source/session-held-out performance. Recoverability is a risk signal,
 not proof that a downstream task is contaminated.
 
-- **Docs:** `docs/provenance-critique/` (`htem_event_proxy.md`,
-  `ontology_stress_tests.md`, `anubhav_snap_result.md`), plus the strategy/positioning in
+- **Docs:** `docs/provenance-critique/` — **`provenance_leakage_audit.md` (the flagship
+  result + reusable tool)**, `htem_event_proxy.md`, `ontology_stress_tests.md`,
+  `anubhav_snap_result.md`, and `provenance_leakage_text_corpus.md` (modality-generality
+  evidence, archived) — plus the strategy/positioning in
   `docs/spine/provenance_publication_assessment.md`.
 - **Scripts:** `audit_opxrd_dataset.py`, `audit_nist_dataset.py`, `audit_htem_dataset.py`,
   `analyze_opxrd_*` (normalization controls, source diagnostics, source predictability),
@@ -45,11 +47,34 @@ not proof that a downstream task is contaminated.
 
 ## Reference archive: event-method
 **Purpose:** retain the synthetic event-field, active-measurement, and representation
-experiments as design evidence.
+experiments as design evidence, plus the completed real-data campaign record.
 **Status:** closed to new architecture, policy, JEPA, regime-transfer, and synthetic-scaling
 work. These experiments established useful requirements—counterbalancing, provenance
 splits, coverage-aware observations, and interpolation/time controls—but they are not
 evidence for a materials method.
+
+**Real-data campaign (Runs 001–015, completed 2026-06-16, merged to main 2026-07-03):**
+summary in `docs/event-method/findings_summary.md`, per-run log in
+`docs/event-method/run_log.md`. Verdicts:
+
+- *Oleogel SAXS/WAXS (Runs 001–008), negative:* masked-frame reconstruction on dense smooth
+  trajectories is interpolation/clock-solvable; SAXS/WAXS are largely time-redundant (1/6
+  events show genuine cross-modal excess). Shown capacity-free to be a data property
+  (homogeneous, 6 near-identical events) — the empirical justification for
+  controlled-collection.
+- *RRUFF (Runs 009–014), positive:* the three-way label taxonomy — labels are redundant
+  (re-encode composition), natural coordinates (polymorphs: raw recovers them 0.91–1.0 where
+  composition cannot), or lossy (solid-solution species: garnet family 1.0 vs species 0.73,
+  100% of errors within-family — Run 011). Ablation-hardened (Runs 012–013) and reproduced on
+  powder XRD (Run 014). This is the first real-data evidence for the lossy-labels thesis and
+  the standing basis for claim 3 in `docs/spine/event_grammar_validation_note.md`.
+- *Severson battery (Run 015), partial:* early-trajectory predicts lifetime (Spearman 0.61)
+  but the lossy signal is confounded by charging policy — extrinsic process labels need
+  controlled conditions, reinforcing the controlled-collection design.
+
+The campaign closed with the rawness-floor decision (`docs/spine/ontology_and_rawness_gradient.md`):
+public-data discovery is exhausted; the next genuine result requires controlled collection.
+A public writeup draft exists at `docs/writeup/when_is_a_label_faithful.md`.
 
 - **Docs:** `docs/event-method/` — masked event model, event-field model, active-learning
   policies (`*active*`, `*policy*`), regime transfer, synthetic scaffold/field-budget,
@@ -93,8 +118,11 @@ The operating memo is `SKILL.md` at the repo root.
 
 ## Explicitly out of scope
 
-- Generic text/pretraining-corpus curation and decontamination. It has a different user,
-  data model, and validation problem; it remains outside this repository.
+- Generic text/pretraining-corpus curation and decontamination as a research direction. The
+  merged campaign artifacts (`src/materials_event_modeling/curate/`, the `text` adapter in
+  `run_provenance_leakage_audit.py`, `docs/provenance-critique/provenance_leakage_text_corpus.md`)
+  are retained as archived evidence that the provenance-audit protocol is modality-agnostic,
+  not as an invitation to extend corpus work here.
 - Universal claims about natural kinds, rawness, or a label-free "native coordinate system."
   The project tests task-specific adequacy under stated measurement conditions.
 - Further public-dataset or synthetic architecture sweeps that do not change a collection

@@ -160,3 +160,16 @@ backup.** Track B (controlled CaCO3 events) remains the long-term moat but is no
 prerequisite for the first falsification. Lesson for our own future data publishing: deposit
 raw with discoverable file-type metadata, or it is effectively invisible (the same lossy-at-the-
 source problem, one level up at the indexing layer).
+
+### Status (2026-07-03): executed and superseded
+
+The instruction above was carried out as the real-data campaign, Runs 001–015 (merged to main
+2026-07-03). Verdicts: the oleogel deposit (15268752) gave the *negative* result — masked-frame
+reconstruction is interpolation/clock-solvable and SAXS/WAXS are largely time-redundant, a data
+property (homogeneous, 6 near-identical events), not a model limit. The positive result came
+from RRUFF instead: the three-way label taxonomy (redundant / natural coordinate / lossy), with
+Run 011's solid-solution finding as the first real-data instance of the lossy-labels thesis.
+Campaign summary: [../event-method/findings_summary.md](../event-method/findings_summary.md);
+per-run log: [../event-method/run_log.md](../event-method/run_log.md). The campaign is complete;
+do not restart refined-a from this note. Current instructions live in `PROJECTS.md` and
+[event_grammar_validation_note.md](event_grammar_validation_note.md).

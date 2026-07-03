@@ -19,8 +19,10 @@ The work has two active directions and one retained reference archive. See
 - **controlled-collection** *(active)* — create the smallest real, counterbalanced
   material-making pilot capable of testing one pre-registered partial-event task.
 - **event-method** *(reference archive)* — synthetic policy, field, and representation
-  experiments retained for their design lessons; no new architecture work proceeds there
-  before real data changes the question.
+  experiments retained for their design lessons, plus the completed real-data campaign
+  (Runs 001–015; see
+  [docs/event-method/findings_summary.md](docs/event-method/findings_summary.md)); no new
+  architecture work proceeds there before real data changes the question.
 
 The computational approach across branches:
 
