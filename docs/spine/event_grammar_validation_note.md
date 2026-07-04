@@ -48,6 +48,16 @@ Related: [capture_vs_representation_design_note.md](capture_vs_representation_de
    indicator to watch for: the first positive transfer between just two systems that share
    nothing except the grammar.
 
+6b. **Public data is a biased sandbox; separate structural from sample-dependent claims.**
+   Every public dataset is selection-biased (successes survive, "excellent" subsets are
+   pre-filtered), its provenance labels are bundled proxies, its "raw" is already
+   processed, and it has few independent units. A claim that is *structural* (forced by
+   construction — e.g. a projection that deletes replicate information cannot rank
+   replicates) survives all of this; a claim that is a *magnitude* does not and must not
+   be quoted as representative. Measure the two selection risks that are visible
+   (success-bias, provenance-unit count — the conformance `selection_risk` block) and
+   state the rest. Full treatment: `docs/spine/data_assumptions_and_limits.md`.
+
 7. **Groundbreaking is a property of the claim, not the method.** Validation methods are almost
    always incremental; that is what makes them believable (CASP before AlphaFold, ImageNet,
    OC20). The risk to manage is not incrementalism but scatter.

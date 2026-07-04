@@ -4,7 +4,7 @@
     "A dataset with no negative outcomes fails L2 by design: from the outside, 'all successes' and 'failures filtered out' are indistinguishable.",
     "trace_richness is reported but not gated: single-observation events are valid, but a dataset of them is a measurement archive, not event traces."
   ],
-  "created_at": "2026-07-03T09:47:10.953100+00:00",
+  "created_at": "2026-07-04T00:39:31.037725+00:00",
   "dataset": "rruff",
   "event_count": 3230,
   "events_path": "data/interim/event_grammar_v1/rruff/events.json",
@@ -95,9 +95,9 @@
       "--dataset",
       "rruff"
     ],
-    "captured_at": "2026-07-03T09:47:12.435661+00:00",
-    "git_commit": "df6aad12d6a9c3e512bcaf17ebfa5345006eea19",
-    "git_dirty": false,
+    "captured_at": "2026-07-04T00:39:32.787093+00:00",
+    "git_commit": "eeab85ef65a32da0379bdb2bb24a97c4f5c5d4a5",
+    "git_dirty": true,
     "packages": {
       "numpy": "2.4.6",
       "pandas": "3.0.3",
@@ -107,6 +107,14 @@
     },
     "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
     "python": "3.13.0"
+  },
+  "selection_risk": {
+    "few_provenance_units_risk": "none_logged",
+    "min_independent_provenance_units": 0,
+    "negative_outcome_count": 0,
+    "note": "Measures only success-bias and provenance-unit count. Publication bias, pre-filtering, single-source curation, and processing-before-deposit are NOT visible here \u2014 see docs/spine/data_assumptions_and_limits.md.",
+    "provenance_units_per_logged_axis": {},
+    "success_bias_risk": "high_no_negatives_recorded"
   },
   "task": "event_grammar_conformance",
   "thresholds": {

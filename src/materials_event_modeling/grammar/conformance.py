@@ -297,6 +297,49 @@ def check_l3(events: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def selection_risk(events: list[dict[str, Any]], levels: dict[int, dict[str, Any]]) -> dict[str, Any]:
+    """Flag the data-selection risks that ARE visible in the events themselves.
+
+    Deliberately narrow. Most selection biases of public data — publication bias toward
+    successes, pre-filtered "excellent" subsets, single-institution curation, "raw" that
+    was already processed — are NOT in the events and cannot be measured here; they are
+    stated in docs/spine/data_assumptions_and_limits.md. This surfaces only the two
+    facets the record exposes: whether negatives were retained (success-bias), and how
+    many independent provenance units exist (few-clusters risk). Absence of a flag is not
+    absence of bias.
+    """
+    l1, l2 = levels[1]["evidence"], levels[2]["evidence"]
+    negatives = l2["negative_outcome_count"]
+    status_fraction = l2["events_with_outcome_status_fraction"]
+    distinct = l1["axis_distinct_values"]
+    logged = l1["logged_axes"]
+    logged_unit_counts = {a: distinct[a] for a in logged}
+    min_units = min(logged_unit_counts.values()) if logged_unit_counts else 0
+
+    if status_fraction < OUTCOME_FRACTION:
+        success_bias = "unknown_outcomes_not_recorded"
+    elif negatives == 0:
+        success_bias = "high_no_negatives_recorded"  # success-biased or failures filtered
+    elif negatives < 0.05 * max(len(events), 1):
+        success_bias = "elevated_few_negatives"
+    else:
+        success_bias = "low_negatives_present"
+
+    return {
+        "success_bias_risk": success_bias,
+        "negative_outcome_count": negatives,
+        "provenance_units_per_logged_axis": logged_unit_counts,
+        "min_independent_provenance_units": min_units,
+        # Provenance claims live at the unit level; few units = wide CIs, weak transfer.
+        "few_provenance_units_risk": "high" if 0 < min_units < 5 else (
+            "none_logged" if not logged_unit_counts else "lower"
+        ),
+        "note": "Measures only success-bias and provenance-unit count. Publication bias, "
+                "pre-filtering, single-source curation, and processing-before-deposit are "
+                "NOT visible here — see docs/spine/data_assumptions_and_limits.md.",
+    }
+
+
 def conformance_report(events: list[dict[str, Any]]) -> dict[str, Any]:
     """Grade a dataset of events on the L0-L3 conformance ladder."""
     levels = {
@@ -318,6 +361,7 @@ def conformance_report(events: list[dict[str, Any]]) -> dict[str, Any]:
         "level": level,
         "level_name": CONFORMANCE_LEVELS[level],
         "levels": {CONFORMANCE_LEVELS[k]: report for k, report in levels.items()},
+        "selection_risk": selection_risk(events, levels),
         "thresholds": {
             "payload_fraction": PAYLOAD_FRACTION,
             "orderable_fraction": ORDERABLE_FRACTION,

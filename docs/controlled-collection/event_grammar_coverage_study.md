@@ -75,6 +75,11 @@ regenerable deterministically from `data/raw/` via the adapters.
 | nist | 44 | 8 | 1.00 | L0 | L0 ✓ |
 | rruff | 3,230 | 2 | 0.69 | L0 | L0 ~ |
 
+Selection-risk (from the conformance tool's `selection_risk` block): 5 of 6 datasets flag
+`high_no_negatives_recorded`, and even L3 Severson flags `few_provenance_units` (3 batches)
+— see [../spine/data_assumptions_and_limits.md](../spine/data_assumptions_and_limits.md)
+for the full data-limitations treatment.
+
 Not graded (access friction, the finding itself): **Dryad gelation** — one 5.14 GB
 monolithic zip organized by paper figures, never locally downloadable in this study; no
 event manifest at the public interface. **OpenCrystalData** — Kaggle-auth-gated; framed

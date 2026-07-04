@@ -1,5 +1,10 @@
 # Provenance protocol, second dataset: RRUFF Raman (+ Severson modality check)
 
+> **Read with [../spine/data_assumptions_and_limits.md](../spine/data_assumptions_and_limits.md).**
+> All numbers here are on public data; the effect's *existence* and the chemistry-matched
+> *decomposition* are structural, but the specific magnitudes (0.142, 0.765, 0.898) are
+> sample-dependent and must not be quoted as representative.
+
 Started 2026-07-03. This is the provenance-critique branch's named milestone
 ([PROJECTS.md](../../PROJECTS.md)): take the opXRD source-recoverability protocol
 (revision 2, in-fold PCA + ablation + seed floor) and apply it to a *second experimental

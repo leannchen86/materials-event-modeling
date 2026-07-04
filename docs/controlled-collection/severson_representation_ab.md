@@ -234,6 +234,11 @@ Hypotheses (same structure as the batch-1 run, bars sharpened where power allows
 
 ### Replication results (runs 2026-07-03; final instrument commit `1c7af84`)
 
+> **Read with [../spine/data_assumptions_and_limits.md](../spine/data_assumptions_and_limits.md).**
+> The structural claims (paper-shape forced to 0.500; censored-run blindness) are robust;
+> the effect-size numbers (0.756, per-fold Spearmans) are sample-dependent on one
+> selection-biased, few-batch public dataset.
+
 **Findings first.** On 135 events across three collection batches: the paper-shaped
 projection's structural losses replicate decisively — B is forced to 0.500 on replicate
 ranking (verified bitwise) while the grammar representation reaches 0.756 with a

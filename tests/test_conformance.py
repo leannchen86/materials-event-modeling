@@ -138,6 +138,33 @@ def test_l3_requires_replicates_with_provenance_variation() -> None:
     ]
 
 
+def test_selection_risk_flags_success_bias_and_few_units() -> None:
+    prov = {"operator_id": "op0", "batch_id": "b0"}  # 1 unit per axis
+    all_success = [_event(i, provenance=prov, outcome_status="success") for i in range(6)]
+    risk = conformance_report(all_success)["selection_risk"]
+    assert risk["success_bias_risk"] == "high_no_negatives_recorded"
+    assert risk["negative_outcome_count"] == 0
+    assert risk["few_provenance_units_risk"] == "high"  # 1 distinct value per axis
+
+    # Negatives present + many provenance units -> lower risk on both.
+    varied = [
+        _event(i, provenance={"operator_id": f"op{i}", "batch_id": f"b{i}"},
+               outcome_status="failure" if i % 5 == 0 else "success")
+        for i in range(20)
+    ]
+    risk2 = conformance_report(varied)["selection_risk"]
+    assert risk2["success_bias_risk"] in ("low_negatives_present", "elevated_few_negatives")
+    assert risk2["few_provenance_units_risk"] == "lower"
+    assert "data_assumptions_and_limits" in risk2["note"]
+
+
+def test_selection_risk_reports_unknown_when_outcomes_missing() -> None:
+    prov = {"operator_id": "op0", "batch_id": "b0"}
+    no_status = [_event(i, provenance=prov, outcome_status=None) for i in range(6)]
+    risk = conformance_report(no_status)["selection_risk"]
+    assert risk["success_bias_risk"] == "unknown_outcomes_not_recorded"
+
+
 def test_legacy_material_event_records_are_gradable() -> None:
     """The CaCO3-pilot shape (measurements + process.planned_conditions) still grades."""
     legacy = {

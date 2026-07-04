@@ -4,10 +4,10 @@
     "A dataset with no negative outcomes fails L2 by design: from the outside, 'all successes' and 'failures filtered out' are indistinguishable.",
     "trace_richness is reported but not gated: single-observation events are valid, but a dataset of them is a measurement archive, not event traces."
   ],
-  "created_at": "2026-07-03T09:23:40.955892+00:00",
+  "created_at": "2026-07-04T00:39:21.489501+00:00",
   "dataset": "oleogel",
   "event_count": 9,
-  "events_path": "/Users/leannchen/github/materials-event-modeling/data/interim/event_grammar_v1/oleogel/events.json",
+  "events_path": "data/interim/event_grammar_v1/oleogel/events.json",
   "grammar_version": "v1",
   "level": 0,
   "level_name": "l0_raw_trace",
@@ -89,15 +89,15 @@
   },
   "run_identity": {
     "argv": [
-      "/Users/leannchen/github/materials-event-modeling/scripts/audit_event_grammar.py",
+      "scripts/audit_event_grammar.py",
       "--events",
-      "/Users/leannchen/github/materials-event-modeling/data/interim/event_grammar_v1/oleogel/events.json",
+      "data/interim/event_grammar_v1/oleogel/events.json",
       "--dataset",
       "oleogel"
     ],
-    "captured_at": "2026-07-03T09:23:44.001162+00:00",
-    "git_commit": "38eab2fd3a32927b818a59c507c2902df4a167e1",
-    "git_dirty": false,
+    "captured_at": "2026-07-04T00:39:23.194364+00:00",
+    "git_commit": "eeab85ef65a32da0379bdb2bb24a97c4f5c5d4a5",
+    "git_dirty": true,
     "packages": {
       "numpy": "2.4.6",
       "pandas": "3.0.3",
@@ -107,6 +107,14 @@
     },
     "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
     "python": "3.13.0"
+  },
+  "selection_risk": {
+    "few_provenance_units_risk": "none_logged",
+    "min_independent_provenance_units": 0,
+    "negative_outcome_count": 0,
+    "note": "Measures only success-bias and provenance-unit count. Publication bias, pre-filtering, single-source curation, and processing-before-deposit are NOT visible here \u2014 see docs/spine/data_assumptions_and_limits.md.",
+    "provenance_units_per_logged_axis": {},
+    "success_bias_risk": "high_no_negatives_recorded"
   },
   "task": "event_grammar_conformance",
   "thresholds": {

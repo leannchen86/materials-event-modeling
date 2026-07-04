@@ -4,7 +4,7 @@
     "A dataset with no negative outcomes fails L2 by design: from the outside, 'all successes' and 'failures filtered out' are indistinguishable.",
     "trace_richness is reported but not gated: single-observation events are valid, but a dataset of them is a measurement archive, not event traces."
   ],
-  "created_at": "2026-07-03T18:52:22.073461+00:00",
+  "created_at": "2026-07-04T00:39:24.135918+00:00",
   "dataset": "severson_battery",
   "event_count": 135,
   "events_path": "data/interim/event_grammar_v1/severson_battery/events.json",
@@ -99,8 +99,8 @@
       "--dataset",
       "severson_battery"
     ],
-    "captured_at": "2026-07-03T18:52:25.403198+00:00",
-    "git_commit": "bc002b512b6906571524fc4eea82c7efb263bf22",
+    "captured_at": "2026-07-04T00:39:26.088344+00:00",
+    "git_commit": "eeab85ef65a32da0379bdb2bb24a97c4f5c5d4a5",
     "git_dirty": true,
     "packages": {
       "numpy": "2.4.6",
@@ -111,6 +111,18 @@
     },
     "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
     "python": "3.13.0"
+  },
+  "selection_risk": {
+    "few_provenance_units_risk": "high",
+    "min_independent_provenance_units": 3,
+    "negative_outcome_count": 7,
+    "note": "Measures only success-bias and provenance-unit count. Publication bias, pre-filtering, single-source curation, and processing-before-deposit are NOT visible here \u2014 see docs/spine/data_assumptions_and_limits.md.",
+    "provenance_units_per_logged_axis": {
+      "batch_id": 3,
+      "instrument_id": 48,
+      "instrument_session_id": 3
+    },
+    "success_bias_risk": "low_negatives_present"
   },
   "task": "event_grammar_conformance",
   "thresholds": {
