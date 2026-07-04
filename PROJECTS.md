@@ -107,8 +107,11 @@ identify the structural requirements for collection, not a reason to run another
 benchmark.
 
 - **Docs:** `docs/controlled-collection/` — event dataset plan, universal event embedding
-  scaffold (schema + ingestion/audit), low-equipment droplet pilot, MPS provenance-store
-  evaluation, and public-dataset audits (Durham, Dryad, OpenCrystalData).
+  scaffold (schema + ingestion/audit), the grammar coverage study + Severson representation
+  A/B, low-equipment droplet pilot, MPS provenance-store evaluation, public-dataset audits
+  (Durham, Dryad, OpenCrystalData), and **`experiments.md`** (parked three-tier XRD
+  portfolio for a process-recording-lab partner — round-robin, lossy-label intervention,
+  born-L3 pilot).
 - **Outreach (subfolder, logistics not research):** `docs/controlled-collection/outreach/` —
   Foundry application/proposal/emails, PI/collaborator outreach, personalization plan,
   outreach visuals (+ `figures/`), lab-outreach brief, next-steps.
