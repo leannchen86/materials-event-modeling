@@ -575,23 +575,27 @@ than recipe-only, label-only, or single-still baselines. Labels such as `ring`, 
 environmental metadata, and notes are frozen. See
 `docs/controlled-collection/low_equipment_event_trace_pilot.md`.
 
-## Next Experiment Direction
+## Next Experiment Direction (updated 2026-07-03)
 
-Move from label-prediction diagnostics to raw measurement objectives:
+The July 2026 work built the instrument layer — event grammar v1, the L0–L3 conformance
+ladder, and the validation ladder (rungs 1–3 complete). The current direction lives in
+`docs/spine/event_grammar_validation_note.md` (validation ladder + candidate top claims +
+Run Discipline v2) and the phased plan there; PROJECTS.md carries per-branch next steps.
+In short:
 
-1. Train simple self-supervised XRD baselines on NIST:
-   - masked-region reconstruction,
-   - full-spectrum autoencoding,
-   - neighboring-sample spectrum prediction.
-2. Compare embeddings by functional usefulness:
-   - reconstruction error,
-   - held-out spectrum prediction,
-   - nearest-neighbor retrieval of adjacent measurements,
-   - residual label-ambiguity prediction after composition/temperature controls.
-3. Use old labels only after training:
-   - project consensus labels onto the learned space,
-   - inspect high-disagreement regions,
-   - test whether labels split, merge, or smear.
+1. **Provenance-critique:** the replication bar is met (RRUFF + Severson,
+   `docs/provenance-critique/second_dataset_replication.md`); recoverability is a
+   screening signal, not a transfer predictor (`recoverability_vs_transfer.md`). Remaining:
+   nothing before real controlled data — the branch is at its publishable ceiling on
+   public data.
+2. **Controlled-collection:** grammar v1 frozen; the on-thesis A/B substrate is the
+   controlled pilot. The parked friend-XRD portfolio (`docs/controlled-collection/
+   experiments.md`) is the concrete near-term path — Tier 1 round-robin first.
+3. **Top-claim decision** (ladder Phase 3): commit the decision memo choosing the top
+   claim (current lean: claim 3, labels are lossy projections) with reversal conditions.
+
+The archived "train self-supervised NIST baselines" plan is DONE (see the ontology stress
+tests and the RRUFF campaign) and is retained above only as history.
 
 ## Oleogel Real-Data Campaign — Lessons (Runs 001–008, 2026-06-15)
 
@@ -655,9 +659,31 @@ Newly established (RRUFF labels-are-lossy, Run 011):
 > reproduces on powder XRD (garnet family 1.0 / species 0.66 / 100% within-family errors;
 > CaCO3 polymorph 1.0) — so it is not a Raman artifact.
 
+Newly established (event grammar + Severson A/B, 2026-07-03; adversarially verified):
+
+> Paper-shaping (recipe + final label) *structurally* destroys information a
+> grammar-preserved event record keeps: it cannot rank replicates of one recipe (forced
+> to 0.500 by construction) and cannot represent censored/failed runs. On Severson (135
+> cells) the grammar representation ranks replicates at 0.756 (ridge, cluster-CI
+> [0.68, 0.80]); the ranking signal is recovered by linear/kernel/instance-based models
+> but not by tree ensembles (a model-class artifact, not a signal limit). The *structural*
+> claim is model- and dataset-independent; the *magnitudes* are sample-dependent on one
+> selection-biased public dataset (see `docs/spine/data_assumptions_and_limits.md`).
+
+Newly established (provenance protocol replication, 2026-07-03; adversarially verified):
+
+> Collection-provenance recoverability is not opXRD-local: it replicates on RRUFF Raman
+> (a second experimental dataset) and on Severson battery cycling (a non-spectral
+> modality). RRUFF's chemistry-matched control — which opXRD could not run — localizes
+> the composition-invariant provenance signal to *acquisition geometry* (point count,
+> coverage), showing spectral-content recovery is mostly chemistry. Recoverability is a
+> screening/risk signal, not a downstream-transfer predictor (n=6).
+
 Not yet earned:
 
-> A learned raw/event representation has discovered the true materials ontology.
+> A learned raw/event representation has discovered the true materials ontology. (And: the
+> effect *sizes* above are representative of real lab data — they are on cleaner,
+> success-biased public data.)
 
 Target claim:
 

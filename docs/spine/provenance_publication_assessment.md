@@ -1,6 +1,23 @@
 # Track A Publication Assessment
 
-As of 2026-05-29.
+As of 2026-05-29. **Addendum 2026-07-03 below** — the body predates the replication and
+event-grammar work; read the addendum first.
+
+## Addendum (2026-07-03): the replication bar is met; the paper is stronger than assessed
+
+The "must be replicated on a second dataset before it supports a broad claim" caveat
+throughout this doc is now **resolved**. The provenance finding replicated on RRUFF Raman
+(a second experimental dataset) and generalized to Severson battery cycling (a non-spectral
+modality), and RRUFF's chemistry-matched control — impossible on opXRD — decomposed the
+signal into acquisition-geometry (invariant) vs chemistry (most of the spectral recovery).
+See `../provenance-critique/second_dataset_replication.md`. A separate analysis showed
+recoverability is a screening signal, not a transfer predictor
+(`../provenance-critique/recoverability_vs_transfer.md`), which sharpens the protocol's
+recommendation rather than weakening it. Net: the methods/benchmark paper this doc argued
+for is now a genuine cross-dataset result with a control that strengthens it. The combined
+paper still needs the controlled dataset (grammar v1 + the friend-XRD portfolio in
+`../controlled-collection/experiments.md` are the path). The nearby-literature scan below
+is unchanged and still applies.
 
 ## Bottom Line
 

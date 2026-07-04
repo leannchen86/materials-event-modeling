@@ -2,6 +2,24 @@
 
 Materials-event modeling with provenance-stressed evaluation.
 
+## Headline results (as of 2026-07-03; all pre-registered + adversarially verified)
+
+- **Collection provenance is recoverable from public experimental XRD, and it replicates.**
+  Source/lab identity is recoverable from opXRD spectra + metadata even after normalization;
+  the finding replicates on a second experimental dataset (RRUFF Raman) and a second modality
+  (battery cycling), and a chemistry-matched control localizes the invariant signal to
+  acquisition geometry. →
+  [provenance_leakage_audit.md](docs/provenance-critique/provenance_leakage_audit.md),
+  [second_dataset_replication.md](docs/provenance-critique/second_dataset_replication.md)
+- **Paper-shaped data structurally loses information a grammar-preserved event record keeps.**
+  On real battery data, the recipe+final-label projection cannot rank replicates of one recipe
+  or represent failed runs; the grammar representation can. →
+  [severson_representation_ab.md](docs/controlled-collection/severson_representation_ab.md),
+  [event grammar v1](schemas/event_grammar.v1.schema.json) + the L0–L3 conformance ladder
+- **A validation ladder + a candidate top claim**, with the honest data caveats attached. →
+  [event_grammar_validation_note.md](docs/spine/event_grammar_validation_note.md),
+  [data_assumptions_and_limits.md](docs/spine/data_assumptions_and_limits.md)
+
 Read [SKILL.md](SKILL.md) first when resuming the project; it tracks the operating
 stance and decision pivots.
 
