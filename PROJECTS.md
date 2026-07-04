@@ -21,20 +21,24 @@ package layout. The branch split lives in `docs/` and this index.
 ## Branch: provenance-critique
 **Deliverable:** a methods/benchmark protocol for provenance-stressed experimental-XRD
 evaluation.
-**Status:** active and closest to publishable. The opXRD finding is real, but currently
-local: source labels are recoverable from metadata and spectra after normalization. It must
-be replicated on a second appropriate dataset and connected to downstream evaluation before
-it supports a broad shortcut claim.
+**Status:** active and closest to publishable. The replication bar is **met** (2026-07-03):
+the opXRD source-recoverability finding replicates on RRUFF mineral Raman and generalizes to
+a non-spectral modality (Severson battery cycling), and the RRUFF chemistry-matched control
+localizes the composition-invariant provenance signal to acquisition geometry (point count,
+coverage) — see `docs/provenance-critique/second_dataset_replication.md`. Remaining before a
+broad shortcut claim: connect recoverability to a downstream evaluation (leave-one-source-out
+task performance), not just probe recoverability.
 **Core claim:** collection provenance can be recoverable from public experimental XRD, so
 representation results should report provenance probes, coverage controls, strong simple
 baselines, and strict source/session-held-out performance. Recoverability is a risk signal,
 not proof that a downstream task is contaminated.
 
 - **Docs:** `docs/provenance-critique/` — **`provenance_leakage_audit.md` (the flagship
-  result + reusable tool)**, `htem_event_proxy.md`, `ontology_stress_tests.md`,
-  `anubhav_snap_result.md`, and `provenance_leakage_text_corpus.md` (modality-generality
-  evidence, archived) — plus the strategy/positioning in
-  `docs/spine/provenance_publication_assessment.md`.
+  result + reusable tool)**, **`second_dataset_replication.md` (RRUFF + Severson
+  replication, chemistry-matched control)**, `htem_event_proxy.md`,
+  `ontology_stress_tests.md`, `anubhav_snap_result.md`, and
+  `provenance_leakage_text_corpus.md` (modality-generality evidence, archived) — plus the
+  strategy/positioning in `docs/spine/provenance_publication_assessment.md`.
 - **Scripts:** `audit_opxrd_dataset.py`, `audit_nist_dataset.py`, `audit_htem_dataset.py`,
   `analyze_opxrd_*` (normalization controls, source diagnostics, source predictability),
   `run_opxrd_source_transfer.py`, `run_opxrd_conv_*`, `run_xrd_*`, `train_xrd_encoder.py`,

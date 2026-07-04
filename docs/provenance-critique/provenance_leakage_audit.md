@@ -12,6 +12,15 @@ It unifies the four ad-hoc opXRD scripts (`analyze_opxrd_source_predictability`,
 `run_opxrd_source_transfer`) behind one tool with a normalized 0–1 recoverability score,
 a heuristic `clean / elevated / severe` risk band, and a control-efficacy check.
 
+> **Replicated on a second experimental dataset (2026-07-03).** The opXRD finding below
+> is no longer single-dataset: it replicates on RRUFF mineral Raman (laser-line
+> recoverable, severe) and generalizes to a non-spectral modality (Severson battery
+> cycling). The RRUFF **chemistry-matched control** — which opXRD could not run — shows
+> the composition-invariant provenance signal lives in *acquisition geometry* (point
+> count, coverage), while spectral-content recovery is mostly chemistry. See
+> [second_dataset_replication.md](second_dataset_replication.md). That control is the
+> reason a second dataset mattered: it decomposes what opXRD could only observe.
+
 ## Scope
 
 This is a materials-measurement diagnostic. It asks whether source-associated variation is

@@ -1,0 +1,911 @@
+{
+  "caveats": [
+    "This is an artifact diagnostic, not a source-classification benchmark.",
+    "Random folds answer whether the provenance imprint is PRESENT, not whether it generalizes to unseen sources (use a leave-one-source-out transfer test for that).",
+    "High recoverability means features can encode collection-associated variation; it does not by itself prove the cause or a downstream shortcut."
+  ],
+  "class_counts": {
+    "514nm": 378,
+    "532nm": 2198,
+    "780nm": 1541,
+    "785nm": 625
+  },
+  "control_efficacy": [
+    {
+      "absolute_reduction": 0.08819915340631632,
+      "baseline": "raman_pca",
+      "baseline_leakage_score": 0.14210873339843477,
+      "control": "crop_raman_derivative_pca",
+      "control_leakage_score": 0.05390957999211846,
+      "control_severity": "clean",
+      "neutralized": true,
+      "relative_reduction": 0.6206455528600733
+    }
+  ],
+  "created_at": "2026-07-04T00:22:43.380447+00:00",
+  "dataset": "rruff",
+  "dataset_meta": {
+    "dataset_id": "rruff_paired",
+    "grid": [
+      150.0,
+      1300.0,
+      600
+    ],
+    "paired_chemistry_control": true,
+    "specimens": 2206,
+    "spectra": 4742
+  },
+  "detail": {
+    "coverage_mask_pca": {
+      "accuracy": {
+        "max": 0.6828806064434618,
+        "mean": 0.672217112824071,
+        "min": 0.660759493670886,
+        "std": 0.005873014902387634
+      },
+      "balanced_accuracy": {
+        "max": 0.7909222237038709,
+        "mean": 0.7818345896021559,
+        "min": 0.7706082434974253,
+        "std": 0.006113004624050739
+      },
+      "baseline_accuracy": {
+        "max": 0.46392405063291137,
+        "mean": 0.4635176582139877,
+        "min": 0.46304485154769426,
+        "std": 0.00031464021207484855
+      },
+      "baseline_balanced_accuracy": {
+        "max": 0.25,
+        "mean": 0.25,
+        "min": 0.25,
+        "std": 0.0
+      },
+      "chance_balanced_accuracy": 0.25,
+      "classes": [
+        "514nm",
+        "532nm",
+        "780nm",
+        "785nm"
+      ],
+      "confusion_matrix": [
+        [
+          1000,
+          90,
+          8,
+          36
+        ],
+        [
+          2937,
+          2738,
+          610,
+          309
+        ],
+        [
+          50,
+          98,
+          4026,
+          449
+        ],
+        [
+          25,
+          4,
+          47,
+          1799
+        ]
+      ],
+      "feature_set": "coverage_mask_pca",
+      "features": 600,
+      "grouped": true,
+      "leakage_score": 0.7091127861362079,
+      "n_groups": 2206,
+      "n_repeats": 3,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.8818342151675485,
+        "532nm": 0.41522596299666364,
+        "780nm": 0.8708630759247242,
+        "785nm": 0.9594666666666667
+      },
+      "severity": "severe"
+    },
+    "crop_raman_derivative_pca": {
+      "accuracy": {
+        "max": 0.27531645569620256,
+        "mean": 0.2531348822537905,
+        "min": 0.2204674668351232,
+        "std": 0.014363768598975467
+      },
+      "balanced_accuracy": {
+        "max": 0.3033511141587464,
+        "mean": 0.29043218499408885,
+        "min": 0.2772113023499092,
+        "std": 0.009049633983653212
+      },
+      "baseline_accuracy": {
+        "max": 0.46392405063291137,
+        "mean": 0.4635176582139877,
+        "min": 0.46304485154769426,
+        "std": 0.00031464021207484855
+      },
+      "baseline_balanced_accuracy": {
+        "max": 0.25,
+        "mean": 0.25,
+        "min": 0.25,
+        "std": 0.0
+      },
+      "chance_balanced_accuracy": 0.25,
+      "classes": [
+        "514nm",
+        "532nm",
+        "780nm",
+        "785nm"
+      ],
+      "confusion_matrix": [
+        [
+          354,
+          131,
+          321,
+          328
+        ],
+        [
+          1390,
+          1127,
+          1963,
+          2114
+        ],
+        [
+          962,
+          798,
+          1426,
+          1437
+        ],
+        [
+          344,
+          303,
+          534,
+          694
+        ]
+      ],
+      "feature_set": "crop_raman_derivative_pca",
+      "features": 545,
+      "grouped": true,
+      "leakage_score": 0.05390957999211846,
+      "n_groups": 2206,
+      "n_repeats": 3,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.31216931216931215,
+        "532nm": 0.17091295116772823,
+        "780nm": 0.30845771144278605,
+        "785nm": 0.3701333333333333
+      },
+      "severity": "clean"
+    },
+    "crop_raman_pca": {
+      "accuracy": {
+        "max": 0.31036662452591657,
+        "mean": 0.2907334672149687,
+        "min": 0.2759493670886076,
+        "std": 0.011010723392750214
+      },
+      "balanced_accuracy": {
+        "max": 0.37062763304431035,
+        "mean": 0.35196110975670647,
+        "min": 0.32759453139724204,
+        "std": 0.011372229238687907
+      },
+      "baseline_accuracy": {
+        "max": 0.46392405063291137,
+        "mean": 0.4635176582139877,
+        "min": 0.46304485154769426,
+        "std": 0.00031464021207484855
+      },
+      "baseline_balanced_accuracy": {
+        "max": 0.25,
+        "mean": 0.25,
+        "min": 0.25,
+        "std": 0.0
+      },
+      "chance_balanced_accuracy": 0.25,
+      "classes": [
+        "514nm",
+        "532nm",
+        "780nm",
+        "785nm"
+      ],
+      "confusion_matrix": [
+        [
+          627,
+          155,
+          154,
+          198
+        ],
+        [
+          2219,
+          1400,
+          1494,
+          1481
+        ],
+        [
+          1212,
+          742,
+          1521,
+          1148
+        ],
+        [
+          492,
+          305,
+          490,
+          588
+        ]
+      ],
+      "feature_set": "crop_raman_pca",
+      "features": 546,
+      "grouped": true,
+      "leakage_score": 0.13594814634227528,
+      "n_groups": 2206,
+      "n_repeats": 3,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.5529100529100529,
+        "532nm": 0.21231422505307856,
+        "780nm": 0.32900713822193384,
+        "785nm": 0.3136
+      },
+      "severity": "clean"
+    },
+    "crop_raman_row_zscore_pca": {
+      "accuracy": {
+        "max": 0.3059418457648546,
+        "mean": 0.29713272732281043,
+        "min": 0.2862571247625079,
+        "std": 0.0071329970848471045
+      },
+      "balanced_accuracy": {
+        "max": 0.3693095280609991,
+        "mean": 0.3513685661700007,
+        "min": 0.3410650033451067,
+        "std": 0.009113155692697078
+      },
+      "baseline_accuracy": {
+        "max": 0.46392405063291137,
+        "mean": 0.4635176582139877,
+        "min": 0.46304485154769426,
+        "std": 0.00031464021207484855
+      },
+      "baseline_balanced_accuracy": {
+        "max": 0.25,
+        "mean": 0.25,
+        "min": 0.25,
+        "std": 0.0
+      },
+      "chance_balanced_accuracy": 0.25,
+      "classes": [
+        "514nm",
+        "532nm",
+        "780nm",
+        "785nm"
+      ],
+      "confusion_matrix": [
+        [
+          575,
+          181,
+          169,
+          209
+        ],
+        [
+          1973,
+          1377,
+          1653,
+          1591
+        ],
+        [
+          995,
+          751,
+          1652,
+          1225
+        ],
+        [
+          443,
+          306,
+          503,
+          623
+        ]
+      ],
+      "feature_set": "crop_raman_row_zscore_pca",
+      "features": 546,
+      "grouped": true,
+      "leakage_score": 0.13515808822666756,
+      "n_groups": 2206,
+      "n_repeats": 3,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.5070546737213404,
+        "532nm": 0.20882620564149226,
+        "780nm": 0.3573437162016007,
+        "785nm": 0.33226666666666665
+      },
+      "severity": "clean"
+    },
+    "full_raman_l1_pca": {
+      "accuracy": {
+        "max": 0.3147914032869785,
+        "mean": 0.2955098195466467,
+        "min": 0.26725775807473084,
+        "std": 0.014161324041449765
+      },
+      "balanced_accuracy": {
+        "max": 0.36862925921239853,
+        "mean": 0.34204599308874667,
+        "min": 0.3176149536095033,
+        "std": 0.016203896247069142
+      },
+      "baseline_accuracy": {
+        "max": 0.46392405063291137,
+        "mean": 0.4635176582139877,
+        "min": 0.46304485154769426,
+        "std": 0.00031464021207484855
+      },
+      "baseline_balanced_accuracy": {
+        "max": 0.25,
+        "mean": 0.25,
+        "min": 0.25,
+        "std": 0.0
+      },
+      "chance_balanced_accuracy": 0.25,
+      "classes": [
+        "514nm",
+        "532nm",
+        "780nm",
+        "785nm"
+      ],
+      "confusion_matrix": [
+        [
+          553,
+          187,
+          190,
+          204
+        ],
+        [
+          2008,
+          1391,
+          1659,
+          1536
+        ],
+        [
+          942,
+          730,
+          1690,
+          1261
+        ],
+        [
+          454,
+          318,
+          533,
+          570
+        ]
+      ],
+      "feature_set": "full_raman_l1_pca",
+      "features": 600,
+      "grouped": true,
+      "leakage_score": 0.12272799078499556,
+      "n_groups": 2206,
+      "n_repeats": 3,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.4876543209876543,
+        "532nm": 0.21094934789202305,
+        "780nm": 0.3655634869132598,
+        "785nm": 0.304
+      },
+      "severity": "clean"
+    },
+    "full_raman_row_zscore_pca": {
+      "accuracy": {
+        "max": 0.33185840707964603,
+        "mean": 0.3114721003051651,
+        "min": 0.30132659507264686,
+        "std": 0.008451368368032435
+      },
+      "balanced_accuracy": {
+        "max": 0.37321328805768594,
+        "mean": 0.3569272893779161,
+        "min": 0.34339654516416046,
+        "std": 0.009089335453654148
+      },
+      "baseline_accuracy": {
+        "max": 0.46392405063291137,
+        "mean": 0.4635176582139877,
+        "min": 0.46304485154769426,
+        "std": 0.00031464021207484855
+      },
+      "baseline_balanced_accuracy": {
+        "max": 0.25,
+        "mean": 0.25,
+        "min": 0.25,
+        "std": 0.0
+      },
+      "chance_balanced_accuracy": 0.25,
+      "classes": [
+        "514nm",
+        "532nm",
+        "780nm",
+        "785nm"
+      ],
+      "confusion_matrix": [
+        [
+          567,
+          198,
+          178,
+          191
+        ],
+        [
+          1913,
+          1540,
+          1623,
+          1518
+        ],
+        [
+          977,
+          741,
+          1720,
+          1185
+        ],
+        [
+          422,
+          323,
+          526,
+          604
+        ]
+      ],
+      "feature_set": "full_raman_row_zscore_pca",
+      "features": 600,
+      "grouped": true,
+      "leakage_score": 0.14256971917055483,
+      "n_groups": 2206,
+      "n_repeats": 3,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.5,
+        "532nm": 0.23354564755838642,
+        "780nm": 0.3720527795803591,
+        "785nm": 0.3221333333333333
+      },
+      "severity": "clean"
+    },
+    "metadata": {
+      "accuracy": {
+        "max": 0.8068397720075997,
+        "mean": 0.7740109698538241,
+        "min": 0.7439949431099874,
+        "std": 0.01908424731265723
+      },
+      "balanced_accuracy": {
+        "max": 0.8359406975648506,
+        "mean": 0.8234476697342997,
+        "min": 0.8056931684220404,
+        "std": 0.009042881185029938
+      },
+      "baseline_accuracy": {
+        "max": 0.46392405063291137,
+        "mean": 0.4635176582139877,
+        "min": 0.46304485154769426,
+        "std": 0.00031464021207484855
+      },
+      "baseline_balanced_accuracy": {
+        "max": 0.25,
+        "mean": 0.25,
+        "min": 0.25,
+        "std": 0.0
+      },
+      "chance_balanced_accuracy": 0.25,
+      "classes": [
+        "514nm",
+        "532nm",
+        "780nm",
+        "785nm"
+      ],
+      "confusion_matrix": [
+        [
+          1121,
+          3,
+          3,
+          7
+        ],
+        [
+          6,
+          5205,
+          1118,
+          265
+        ],
+        [
+          6,
+          1204,
+          3100,
+          313
+        ],
+        [
+          6,
+          22,
+          262,
+          1585
+        ]
+      ],
+      "feature_set": "metadata",
+      "features": 6,
+      "grouped": true,
+      "leakage_score": 0.7645968929790663,
+      "n_groups": 2206,
+      "n_repeats": 3,
+      "pca_components": null,
+      "per_class_recall": {
+        "514nm": 0.9885361552028219,
+        "532nm": 0.7893539581437671,
+        "780nm": 0.6705602422669262,
+        "785nm": 0.8453333333333334
+      },
+      "severity": "severe"
+    },
+    "raman_pca": {
+      "accuracy": {
+        "max": 0.3185840707964602,
+        "mean": 0.29973229865804824,
+        "min": 0.2829113924050633,
+        "std": 0.010390353150994933
+      },
+      "balanced_accuracy": {
+        "max": 0.3673573638749533,
+        "mean": 0.3565815500488261,
+        "min": 0.33956694259523296,
+        "std": 0.00807034191289487
+      },
+      "baseline_accuracy": {
+        "max": 0.46392405063291137,
+        "mean": 0.4635176582139877,
+        "min": 0.46304485154769426,
+        "std": 0.00031464021207484855
+      },
+      "baseline_balanced_accuracy": {
+        "max": 0.25,
+        "mean": 0.25,
+        "min": 0.25,
+        "std": 0.0
+      },
+      "chance_balanced_accuracy": 0.25,
+      "classes": [
+        "514nm",
+        "532nm",
+        "780nm",
+        "785nm"
+      ],
+      "confusion_matrix": [
+        [
+          625,
+          184,
+          134,
+          191
+        ],
+        [
+          2176,
+          1497,
+          1432,
+          1489
+        ],
+        [
+          1183,
+          738,
+          1559,
+          1143
+        ],
+        [
+          498,
+          310,
+          484,
+          583
+        ]
+      ],
+      "feature_set": "raman_pca",
+      "features": 600,
+      "grouped": true,
+      "leakage_score": 0.14210873339843477,
+      "n_groups": 2206,
+      "n_repeats": 3,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.5511463844797179,
+        "532nm": 0.227024567788899,
+        "780nm": 0.3372269089335929,
+        "785nm": 0.31093333333333334
+      },
+      "severity": "clean"
+    },
+    "spectrum_summary": {
+      "accuracy": {
+        "max": 0.34576485461441214,
+        "mean": 0.3318587185003145,
+        "min": 0.3147914032869785,
+        "std": 0.009969203886849487
+      },
+      "balanced_accuracy": {
+        "max": 0.4347452875025216,
+        "mean": 0.4115085678008277,
+        "min": 0.38787268687103543,
+        "std": 0.017607873342780318
+      },
+      "baseline_accuracy": {
+        "max": 0.46392405063291137,
+        "mean": 0.4635176582139877,
+        "min": 0.46304485154769426,
+        "std": 0.00031464021207484855
+      },
+      "baseline_balanced_accuracy": {
+        "max": 0.25,
+        "mean": 0.25,
+        "min": 0.25,
+        "std": 0.0
+      },
+      "chance_balanced_accuracy": 0.25,
+      "classes": [
+        "514nm",
+        "532nm",
+        "780nm",
+        "785nm"
+      ],
+      "confusion_matrix": [
+        [
+          762,
+          183,
+          114,
+          75
+        ],
+        [
+          2186,
+          1905,
+          1462,
+          1041
+        ],
+        [
+          1408,
+          999,
+          1294,
+          922
+        ],
+        [
+          464,
+          328,
+          323,
+          760
+        ]
+      ],
+      "feature_set": "spectrum_summary",
+      "features": 12,
+      "grouped": true,
+      "leakage_score": 0.21534475706777023,
+      "n_groups": 2206,
+      "n_repeats": 3,
+      "pca_components": null,
+      "per_class_recall": {
+        "514nm": 0.671957671957672,
+        "532nm": 0.2888989990900819,
+        "780nm": 0.2799048237075492,
+        "785nm": 0.4053333333333333
+      },
+      "severity": "elevated"
+    }
+  },
+  "grouped_folds": true,
+  "in_fold_pca": {
+    "coverage_mask_pca": 32,
+    "crop_raman_derivative_pca": 32,
+    "crop_raman_pca": 32,
+    "crop_raman_row_zscore_pca": 32,
+    "full_raman_l1_pca": 32,
+    "full_raman_row_zscore_pca": 32,
+    "raman_pca": 32
+  },
+  "n_classes": 4,
+  "n_items": 4742,
+  "n_repeats": 3,
+  "n_splits": 3,
+  "recommendation": "HIGH RISK: provenance is strongly recoverable. Treat source as a potential confound, apply collection/normalization controls, and report strict source-held-out downstream evaluation before making representation claims.",
+  "results": [
+    {
+      "accuracy": 0.7740109698538241,
+      "balanced_accuracy": 0.8234476697342997,
+      "balanced_accuracy_std": 0.009042881185029938,
+      "chance_balanced_accuracy": 0.25,
+      "feature_set": "metadata",
+      "features": 6,
+      "leakage_score": 0.7645968929790663,
+      "pca_components": null,
+      "per_class_recall": {
+        "514nm": 0.9885361552028219,
+        "532nm": 0.7893539581437671,
+        "780nm": 0.6705602422669262,
+        "785nm": 0.8453333333333334
+      },
+      "provenance_recoverability_score": 0.7645968929790663,
+      "severity": "severe"
+    },
+    {
+      "accuracy": 0.672217112824071,
+      "balanced_accuracy": 0.7818345896021559,
+      "balanced_accuracy_std": 0.006113004624050739,
+      "chance_balanced_accuracy": 0.25,
+      "feature_set": "coverage_mask_pca",
+      "features": 600,
+      "leakage_score": 0.7091127861362079,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.8818342151675485,
+        "532nm": 0.41522596299666364,
+        "780nm": 0.8708630759247242,
+        "785nm": 0.9594666666666667
+      },
+      "provenance_recoverability_score": 0.7091127861362079,
+      "severity": "severe"
+    },
+    {
+      "accuracy": 0.3318587185003145,
+      "balanced_accuracy": 0.4115085678008277,
+      "balanced_accuracy_std": 0.017607873342780318,
+      "chance_balanced_accuracy": 0.25,
+      "feature_set": "spectrum_summary",
+      "features": 12,
+      "leakage_score": 0.21534475706777023,
+      "pca_components": null,
+      "per_class_recall": {
+        "514nm": 0.671957671957672,
+        "532nm": 0.2888989990900819,
+        "780nm": 0.2799048237075492,
+        "785nm": 0.4053333333333333
+      },
+      "provenance_recoverability_score": 0.21534475706777023,
+      "severity": "elevated"
+    },
+    {
+      "accuracy": 0.3114721003051651,
+      "balanced_accuracy": 0.3569272893779161,
+      "balanced_accuracy_std": 0.009089335453654148,
+      "chance_balanced_accuracy": 0.25,
+      "feature_set": "full_raman_row_zscore_pca",
+      "features": 600,
+      "leakage_score": 0.14256971917055483,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.5,
+        "532nm": 0.23354564755838642,
+        "780nm": 0.3720527795803591,
+        "785nm": 0.3221333333333333
+      },
+      "provenance_recoverability_score": 0.14256971917055483,
+      "severity": "clean"
+    },
+    {
+      "accuracy": 0.29973229865804824,
+      "balanced_accuracy": 0.3565815500488261,
+      "balanced_accuracy_std": 0.00807034191289487,
+      "chance_balanced_accuracy": 0.25,
+      "feature_set": "raman_pca",
+      "features": 600,
+      "leakage_score": 0.14210873339843477,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.5511463844797179,
+        "532nm": 0.227024567788899,
+        "780nm": 0.3372269089335929,
+        "785nm": 0.31093333333333334
+      },
+      "provenance_recoverability_score": 0.14210873339843477,
+      "severity": "clean"
+    },
+    {
+      "accuracy": 0.2907334672149687,
+      "balanced_accuracy": 0.35196110975670647,
+      "balanced_accuracy_std": 0.011372229238687907,
+      "chance_balanced_accuracy": 0.25,
+      "feature_set": "crop_raman_pca",
+      "features": 546,
+      "leakage_score": 0.13594814634227528,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.5529100529100529,
+        "532nm": 0.21231422505307856,
+        "780nm": 0.32900713822193384,
+        "785nm": 0.3136
+      },
+      "provenance_recoverability_score": 0.13594814634227528,
+      "severity": "clean"
+    },
+    {
+      "accuracy": 0.29713272732281043,
+      "balanced_accuracy": 0.3513685661700007,
+      "balanced_accuracy_std": 0.009113155692697078,
+      "chance_balanced_accuracy": 0.25,
+      "feature_set": "crop_raman_row_zscore_pca",
+      "features": 546,
+      "leakage_score": 0.13515808822666756,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.5070546737213404,
+        "532nm": 0.20882620564149226,
+        "780nm": 0.3573437162016007,
+        "785nm": 0.33226666666666665
+      },
+      "provenance_recoverability_score": 0.13515808822666756,
+      "severity": "clean"
+    },
+    {
+      "accuracy": 0.2955098195466467,
+      "balanced_accuracy": 0.34204599308874667,
+      "balanced_accuracy_std": 0.016203896247069142,
+      "chance_balanced_accuracy": 0.25,
+      "feature_set": "full_raman_l1_pca",
+      "features": 600,
+      "leakage_score": 0.12272799078499556,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.4876543209876543,
+        "532nm": 0.21094934789202305,
+        "780nm": 0.3655634869132598,
+        "785nm": 0.304
+      },
+      "provenance_recoverability_score": 0.12272799078499556,
+      "severity": "clean"
+    },
+    {
+      "accuracy": 0.2531348822537905,
+      "balanced_accuracy": 0.29043218499408885,
+      "balanced_accuracy_std": 0.009049633983653212,
+      "chance_balanced_accuracy": 0.25,
+      "feature_set": "crop_raman_derivative_pca",
+      "features": 545,
+      "leakage_score": 0.05390957999211846,
+      "pca_components": 32,
+      "per_class_recall": {
+        "514nm": 0.31216931216931215,
+        "532nm": 0.17091295116772823,
+        "780nm": 0.30845771144278605,
+        "785nm": 0.3701333333333333
+      },
+      "provenance_recoverability_score": 0.05390957999211846,
+      "severity": "clean"
+    }
+  ],
+  "run_identity": {
+    "argv": [
+      "scripts/run_provenance_leakage_audit.py",
+      "--dataset",
+      "rruff",
+      "--rruff-paired",
+      "--include-controls",
+      "--cv-repeats",
+      "3",
+      "--output",
+      "data/manifests/provenance_leakage_audit_rruff_paired.json"
+    ],
+    "captured_at": "2026-07-04T00:22:43.945990+00:00",
+    "git_commit": "d2492235491ada2cd730aafad30c85a3c7828c7b",
+    "git_dirty": false,
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.3",
+      "scipy": "1.17.1",
+      "sklearn": "1.8.0",
+      "torch": "2.12.0"
+    },
+    "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+    "python": "3.13.0"
+  },
+  "seed": 17,
+  "severity_thresholds": {
+    "elevated": 0.15,
+    "severe": 0.5
+  },
+  "task": "provenance_recoverability_audit",
+  "worst_feature_set": "metadata",
+  "worst_leakage_score": 0.7645968929790663,
+  "worst_provenance_recoverability_score": 0.7645968929790663,
+  "worst_severity": "severe"
+}

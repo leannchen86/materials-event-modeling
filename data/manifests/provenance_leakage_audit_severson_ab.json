@@ -1,0 +1,308 @@
+{
+  "caveats": [
+    "This is an artifact diagnostic, not a source-classification benchmark.",
+    "Random folds answer whether the provenance imprint is PRESENT, not whether it generalizes to unseen sources (use a leave-one-source-out transfer test for that).",
+    "High recoverability means features can encode collection-associated variation; it does not by itself prove the cause or a downstream shortcut."
+  ],
+  "class_counts": {
+    "2017-05-12": 46,
+    "2017-06-30": 43,
+    "2018-04-12": 46
+  },
+  "control_efficacy": [],
+  "created_at": "2026-07-04T00:22:45.661873+00:00",
+  "dataset": "severson_ab",
+  "dataset_meta": {
+    "batches": [
+      "2017-05-12",
+      "2017-06-30",
+      "2018-04-12"
+    ],
+    "cells": 135,
+    "dataset_id": "severson_ab",
+    "note": "policies nest within batches by design; b_policy recoverability measures that designed confound"
+  },
+  "detail": {
+    "a_trajectory_k100": {
+      "accuracy": {
+        "max": 1.0,
+        "mean": 0.9308641975308642,
+        "min": 0.8888888888888888,
+        "std": 0.03219359212445754
+      },
+      "balanced_accuracy": {
+        "max": 1.0,
+        "mean": 0.9317460317460318,
+        "min": 0.8888888888888888,
+        "std": 0.03221327231679964
+      },
+      "baseline_accuracy": {
+        "max": 0.3333333333333333,
+        "mean": 0.3333333333333333,
+        "min": 0.3333333333333333,
+        "std": 0.0
+      },
+      "baseline_balanced_accuracy": {
+        "max": 0.3333333333333333,
+        "mean": 0.3333333333333333,
+        "min": 0.3333333333333333,
+        "std": 0.0
+      },
+      "chance_balanced_accuracy": 0.3333333333333333,
+      "classes": [
+        "2017-05-12",
+        "2017-06-30",
+        "2018-04-12"
+      ],
+      "confusion_matrix": [
+        [
+          116,
+          16,
+          6
+        ],
+        [
+          2,
+          127,
+          0
+        ],
+        [
+          1,
+          3,
+          134
+        ]
+      ],
+      "feature_set": "a_trajectory_k100",
+      "features": 17,
+      "grouped": false,
+      "leakage_score": 0.8976190476190476,
+      "n_groups": null,
+      "n_repeats": 3,
+      "pca_components": null,
+      "per_class_recall": {
+        "2017-05-12": 0.8405797101449275,
+        "2017-06-30": 0.9844961240310077,
+        "2018-04-12": 0.9710144927536232
+      },
+      "severity": "severe"
+    },
+    "b_policy": {
+      "accuracy": {
+        "max": 0.7555555555555555,
+        "mean": 0.6296296296296297,
+        "min": 0.5555555555555556,
+        "std": 0.05443310539518173
+      },
+      "balanced_accuracy": {
+        "max": 0.7505952380952382,
+        "mean": 0.6263888888888889,
+        "min": 0.5509920634920634,
+        "std": 0.05443214108134326
+      },
+      "baseline_accuracy": {
+        "max": 0.3333333333333333,
+        "mean": 0.3333333333333333,
+        "min": 0.3333333333333333,
+        "std": 0.0
+      },
+      "baseline_balanced_accuracy": {
+        "max": 0.3333333333333333,
+        "mean": 0.3333333333333333,
+        "min": 0.3333333333333333,
+        "std": 0.0
+      },
+      "chance_balanced_accuracy": 0.3333333333333333,
+      "classes": [
+        "2017-05-12",
+        "2017-06-30",
+        "2018-04-12"
+      ],
+      "confusion_matrix": [
+        [
+          108,
+          10,
+          20
+        ],
+        [
+          20,
+          62,
+          47
+        ],
+        [
+          21,
+          32,
+          85
+        ]
+      ],
+      "feature_set": "b_policy",
+      "features": 3,
+      "grouped": false,
+      "leakage_score": 0.4395833333333333,
+      "n_groups": null,
+      "n_repeats": 3,
+      "pca_components": null,
+      "per_class_recall": {
+        "2017-05-12": 0.782608695652174,
+        "2017-06-30": 0.4806201550387597,
+        "2018-04-12": 0.6159420289855072
+      },
+      "severity": "elevated"
+    },
+    "qd_curve_pca": {
+      "accuracy": {
+        "max": 0.9555555555555556,
+        "mean": 0.8864197530864197,
+        "min": 0.7111111111111111,
+        "std": 0.07729617699999272
+      },
+      "balanced_accuracy": {
+        "max": 0.9583333333333334,
+        "mean": 0.8863536155202822,
+        "min": 0.7091269841269842,
+        "std": 0.0789032959913166
+      },
+      "baseline_accuracy": {
+        "max": 0.3333333333333333,
+        "mean": 0.3333333333333333,
+        "min": 0.3333333333333333,
+        "std": 0.0
+      },
+      "baseline_balanced_accuracy": {
+        "max": 0.3333333333333333,
+        "mean": 0.3333333333333333,
+        "min": 0.3333333333333333,
+        "std": 0.0
+      },
+      "chance_balanced_accuracy": 0.3333333333333333,
+      "classes": [
+        "2017-05-12",
+        "2017-06-30",
+        "2018-04-12"
+      ],
+      "confusion_matrix": [
+        [
+          114,
+          17,
+          7
+        ],
+        [
+          9,
+          114,
+          6
+        ],
+        [
+          3,
+          4,
+          131
+        ]
+      ],
+      "feature_set": "qd_curve_pca",
+      "features": 99,
+      "grouped": false,
+      "leakage_score": 0.8295304232804234,
+      "n_groups": null,
+      "n_repeats": 3,
+      "pca_components": 32,
+      "per_class_recall": {
+        "2017-05-12": 0.8260869565217391,
+        "2017-06-30": 0.8837209302325582,
+        "2018-04-12": 0.9492753623188406
+      },
+      "severity": "severe"
+    }
+  },
+  "grouped_folds": false,
+  "in_fold_pca": {
+    "qd_curve_pca": 32
+  },
+  "n_classes": 3,
+  "n_items": 135,
+  "n_repeats": 3,
+  "n_splits": 3,
+  "recommendation": "HIGH RISK: provenance is strongly recoverable. Treat source as a potential confound, apply collection/normalization controls, and report strict source-held-out downstream evaluation before making representation claims.",
+  "results": [
+    {
+      "accuracy": 0.9308641975308642,
+      "balanced_accuracy": 0.9317460317460318,
+      "balanced_accuracy_std": 0.03221327231679964,
+      "chance_balanced_accuracy": 0.3333333333333333,
+      "feature_set": "a_trajectory_k100",
+      "features": 17,
+      "leakage_score": 0.8976190476190476,
+      "pca_components": null,
+      "per_class_recall": {
+        "2017-05-12": 0.8405797101449275,
+        "2017-06-30": 0.9844961240310077,
+        "2018-04-12": 0.9710144927536232
+      },
+      "provenance_recoverability_score": 0.8976190476190476,
+      "severity": "severe"
+    },
+    {
+      "accuracy": 0.8864197530864197,
+      "balanced_accuracy": 0.8863536155202822,
+      "balanced_accuracy_std": 0.0789032959913166,
+      "chance_balanced_accuracy": 0.3333333333333333,
+      "feature_set": "qd_curve_pca",
+      "features": 99,
+      "leakage_score": 0.8295304232804234,
+      "pca_components": 32,
+      "per_class_recall": {
+        "2017-05-12": 0.8260869565217391,
+        "2017-06-30": 0.8837209302325582,
+        "2018-04-12": 0.9492753623188406
+      },
+      "provenance_recoverability_score": 0.8295304232804234,
+      "severity": "severe"
+    },
+    {
+      "accuracy": 0.6296296296296297,
+      "balanced_accuracy": 0.6263888888888889,
+      "balanced_accuracy_std": 0.05443214108134326,
+      "chance_balanced_accuracy": 0.3333333333333333,
+      "feature_set": "b_policy",
+      "features": 3,
+      "leakage_score": 0.4395833333333333,
+      "pca_components": null,
+      "per_class_recall": {
+        "2017-05-12": 0.782608695652174,
+        "2017-06-30": 0.4806201550387597,
+        "2018-04-12": 0.6159420289855072
+      },
+      "provenance_recoverability_score": 0.4395833333333333,
+      "severity": "elevated"
+    }
+  ],
+  "run_identity": {
+    "argv": [
+      "scripts/run_provenance_leakage_audit.py",
+      "--dataset",
+      "severson_ab",
+      "--cv-repeats",
+      "3",
+      "--output",
+      "data/manifests/provenance_leakage_audit_severson_ab.json"
+    ],
+    "captured_at": "2026-07-04T00:22:46.226043+00:00",
+    "git_commit": "d2492235491ada2cd730aafad30c85a3c7828c7b",
+    "git_dirty": false,
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.3",
+      "scipy": "1.17.1",
+      "sklearn": "1.8.0",
+      "torch": "2.12.0"
+    },
+    "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+    "python": "3.13.0"
+  },
+  "seed": 17,
+  "severity_thresholds": {
+    "elevated": 0.15,
+    "severe": 0.5
+  },
+  "task": "provenance_recoverability_audit",
+  "worst_feature_set": "a_trajectory_k100",
+  "worst_leakage_score": 0.8976190476190476,
+  "worst_provenance_recoverability_score": 0.8976190476190476,
+  "worst_severity": "severe"
+}
