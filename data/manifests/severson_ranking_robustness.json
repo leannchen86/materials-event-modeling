@@ -1,0 +1,104 @@
+{
+  "created_at": "2026-07-04T06:23:48.294253+00:00",
+  "hypothesis_confirmed": true,
+  "k": 100,
+  "models_clearing_bar": 3,
+  "n_pairs": 160,
+  "pair_counts": {
+    "censored_resolved": 13,
+    "eol_eol": 147,
+    "unresolvable": 5
+  },
+  "pre_registration": "docs/controlled-collection/severson_ranking_robustness.md",
+  "representation": "A_full",
+  "results": {
+    "forest": {
+      "clears_bar": false,
+      "cluster_ci95": [
+        0.4987794949225804,
+        0.6737180490349504
+      ],
+      "held_out_policy_spearman": 0.7668442063261383,
+      "pairwise_accuracy": 0.5958333333333334,
+      "per_seed_accuracy": [
+        0.5625,
+        0.61875,
+        0.60625
+      ]
+    },
+    "gradient_boosting": {
+      "clears_bar": false,
+      "cluster_ci95": [
+        0.4329268292682927,
+        0.6036769632806217
+      ],
+      "held_out_policy_spearman": 0.8021768303152849,
+      "pairwise_accuracy": 0.534375,
+      "per_seed_accuracy": [
+        0.534375,
+        0.534375,
+        0.534375
+      ]
+    },
+    "knn": {
+      "clears_bar": true,
+      "cluster_ci95": [
+        0.5585529279279279,
+        0.6625785349988912
+      ],
+      "held_out_policy_spearman": 0.8559117018223393,
+      "pairwise_accuracy": 0.625,
+      "per_seed_accuracy": [
+        0.625,
+        0.625,
+        0.625
+      ]
+    },
+    "ridge": {
+      "clears_bar": true,
+      "cluster_ci95": [
+        0.6783176593521422,
+        0.795456657654613
+      ],
+      "held_out_policy_spearman": 0.8361700088962184,
+      "pairwise_accuracy": 0.75625,
+      "per_seed_accuracy": [
+        0.75625,
+        0.75625,
+        0.75625
+      ]
+    },
+    "svr_rbf": {
+      "clears_bar": true,
+      "cluster_ci95": [
+        0.5343359246944224,
+        0.7000182481751823
+      ],
+      "held_out_policy_spearman": 0.8038151700454121,
+      "pairwise_accuracy": 0.61875,
+      "per_seed_accuracy": [
+        0.61875,
+        0.61875,
+        0.61875
+      ]
+    }
+  },
+  "run_identity": {
+    "argv": [
+      "scripts/run_severson_ranking_robustness.py"
+    ],
+    "captured_at": "2026-07-04T06:23:49.271849+00:00",
+    "git_commit": "fd264e565e40022781599ccf2c35048f94596600",
+    "git_dirty": false,
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.3",
+      "scipy": "1.17.1",
+      "sklearn": "1.8.0",
+      "torch": "2.12.0"
+    },
+    "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+    "python": "3.13.0"
+  },
+  "task": "severson_ranking_robustness"
+}

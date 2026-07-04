@@ -344,11 +344,13 @@ recipes and (linearly) across collection batches where recipes anti-predict. The
 batch-fingerprint finding (94.5%) connects rung 3 to the provenance-critique branch: raw
 event representations are not automatically innocent, which is the thesis said twice.
 
-Follow-ons, in priority order: (a) port the provenance-leakage audit (revision 2) to run
-directly on A-representation feature matrices as a standard step of the A/B protocol —
-the 94.5% number should come from the protocol tool, not an ad-hoc probe; (b) a
-model-family-robust ranking test (e.g. gradient boosting or rank-objective models) to
-settle whether the forest arm's fragility is about trees or about the signal; (c) only
-then the second-dataset A/B (oleogel reframing or HTEM within-library) — do not fan out
-before the Severson protocol is airtight. Field-level (not observation-level) quality
+Follow-ons, in priority order: (a) **DONE** — the provenance-leakage audit now runs
+directly on the A-representation matrices (`second_dataset_replication.md`, severson_ab
+adapter): batch recovered at 0.898 from the protocol tool, not an ad-hoc probe; (b)
+**DONE** — the model-family robustness test (`severson_ranking_robustness.md`) settled it:
+the ranking signal is recovered by linear/kernel/instance-based models (0.62–0.76) but
+**tree ensembles specifically fail** (forest 0.596, gradient boosting 0.534) — H2r
+restates as "confirmed for non-tree models; tree ensembles are the outlier class," not
+"ridge-only"; (c) the second-dataset A/B (oleogel reframing or HTEM within-library) — do
+not fan out before the Severson protocol is airtight. Field-level (not observation-level) quality
 flags go on the grammar v1.1 list alongside the incidental-vs-deliberate L3 distinction.
