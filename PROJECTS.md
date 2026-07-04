@@ -38,7 +38,9 @@ not proof that a downstream task is contaminated.
   replication, chemistry-matched control)**, `htem_event_proxy.md`,
   `ontology_stress_tests.md`, `anubhav_snap_result.md`, and
   `provenance_leakage_text_corpus.md` (modality-generality evidence, archived) — plus the
-  strategy/positioning in `docs/spine/provenance_publication_assessment.md`.
+  strategy/positioning in `docs/spine/provenance_publication_assessment.md`, and
+`recoverability_vs_transfer.md` (recoverability is a screening signal, not a
+downstream-transfer predictor — n=6).
 - **Scripts:** `audit_opxrd_dataset.py`, `audit_nist_dataset.py`, `audit_htem_dataset.py`,
   `analyze_opxrd_*` (normalization controls, source diagnostics, source predictability),
   `run_opxrd_source_transfer.py`, `run_opxrd_conv_*`, `run_xrd_*`, `train_xrd_encoder.py`,

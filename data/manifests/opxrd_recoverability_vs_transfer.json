@@ -1,0 +1,86 @@
+{
+  "caveats": [
+    "n=6 sources: Spearman is descriptive, not inferential.",
+    "Single architecture (residual CNN), single mask width (1024), 2 seeds.",
+    "transfer_badness and recoverability come from separate runs on the same subset.",
+    "Source size confounds both axes; not deconfounded at this n."
+  ],
+  "correlations": {
+    "spearman_log_n_vs_transfer_badness": -0.7142857142857143,
+    "spearman_metadata_recoverability_vs_transfer_badness": 0.20291986247835694,
+    "spearman_spectral_recoverability_vs_log_n": 0.3142857142857143,
+    "spearman_spectral_recoverability_vs_transfer_badness": 0.028571428571428574
+  },
+  "created_at": "2026-07-04T06:27:30.541359+00:00",
+  "interpretation": "At n=6, spectral recoverability does NOT predict transfer difficulty (rho=+0.029); source SIZE does (rho=-0.714). The two sources the CNN loses on (EMPA, HKUST) are small, not especially recoverable; LBNL is the most recoverable yet transfers well. Recoverability is a screening / risk signal, not a downstream-performance predictor.",
+  "n_sources": 6,
+  "per_source": [
+    {
+      "cnn_beats_interpolation": true,
+      "metadata_recoverability": 0.9574468085106383,
+      "n_samples": 47,
+      "source": "CNRS",
+      "spectral_recoverability": 0.723404255319149,
+      "transfer_badness_mse": -0.00055935203014763
+    },
+    {
+      "cnn_beats_interpolation": false,
+      "metadata_recoverability": 1.0,
+      "n_samples": 34,
+      "source": "EMPA",
+      "spectral_recoverability": 0.8823529411764706,
+      "transfer_badness_mse": 0.0050553494675058
+    },
+    {
+      "cnn_beats_interpolation": false,
+      "metadata_recoverability": 0.9565217391304348,
+      "n_samples": 23,
+      "source": "HKUST",
+      "spectral_recoverability": 0.5652173913043478,
+      "transfer_badness_mse": 0.0013242854729141802
+    },
+    {
+      "cnn_beats_interpolation": true,
+      "metadata_recoverability": 0.958904109589041,
+      "n_samples": 876,
+      "source": "INT",
+      "spectral_recoverability": 0.6963470319634704,
+      "transfer_badness_mse": -0.010358476386399494
+    },
+    {
+      "cnn_beats_interpolation": true,
+      "metadata_recoverability": 0.9951581665590704,
+      "n_samples": 3098,
+      "source": "LBNL",
+      "spectral_recoverability": 0.9793415106520336,
+      "transfer_badness_mse": -0.004495093701541596
+    },
+    {
+      "cnn_beats_interpolation": true,
+      "metadata_recoverability": 1.0,
+      "n_samples": 15,
+      "source": "USC",
+      "spectral_recoverability": 0.8666666666666667,
+      "transfer_badness_mse": -0.0002288693939082433
+    }
+  ],
+  "question": "does per-source provenance recoverability predict transfer difficulty?",
+  "run_identity": {
+    "argv": [
+      "scripts/analyze_opxrd_recoverability_vs_transfer.py"
+    ],
+    "captured_at": "2026-07-04T06:27:31.818389+00:00",
+    "git_commit": "15aa34cd927bbb60b183bf0fe01258f78ccb3069",
+    "git_dirty": false,
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.3",
+      "scipy": "1.17.1",
+      "sklearn": "1.8.0",
+      "torch": "2.12.0"
+    },
+    "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+    "python": "3.13.0"
+  },
+  "task": "opxrd_recoverability_vs_transfer"
+}
