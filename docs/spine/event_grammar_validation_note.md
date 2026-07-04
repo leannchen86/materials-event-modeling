@@ -108,6 +108,50 @@ Current lean: aim near-term at claim 3 (real-data evidence already exists; cheap
 claim 2 as the rung-4 stretch. Finalize the choice in a committed decision memo after the
 adapter study, stating what evidence would reverse it.
 
+## Top-Claim Decision (2026-07-03, Phase 3 — committed)
+
+**Decision: commit to claim 3 as the near-term top claim.** Claim 1 is the
+controlled-collection payoff (it needs real retained-failure data, which does not yet
+exist); claim 2 is the rung-4 stretch (needs multi-system grammar data, untested). Rungs
+1–3 are complete and they point at claim 3.
+
+**The exact claim, and its altitude.** State it in the load-bearing form, not the
+tautological one. The tautological version — "a projection that deletes information cannot
+recover that information" — is true by construction (the Severson A/B's forced-0.500
+ranking) and worth *little* on its own. The version we commit to and must defend is
+**empirical**: on real data, the information an inherited summary label discards is
+information a practitioner would actually want, and a raw/event representation recovers it.
+Evidence in hand: RRUFF Run 011 (species labels bin a continuum raw spectra retain, the
+continuum is the thing a mineralogist wants), reproduced on XRD (Run 014); the Severson A/B
+(within-recipe lifetime ranking — a real decision — recovered at 0.756 where the recipe
+label is structurally blind), model-general across non-tree families.
+
+**What would reverse it (pre-committed):**
+
+1. **Usefulness fails on a task someone chooses.** If, on the controlled pilot (or any
+   dataset with retained failures), the grammar/raw representation does NOT beat the label
+   on a *pre-registered downstream task that a practitioner picked* — not replicate-ranking
+   chosen because we knew the label was blind to it — then claim 3 is "true but useless"
+   and we pivot to claim 1 (failure value) or reframe. This guards the
+   [[avoid-usefulness-fixation]] trap from the other side: we are not chasing one metric,
+   but the claim must cash out in at least one need-driven task.
+2. **The advantage is provenance in disguise.** The Severson batch-fingerprint result
+   (trajectory recovers collection batch at 0.898) is a live warning. If, under
+   provenance-stressed evaluation, the representation's advantage over the label collapses
+   to collection-artifact recovery, claim 3 as stated fails and becomes a provenance-leakage
+   result instead.
+3. **Structural-only.** If across two more real datasets the advantage is *only* the
+   structural forms (ranking/censoring the label can't express by construction) and never a
+   learned-representation win on held-out prediction, we downgrade claim 3 from "labels are
+   the wrong coordinates" to the narrower, honest "paper-shaping is lossy" — a methods
+   point, not an ontology one.
+
+**Altitude discipline:** claim 3's headline stays "inherited summary labels are lossy
+projections of the process, shown on real data" — never "raw has discovered the true
+ontology" (still not earned; see Claim Discipline in SKILL.md and PROJECTS.md's
+out-of-scope on universal rawness claims). The controlled pilot is where claim 3 either
+earns its empirical, need-driven form or gets downgraded.
+
 ## Run Discipline v2
 
 Extends operating-memo pivot 6 (every run needs a hypothesis and a verdict). Checklist per
