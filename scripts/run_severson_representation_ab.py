@@ -20,14 +20,16 @@ from pathlib import Path
 
 import numpy as np
 from scipy.stats import spearmanr
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import Ridge
 from sklearn.model_selection import KFold
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
 
 from materials_event_modeling.eval.severson_ab import (
+    bootstrap_ci,
+    cluster_bootstrap_ci,
     load_cells,
+    loo_policy_scores,
+    make_model,
+    per_pair_correct,
+    ranking_pairs,
     representation,
 )
 from materials_event_modeling.run_identity import run_identity
@@ -38,17 +40,10 @@ FORECAST_FROM = 100
 FORECAST_AT = (200, 300)
 SEEDS = (0, 1, 2)
 N_FOLDS = 5
-BOOTSTRAP = 2000
 
 
 def project_root() -> Path:
     return Path(__file__).resolve().parents[1]
-
-
-def make_model(name: str, seed: int):
-    if name == "ridge":
-        return make_pipeline(StandardScaler(), Ridge(alpha=1.0, random_state=seed))
-    return RandomForestRegressor(n_estimators=300, min_samples_leaf=2, random_state=seed)
 
 
 # --------------------------------------------------------------------------------------
@@ -142,93 +137,8 @@ def regression_task(cells: list[dict]) -> dict:
 
 
 # --------------------------------------------------------------------------------------
-# Task 2 — within-policy replicate ranking (leave-one-policy-out scores)
+# Task 2 — within-policy replicate ranking (uses shared eval.severson_ab helpers)
 # --------------------------------------------------------------------------------------
-
-
-def loo_policy_scores(cells: list[dict], rep: str, k: int, model_name: str, seed: int) -> dict:
-    """Score every cell with a model trained on OTHER policies' EOL cells."""
-    eol = [c for c in cells if not c["censored"]]
-    scores: dict[str, float] = {}
-    for policy in sorted({c["policy"] for c in cells}):
-        train = [c for c in eol if c["policy"] != policy]
-        X = np.array([representation(c, rep, k) for c in train])
-        y = np.log10([c["cycle_life"] for c in train])
-        model = make_model(model_name, seed)
-        model.fit(X, y)
-        held = [c for c in cells if c["policy"] == policy]
-        for c in held:
-            scores[c["event_id"]] = float(
-                model.predict(np.array([representation(c, rep, k)]))[0]
-            )
-    return scores
-
-
-def ranking_pairs(cells: list[dict]) -> tuple[list[tuple[str, str]], dict]:
-    """Within-policy pairs with a resolvable longer-lived member (first id = winner)."""
-    by_policy: dict[str, list[dict]] = {}
-    for c in cells:
-        by_policy.setdefault(c["policy"], []).append(c)
-    pairs, counts = [], {"eol_eol": 0, "censored_resolved": 0, "unresolvable": 0}
-    for members in by_policy.values():
-        for i in range(len(members)):
-            for j in range(i + 1, len(members)):
-                a, b = members[i], members[j]
-                if not a["censored"] and not b["censored"]:
-                    if a["cycle_life"] == b["cycle_life"]:
-                        counts["unresolvable"] += 1
-                        continue
-                    winner, loser = (a, b) if a["cycle_life"] > b["cycle_life"] else (b, a)
-                    counts["eol_eol"] += 1
-                elif a["censored"] != b["censored"]:
-                    cens, eolc = (a, b) if a["censored"] else (b, a)
-                    if cens["life_lower_bound"] > eolc["cycle_life"]:
-                        winner, loser = cens, eolc
-                        counts["censored_resolved"] += 1
-                    else:
-                        counts["unresolvable"] += 1
-                        continue
-                else:
-                    counts["unresolvable"] += 1
-                    continue
-                pairs.append((winner["event_id"], loser["event_id"]))
-    return pairs, counts
-
-
-def pairwise_accuracy(pairs: list[tuple[str, str]], scores: dict[str, float]) -> float:
-    total = 0.0
-    for winner, loser in pairs:
-        if scores[winner] > scores[loser]:
-            total += 1.0
-        elif scores[winner] == scores[loser]:
-            total += 0.5
-    return total / len(pairs) if pairs else float("nan")
-
-
-def bootstrap_ci(values: np.ndarray, seed: int = 0) -> tuple[float, float]:
-    rng = np.random.default_rng(seed)
-    stats = [
-        float(values[rng.integers(0, len(values), len(values))].mean())
-        for _ in range(BOOTSTRAP)
-    ]
-    return float(np.percentile(stats, 2.5)), float(np.percentile(stats, 97.5))
-
-
-def cluster_bootstrap_ci(
-    values: np.ndarray, clusters: list[str], seed: int = 0
-) -> tuple[float, float]:
-    """Bootstrap over CLUSTERS (policy groups), not pairs. Pairs within a replicate
-    group share cells, so a pair-level bootstrap understates variance — most pairs come
-    from a few large groups. This is the quotable CI."""
-    rng = np.random.default_rng(seed)
-    uniq = sorted(set(clusters))
-    idx = {g: np.where(np.array(clusters) == g)[0] for g in uniq}
-    stats = []
-    for _ in range(BOOTSTRAP):
-        sampled = rng.choice(uniq, size=len(uniq), replace=True)
-        vals = np.concatenate([values[idx[g]] for g in sampled])
-        stats.append(float(vals.mean()))
-    return float(np.percentile(stats, 2.5)), float(np.percentile(stats, 97.5))
 
 
 def ranking_task(cells: list[dict]) -> dict:
@@ -245,11 +155,7 @@ def ranking_task(cells: list[dict]) -> dict:
             per_pair_accs = []
             for seed in SEEDS:
                 scores = loo_policy_scores(cells, rep, k, model_name, seed)
-                per_pair = np.array([
-                    1.0 if scores[w] > scores[l] else (0.5 if scores[w] == scores[l] else 0.0)
-                    for w, l in pairs_all
-                ])
-                per_pair_accs.append(per_pair)
+                per_pair_accs.append(per_pair_correct(pairs_all, scores))
             mean_per_pair = np.mean(per_pair_accs, axis=0)
             lo, hi = bootstrap_ci(mean_per_pair)
             clo, chi = cluster_bootstrap_ci(mean_per_pair, pair_clusters)

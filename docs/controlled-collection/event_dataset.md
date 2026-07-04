@@ -153,19 +153,19 @@ Before any lab work:
 Current working artifacts:
 
 - Event schema: `schemas/material_event.schema.json`
-- Universal event embedding scaffold: `docs/universal_event_embedding_scaffold.md`
+- Universal event embedding scaffold: `docs/controlled-collection/universal_event_embedding_scaffold.md`
 - Event ingestion/audit utilities: `src/materials_event_modeling/track_b/event_ingest.py`
 - Event dataset audit script: `scripts/audit_track_b_event_dataset.py`
 - Current mock-event audit: `data/manifests/track_b_event_dataset_audit.json`
 - Blank event-log template: `templates/calcium_carbonate_event_log.csv`
 - Mock JSON events: `examples/track_b/calcium_carbonate_mock_events.json`
 - Mock CSV event log: `examples/track_b/calcium_carbonate_mock_event_log.csv`
-- Mock event review: `docs/mock_event_review.md`
-- Lab outreach brief: `docs/lab_outreach_brief.md`
+- Mock event review: `docs/event-method/mock_event_review.md`
+- Lab outreach brief: `docs/controlled-collection/outreach/lab_outreach_brief.md`
 - Mock event summary script: `scripts/summarize_track_b_mock_events.py`
 - Synthetic event scaffold: `scripts/run_track_b_synthetic_scaffold.py`
 - Synthetic scaffold result: `data/manifests/track_b_synthetic_event_scaffold.json`
-- Synthetic scaffold notes: `docs/synthetic_scaffold.md`
+- Synthetic scaffold notes: `docs/event-method/synthetic_scaffold.md`
 
 The first real result should not be "we made pure calcite." It should be:
 

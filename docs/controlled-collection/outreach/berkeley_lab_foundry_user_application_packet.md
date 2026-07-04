@@ -184,16 +184,16 @@ Draft response logic:
 4. Identify a senior PI/collaborator.
 5. Convert this packet into the portal proposal structure.
 6. Attach or reference current Track B artifacts:
-   - `docs/event_dataset.md`
+   - `docs/controlled-collection/event_dataset.md`
    - `schemas/material_event.schema.json`
    - `templates/calcium_carbonate_event_log.csv`
-   - `docs/lab_outreach_brief.md`
+   - `docs/controlled-collection/outreach/lab_outreach_brief.md`
 
 Supporting drafts:
 
-- Portal-style proposal draft: `docs/foundry_standard_proposal_draft.md`
-- PI/collaborator outreach: `docs/foundry_pi_collaborator_outreach.md`
-- User Office email draft: `docs/foundry_user_office_email.md`
+- Portal-style proposal draft: `docs/controlled-collection/outreach/foundry_standard_proposal_draft.md`
+- PI/collaborator outreach: `docs/controlled-collection/outreach/foundry_pi_collaborator_outreach.md`
+- User Office email draft: `docs/controlled-collection/outreach/foundry_user_office_email.md`
 
 ## Sources
 

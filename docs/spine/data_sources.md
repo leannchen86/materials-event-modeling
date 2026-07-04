@@ -12,7 +12,7 @@ of the research, not just preparation:
 The updated plan is documented in:
 
 ```text
-docs/event_native_public_data_strategy.md
+docs/spine/event_native_public_data_strategy.md
 data/manifests/event_native_public_dataset_audit.json
 ```
 
@@ -20,8 +20,8 @@ Current first target:
 
 - Durham IPA droplet evaporation dataset, because it is small, open, and reportedly
   includes videos plus spreadsheets under controlled humidity.
-- First local audit: `docs/durham_ipa_droplet_audit.md`.
-- First early-trace smoke test: `docs/durham_ipa_droplet_smoke_test.md`.
+- First local audit: `docs/controlled-collection/durham_ipa_droplet_audit.md`.
+- First early-trace smoke test: `docs/controlled-collection/durham_ipa_droplet_smoke_test.md`.
 
 Local audit command:
 

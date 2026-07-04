@@ -1,5 +1,7 @@
 # Compute Notes
 
+> **Note:** `scripts/train_xrd_encoder.py` is not yet implemented — it is a stub that exits immediately, so the `train_xrd_encoder.py` commands below will not run until it is built.
+
 ## Local M2
 
 Use local runs for data inspection, plotting, and tiny smoke tests.
