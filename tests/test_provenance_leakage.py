@@ -85,6 +85,34 @@ def test_in_fold_pca_reduces_and_still_detects_leak() -> None:
     assert report["in_fold_pca"] == {"wide_pca": 4}
 
 
+def test_grouped_folds_kill_group_identity_leakage() -> None:
+    """A pure group-identity feature looks severe under row folds (memorization) and
+    clean under grouped folds — the reason groups exist."""
+    rng = np.random.default_rng(4)
+    n_groups, rows_per = 12, 10
+    # One-hot group id: a model can memorize which group -> which label under row folds
+    # (every group appears in training), but grouped folds hide the test groups' columns
+    # entirely, so the label is unrecoverable. Label is a fixed random map of group.
+    group_label = {g: ("a" if rng.random() < 0.5 else "b") for g in range(n_groups)}
+    labels, groups, feat = [], [], []
+    for g in range(n_groups):
+        for r in range(rows_per):
+            labels.append(group_label[g])
+            groups.append(f"g{g}")
+            onehot = [0.0] * n_groups
+            onehot[g] = 1.0
+            feat.append(onehot)
+    X = np.array(feat)
+    y = np.array(labels)
+    ungrouped = audit_feature_sets({"gid": X}, y, n_splits=3, seed=4)
+    grouped = audit_feature_sets({"gid": X}, y, n_splits=3, seed=4, groups=np.array(groups))
+    assert ungrouped["detail"]["gid"]["severity"] == "severe"  # row folds memorize
+    assert grouped["detail"]["gid"]["leakage_score"] < ungrouped["detail"]["gid"]["leakage_score"]
+    assert grouped["detail"]["gid"]["grouped"] is True
+    assert grouped["detail"]["gid"]["n_groups"] == n_groups
+    assert grouped["grouped_folds"] is True
+
+
 def test_cv_repeats_pool_fold_metrics() -> None:
     rng = np.random.default_rng(3)
     n = 90

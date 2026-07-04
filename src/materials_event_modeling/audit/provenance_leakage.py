@@ -31,7 +31,7 @@ from sklearn.decomposition import PCA
 from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, confusion_matrix
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedGroupKFold, StratifiedKFold
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
@@ -80,6 +80,7 @@ def evaluate_recoverability(
     seed: int = 17,
     n_repeats: int = 1,
     pca_components: int | None = None,
+    groups: np.ndarray | None = None,
 ) -> dict[str, Any]:
     """Cross-validated recoverability of ``labels`` from ``features``.
 
@@ -93,6 +94,9 @@ def evaluate_recoverability(
     matrix let test rows shape the basis. ``n_repeats`` repeats the whole CV with
     shifted seeds and pools fold metrics, so ``balanced_accuracy["std"]`` reflects both
     fold and seed variation — required before quoting any threshold-adjacent verdict.
+    ``groups`` switches to StratifiedGroupKFold so rows sharing a group (e.g. positions
+    of one sample library, spectra of one specimen) never straddle train and test —
+    without it, group identity inflates recoverability.
     """
     features = np.asarray(features, dtype=np.float32)
     labels = np.asarray(labels)
@@ -121,9 +125,14 @@ def evaluate_recoverability(
         )
         classifier = make_pipeline(*steps)
         baseline = DummyClassifier(strategy="most_frequent")
-        cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=repeat_seed)
+        if groups is not None:
+            cv = StratifiedGroupKFold(n_splits=n_splits, shuffle=True, random_state=repeat_seed)
+            split_iter = cv.split(features, labels, np.asarray(groups))
+        else:
+            cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=repeat_seed)
+            split_iter = cv.split(features, labels)
 
-        for train_idx, test_idx in cv.split(features, labels):
+        for train_idx, test_idx in split_iter:
             classifier.fit(features[train_idx], labels[train_idx])
             prediction = classifier.predict(features[test_idx])
             baseline.fit(features[train_idx], labels[train_idx])
@@ -158,6 +167,8 @@ def evaluate_recoverability(
         "features": int(features.shape[1]),
         "pca_components": reduce_to,
         "n_repeats": max(1, n_repeats),
+        "grouped": groups is not None,
+        "n_groups": int(len(set(np.asarray(groups).tolist()))) if groups is not None else None,
         "accuracy": metric_summary(accuracy),
         "balanced_accuracy": metric_summary(balanced_accuracy),
         "baseline_accuracy": metric_summary(baseline_accuracy),
@@ -179,13 +190,15 @@ def audit_feature_sets(
     seed: int = 17,
     n_repeats: int = 1,
     pca_components: dict[str, int] | None = None,
+    groups: np.ndarray | None = None,
 ) -> dict[str, Any]:
     """Audit provenance recoverability and rank feature sets by heuristic risk.
 
     Returns a report with per-feature-set results (sorted worst-first), the worst
     observed leakage, and a plain-language recommendation. ``pca_components`` maps a
     feature-set name to a PCA size fit inside each fold (train split only); feature
-    sets not named are audited as passed.
+    sets not named are audited as passed. ``groups`` (per-row) enables grouped
+    stratified folds for every feature set.
     """
     labels = np.asarray(labels)
     classes = sorted(set(labels.tolist()))
@@ -208,6 +221,7 @@ def audit_feature_sets(
             seed=seed,
             n_repeats=n_repeats,
             pca_components=pca_components.get(name),
+            groups=groups,
         )
         result["feature_set"] = name
         results[name] = result
@@ -243,6 +257,7 @@ def audit_feature_sets(
         "n_splits": effective_splits,
         "seed": seed,
         "n_repeats": max(1, n_repeats),
+        "grouped_folds": groups is not None,
         "in_fold_pca": {k: int(v) for k, v in pca_components.items()},
         "severity_thresholds": SEVERITY_THRESHOLDS,
         "worst_feature_set": worst["feature_set"] if worst else None,

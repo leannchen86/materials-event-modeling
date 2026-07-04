@@ -318,9 +318,176 @@ def load_text(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+# --------------------------------------------------------------------------------------
+# RRUFF adapter — the SECOND EXPERIMENTAL DATASET for the protocol (mineral Raman).
+# Provenance label: the laser line (514/532/780/785 nm) = the instrument axis. Rows are
+# one Processed spectrum per (specimen, wavelength) from the grammar events; folds are
+# GROUPED BY SPECIMEN so specimen identity never straddles train/test. The decisive
+# extra is --rruff-paired: restrict to specimens measured at >=2 usable wavelengths, so
+# chemistry is IDENTICAL across label classes within each group — any recovery above
+# chance is instrument imprint, not composition. This is the chemistry-matched control
+# the opXRD archive could not provide (its sources measured different materials).
+# --------------------------------------------------------------------------------------
+
+RAMAN_GRID = (150.0, 1300.0, 600)  # cm^-1 range + points, matching data.rruff.load()
+USABLE_WAVELENGTHS = (514.0, 532.0, 780.0, 785.0)
+
+
+def load_rruff(args: argparse.Namespace) -> dict[str, Any]:
+    import zipfile
+
+    from materials_event_modeling.data.rruff import _parse
+
+    root = project_root()
+    events_path = root / "data/interim/event_grammar_v1/rruff/events.json"
+    if not events_path.exists():
+        raise FileNotFoundError("Run scripts/adapters/adapt_rruff.py first.")
+    events = json.loads(events_path.read_text())
+
+    wanted: list[tuple[str, float, str]] = []  # (specimen, wavelength, zip member)
+    for event in events:
+        for obs in event["observations"]:
+            wl = obs["payload"].get("rruff.raman_wavelength_nm")
+            if wl in USABLE_WAVELENGTHS and not obs["payload"].get("rruff.variant_note"):
+                wanted.append((event["event_id"], float(wl), obs["payload"]["rruff.zip_member"]))
+    if args.rruff_paired:
+        by_specimen: dict[str, set[float]] = {}
+        for rid, wl, _ in wanted:
+            by_specimen.setdefault(rid, set()).add(wl)
+        multi = {rid for rid, wls in by_specimen.items() if len(wls) >= 2}
+        wanted = [w for w in wanted if w[0] in multi]
+
+    gmin, gmax, n_grid = RAMAN_GRID
+    grid = np.linspace(gmin, gmax, n_grid, dtype=np.float32)
+    spectra, coverage, meta_rows, labels_list, groups_list = [], [], [], [], []
+    zip_path = root / "data/raw/rruff/excellent_unoriented.zip"
+    with zipfile.ZipFile(zip_path) as zf:
+        for rid, wl, member in wanted:
+            try:
+                raw = zf.read(member).decode("utf-8")
+            except UnicodeDecodeError:
+                raw = zf.read(member).decode("latin-1")
+            _, xs, ys = _parse(raw)
+            if xs.size < 10:
+                continue
+            peak = float(np.max(np.abs(ys))) or 1.0
+            gridded = np.interp(grid, xs, ys / peak, left=0.0, right=0.0).astype(np.float32)
+            spectra.append(gridded)
+            coverage.append(((grid >= xs.min()) & (grid <= xs.max())).astype(np.float32))
+            meta_rows.append([
+                float(xs.size), float(xs.min()), float(xs.max()),
+                float(xs.max() - xs.min()), float(ys.min()), float(ys.max()),
+            ])
+            labels_list.append(f"{wl:g}nm")
+            groups_list.append(rid)
+
+    xrd = np.asarray(spectra)
+    coverage_arr = np.asarray(coverage)
+    labels = np.asarray(labels_list)
+    counts = pd.Series(labels).value_counts()
+    kept = counts[counts >= args.min_source_samples].index
+    keep = np.isin(labels, kept)
+    xrd, coverage_arr, labels = xrd[keep], coverage_arr[keep], labels[keep]
+    metadata = np.asarray(meta_rows, dtype=np.float32)[keep]
+    groups = np.asarray(groups_list)[keep]
+
+    feature_sets: dict[str, np.ndarray] = {
+        "metadata": metadata,
+        "spectrum_summary": _spectrum_summary_features(xrd, args.peak_threshold),
+        "raman_pca": xrd,
+    }
+    pca_spec: dict[str, int] = {"raman_pca": args.pca_components}
+    control_pairs: list[tuple[str, str]] = []
+    if args.include_controls:
+        coverage_fraction = coverage_arr.mean(axis=0)
+        crop_mask = coverage_fraction >= args.min_coverage_fraction
+        cropped = xrd[:, crop_mask]
+        for name, matrix in {
+            "coverage_mask_pca": coverage_arr,
+            "full_raman_row_zscore_pca": _row_zscore(xrd),
+            "full_raman_l1_pca": _row_l1(xrd),
+            "crop_raman_pca": cropped,
+            "crop_raman_row_zscore_pca": _row_zscore(cropped),
+            "crop_raman_derivative_pca": _derivative(_row_zscore(cropped)),
+        }.items():
+            feature_sets[name] = matrix
+            pca_spec[name] = args.pca_components
+        control_pairs.append(("raman_pca", "crop_raman_derivative_pca"))
+
+    return {
+        "feature_sets": feature_sets,
+        "labels": labels,
+        "groups": groups,
+        "control_pairs": control_pairs,
+        "pca_spec": pca_spec,
+        "meta": {
+            "dataset_id": "rruff_paired" if args.rruff_paired else "rruff",
+            "spectra": int(xrd.shape[0]),
+            "specimens": int(len(set(groups.tolist()))),
+            "grid": list(RAMAN_GRID),
+            "paired_chemistry_control": bool(args.rruff_paired),
+        },
+    }
+
+
+# --------------------------------------------------------------------------------------
+# Severson adapter — protocol MODALITY-GENERALITY check on the project's own A/B
+# features (battery cycling, not spectra). Provenance label: collection batch date.
+# Feature sets are EXACTLY the A/B's representations (imported from the shared module,
+# not re-implemented): the recorded follow-on of the rung-3 replication, replacing the
+# ad-hoc 94.5% batch-identifiability probe with the protocol tool. Also audits the
+# paper-shape (policy) features: the sweep DESIGN nests in batch, so even the recipe
+# may recover the batch — a designed-confound measurement, not a surprise.
+# --------------------------------------------------------------------------------------
+
+
+def load_severson_ab(args: argparse.Namespace) -> dict[str, Any]:
+    from materials_event_modeling.eval.severson_ab import load_cells, representation
+
+    root = project_root()
+    events_path = root / "data/interim/event_grammar_v1/severson_battery/events.json"
+    if not events_path.exists():
+        raise FileNotFoundError("Run scripts/adapters/adapt_severson_battery.py first.")
+    cells = load_cells(events_path)
+    labels = np.array([c["batch"] for c in cells])
+
+    k = 100
+    a_traj = np.array([representation(c, "A_trajectory", k) for c in cells], dtype=np.float32)
+    b_policy = np.array([representation(c, "B_policy", k) for c in cells], dtype=np.float32)
+
+    # Raw trajectory analog of a spectrum: QDischarge over a fixed early-cycle grid.
+    cycle_grid = np.arange(2, k + 1, dtype=float)
+    curves = []
+    for c in cells:
+        mask = (c["cycles"] >= 2) & (c["cycles"] <= k)
+        curves.append(np.interp(cycle_grid, c["cycles"][mask],
+                                c["series"]["qdischarge_ah"][mask]).astype(np.float32))
+    qd_curve = np.asarray(curves)
+
+    return {
+        "feature_sets": {
+            "a_trajectory_k100": a_traj,
+            "b_policy": b_policy,
+            "qd_curve_pca": qd_curve,
+        },
+        "labels": labels,
+        "control_pairs": [],
+        "pca_spec": {"qd_curve_pca": args.pca_components},
+        "meta": {
+            "dataset_id": "severson_ab",
+            "cells": len(cells),
+            "batches": sorted(set(labels.tolist())),
+            "note": "policies nest within batches by design; b_policy recoverability "
+                    "measures that designed confound",
+        },
+    }
+
+
 DATASETS: dict[str, Callable[[argparse.Namespace], dict[str, Any]]] = {
     "opxrd": load_opxrd,
     "text": load_text,
+    "rruff": load_rruff,
+    "severson_ab": load_severson_ab,
 }
 
 
@@ -364,6 +531,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         seed=args.seed,
         n_repeats=args.cv_repeats,
         pca_components=bundle.get("pca_spec"),
+        groups=bundle.get("groups"),
     )
     efficacy = [
         control_efficacy(report, baseline, control)
@@ -411,6 +579,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--corpus", type=Path, default=Path("data/raw/text_corpus/mix.jsonl"))
     parser.add_argument("--svd-components", type=int, default=64)
     parser.add_argument("--max-features", type=int, default=20000)
+    # rruff adapter
+    parser.add_argument("--rruff-paired", action="store_true",
+                        help="Chemistry-matched control: only specimens measured at >=2 "
+                        "usable wavelengths, so composition is identical across classes "
+                        "within each fold group.")
     parser.add_argument("--output", type=Path, default=None,
                         help="Default: data/manifests/provenance_leakage_audit_<dataset>.json")
     return parser.parse_args()
