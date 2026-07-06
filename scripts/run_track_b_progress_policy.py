@@ -17,7 +17,6 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-
 DEFAULT_REGIME_POOL = ["source_smooth", "reversed_time", "random_axis", "abrupt_basin"]
 DEFAULT_HELDOUT_REGIMES = ["reversed_time", "random_axis", "abrupt_basin"]
 PROGRESS_POLICIES = ["latent_progress_forest", "oracle_progress_forest"]
@@ -418,7 +417,7 @@ def summarize(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "heldout_regime": heldout_regime,
                 "strategy": strategy,
                 "budget": int(budget),
-                "event_count": int(len(group)),
+                "event_count": len(group),
                 "mse_mean": float(group["mse"].mean()),
                 "mse_std": float(group["mse"].std(ddof=0)),
                 "improvement_vs_event_mean_mean": float(group["improvement_vs_event_mean"].mean()),
@@ -436,7 +435,7 @@ def summarize_target_diagnostics(diagnostics: list[dict[str, Any]]) -> list[dict
             {
                 "heldout_regime": heldout_regime,
                 "strategy": strategy,
-                "seed_count": int(len(group)),
+                "seed_count": len(group),
                 "target_mse_improvement_mean": float(group["target_mse_improvement"].mean()),
                 "target_mse_improvement_min": float(group["target_mse_improvement"].min()),
                 "target_mse_improvement_max": float(group["target_mse_improvement"].max()),
@@ -509,7 +508,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     "model": train_progress_model(features, targets, seed=seed),
                     "targets": targets,
                     "feature_count": int(features.shape[1]),
-                    "training_examples": int(len(targets)),
+                    "training_examples": len(targets),
                 }
 
             coordinate_forest, pca_model = train_coordinate_forest(
@@ -553,7 +552,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                         "train_events": len(train_events),
                         "test_events": len(test_events),
                         "training_examples": bundle["training_examples"],
-                        "test_target_examples": int(len(test_targets)),
+                        "test_target_examples": len(test_targets),
                         **target_diagnostic(
                             model=bundle["model"],
                             train_targets=bundle["targets"],

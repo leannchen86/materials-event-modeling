@@ -96,7 +96,7 @@ def test_grouped_folds_kill_group_identity_leakage() -> None:
     group_label = {g: ("a" if rng.random() < 0.5 else "b") for g in range(n_groups)}
     labels, groups, feat = [], [], []
     for g in range(n_groups):
-        for r in range(rows_per):
+        for _r in range(rows_per):
             labels.append(group_label[g])
             groups.append(f"g{g}")
             onehot = [0.0] * n_groups

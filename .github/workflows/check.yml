@@ -1,0 +1,22 @@
+name: check
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Set up Python + deps
+        run: |
+          uv venv .venv
+          uv pip install --python .venv/bin/python -e '.[dev]'
+      - name: Lint (ruff)
+        run: .venv/bin/ruff check src/ scripts/ tests/
+      - name: Types (ty, src+tests)
+        run: .venv/bin/ty check
+      - name: Tests
+        run: .venv/bin/python -m pytest tests/ -q

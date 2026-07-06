@@ -8,7 +8,6 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 ROOT = Path(__file__).resolve().parents[1]
 FIG_DIR = ROOT / "docs" / "figures"
 
@@ -170,7 +169,7 @@ def figure_hard_controls() -> None:
         fontsize=15,
         fontweight="bold",
     )
-    for offset, (label, key, color) in zip([-width, 0, width], metrics):
+    for offset, (label, key, color) in zip([-width, 0, width], metrics, strict=False):
         values = [
             percent(controls["summary"][split]["models"]["idw_all"][key])
             for _, split in splits

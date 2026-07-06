@@ -33,7 +33,6 @@ from materials_event_modeling.track_b.eval import (
     nearest_neighbor_hit_rate,
 )
 
-
 FEATURE_VIEWS = {
     "label_only": {"numeric": [], "categorical": ["legacy_label"]},
     "planned_conditions": {"numeric": PLANNED_CONDITION_COLUMNS, "categorical": []},
@@ -636,8 +635,8 @@ def analyze_table(
         "created_at": datetime.now(timezone.utc).isoformat(),
         "task": "track_b_event_analysis_harness",
         "bundle": bundle_name,
-        "event_count": int(len(table)),
-        "theta_points": int(len(theta)) if theta is not None else None,
+        "event_count": len(table),
+        "theta_points": len(theta) if theta is not None else None,
         "hypotheses": [
             "The harness should reproduce the synthetic event-over-label signal under held-out-plan splits.",
             "Held-out-batch splits should be reported separately because batch/session structure can make claims stricter.",

@@ -18,7 +18,6 @@ from sklearn.neighbors import NearestNeighbors
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-
 DEFAULT_ARCHIVE = Path("data/raw/durham_ipa_droplets/ipa_droplets_in_moist_air.zip")
 DEFAULT_OUTPUT = Path("data/manifests/durham_ipa_droplet_smoke_test.json")
 

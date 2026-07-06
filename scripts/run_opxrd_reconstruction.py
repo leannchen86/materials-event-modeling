@@ -15,7 +15,6 @@ from sklearn.decomposition import PCA
 from sklearn.model_selection import GroupKFold, KFold
 from sklearn.preprocessing import StandardScaler
 
-
 DATASET_ID = "opxrd"
 
 
@@ -62,7 +61,7 @@ class MissingPCA:
     pca: PCA
 
     @classmethod
-    def fit(cls, x_train: np.ndarray, max_components: int) -> "MissingPCA":
+    def fit(cls, x_train: np.ndarray, max_components: int) -> MissingPCA:
         scaler = StandardScaler()
         x_scaled = scaler.fit_transform(x_train)
         pca = PCA(

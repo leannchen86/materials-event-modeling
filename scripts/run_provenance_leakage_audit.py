@@ -23,9 +23,10 @@ from __future__ import annotations
 import argparse
 import json
 import re
+from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -423,7 +424,7 @@ def load_rruff(args: argparse.Namespace) -> dict[str, Any]:
         "meta": {
             "dataset_id": "rruff_paired" if args.rruff_paired else "rruff",
             "spectra": int(xrd.shape[0]),
-            "specimens": int(len(set(groups.tolist()))),
+            "specimens": len(set(groups.tolist())),
             "grid": list(RAMAN_GRID),
             "paired_chemistry_control": bool(args.rruff_paired),
         },

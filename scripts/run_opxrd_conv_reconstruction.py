@@ -17,7 +17,6 @@ from sklearn.model_selection import GroupKFold, KFold
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 
-
 DATASET_ID = "opxrd"
 
 
@@ -142,7 +141,7 @@ def allocate_source_balanced_counts(
     if not 0.0 <= alpha <= 1.0:
         raise ValueError("--source-balance-alpha must be between 0 and 1.")
 
-    allocated = {source: 0 for source in source_counts}
+    allocated = dict.fromkeys(source_counts, 0)
     remaining = max_samples
     active = set(source_counts)
     while remaining > 0 and active:

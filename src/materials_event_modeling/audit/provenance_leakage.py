@@ -168,7 +168,7 @@ def evaluate_recoverability(
         "pca_components": reduce_to,
         "n_repeats": max(1, n_repeats),
         "grouped": groups is not None,
-        "n_groups": int(len(set(np.asarray(groups).tolist()))) if groups is not None else None,
+        "n_groups": len(set(np.asarray(groups).tolist())) if groups is not None else None,
         "accuracy": metric_summary(accuracy),
         "balanced_accuracy": metric_summary(balanced_accuracy),
         "baseline_accuracy": metric_summary(baseline_accuracy),

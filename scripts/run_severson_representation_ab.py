@@ -165,7 +165,7 @@ def ranking_task(cells: list[dict]) -> dict:
                 "bootstrap_ci95_pairs": [lo, hi],
                 "bootstrap_ci95_clusters": [clo, chi],
                 "accuracy_eol_pairs_only": float(np.mean([
-                    v for (w, l), v in zip(pairs_all, mean_per_pair)
+                    v for (w, l), v in zip(pairs_all, mean_per_pair, strict=True)
                     if w in eol_ids and l in eol_ids
                 ])) if pairs_eol_only else None,
             }

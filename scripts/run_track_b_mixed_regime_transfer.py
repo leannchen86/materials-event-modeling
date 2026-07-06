@@ -16,7 +16,6 @@ from sklearn.decomposition import PCA
 
 from materials_event_modeling.track_b.synthetic_field import SyntheticEventField
 
-
 DEFAULT_REGIME_POOL = ["source_smooth", "reversed_time", "random_axis", "abrupt_basin"]
 DEFAULT_HELDOUT_REGIMES = ["reversed_time", "random_axis", "abrupt_basin"]
 DEFAULT_VARIANTS = ["candidate_set_basic", "scalar_full", "coords_basic", "full_neural"]
@@ -93,7 +92,7 @@ def summarize(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "heldout_regime": heldout_regime,
                 "strategy": strategy,
                 "budget": int(budget),
-                "event_count": int(len(group)),
+                "event_count": len(group),
                 "mse_mean": float(group["mse"].mean()),
                 "mse_std": float(group["mse"].std(ddof=0)),
                 "improvement_vs_event_mean_mean": float(group["improvement_vs_event_mean"].mean()),
@@ -111,7 +110,7 @@ def summarize_target_diagnostics(diagnostics: list[dict[str, Any]]) -> list[dict
             {
                 "heldout_regime": heldout_regime,
                 "variant": variant,
-                "seed_count": int(len(group)),
+                "seed_count": len(group),
                 "target_mse_improvement_mean": float(group["target_mse_improvement"].mean()),
                 "target_mse_improvement_min": float(group["target_mse_improvement"].min()),
                 "target_mse_improvement_max": float(group["target_mse_improvement"].max()),
@@ -226,8 +225,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                         "device": str(device),
                         "train_events": len(train_events),
                         "test_events": len(test_events),
-                        "training_examples": int(len(bundle["train_examples"].targets)),
-                        "test_target_examples": int(len(test_examples.targets)),
+                        "training_examples": len(bundle["train_examples"].targets),
+                        "test_target_examples": len(test_examples.targets),
                         **target_diag,
                     }
                 )

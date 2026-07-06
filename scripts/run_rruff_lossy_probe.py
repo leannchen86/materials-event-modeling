@@ -73,7 +73,7 @@ def run(args):
         pred = KNeighborsClassifier(n_neighbors=1).fit(Xg[tr], yg[tr]).predict(Xg[te])
         err = pred != yg[te]
         total_err += int(err.sum())
-        within += int(sum(GARNET_FAMILY[p] == GARNET_FAMILY[t] for p, t in zip(pred[err], yg[te][err])))
+        within += int(sum(GARNET_FAMILY[p] == GARNET_FAMILY[t] for p, t in zip(pred[err], yg[te][err], strict=False)))
     within_family_err_frac = round(within / total_err, 3) if total_err else None
 
     # ---- Olivine (single family) secondary ----

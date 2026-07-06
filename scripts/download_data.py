@@ -11,7 +11,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-
 NIST_MDS2_2301_METADATA_URL = "https://data.nist.gov/od/id/mds2-2301"
 OPXRD_CONCEPT_RECORD_ID = "14254270"
 OPXRD_METADATA_URL = f"https://zenodo.org/api/records/{OPXRD_CONCEPT_RECORD_ID}"

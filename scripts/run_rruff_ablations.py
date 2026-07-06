@@ -46,7 +46,7 @@ def grouped_eval(X, y, groups, test_size=0.35):
     if not accs:
         return None
     return {"acc": round(float(np.mean(accs)), 3), "acc_std": round(float(np.std(accs)), 3),
-            "balanced_acc": round(float(np.mean(bals)), 3), "n": int(len(y))}
+            "balanced_acc": round(float(np.mean(bals)), 3), "n": len(y)}
 
 
 def members_present(data, members, min_spec=2):

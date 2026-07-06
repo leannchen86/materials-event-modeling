@@ -10,6 +10,7 @@ from statistics import mean, pstdev
 from typing import Any
 
 import numpy as np
+from run_opxrd_conv_reconstruction import load_subset, project_root
 from sklearn.decomposition import PCA
 from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
@@ -17,8 +18,6 @@ from sklearn.metrics import accuracy_score, balanced_accuracy_score, confusion_m
 from sklearn.model_selection import StratifiedKFold
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
-
-from run_opxrd_conv_reconstruction import load_subset, project_root
 
 
 def metric_summary(values: list[float]) -> dict[str, float]:

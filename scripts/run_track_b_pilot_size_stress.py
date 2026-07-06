@@ -17,7 +17,6 @@ import pandas as pd
 from materials_event_modeling.track_b.eval import evaluate_synthetic_track_b
 from materials_event_modeling.track_b.synthetic import generate_synthetic_track_b
 
-
 DEFAULT_CONFIGS = [
     {"name": "12_one_shot_12x1", "groups": 12, "replicates_per_group": 1},
     {"name": "12_replicated_6x2", "groups": 6, "replicates_per_group": 2},
@@ -80,7 +79,7 @@ def extract_metrics(config: dict[str, Any], seed: int, evaluation: dict[str, Any
         "observed_retrieval_hit_rate": scalar(retrieval["observed_trajectory"]),
         "full_event_retrieval_hit_rate": scalar(retrieval["full_event"]),
         "raw_measurement_pca_retrieval_hit_rate": scalar(retrieval["raw_measurement_pca"]),
-        "labels_that_split_count": int(len(projection["labels_that_split"])),
+        "labels_that_split_count": len(projection["labels_that_split"]),
         "mean_hidden_regime_entropy_per_label": scalar(
             projection["mean_hidden_regime_entropy_per_label"]
         ),
@@ -116,7 +115,7 @@ def mean_std_summary(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
             "event_count": int(first["event_count"]),
             "planned_condition_count": int(first["planned_condition_count"]),
             "replicates_per_group": int(first["replicates_per_group"]),
-            "seeds": int(len(config_df)),
+            "seeds": len(config_df),
         }
         for column in metric_columns:
             values = config_df[column].astype(float)

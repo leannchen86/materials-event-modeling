@@ -10,11 +10,11 @@ This is the refined-a real-trajectory loader; see docs/event-method/refined_a_ol
 
 from __future__ import annotations
 
+import re
+import zipfile
 from dataclasses import dataclass
 from io import BytesIO
 from pathlib import Path
-import re
-import zipfile
 
 import numpy as np
 

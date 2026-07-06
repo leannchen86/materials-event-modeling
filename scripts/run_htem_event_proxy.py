@@ -10,9 +10,10 @@ import sys
 import urllib.parse
 import urllib.request
 from collections import defaultdict
+from collections.abc import Iterable
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -23,7 +24,6 @@ from sklearn.linear_model import Ridge
 from sklearn.model_selection import GroupKFold, KFold
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
-
 
 HTEM_API_BASE_URL = "https://htem-api.nlr.gov/api"
 
@@ -396,7 +396,7 @@ def feature_sets(events: pd.DataFrame) -> dict[str, dict[str, list[str]]]:
     ])
 
     recipe_numeric = element_columns + process_numeric
-    recipe_categorical = ["elements_text"] + process_categorical
+    recipe_categorical = ["elements_text", *process_categorical]
     local_categorical = ["xrf_compounds_text"]
 
     return {
@@ -536,8 +536,8 @@ def evaluate(
             split_trials.append(
                 {
                     "fold": fold,
-                    "train_events": int(len(train_idx)),
-                    "test_events": int(len(test_idx)),
+                    "train_events": len(train_idx),
+                    "test_events": len(test_idx),
                     "target_components": int(target_components),
                     "target_explained_variance": explained_variances[-1],
                     "baseline_mse": baseline_mse,
@@ -623,7 +623,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "selected_library_count": len(selected_ids),
         "selected_library_ids": selected_ids,
         "min_xrd_positions": args.min_xrd_positions,
-        "event_count": int(len(events)),
+        "event_count": len(events),
         "xrd_points": int(xrd.shape[1]),
         "angle_min": float(np.min(angle)),
         "angle_max": float(np.max(angle)),

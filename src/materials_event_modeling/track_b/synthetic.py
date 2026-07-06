@@ -12,7 +12,6 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 
-
 REGIMES = [
     "low_signal_sparse",
     "rapid_mixture",
@@ -250,7 +249,7 @@ def generate_synthetic_track_b(
             else:
                 early_turbidity_value = round(early_turbidity, 3)
 
-            row = {
+            row: dict[str, object] = {
                 "event_id": event_id,
                 "system": "calcium_carbonate_synthetic",
                 "batch_id": batch_id,

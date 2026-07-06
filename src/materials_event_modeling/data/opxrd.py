@@ -6,12 +6,11 @@ import json
 import math
 import zipfile
 from collections import Counter
+from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Iterator, Sequence
 
 import numpy as np
-
 
 DATASET_ID = "opxrd"
 ARCHIVE_FILENAME = "opxrd.zip"
@@ -121,13 +120,13 @@ def archive_inventory(archive_path: Path, sample_paths: int = 20) -> dict[str, o
 
 def parse_nested_json(value: object) -> dict[str, object]:
     if isinstance(value, dict):
-        return value
+        return {str(k): v for k, v in value.items()}
     if isinstance(value, str) and value:
         try:
             parsed = json.loads(value)
         except json.JSONDecodeError:
             return {}
-        return parsed if isinstance(parsed, dict) else {}
+        return {str(k): v for k, v in parsed.items()} if isinstance(parsed, dict) else {}
     return {}
 
 
@@ -268,7 +267,7 @@ def summarize_patterns(patterns: Iterable[OpxrdPattern]) -> dict[str, object]:
         phase_counts[pattern.phase_count] += 1
         point_counts[int(pattern.two_theta.shape[0])] += 1
         institution = pattern.metadata.get("institution") or "<missing>"
-        formats[pattern.metadata.get("original_file_format") or "<missing>"] += 1
+        formats[str(pattern.metadata.get("original_file_format") or "<missing>")] += 1
         institutions[str(institution)] += 1
         current_min = float(np.min(pattern.two_theta))
         current_max = float(np.max(pattern.two_theta))

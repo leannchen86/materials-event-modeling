@@ -13,11 +13,6 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
-from sklearn.impute import SimpleImputer
-from sklearn.linear_model import Ridge
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-
 from run_htem_event_proxy import (
     HTEM_API_BASE_URL,
     LOCAL_PROP_FIELDS,
@@ -28,6 +23,10 @@ from run_htem_event_proxy import (
     parse_element_system_filter,
     select_libraries,
 )
+from sklearn.impute import SimpleImputer
+from sklearn.linear_model import Ridge
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 
 @dataclass
@@ -321,7 +320,7 @@ def evaluate_split(
     local_columns = local_feature_columns(events)
 
     result = RepeatResult(repeat=repeat, split_kind=split_kind, libraries=len(splits))
-    for sample_id, (train_idx, test_idx) in sorted(splits.items()):
+    for _sample_id, (train_idx, test_idx) in sorted(splits.items()):
         train_xrd = xrd[train_idx]
         test_xrd = xrd[test_idx]
         train_coords = coordinate_matrix(events, train_idx)
@@ -499,7 +498,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "element_system_filter": element_system_filter,
         "selected_library_count": len(selected_ids),
         "selected_library_ids": selected_ids,
-        "event_count": int(len(events)),
+        "event_count": len(events),
         "xrd_points": int(xrd.shape[1]),
         "angle_min": float(np.min(angle)),
         "angle_max": float(np.max(angle)),

@@ -12,7 +12,6 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-
 from run_htem_event_proxy import (
     HTEM_API_BASE_URL,
     build_event_table,
@@ -322,7 +321,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             )
             split_acc.states += 1
             split_acc.libraries.add(int(event_id))
-            split_acc.candidate_count += int(len(candidates))
+            split_acc.candidate_count += len(candidates)
             for model, prediction in predictions.items():
                 split_acc.update(model, target_spectra, prediction)
 
@@ -335,7 +334,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "element_system_filter": element_system_filter,
         "selected_library_count": len(selected_ids),
         "selected_library_ids": selected_ids,
-        "event_count": int(len(events)),
+        "event_count": len(events),
         "xrd_points": int(spectra.shape[1]),
         "angle_min": float(np.min(angle)),
         "angle_max": float(np.max(angle)),

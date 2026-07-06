@@ -17,7 +17,6 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-
 DEFAULT_REGIME_POOL = ["source_smooth", "reversed_time", "random_axis", "abrupt_basin"]
 DEFAULT_HELDOUT_REGIMES = ["reversed_time", "random_axis", "abrupt_basin"]
 FIELD_STRATEGIES = ["field_model_uncertainty", "field_model_uncertainty_coverage"]
@@ -348,7 +347,7 @@ def summarize(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "heldout_regime": heldout_regime,
                 "strategy": strategy,
                 "budget": int(budget),
-                "event_count": int(len(group)),
+                "event_count": len(group),
                 "mse_mean": float(group["mse"].mean()),
                 "mse_std": float(group["mse"].std(ddof=0)),
                 "improvement_vs_event_mean_mean": float(group["improvement_vs_event_mean"].mean()),
@@ -365,7 +364,7 @@ def summarize_diagnostics(diagnostics: list[dict[str, Any]]) -> list[dict[str, A
         rows.append(
             {
                 "heldout_regime": heldout_regime,
-                "seed_count": int(len(group)),
+                "seed_count": len(group),
                 "field_target_mse_improvement_mean": float(
                     group["field_target_mse_improvement"].mean()
                 ),
@@ -449,8 +448,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     "train_regimes": train_regimes,
                     "train_events": len(train_events),
                     "test_events": len(test_events),
-                    "training_examples": int(len(train_targets)),
-                    "test_examples": int(len(test_targets)),
+                    "training_examples": len(train_targets),
+                    "test_examples": len(test_targets),
                     **field_prediction_diagnostic(
                         model=field_model,
                         train_targets=train_targets,

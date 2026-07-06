@@ -11,7 +11,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-
 HTEM_API_BASE_URL = "https://htem-api.nlr.gov/api"
 HTEM_APP_URL = "https://htem.nlr.gov/"
 HTEM_NREL_SUBMISSION_URL = "https://data.nrel.gov/submissions/75"

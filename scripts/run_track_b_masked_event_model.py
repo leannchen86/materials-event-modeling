@@ -24,7 +24,6 @@ from materials_event_modeling.track_b.field_prediction import (
     mean_squared_error,
 )
 
-
 DEFAULT_REGIME_POOL = ["source_smooth", "reversed_time", "random_axis", "abrupt_basin"]
 DEFAULT_HELDOUT_REGIMES = ["reversed_time", "random_axis", "abrupt_basin"]
 DEFAULT_OBSERVED_COUNTS = [2, 3, 4, 6, 8]
@@ -701,7 +700,7 @@ def summarize_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "observed_count": int(observed_count),
                 "mask_strategy": mask_strategy,
                 "model": model,
-                "event_count": int(len(group)),
+                "event_count": len(group),
                 "mse_mean": float(group["mse"].mean()),
                 "mae_mean": float(group["mae"].mean()),
                 "improvement_vs_train_mean_mean": float(
@@ -723,7 +722,7 @@ def summarize_diagnostics(diagnostics: list[dict[str, Any]]) -> list[dict[str, A
             {
                 "heldout_regime": heldout_regime,
                 "variant": variant,
-                "seed_count": int(len(group)),
+                "seed_count": len(group),
                 "target_mse_improvement_mean": float(group["target_mse_improvement"].mean()),
                 "target_mse_improvement_min": float(group["target_mse_improvement"].min()),
                 "target_mse_improvement_max": float(group["target_mse_improvement"].max()),
@@ -849,8 +848,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                         "device": str(device),
                         "train_events": len(train_events),
                         "test_events": len(test_events),
-                        "training_examples": int(len(train_examples.targets)),
-                        "test_examples": int(len(test_examples.targets)),
+                        "training_examples": len(train_examples.targets),
+                        "test_examples": len(test_examples.targets),
                         **target_diag,
                     }
                 )

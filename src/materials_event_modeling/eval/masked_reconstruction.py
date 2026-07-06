@@ -14,7 +14,6 @@ from sklearn.preprocessing import StandardScaler
 
 from materials_event_modeling.data.nist import DATASET_ID
 
-
 SPECTRUM_SCALE = 1000.0
 
 
@@ -88,7 +87,7 @@ class MissingPCA:
     pca: PCA
 
     @classmethod
-    def fit(cls, x_train: np.ndarray, n_components: int) -> "MissingPCA":
+    def fit(cls, x_train: np.ndarray, n_components: int) -> MissingPCA:
         scaler = StandardScaler()
         x_scaled = scaler.fit_transform(x_train)
         pca = PCA(n_components=n_components, random_state=17)

@@ -25,8 +25,6 @@ from materials_event_modeling.eval.severson_ab import (
     loo_policy_scores,
     per_pair_correct,
     ranking_pairs,
-    representation,
-    make_model,
 )
 from materials_event_modeling.run_identity import run_identity
 

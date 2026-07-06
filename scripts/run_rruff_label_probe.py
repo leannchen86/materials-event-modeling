@@ -49,7 +49,7 @@ def run(args):
     y_shuf = rng.permutation(ym)
     shuf_acc, _ = knn_grouped_acc(Xm, y_shuf, gm, seed=args.seed)
     # chance = predict the most frequent class
-    vals, counts = np.unique(ym, return_counts=True)
+    _vals, counts = np.unique(ym, return_counts=True)
     chance = float(counts.max() / counts.sum())
 
     # ---- CaCO3 polymorph sub-probe: calcite vs aragonite (same composition) ----

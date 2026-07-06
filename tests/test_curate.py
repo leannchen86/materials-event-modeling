@@ -10,7 +10,6 @@ from materials_event_modeling.curate import (
     quality_filter,
 )
 
-
 # --- dedup -----------------------------------------------------------------------------
 
 

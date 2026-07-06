@@ -206,7 +206,7 @@ def run_nist_tests() -> dict[str, object]:
         "dataset_id": DATASET_ID,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "task": "initial_human_label_disagreement_and_compactness_baselines",
-        "n_human_labeled": int(len(human)),
+        "n_human_labeled": len(human),
         "n_human_disagreeing": int(target_disagree.sum()),
         "feature_sets": {},
         "caveats": [

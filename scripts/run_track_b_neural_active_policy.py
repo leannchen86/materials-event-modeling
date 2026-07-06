@@ -25,7 +25,6 @@ from materials_event_modeling.track_b.field_prediction import (
 )
 from materials_event_modeling.track_b.synthetic_field import generate_synthetic_event_field
 
-
 DEFAULT_SEEDS = [17, 29, 41, 53, 67]
 
 
@@ -587,7 +586,7 @@ def summarize(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
             {
                 "strategy": strategy,
                 "budget": int(budget),
-                "event_count": int(len(group)),
+                "event_count": len(group),
                 "mse_mean": float(group["mse"].mean()),
                 "mse_std": float(group["mse"].std(ddof=0)),
                 "improvement_vs_event_mean_mean": float(group["improvement_vs_event_mean"].mean()),
@@ -656,8 +655,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 "device": str(device),
                 "train_events": len(train_events),
                 "test_events": len(test_events),
-                "training_examples": int(len(train_examples.targets)),
-                "test_target_examples": int(len(test_examples.targets)),
+                "training_examples": len(train_examples.targets),
+                "test_target_examples": len(test_examples.targets),
                 "target_mean": float(train_examples.targets.mean()),
                 "target_std": float(train_examples.targets.std()),
                 **target_diag,

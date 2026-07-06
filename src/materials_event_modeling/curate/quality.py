@@ -52,7 +52,7 @@ def quality_signals(text: str) -> dict[str, float]:
         "symbol_word_ratio": n_symbols / max(n_words, 1),
         "stopwords_present": float(stopwords_present),
         "alpha_ratio": sum(c.isalpha() for c in text) / n_chars,
-        "unique_word_ratio": (len(set(w.lower() for w in words)) / n_words) if n_words else 0.0,
+        "unique_word_ratio": (len({w.lower() for w in words}) / n_words) if n_words else 0.0,
     }
 
 
@@ -79,7 +79,7 @@ def quality_filter(
     """Partition docs into kept / removed and tally which rule removed each."""
     t = thresholds or QualityThresholds()
     kept, removed = [], []
-    rule_counts: dict[str, int] = {rule: 0 for rule in t.rules}
+    rule_counts: dict[str, int] = dict.fromkeys(t.rules, 0)
     for doc_id, text in docs:
         failed = _failed_rules(quality_signals(text), t)
         if failed:

@@ -25,6 +25,7 @@ train = [
 dev = [
   "pytest>=8.0",
   "ruff>=0.4",
+  "ty>=0.0.1",
 ]
 
 [build-system]
@@ -37,3 +38,38 @@ where = ["src"]
 [tool.ruff]
 line-length = 100
 target-version = "py310"
+
+# Curated to catch semantic bugs, not enforce style. Line-length is the formatter's
+# job (E501 is off); complexity/magic-value rules (PLR*) are engineering theater for
+# research code. What stays are real bug classes and import/modernization hygiene.
+[tool.ruff.lint]
+select = [
+  "F",     # pyflakes: undefined names, unused imports/vars — always semantic
+  "E4", "E7", "E9",  # real errors (imports, statements, syntax); NOT E501
+  "I",     # import sorting (auto-fixed; keeps diffs clean)
+  "B",     # bugbear: loop-var closures (B023), zip-without-strict (B905), etc.
+  "UP",    # pyupgrade modernization (auto-fixed)
+  "C4",    # comprehension correctness/clarity
+  "RUF",   # ruff-native semantic checks
+]
+ignore = [
+  "E741",    # ambiguous name (l/I/O) — we use w,l for winner/loser deliberately
+  "RUF001", "RUF002", "RUF003",  # unicode-in-string/docstring (× in specs, µm units)
+  "RUF046",  # "cast to int already int" — false positive on int(np.int64) needed for JSON
+]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/**" = ["E402"]  # scripts may set up sys.path before imports
+# Archived event-method oleogel scripts: helpers close over a loop var but are called
+# same-iteration (safe); documented rather than churned in a closed reference archive.
+"scripts/run_oleogel_*.py" = ["B023"]
+
+# Type checking is gated on the reusable library (src) + its tests, where types earn
+# their keep. scripts/ are run-once entrypoints with heavy pandas/argparse dynamism
+# (~73 diagnostics that are noise, not bugs) — ruff still covers them for real bug
+# classes. Tighten `src` toward stricter rules as the typed-Event refactor lands.
+[tool.ty.environment]
+python = ".venv"
+
+[tool.ty.src]
+include = ["src", "tests"]

@@ -12,7 +12,6 @@ from pathlib import Path
 from statistics import mean, pstdev
 from typing import Any
 
-
 SCRIPT_NAME = "scripts/run_opxrd_conv_reconstruction.py"
 
 
@@ -126,8 +125,8 @@ def summarize_trials(trials: list[dict[str, Any]]) -> dict[str, Any]:
                 trial["splits"][split_name]["linear_interpolation"]["mae"]
                 for trial in sample_trials
             ]
-            mse_delta = [conv - interp for conv, interp in zip(conv_mse, interpolation_mse)]
-            mae_delta = [conv - interp for conv, interp in zip(conv_mae, interpolation_mae)]
+            mse_delta = [conv - interp for conv, interp in zip(conv_mse, interpolation_mse, strict=False)]
+            mae_delta = [conv - interp for conv, interp in zip(conv_mae, interpolation_mae, strict=False)]
             split_summaries[split_name] = {
                 "trials": len(sample_trials),
                 "conv_mse_improvement_vs_train_mean": metric_summary(conv_mse_improvements),

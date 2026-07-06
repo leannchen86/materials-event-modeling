@@ -12,7 +12,6 @@ from typing import Any
 from xml.etree import ElementTree as ET
 from zipfile import ZipFile
 
-
 DATASET_ID = "nist_mds2_2301"
 DATASET_DIR = Path("data/raw") / DATASET_ID
 

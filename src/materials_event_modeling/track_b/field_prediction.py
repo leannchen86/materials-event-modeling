@@ -95,7 +95,7 @@ def evaluate_partial_observation_budget(
 
     rng = np.random.default_rng(seed)
     unique_events = np.array(sorted(set(event_ids.tolist())))
-    rows: list[dict[str, object]] = []
+    rows: list[FieldBudgetResult] = []
 
     for observed_count in observed_counts:
         for strategy in ["random", "space_filling"]:
@@ -184,15 +184,15 @@ def evaluate_partial_observation_budget(
                 else:
                     improvement_vs_event_mean = 1.0 - (mse / event_mean_mse)
                 rows.append(
-                    {
-                        "strategy": strategy,
-                        "observed_count": observed_count,
-                        "model": model_name,
-                        "mse": mse,
-                        "improvement_vs_global_mean": 1.0 - (mse / global_mse),
-                        "improvement_vs_event_mean": improvement_vs_event_mean,
-                    }
+                    FieldBudgetResult(
+                        strategy=strategy,
+                        observed_count=observed_count,
+                        model=model_name,
+                        mse=mse,
+                        improvement_vs_global_mean=1.0 - (mse / global_mse),
+                        improvement_vs_event_mean=improvement_vs_event_mean,
+                    )
                 )
 
-    return [FieldBudgetResult(**row) for row in rows]
+    return rows
 

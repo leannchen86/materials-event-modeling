@@ -83,7 +83,7 @@ def inject(records: list[dict], rng: random.Random) -> tuple[list[dict], dict[st
         "Someone chalked this on the cafe blackboard under the menu specials today.",
         "A travel companion posed it to pass the time on a very long train ride north.",
     ]
-    for i, (eid, text) in enumerate(EVAL_ITEMS.items()):
+    for i, (_eid, text) in enumerate(EVAL_ITEMS.items()):
         did = f"inject_contam_{i}"
         lead, tail = fillers[i % len(fillers)], fillers[(i + 5) % len(fillers)]
         body = (f"{lead} {lead} The question was: {text} {tail} Several people then "

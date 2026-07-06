@@ -12,7 +12,6 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 from zipfile import ZipFile
 
-
 DEFAULT_ARCHIVE = Path("data/raw/durham_ipa_droplets/ipa_droplets_in_moist_air.zip")
 DEFAULT_OUTPUT = Path("data/manifests/durham_ipa_droplet_audit.json")
 

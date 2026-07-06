@@ -10,7 +10,6 @@ from statistics import mean, median, pstdev
 from typing import Any
 
 import numpy as np
-
 from run_opxrd_conv_reconstruction import (
     interpolate_masked_region,
     load_subset,
@@ -61,7 +60,7 @@ def interpolation_metrics(
     mae_values = []
     hidden_mean_values = []
     hidden_std_values = []
-    for spectrum, start in zip(spectra, starts):
+    for spectrum, start in zip(spectra, starts, strict=False):
         end = int(start) + mask_width
         truth = spectrum[int(start) : end]
         prediction = interpolate_masked_region(spectrum, int(start), end)

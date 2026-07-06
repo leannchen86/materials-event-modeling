@@ -9,14 +9,13 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-from sklearn.decomposition import PCA
-
 from analyze_opxrd_source_predictability import (
     evaluate_feature_set,
     metadata_features,
     spectrum_summary_features,
 )
 from run_opxrd_conv_reconstruction import load_subset, project_root
+from sklearn.decomposition import PCA
 
 
 def load_theta(root: Path) -> np.ndarray:

@@ -42,7 +42,7 @@ def grouped_eval(X, y, g, test_size=0.35):
     if not accs:
         return None
     return {"acc": round(float(np.mean(accs)), 3), "std": round(float(np.std(accs)), 3),
-            "bal_acc": round(float(np.mean(bals)), 3), "n": int(len(y))}
+            "bal_acc": round(float(np.mean(bals)), 3), "n": len(y)}
 
 
 def subset(data, members):
@@ -61,7 +61,7 @@ def within_family_err(X, y, g):
         pred = KNeighborsClassifier(n_neighbors=1).fit(X[tr], y[tr]).predict(X[te])
         err = pred != y[te]
         total += int(err.sum())
-        within += int(sum(GARNET[p] == GARNET[t] for p, t in zip(pred[err], y[te][err])))
+        within += int(sum(GARNET[p] == GARNET[t] for p, t in zip(pred[err], y[te][err], strict=False)))
     return round(within / total, 3) if total else None
 
 

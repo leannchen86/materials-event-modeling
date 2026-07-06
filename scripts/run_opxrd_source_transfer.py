@@ -11,7 +11,6 @@ from statistics import mean, pstdev
 from typing import Any
 
 import numpy as np
-
 from run_opxrd_conv_reconstruction import (
     DATASET_ID,
     ErrorAccumulator,

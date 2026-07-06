@@ -13,7 +13,6 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
-
 from run_htem_event_proxy import (
     HTEM_API_BASE_URL,
     build_event_table,
@@ -301,7 +300,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "element_system_filter": element_system_filter,
         "selected_library_count": len(selected_ids),
         "selected_library_ids": selected_ids,
-        "event_count": int(len(events)),
+        "event_count": len(events),
         "xrd_points": int(xrd.shape[1]),
         "angle_min": float(np.min(angle)),
         "angle_max": float(np.max(angle)),

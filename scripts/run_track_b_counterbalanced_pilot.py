@@ -18,7 +18,6 @@ import pandas as pd
 
 from materials_event_modeling.track_b.synthetic import generate_synthetic_track_b
 
-
 DEFAULT_SEEDS = [17, 29, 41, 53, 67]
 ASSIGNMENT_MODES = [
     "confounded_operator",
@@ -114,7 +113,7 @@ def run_single(
     return {
         "assignment_mode": assignment_mode,
         "seed": seed,
-        "event_count": int(len(dataset.event_table)),
+        "event_count": len(dataset.event_table),
         "planned_condition_count": groups,
         "replicates_per_group": replicates_per_group,
         "provenance_balance": provenance_balance_audit(dataset.event_table),
@@ -175,7 +174,7 @@ def summarize(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     metric_columns = [column for column in df.columns if column not in {"assignment_mode", "seed"}]
     summary_rows = []
     for mode, mode_df in df.groupby("assignment_mode", sort=False):
-        summary: dict[str, Any] = {"assignment_mode": mode, "seeds": int(len(mode_df))}
+        summary: dict[str, Any] = {"assignment_mode": mode, "seeds": len(mode_df)}
         for column in metric_columns:
             if column in {"event_count", "planned_condition_count", "replicates_per_group"}:
                 summary[column] = int(mode_df[column].iloc[0])

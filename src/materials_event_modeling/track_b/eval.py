@@ -114,7 +114,7 @@ def label_projection_audit(table: pd.DataFrame) -> dict[str, object]:
         label_entropy = entropy(regime_counts)
         entropies.append(label_entropy)
         label_summaries[label] = {
-            "events": int(len(label_rows)),
+            "events": len(label_rows),
             "hidden_regime_counts": dict(sorted(regime_counts.items())),
             "hidden_regime_entropy": label_entropy,
             "splits_into_multiple_regimes": len(regime_counts) > 1,
@@ -185,8 +185,8 @@ def evaluate_synthetic_track_b(table: pd.DataFrame, spectra: np.ndarray) -> dict
     }
 
     return {
-        "event_count": int(len(table)),
-        "replicate_group_count": int(len(np.unique(groups))),
+        "event_count": len(table),
+        "replicate_group_count": len(np.unique(groups)),
         "prediction": prediction_results,
         "replicate_retrieval_hit_rate": retrieval_results,
         "label_projection_audit": label_projection_audit(table),

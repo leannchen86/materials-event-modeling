@@ -12,8 +12,6 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
-from sklearn.decomposition import PCA
-
 from run_htem_event_proxy import (
     HTEM_API_BASE_URL,
     build_event_table,
@@ -34,7 +32,7 @@ from run_track_b_masked_event_model import (
     train_masked_model,
     variant_target_mode,
 )
-
+from sklearn.decomposition import PCA
 
 DEFAULT_VARIANTS = ["raw_set", "coord_only", "raw_residual"]
 
@@ -200,8 +198,8 @@ def train_variant(
     return bundle, {
         "variant": variant,
         "target_mode": target_mode,
-        "training_examples": int(len(train_examples.targets)),
-        "test_examples": int(len(test_examples.targets)),
+        "training_examples": len(train_examples.targets),
+        "test_examples": len(test_examples.targets),
         **diagnostics,
     }
 
@@ -354,7 +352,7 @@ def summarize_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "observed_count": int(observed_count),
                 "strategy": strategy,
                 "model": model,
-                "state_count": int(len(group)),
+                "state_count": len(group),
                 "mse_mean": float(group["mse"].mean()),
                 "mae_mean": float(group["mae"].mean()),
                 "improvement_vs_train_mean_mean": float(group["improvement_vs_train_mean"].mean()),
@@ -511,7 +509,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "element_system_filter": element_system_filter,
         "selected_library_count": len(selected_ids),
         "selected_library_ids": selected_ids,
-        "event_count": int(len(events)),
+        "event_count": len(events),
         "xrd_points": int(spectra.shape[1]),
         "angle_min": float(np.min(angle)),
         "angle_max": float(np.max(angle)),
