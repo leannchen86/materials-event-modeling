@@ -1,4 +1,15 @@
-"""Ingestion and readiness audits for material-making event records."""
+"""LEGACY pilot-readiness audit for material_event records (Track B mock CaCO3 set).
+
+Consumed only by ``scripts/audit_track_b_event_dataset.py`` on the legacy
+``material_event.schema.json`` shape. It keeps its own dict-based reader on purpose: its
+``provenance_counts`` deliberately bundles ``pre_registered_plan_id`` and
+``raw_export_profile`` alongside the collection axes — a flatter shape than the typed
+``grammar.event.Event`` (which separates intent / provenance / per-observation export).
+Forcing it onto the typed model would change this readiness report for no active benefit.
+
+For all NEW / grammar-v1 data, the canonical parser is ``grammar.event.parse_event`` and
+the grader is ``grammar.conformance`` — use those, not this module.
+"""
 
 from __future__ import annotations
 

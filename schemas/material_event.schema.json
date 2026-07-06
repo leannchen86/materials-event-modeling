@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "MaterialMakingEvent",
+  "description": "LEGACY pilot schema for the Track B CaCO3 mock set. Superseded by schemas/event_grammar.v1.schema.json for all new data. Retains transitional duplicate fields (process.conditions alongside planned_conditions/observed_trajectory; top-level operator_id/lab_id/batch_id alongside provenance.*) because the mock data and the legacy readiness audit (src/materials_event_modeling/track_b/event_ingest.py) still read them. grammar.event.parse_event normalizes this shape into the typed Event envelope at the boundary.",
   "type": "object",
   "required": [
     "event_id",
