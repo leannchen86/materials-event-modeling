@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from materials_event_modeling.grammar import conformance_report
+from materials_event_modeling.grammar import Event, conformance_report, parse_event
 
 
 def _event(
@@ -17,7 +17,7 @@ def _event(
     outcome_status: str | None = "success",
     plan: dict[str, Any] | None = None,
     labels: dict[str, Any] | None = None,
-) -> dict[str, Any]:
+) -> Event:
     observations = []
     for j in range(n_obs):
         obs: dict[str, Any] = {"observation_id": f"e{idx}_o{j}", "modality": "spectrum"}
@@ -38,7 +38,7 @@ def _event(
         event["intent"] = {"planned": plan}
     if labels is not None:
         event["labels"] = labels
-    return event
+    return parse_event(event)
 
 
 def test_below_l0_when_observations_have_no_payload() -> None:
@@ -187,7 +187,7 @@ def test_legacy_material_event_records_are_gradable() -> None:
         "data_quality": {"include_in_raw_objective": True, "deviations": [],
                          "missing_fields": []},
     }
-    report = conformance_report([legacy])
+    report = conformance_report([parse_event(legacy)])
     # Grades without error; single legacy event lacks outcome.status -> at most L1.
     assert report["level"] in (0, 1)
     assert report["levels"]["l0_raw_trace"]["passed"]

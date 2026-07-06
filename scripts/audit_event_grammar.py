@@ -16,9 +16,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from materials_event_modeling.grammar import conformance_report
+from materials_event_modeling.grammar import conformance_report, load_events
 from materials_event_modeling.run_identity import run_identity
-from materials_event_modeling.track_b.event_ingest import load_event_records
 
 
 def project_root() -> Path:
@@ -54,7 +53,7 @@ def main() -> None:
     args = parser.parse_args()
 
     events_path = args.events if args.events.is_absolute() else project_root() / args.events
-    events = load_event_records(events_path)
+    events = load_events(events_path)
     dataset = args.dataset or events_path.stem
 
     report = conformance_report(events)

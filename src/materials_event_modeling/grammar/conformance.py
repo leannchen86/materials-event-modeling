@@ -1,7 +1,7 @@
 """Graded conformance checks for event-grammar datasets (L0-L3).
 
-A dataset of events (schemas/event_grammar.v1.schema.json envelopes, or legacy
-material_event records) is graded on cumulative levels:
+A dataset of typed ``Event`` records (parsed by ``grammar.event.parse_event`` from either
+the v1 envelope or the legacy material_event shape) is graded on cumulative levels:
 
 * **L0 — raw trace.** Unique event boundaries; observations carry raw payloads
   (inline or by file reference) and are orderable by some index (time, space,
@@ -20,10 +20,8 @@ Checks return evidence (fractions, counts, examples), not just booleans — the
 point is a conformance *report* a data producer can act on, and metrics such as
 ``trace_richness`` are reported without gating a level.
 
-Design note: docs/spine/event_grammar_validation_note.md. This module extends
-(and imports from) track_b.event_ingest rather than replacing it: event_ingest
-answers "is this pilot ready for the planned analyses", conformance answers
-"how much of the event grammar does this dataset actually record".
+Design note: docs/spine/event_grammar_validation_note.md. All shape reconciliation lives
+in ``grammar.event``; here every access is a typed field on ``Event``.
 """
 
 from __future__ import annotations
@@ -32,10 +30,10 @@ from collections import defaultdict
 from statistics import median
 from typing import Any
 
-from materials_event_modeling.track_b.event_ingest import (
-    event_observations,
-    normalize_missing,
-    value_from_event,
+from materials_event_modeling.grammar.event import (
+    NEGATIVE_STATUSES,
+    PROVENANCE_AXES,
+    Event,
 )
 
 CONFORMANCE_LEVELS: dict[int, str] = {
@@ -46,32 +44,6 @@ CONFORMANCE_LEVELS: dict[int, str] = {
     3: "l3_counterbalanced",
 }
 
-# Provenance axes that count toward L1. source_dataset is excluded: it is
-# constant within any single-dataset audit and would be a free pass.
-PROVENANCE_AXES: tuple[str, ...] = (
-    "operator_id",
-    "lab_id",
-    "batch_id",
-    "lot_id",
-    "instrument_id",
-    "instrument_session_id",
-    "measurement_day",
-    "run_order",
-)
-
-# Observation keys that make a trajectory orderable.
-INDEX_KEYS: tuple[str, ...] = (
-    "timestamp",
-    "timepoint_minutes",
-    "time_s",
-    "cycle_index",
-    "frame_index",
-    "order_index",
-    "spatial_position",
-)
-
-NEGATIVE_STATUSES = {"failure", "ambiguous", "aborted"}
-
 # Fraction thresholds (explicit so a report can cite them; heuristic, tunable).
 PAYLOAD_FRACTION = 0.9
 ORDERABLE_FRACTION = 0.9
@@ -81,95 +53,22 @@ FROZEN_LABEL_FRACTION = 0.9
 MIN_REPLICATED_GROUPS = 4
 
 
-def _has_payload(observation: dict[str, Any]) -> bool:
-    payload = observation.get("payload")
-    if isinstance(payload, dict) and payload:
-        return True
-    return observation.get("file_path") not in {"", None}
-
-
-def _has_index(observation: dict[str, Any]) -> bool:
-    for key in INDEX_KEYS:
-        value = observation.get(key)
-        if key == "spatial_position":
-            if isinstance(value, dict) and any(
-                value.get(axis) is not None for axis in ("x", "y")
-            ):
-                return True
-        elif value not in {"", None}:
-            return True
-    return False
-
-
-def _event_outcome_status(event: dict[str, Any]) -> str | None:
-    outcome = event.get("outcome")
-    if isinstance(outcome, dict):
-        status = outcome.get("status")
-        if status not in {"", None}:
-            return str(status)
-    return None
-
-
-def _plan_signature(event: dict[str, Any]) -> str | None:
-    """Plan signature from the envelope intent, falling back to legacy fields."""
-    intent = event.get("intent")
-    if isinstance(intent, dict):
-        planned = intent.get("planned")
-        if isinstance(planned, dict):
-            parts = [
-                f"{key}={planned[key]}"
-                for key in sorted(planned)
-                if planned[key] not in {"", None}
-            ]
-            if parts:
-                return "|".join(parts)
-        if intent.get("plan_id") not in {"", None}:
-            return str(intent["plan_id"])
-        if intent.get("event_group_id") not in {"", None}:
-            return str(intent["event_group_id"])
-    process = event.get("process") or {}
-    planned = process.get("planned_conditions") or process.get("conditions") or {}
-    parts = [
-        f"{key}={planned[key]}" for key in sorted(planned) if planned[key] not in {"", None}
-    ]
-    if parts:
-        return "|".join(parts)
-    legacy_plan = event.get("pre_registered_plan_id")
-    if legacy_plan not in {"", None}:
-        return str(legacy_plan)
-    return None
-
-
-def _event_labels(event: dict[str, Any]) -> list[dict[str, Any]]:
-    labels = event.get("labels") or {}
-    entries = labels.get("entries")
-    if isinstance(entries, list):
-        return [entry for entry in entries if isinstance(entry, dict)]
-    # Legacy field name.
-    human = labels.get("human_labels")
-    if isinstance(human, list):
-        return [entry for entry in human if isinstance(entry, dict)]
-    return []
-
-
-def check_l0(events: list[dict[str, Any]]) -> dict[str, Any]:
-    event_ids = [event.get("event_id") for event in events]
-    unique_ids = len(set(event_ids)) == len(event_ids) and all(
-        e not in {"", None} for e in event_ids
-    )
+def check_l0(events: list[Event]) -> dict[str, Any]:
+    event_ids = [event.event_id for event in events]
+    unique_ids = len(set(event_ids)) == len(event_ids) and all(event_ids)
 
     with_payload = 0
     orderable = 0
     multi_obs = 0
     obs_counts: list[int] = []
     for event in events:
-        observations = event_observations(event)
+        observations = event.observations
         obs_counts.append(len(observations))
-        if any(_has_payload(obs) for obs in observations):
+        if any(obs.has_payload for obs in observations):
             with_payload += 1
         if len(observations) >= 2:
             multi_obs += 1
-            if all(_has_index(obs) for obs in observations):
+            if all(obs.has_index for obs in observations):
                 orderable += 1
 
     n = max(len(events), 1)
@@ -201,15 +100,15 @@ def check_l0(events: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def check_l1(events: list[dict[str, Any]]) -> dict[str, Any]:
+def check_l1(events: list[Event]) -> dict[str, Any]:
     n = max(len(events), 1)
     axis_coverage: dict[str, float] = {}
     axis_distinct: dict[str, int] = {}
     for axis in PROVENANCE_AXES:
-        values = [value_from_event(event, axis) for event in events]
-        non_null = [v for v in values if v not in {"", None}]
+        values = [event.provenance.axis(axis) for event in events]
+        non_null = [v for v in values if v is not None]
         axis_coverage[axis] = round(len(non_null) / n, 3)
-        axis_distinct[axis] = len({str(v) for v in non_null})
+        axis_distinct[axis] = len(set(non_null))
 
     logged_axes = [
         axis for axis in PROVENANCE_AXES if axis_coverage[axis] >= PROVENANCE_FRACTION
@@ -225,18 +124,22 @@ def check_l1(events: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def check_l2(events: list[dict[str, Any]]) -> dict[str, Any]:
+def check_l2(events: list[Event]) -> dict[str, Any]:
     n = max(len(events), 1)
-    statuses = [_event_outcome_status(event) for event in events]
-    with_status = sum(1 for s in statuses if s is not None)
-    negatives = sum(1 for s in statuses if s in NEGATIVE_STATUSES)
+    # An explicit status (incl. a deliberate "unknown") counts as recorded; a missing
+    # outcome field does not. Negatives are the failure/ambiguous/aborted statuses.
+    with_status = sum(1 for event in events if event.outcome.recorded)
+    negatives = sum(1 for event in events if event.outcome.status in NEGATIVE_STATUSES)
 
-    labeled_events = [event for event in events if _event_labels(event)]
+    labeled_events = [
+        event for event in events if event.labels is not None and event.labels.entries
+    ]
     if labeled_events:
         frozen = sum(
             1
             for event in labeled_events
-            if (event.get("labels") or {}).get("assigned_after_raw_data_frozen") is True
+            if event.labels is not None
+            and event.labels.assigned_after_raw_data_frozen is True
         )
         frozen_fraction = frozen / len(labeled_events)
     else:
@@ -263,10 +166,11 @@ def check_l2(events: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def check_l3(events: list[dict[str, Any]]) -> dict[str, Any]:
-    groups: defaultdict[str, list[dict[str, Any]]] = defaultdict(list)
+def check_l3(events: list[Event]) -> dict[str, Any]:
+    # Group by the structured plan signature (a hashable tuple, not a concat string).
+    groups: defaultdict[tuple[tuple[str, str], ...], list[Event]] = defaultdict(list)
     for event in events:
-        signature = _plan_signature(event)
+        signature = event.intent.signature() if event.intent is not None else None
         if signature is not None:
             groups[signature].append(event)
 
@@ -274,8 +178,8 @@ def check_l3(events: list[dict[str, Any]]) -> dict[str, Any]:
     varied_groups = 0
     for evs in replicated.values():
         for axis in PROVENANCE_AXES:
-            values = {normalize_missing(value_from_event(event, axis)) for event in evs}
-            values.discard("missing")
+            values = {event.provenance.axis(axis) for event in evs}
+            values.discard(None)
             if len(values) >= 2:
                 varied_groups += 1
                 break
@@ -297,7 +201,7 @@ def check_l3(events: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def selection_risk(events: list[dict[str, Any]], levels: dict[int, dict[str, Any]]) -> dict[str, Any]:
+def selection_risk(events: list[Event], levels: dict[int, dict[str, Any]]) -> dict[str, Any]:
     """Flag the data-selection risks that ARE visible in the events themselves.
 
     Deliberately narrow. Most selection biases of public data — publication bias toward
@@ -340,8 +244,8 @@ def selection_risk(events: list[dict[str, Any]], levels: dict[int, dict[str, Any
     }
 
 
-def conformance_report(events: list[dict[str, Any]]) -> dict[str, Any]:
-    """Grade a dataset of events on the L0-L3 conformance ladder."""
+def conformance_report(events: list[Event]) -> dict[str, Any]:
+    """Grade a dataset of parsed ``Event`` records on the L0-L3 conformance ladder."""
     levels = {
         0: check_l0(events),
         1: check_l1(events),
