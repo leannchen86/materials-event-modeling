@@ -623,6 +623,16 @@ The refined-a stage ran 8 logged runs on the oleogel SAXS/WAXS set (zenodo 15268
 
 ## Claim Discipline
 
+> **Numbers are sourced, not owned here.** The load-bearing headline magnitudes quoted
+> below (and in README/PROJECTS/docs) live once in
+> [`docs/spine/results_ledger.json`](docs/spine/results_ledger.json), each as a pointer into
+> its run manifest. Do **not** edit a magnitude in this prose without updating the ledger and
+> running `python scripts/check_results_ledger.py` — the checker resolves every manifest
+> pointer and fails loudly, listing which docs to fix, if a re-run has moved a number. This
+> section carries **claims and verdicts**; the ledger owns the values and their robustness
+> class (structural vs sample-dependent). Watch the near-collision `0.756` (ranking-robustness
+> ridge) vs `0.765` (primary A/B ridge) — two different runs, one digit apart.
+
 Safe current claim:
 
 > In NIST, label disagreement is systematic and related to both experimental coordinates

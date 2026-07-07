@@ -20,6 +20,11 @@ Materials-event modeling with provenance-stressed evaluation.
   [event_grammar_validation_note.md](docs/spine/event_grammar_validation_note.md),
   [data_assumptions_and_limits.md](docs/spine/data_assumptions_and_limits.md)
 
+Every headline number above is sourced once in
+[`docs/spine/results_ledger.json`](docs/spine/results_ledger.json) (a pointer into its run
+manifest), kept honest by `python scripts/check_results_ledger.py`. Edit magnitudes there,
+not in prose.
+
 Read [SKILL.md](SKILL.md) first when resuming the project; it tracks the operating
 stance and decision pivots.
 
