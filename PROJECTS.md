@@ -121,10 +121,12 @@ benchmark.
   `audit_dryad_gelation_dataset.py`, `audit_opencrystaldata.py`,
   `run_durham_droplet_smoke_test.py`, `download_data.py`.
 - **Artifacts:** `schemas/material_event.schema.json`, `templates/`, `examples/track_b/`.
-- **Next step:** finalize schema v1, remove transitional duplicate fields, and
-  pre-register one pilot objective and its split/baseline rules before collection. The pilot
-  needs counterbalanced operator, batch, lot, session, and run-order variation; a high count
-  of poorly balanced events is not a substitute.
+- **Next step:** execute `docs/controlled-collection/pilot_design_prereg.md` (v0 drafted
+  2026-07-09): elicit + freeze the practitioner task, confirm the partner-lab envelope, then
+  the freeze commit becomes the pre-registration and collection begins. The design encodes
+  every accumulated constraint (16x3 counterbalanced, >=4 sessions with cross-session
+  replicate pairs — the held-out-batch falsification's measured requirement — failures
+  retained, labels frozen, grammar-native logging at L3).
 
 ## Spine (cross-cutting)
 `docs/spine/` — concise thesis, strategy, publication assessments, and infrastructure.
