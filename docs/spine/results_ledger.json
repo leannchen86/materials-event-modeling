@@ -143,6 +143,18 @@
     "cited_in": ["SKILL.md", "docs/event-method/findings_summary.md"]
   },
 
+  "severson_heldout_batch_rank_ridge": {
+    "metric": "Severson A-full within-recipe replicate-ranking pairwise accuracy, ridge, HELD-OUT-BATCH scoring (train on 2 batches, rank pairs in the third), on batch 3 (2018-04-12, the only adequately-powered cell: 136 of 160 pairs). Collapses to chance from the 0.779 leave-one-policy-out accuracy on the same pairs -- the ranking rule does not transfer across collection batches.",
+    "display": "0.522",
+    "ci95_display": "[0.312, 0.697]",
+    "robustness": "sample-dependent",
+    "structural_companion": "severson_ab_rank_paper_baseline",
+    "claim_served": "claim 3 provenance-stress: the 0.756 within-recipe ranking magnitude is within-corpus/batch-calibrated, NOT transferable cell physics; the structural A>B separation is untouched.",
+    "eval_date": "2026-07-08",
+    "source": { "kind": "manifest", "manifest": "data/manifests/severson_heldout_batch_ranking.json", "pointer": "results.ridge.per_batch.2018-04-12.held_out_batch_accuracy", "ci_pointer": "results.ridge.per_batch.2018-04-12.held_out_batch_cluster_ci95" },
+    "cited_in": ["docs/controlled-collection/severson_heldout_batch_ranking.md"]
+  },
+
   "severson_early_lifetime_spearman": {
     "metric": "Severson Run 015: leave-one-out early-trajectory -> cycle-life Spearman. Early trajectory predicts lifetime, but the lossy signal is confounded by charging policy (extrinsic).",
     "display": "0.61",
