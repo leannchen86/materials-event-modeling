@@ -15,49 +15,78 @@
       "literal": "value has no single manifest field (composite/derived across runs); stored here with explicit 'provenance'. This is the one denormalized case; keep it rare."
     }
   },
-
   "severson_ab_rank_ridge": {
     "metric": "Severson A-full (grammar: recipe + trajectory) within-recipe replicate-ranking pairwise accuracy, ridge, held-out-policy; ranking-robustness run (k=100, 160 pairs, 3 seeds).",
     "display": "0.756",
     "ci95_display": "[0.68, 0.80]",
     "robustness": "sample-dependent",
     "structural_companion": "severson_ab_rank_paper_baseline",
-    "claim_served": "claim 3 / event-grammar A-B: a grammar-preserved record ranks replicates of one recipe; the ranking signal is real on Severson.",
+    "claim_served": "claim 3 / event-grammar A-B: a grammar-preserved record ranks replicates of one recipe; the ranking signal is real on Severson WITHIN-CORPUS. Requalified 2026-07-08: does not transfer across collection batches (see severson_heldout_batch_rank_ridge) \u2014 quote the two keys together.",
     "eval_date": "2026-07-04",
-    "source": { "kind": "manifest", "manifest": "data/manifests/severson_ranking_robustness.json", "pointer": "results.ridge.pairwise_accuracy", "ci_pointer": "results.ridge.cluster_ci95" },
-    "cited_in": ["SKILL.md", "docs/controlled-collection/severson_ranking_robustness.md", "docs/controlled-collection/severson_representation_ab.md", "docs/spine/data_assumptions_and_limits.md", "docs/spine/event_grammar_validation_note.md"]
+    "source": {
+      "kind": "manifest",
+      "manifest": "data/manifests/severson_ranking_robustness.json",
+      "pointer": "results.ridge.pairwise_accuracy",
+      "ci_pointer": "results.ridge.cluster_ci95"
+    },
+    "cited_in": [
+      "SKILL.md",
+      "docs/controlled-collection/severson_ranking_robustness.md",
+      "docs/controlled-collection/severson_representation_ab.md",
+      "docs/spine/data_assumptions_and_limits.md",
+      "docs/spine/event_grammar_validation_note.md"
+    ]
   },
-
   "severson_ab_rank_models_clearing": {
     "metric": "Number of model families (of 5: ridge, knn, svr_rbf, forest, gradient_boosting) whose within-recipe replicate-ranking clears the pre-registered bar. Tree ensembles (forest 0.596, gbt 0.534) are the outlier class.",
     "display": "3",
     "robustness": "sample-dependent",
     "claim_served": "ranking signal is model-general; tree ensembles are the exception, not a signal limit.",
     "eval_date": "2026-07-04",
-    "source": { "kind": "manifest", "manifest": "data/manifests/severson_ranking_robustness.json", "pointer": "models_clearing_bar" },
-    "cited_in": ["SKILL.md", "docs/controlled-collection/severson_ranking_robustness.md"]
+    "source": {
+      "kind": "manifest",
+      "manifest": "data/manifests/severson_ranking_robustness.json",
+      "pointer": "models_clearing_bar"
+    },
+    "cited_in": [
+      "SKILL.md",
+      "docs/controlled-collection/severson_ranking_robustness.md"
+    ]
   },
-
   "severson_ab_rank_forest": {
     "metric": "Severson A-full within-recipe replicate-ranking pairwise accuracy, random forest (the tree-ensemble outlier that fails to clear the bar).",
     "display": "0.596",
     "robustness": "sample-dependent",
     "claim_served": "tree ensembles are the outlier model class on the ranking sub-task.",
     "eval_date": "2026-07-04",
-    "source": { "kind": "manifest", "manifest": "data/manifests/severson_ranking_robustness.json", "pointer": "results.forest.pairwise_accuracy" },
-    "cited_in": ["docs/controlled-collection/severson_ranking_robustness.md", "docs/controlled-collection/severson_representation_ab.md"]
+    "source": {
+      "kind": "manifest",
+      "manifest": "data/manifests/severson_ranking_robustness.json",
+      "pointer": "results.forest.pairwise_accuracy"
+    },
+    "cited_in": [
+      "docs/controlled-collection/severson_ranking_robustness.md",
+      "docs/controlled-collection/severson_representation_ab.md"
+    ]
   },
-
   "severson_ab_rank_paper_baseline": {
     "metric": "Paper-shaped baseline B (recipe + final label) within-recipe replicate ranking. Forced to a chance tie because the projection is identical for replicates of one recipe -- it cannot rank them at all.",
     "display": "0.500",
     "robustness": "structural",
     "claim_served": "claim 3: paper-shaping structurally destroys replicate-ranking information; this bound is model- and dataset-independent.",
     "eval_date": "2026-07-04",
-    "source": { "kind": "by_construction", "note": "B's feature vector is constant across replicates of a recipe, so any ranker ties at 0.500 by construction; verified bitwise in severson_representation_ab.json." },
-    "cited_in": ["SKILL.md", "docs/controlled-collection/severson_representation_ab.md", "docs/controlled-collection/severson_ranking_robustness.md", "docs/spine/data_assumptions_and_limits.md", "docs/spine/event_grammar_validation_note.md"]
+    "source": {
+      "kind": "by_construction",
+      "note": "B's feature vector is constant across replicates of a recipe, so any ranker ties at 0.500 by construction; verified bitwise in severson_representation_ab.json."
+    },
+    "cited_in": [
+      "SKILL.md",
+      "docs/controlled-collection/severson_representation_ab.md",
+      "docs/controlled-collection/severson_ranking_robustness.md",
+      "docs/spine/data_assumptions_and_limits.md",
+      "docs/spine/event_grammar_validation_note.md"
+    ]
   },
-
   "severson_ab_primary_rank_ridge": {
     "metric": "Severson A-full within-policy replicate ranking, ridge, PRIMARY A/B run (distinct from the ranking-robustness follow-up: this is 0.765 with CI [0.529, 0.941], exact binomial p=0.0245, 13/17). NOTE the near-collision with severson_ab_rank_ridge (0.756) -- do not transpose.",
     "display": "0.765",
@@ -65,52 +94,85 @@
     "robustness": "sample-dependent",
     "claim_served": "claim 3 primary A/B: A-full ranks replicates above chance under ridge.",
     "eval_date": "2026-07-03",
-    "source": { "kind": "literal", "value": 0.765, "provenance": "docs/controlled-collection/severson_representation_ab.md within-policy ranking table (A-full ridge); backed by data/manifests/severson_representation_ab.json. Pointer not yet pinned -- resolve and convert to kind:manifest.", "pointer_todo": true },
-    "cited_in": ["docs/controlled-collection/severson_representation_ab.md", "docs/spine/data_assumptions_and_limits.md", "docs/provenance-critique/second_dataset_replication.md"]
+    "source": {
+      "kind": "literal",
+      "value": 0.765,
+      "provenance": "docs/controlled-collection/severson_representation_ab.md within-policy ranking table (A-full ridge); backed by data/manifests/severson_representation_ab.json. Pointer not yet pinned -- resolve and convert to kind:manifest.",
+      "pointer_todo": true
+    },
+    "cited_in": [
+      "docs/controlled-collection/severson_representation_ab.md",
+      "docs/spine/data_assumptions_and_limits.md",
+      "docs/provenance-critique/second_dataset_replication.md"
+    ]
   },
-
   "severson_batch_recoverability": {
     "metric": "Provenance-leakage audit on Severson A/B: worst-case batch (collection date) recoverability from the trajectory feature set. Severe.",
     "display": "0.898",
     "robustness": "sample-dependent",
     "claim_served": "provenance protocol: collection provenance is recoverable on a non-spectral modality (battery cycling); replicates opXRD.",
     "eval_date": "2026-07-04",
-    "source": { "kind": "manifest", "manifest": "data/manifests/provenance_leakage_audit_severson_ab.json", "pointer": "worst_provenance_recoverability_score" },
+    "source": {
+      "kind": "manifest",
+      "manifest": "data/manifests/provenance_leakage_audit_severson_ab.json",
+      "pointer": "worst_provenance_recoverability_score"
+    },
     "_note": "SKILL.md states this result qualitatively (no magnitude), so it is intentionally NOT in cited_in.",
-    "cited_in": ["docs/controlled-collection/severson_representation_ab.md", "docs/spine/data_assumptions_and_limits.md", "docs/spine/event_grammar_validation_note.md", "docs/provenance-critique/provenance_leakage_audit.md", "docs/provenance-critique/second_dataset_replication.md"]
+    "cited_in": [
+      "docs/controlled-collection/severson_representation_ab.md",
+      "docs/spine/data_assumptions_and_limits.md",
+      "docs/spine/event_grammar_validation_note.md",
+      "docs/provenance-critique/provenance_leakage_audit.md",
+      "docs/provenance-critique/second_dataset_replication.md"
+    ]
   },
-
   "opxrd_provenance_worst": {
     "metric": "Provenance-recoverability audit on opXRD: worst-case source/lab recoverability (metadata + curation feature set). Severe; the flagship 'models learn the lab' result.",
     "display": "0.977",
     "robustness": "sample-dependent",
     "claim_served": "provenance protocol flagship: collection provenance is severely recoverable from public experimental XRD.",
     "eval_date": "2026-07-04",
-    "source": { "kind": "manifest", "manifest": "data/manifests/provenance_leakage_audit_opxrd_r2.json", "pointer": "worst_provenance_recoverability_score" },
-    "cited_in": ["docs/provenance-critique/provenance_leakage_audit.md"]
+    "source": {
+      "kind": "manifest",
+      "manifest": "data/manifests/provenance_leakage_audit_opxrd_r2.json",
+      "pointer": "worst_provenance_recoverability_score"
+    },
+    "cited_in": [
+      "docs/provenance-critique/provenance_leakage_audit.md"
+    ]
   },
-
   "recoverability_vs_transfer_spectral": {
     "metric": "opXRD recoverability-vs-downstream-transfer: Spearman of per-source SPECTRAL recoverability vs held-out-source transfer badness. ~0 -- recoverability does NOT predict transfer difficulty.",
     "display": "0.03",
     "robustness": "descriptive-noninferential",
     "claim_served": "recoverability is a screening/risk signal, NOT a downstream-transfer predictor (n=6).",
     "eval_date": "2026-07-04",
-    "source": { "kind": "manifest", "manifest": "data/manifests/opxrd_recoverability_vs_transfer.json", "pointer": "correlations.spearman_spectral_recoverability_vs_transfer_badness" },
+    "source": {
+      "kind": "manifest",
+      "manifest": "data/manifests/opxrd_recoverability_vs_transfer.json",
+      "pointer": "correlations.spearman_spectral_recoverability_vs_transfer_badness"
+    },
     "_note": "SKILL.md states the 'risk signal not transfer predictor' claim qualitatively (no magnitude); tracked via claim_served, not cited_in. Primary docs may write the correlation as ~0 / +0.03 in prose -- an advisory, not a hard mismatch.",
-    "cited_in": ["docs/provenance-critique/recoverability_vs_transfer.md", "docs/provenance-critique/second_dataset_replication.md"]
+    "cited_in": [
+      "docs/provenance-critique/recoverability_vs_transfer.md",
+      "docs/provenance-critique/second_dataset_replication.md"
+    ]
   },
-
   "recoverability_vs_transfer_size": {
     "metric": "opXRD recoverability-vs-transfer: Spearman of per-source log(n_samples) vs transfer badness. Source SIZE predicts transfer difficulty (the sources the CNN loses on -- EMPA, HKUST -- are small, not especially recoverable).",
     "display": "-0.71",
     "robustness": "descriptive-noninferential",
     "claim_served": "what predicts transfer badness is source size, not recoverability -- sharpens the 'risk signal not predictor' framing.",
     "eval_date": "2026-07-04",
-    "source": { "kind": "manifest", "manifest": "data/manifests/opxrd_recoverability_vs_transfer.json", "pointer": "correlations.spearman_log_n_vs_transfer_badness" },
-    "cited_in": ["docs/provenance-critique/recoverability_vs_transfer.md"]
+    "source": {
+      "kind": "manifest",
+      "manifest": "data/manifests/opxrd_recoverability_vs_transfer.json",
+      "pointer": "correlations.spearman_log_n_vs_transfer_badness"
+    },
+    "cited_in": [
+      "docs/provenance-critique/recoverability_vs_transfer.md"
+    ]
   },
-
   "rruff_garnet_raman_species": {
     "metric": "RRUFF Raman garnet: 5-way species classification accuracy (k-NN, cross-specimen). Lossy because species discretize a solid-solution continuum; family (2-way pyralspite/ugrandite) is 1.0. Manifest value 0.728; docs render 0.73.",
     "display": "0.73",
@@ -118,20 +180,38 @@
     "robustness": "sample-dependent",
     "claim_served": "claim 3: labels are lossy projections when they discretize a continuum -- species blend while structural family is recovered perfectly.",
     "eval_date": "2026-06-15",
-    "source": { "kind": "manifest", "manifest": "data/manifests/rruff_lossy_probe.json", "pointer": "garnet.species_acc_5way", "family_pointer": "garnet.family_acc_2way" },
-    "cited_in": ["SKILL.md", "PROJECTS.md", "docs/event-method/findings_summary.md", "docs/event-method/run_log.md", "docs/spine/ontology_and_rawness_gradient.md", "docs/writeup/when_is_a_label_faithful.md"]
+    "source": {
+      "kind": "manifest",
+      "manifest": "data/manifests/rruff_lossy_probe.json",
+      "pointer": "garnet.species_acc_5way",
+      "family_pointer": "garnet.family_acc_2way"
+    },
+    "cited_in": [
+      "SKILL.md",
+      "PROJECTS.md",
+      "docs/event-method/findings_summary.md",
+      "docs/event-method/run_log.md",
+      "docs/spine/ontology_and_rawness_gradient.md",
+      "docs/writeup/when_is_a_label_faithful.md"
+    ]
   },
-
   "rruff_garnet_raman_within_family_error": {
     "metric": "RRUFF Raman garnet: fraction of species-classification errors that stay within the correct structural family. 100% -- the raw representation recovers the family axis the species label compresses.",
     "display": "1.0",
     "robustness": "sample-dependent",
     "claim_served": "claim 3: species errors are structured (all within-family), confirming raw recovers the underlying coordinate.",
     "eval_date": "2026-06-15",
-    "source": { "kind": "manifest", "manifest": "data/manifests/rruff_lossy_probe.json", "pointer": "garnet.within_family_error_frac" },
-    "cited_in": ["SKILL.md", "docs/event-method/findings_summary.md", "docs/event-method/run_log.md"]
+    "source": {
+      "kind": "manifest",
+      "manifest": "data/manifests/rruff_lossy_probe.json",
+      "pointer": "garnet.within_family_error_frac"
+    },
+    "cited_in": [
+      "SKILL.md",
+      "docs/event-method/findings_summary.md",
+      "docs/event-method/run_log.md"
+    ]
   },
-
   "rruff_garnet_xrd_species": {
     "metric": "RRUFF powder-XRD garnet: 5-way species accuracy (modality-general replication of the Raman lossy-label result; family 1.0, species blends).",
     "display": "0.66",
@@ -139,10 +219,17 @@
     "robustness": "sample-dependent",
     "claim_served": "claim 3: the lossy-label pattern is modality-general (reproduces on XRD, not a Raman artifact).",
     "eval_date": "2026-06-16",
-    "source": { "kind": "manifest", "manifest": "data/manifests/rruff_xrd_generalization.json", "pointer": "garnet.species_5way.acc", "family_pointer": "garnet.family_2way.acc" },
-    "cited_in": ["SKILL.md", "docs/event-method/findings_summary.md"]
+    "source": {
+      "kind": "manifest",
+      "manifest": "data/manifests/rruff_xrd_generalization.json",
+      "pointer": "garnet.species_5way.acc",
+      "family_pointer": "garnet.family_2way.acc"
+    },
+    "cited_in": [
+      "SKILL.md",
+      "docs/event-method/findings_summary.md"
+    ]
   },
-
   "severson_heldout_batch_rank_ridge": {
     "metric": "Severson A-full within-recipe replicate-ranking pairwise accuracy, ridge, HELD-OUT-BATCH scoring (train on 2 batches, rank pairs in the third), on batch 3 (2018-04-12, the only adequately-powered cell: 136 of 160 pairs). Collapses to chance from the 0.779 leave-one-policy-out accuracy on the same pairs -- the ranking rule does not transfer across collection batches.",
     "display": "0.522",
@@ -151,17 +238,35 @@
     "structural_companion": "severson_ab_rank_paper_baseline",
     "claim_served": "claim 3 provenance-stress: the 0.756 within-recipe ranking magnitude is within-corpus/batch-calibrated, NOT transferable cell physics; the structural A>B separation is untouched.",
     "eval_date": "2026-07-08",
-    "source": { "kind": "manifest", "manifest": "data/manifests/severson_heldout_batch_ranking.json", "pointer": "results.ridge.per_batch.2018-04-12.held_out_batch_accuracy", "ci_pointer": "results.ridge.per_batch.2018-04-12.held_out_batch_cluster_ci95" },
-    "cited_in": ["docs/controlled-collection/severson_heldout_batch_ranking.md"]
+    "source": {
+      "kind": "manifest",
+      "manifest": "data/manifests/severson_heldout_batch_ranking.json",
+      "pointer": "results.ridge.per_batch.2018-04-12.held_out_batch_accuracy",
+      "ci_pointer": "results.ridge.per_batch.2018-04-12.held_out_batch_cluster_ci95"
+    },
+    "cited_in": [
+      "docs/controlled-collection/severson_heldout_batch_ranking.md",
+      "SKILL.md",
+      "docs/controlled-collection/severson_representation_ab.md",
+      "docs/controlled-collection/severson_ranking_robustness.md",
+      "docs/controlled-collection/pilot_design_prereg.md"
+    ]
   },
-
   "severson_early_lifetime_spearman": {
     "metric": "Severson Run 015: leave-one-out early-trajectory -> cycle-life Spearman. Early trajectory predicts lifetime, but the lossy signal is confounded by charging policy (extrinsic).",
     "display": "0.61",
     "robustness": "sample-dependent",
     "claim_served": "early-trajectory predicts lifetime, but extrinsic process labels need controlled conditions -- reinforces controlled-collection.",
     "eval_date": "2026-06-16",
-    "source": { "kind": "manifest", "manifest": "data/manifests/severson_lossy.json", "pointer": "A_natural_coordinate.loo_spearman_early_to_cyclelife" },
-    "cited_in": ["PROJECTS.md", "docs/event-method/findings_summary.md", "docs/event-method/run_log.md"]
+    "source": {
+      "kind": "manifest",
+      "manifest": "data/manifests/severson_lossy.json",
+      "pointer": "A_natural_coordinate.loo_spearman_early_to_cyclelife"
+    },
+    "cited_in": [
+      "PROJECTS.md",
+      "docs/event-method/findings_summary.md",
+      "docs/event-method/run_log.md"
+    ]
   }
 }

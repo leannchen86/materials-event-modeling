@@ -679,6 +679,15 @@ Newly established (event grammar + Severson A/B, 2026-07-03; adversarially verif
 > but not by tree ensembles (a model-class artifact, not a signal limit). The *structural*
 > claim is model- and dataset-independent; the *magnitudes* are sample-dependent on one
 > selection-biased public dataset (see `docs/spine/data_assumptions_and_limits.md`).
+>
+> **Requalified 2026-07-08 (held-out-batch run, H-transfer falsified):** the 0.756/0.779
+> ranking magnitude is *within-corpus* — scored by a model that has never seen the test
+> collection batch it collapses to chance (batch 3: 0.522 [0.31, 0.70]); the transfer
+> cost is the scorer knowing the batch's collection style. The structural claim is
+> untouched. Level-prediction transfers across batches (H6r) while ranking does not —
+> the decoupling is real. Severson (3 batches, one pair-rich) cannot settle transfer;
+> the counterbalanced pilot (`docs/controlled-collection/pilot_design_prereg.md`) is
+> the resolution path.
 
 Newly established (provenance protocol replication, 2026-07-03; adversarially verified):
 

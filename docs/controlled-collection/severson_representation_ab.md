@@ -239,6 +239,11 @@ Hypotheses (same structure as the batch-1 run, bars sharpened where power allows
 > the effect-size numbers (0.756, per-fold Spearmans) are sample-dependent on one
 > selection-biased, few-batch public dataset.
 
+> **Requalified 2026-07-08:** the 0.756/0.779 ranking magnitude does not survive a
+> held-out-collection-batch split (batch 3 collapses to 0.522 [0.31, 0.70] — chance);
+> it is a within-corpus number. The structural claims below are unaffected. Full
+> experiment: [severson_heldout_batch_ranking.md](severson_heldout_batch_ranking.md).
+
 **Findings first.** On 135 events across three collection batches: the paper-shaped
 projection's structural losses replicate decisively — B is forced to 0.500 on replicate
 ranking (verified bitwise) while the grammar representation reaches 0.756 with a

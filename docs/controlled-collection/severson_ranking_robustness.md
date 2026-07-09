@@ -1,5 +1,10 @@
 # Ranking robustness: is the forest arm's weakness about trees or the signal?
 
+> **Requalified 2026-07-08:** all ranking accuracies in this doc are LOO-policy
+> (within-corpus) numbers; none survive a held-out-collection-batch split (best:
+> ridge 0.522, chance). See
+> [severson_heldout_batch_ranking.md](severson_heldout_batch_ranking.md).
+
 Started 2026-07-03. Follow-on (b) recorded in the Severson A/B replication verdict
 ([severson_representation_ab.md](severson_representation_ab.md)). The A/B's decisive
 within-policy ranking result was model-split: ridge 0.756 (cluster-CI [0.68, 0.80],
