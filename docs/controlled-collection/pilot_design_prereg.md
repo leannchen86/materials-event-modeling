@@ -1,13 +1,18 @@
-# Controlled Pilot — Design Pre-Registration (v0 draft)
+# Controlled Pilot — Design Pre-Registration (v1, run-ready)
 
-Drafted 2026-07-09. Supersedes the aspirational plan in [event_dataset.md](event_dataset.md)
-as the operational design; executes Tier 3 of [experiments.md](experiments.md) (the friend-lab
-born-L3 pilot). Status: **v0 DRAFT — becomes the frozen pre-registration at the "freeze
-commit"**, which happens only after (a) the practitioner task below is elicited and locked,
-and (b) the partner lab confirms the resource envelope. Per Run Discipline v2, the freeze
-commit must precede the first collected event; the manifest chain (run identity in every
-artifact) proves the ordering — a lesson enforced the hard way (see the ordering annotation
-in [severson_heldout_batch_ranking.md](severson_heldout_batch_ranking.md)).
+Drafted 2026-07-09, v1 the same day. Supersedes the aspirational plan in
+[event_dataset.md](event_dataset.md) as the operational design; executes Tier 3 of
+[experiments.md](experiments.md). Division of labor: **the design is entirely ours; the
+partner lab only executes** — the run-ready package is this doc +
+[pilot_run_protocol.md](pilot_run_protocol.md) (verbatim lab procedure) +
+[pilot_assignment.csv](pilot_assignment.csv) (all 48 events pre-assigned; generated from a
+committed seed by `scripts/generate_pilot_assignment.py`, which also CERTIFIES the design
+against the project's own conformance checker: L0/L1 structure and L3 counterbalancing all
+pass on the design skeleton — 16/16 replicated groups with provenance variation — before
+any chemistry exists; manifest `data/manifests/pilot_assignment.json`). Status: **v1 —
+freezes when the partner confirms session dates**; the freeze commit must precede the
+first collected event (Run Discipline v2; the ordering lesson is recorded in
+[severson_heldout_batch_ranking.md](severson_heldout_batch_ranking.md)).
 
 ## Why this design, in one paragraph
 
@@ -88,13 +93,18 @@ Conformance targets, verified by `scripts/audit_event_grammar.py` on day one and
 
 ## Pre-registered analyses (frozen at the freeze commit)
 
-1. **The practitioner task (primary — the claim-3 reversal condition).** Chosen by a
-   practitioner (the partner or an independent chemist), *not by us*, before collection;
-   elicitation question: "given these 48 experiments, what would you actually want to
-   predict or decide?" Frozen verbatim in the freeze commit with its metric and baseline.
-   Falsifier (pre-committed in the top-claim decision memo): if the grammar/raw
-   representation does not beat the label/recipe representation on this task, claim 3 is
-   "true but useless" and the project pivots.
+1. **The primary task (the claim-3 reversal condition).** Self-designed and frozen
+   here, grounded in the system's own applied literature rather than elicited (the design
+   is ours by agreement; one step weaker than practitioner-elicited, and we say so):
+   **predict the 24 h polymorph outcome — vaterite fraction and failure/no-precipitate —
+   from information available at t ≤ 60 min**, recipe-only (B) vs recipe + early trace
+   (A). Polymorph selection under additive/temperature control is the canonical practical
+   question for CaCO3 crystallization (vaterite stabilization vs calcite conversion), not
+   a task chosen because labels are blind to it — and B can genuinely compete (the recipe
+   factors are designed to drive the outcome). Falsifier (pre-committed in the top-claim
+   decision memo): if A does not beat B here, claim 3 is "true but useless" and the
+   project pivots. If the partner or any practicing chemist later names a different task,
+   it is ADDED as task 1b before unblinding — never substituted after.
 2. **Representation A/B, replicated on born-L3 data:** within-condition replicate ranking
    (grammar vs paper-shape; B is structurally 0.500 as always) on the practitioner-relevant
    outcome, ridge + two non-tree families, cluster bootstrap over the 16 condition groups.
