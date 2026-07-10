@@ -72,3 +72,6 @@ python = ".venv"
 
 [tool.ty.src]
 include = ["src", "tests"]
+# oleogel_masked is archived campaign code importing torch, which is an OPTIONAL extra
+# ([train]) not installed in CI — excluded from the type gate, still ruff-covered.
+exclude = ["src/materials_event_modeling/track_b/oleogel_masked.py"]
