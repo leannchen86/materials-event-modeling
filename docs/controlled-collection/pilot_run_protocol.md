@@ -40,7 +40,10 @@ is a controlled axis).
    the top without stirring; that is the intended design, capturing the aging trajectory).
 4. **Timed observations** (the clock = first contact):
    - t ≈ 5 min, 15 min, 60 min: withdraw an aliquot (~2 mL), vacuum-filter or
-     drop-and-dry on a labeled slide/holder, dry at ≤40 °C. Note pH and visual state
+     drop-and-dry on a labeled slide/holder, **rinse briefly with ethanol to arrest
+     transformation** (amorphous/vaterite material keeps converting while wet — an
+     un-arrested aliquot measures the drying process, not the solution state), then
+     dry at ≤40 °C. Note pH and visual state
      (clear/cloudy/precipitate; color) at each pull, with the actual clock time.
    - t = 24 h (±2 h): collect the remaining solid the same way. Record final pH.
    - Throughout: video runs; note any disturbance, spill, hesitation, or deviation as a
