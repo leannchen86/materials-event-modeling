@@ -36,6 +36,12 @@ splits; it does not assume that labels or raw measurements are intrinsically pri
 The formal audit separates common-support task risk (TRCL), event/decision support retention,
 representation collisions, and upstream recoverability; it is defined in
 [task_relevant_compression_audit.md](docs/spine/task_relevant_compression_audit.md).
+The next research layer attaches that audit to delayed consequential outcomes: locate which early
+signals predict final-spec conformance, repeatability, intermediate precision, cross-site
+reproducibility, degradation, or functional performance as separately defined targets, and
+identify the cheapest reporting stage that preserves transferable decision value. The staged scope
+and stop rules are in
+[downstream_failure_research_program.md](docs/spine/downstream_failure_research_program.md).
 
 The work has two active directions and one retained reference archive. See
 [PROJECTS.md](PROJECTS.md) for the current decision record.
@@ -68,6 +74,11 @@ evaluation requirement; architecture sweeps are out of scope.
 
 Current provenance-critique publication-positioning critique:
 [docs/spine/provenance_publication_assessment.md](docs/spine/provenance_publication_assessment.md)
+
+The current CaCO3 pilot remains the methods/calibration study. The next consequential study is a
+separately preregistered independent-preparation final-spec task; degradation or functional
+performance becomes the flagship only after a partner supplies a complete native-trace -> actual
+report -> delayed-outcome chain across multiple independent batches.
 
 ## Layout
 

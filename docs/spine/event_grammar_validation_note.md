@@ -152,6 +152,21 @@ ontology" (still not earned; see Claim Discipline in SKILL.md and PROJECTS.md's
 out-of-scope on universal rawness claims). The controlled pilot is where claim 3 either
 earns its empirical, need-driven form or gets downgraded.
 
+## Top-Claim Requalification (2026-07-11)
+
+Claim 3 remains the near-term audit/methods claim, but `information a practitioner would want` is
+now operationalized more strictly. The high-value endpoint is a **predeclared delayed outcome and
+early decision**—for example independent-preparation final-spec conformance, degradation, or
+functional performance—not agreement with a convenient phase label or a task invented after the
+representation is inspected.
+
+The current CaCO3 pilot remains the prospective methods test under its existing 24-hour target and
+must not acquire a degradation, scale-up, or qualification co-primary after the fact. The separate
+[downstream-failure program](downstream_failure_research_program.md) defines the evidence ladder
+from audit calibration through held-batch and external-site validation. Until that program passes,
+the strongest headline remains a task-specific reporting audit, not prevention of industrial
+failure.
+
 ## Run Discipline v2
 
 Extends operating-memo pivot 6 (every run needs a hypothesis and a verdict). Checklist per

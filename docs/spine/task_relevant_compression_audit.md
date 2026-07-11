@@ -1,6 +1,6 @@
 # Task-Relevant Compression Audit
 
-Status: protocol spine, 2026-07-10. Extends
+Status: protocol spine, updated 2026-07-11. Extends
 [project_brief.md](project_brief.md),
 [capture_vs_representation_design_note.md](capture_vs_representation_design_note.md), and
 [data_assumptions_and_limits.md](data_assumptions_and_limits.md). Paper positioning and prior-art
@@ -9,6 +9,9 @@ boundaries are assessed in
 the controlled-collection program; existing public-data results are calibration cases, not a
 completed audit under this protocol. The reusable evaluation core is
 [`src/materials_event_modeling/eval/compression_audit.py`](../../src/materials_event_modeling/eval/compression_audit.py).
+The staged extension from event-local outcomes to reproducibility, degradation, and other delayed
+consequential endpoints is defined separately in
+[downstream_failure_research_program.md](downstream_failure_research_program.md).
 
 ## The question this protocol makes measurable
 
@@ -78,6 +81,61 @@ The audit estimand is always named in full:
 
 Changing any of those indices creates a new audit. In particular, a label may be adequate for phase
 screening and inadequate for fault diagnosis on the same events.
+
+## Delayed outcomes and physical-unit lineage
+
+The notation $Y_i$ is sufficient only when the representation and downstream outcome belong to the
+same event-level subject. Consequential materials outcomes often live on a descendant physical
+unit and a later horizon:
+
+```text
+execution event i
+    -> material batch b
+        -> aliquot / specimen s
+            -> device or pilot lot d
+                -> delayed outcome Y_{d,h}
+```
+
+For such a study, declare $Y_{u,h}$ in full, where $u$ is the physical subject and $h$ is the
+frozen outcome horizon or observation window. The early representation may come from an ancestor
+event, but the join from that event to $u$ must be versioned and machine-resolvable.
+
+Do not conflate three different objects:
+
+1. **execution outcome:** whether the material-making event succeeded, failed, was ambiguous, or
+   was aborted;
+2. **target eligibility:** whether the downstream property is scientifically defined and observed
+   for the physical subject under the frozen follow-up rule; and
+3. **representation availability:** whether a particular early report or trace exists at the
+   decision point.
+
+Before outcome access, freeze:
+
+- the physical subject type and unit of independence;
+- parent, split, merge, consumption, and device-assembly relations from event to subject;
+- the outcome definition, horizon/window, assay, adjudication, uncertainty, and measured-at
+  environment;
+- target eligibility, destructive-test selection, censoring/dropout types, and follow-up schedule;
+- the action and decision deadline for any operational claim; and
+- the target population of batches, instruments, processes, and sites.
+
+When only promising materials receive an expensive downstream assay, the result is informative
+follow-up. That is target-support selection, not representation support, and it cannot be repaired
+by calling unassayed units `missing` inside a predictor. Report the attempted, target-eligible,
+followed, assayed, and representation-available denominators separately, with reason codes.
+Knowing the denominator does not identify unobserved outcomes. A consequential claim additionally
+needs complete eligible follow-up, probability sampling with known inclusion probabilities, or a
+defensible selection model and sensitivity bounds.
+
+When several specimens or devices descend from one material batch, their rows do not automatically
+become independent evidence about a material-level signal. Splits and uncertainty must respect the
+highest shared ancestor relevant to the claim. No scan, cycle, aliquot, specimen, or device from a
+held-out material unit may enter training through another descendant.
+
+`Repeatability`, `intermediate precision`, and `reproducibility` also require different
+environments. Same-apparatus repetitions test repeatability; changed days, operators, lots, or
+instruments within one lab test intermediate precision; independent sites are required for a
+reproducibility claim.
 
 ## Information-availability contract
 
@@ -507,6 +565,8 @@ same frozen content. At minimum they contain:
 
 - $Y$, optional action/utility, $\tau_s$, optional $\tau_d$, $C$, $E$, loss $\ell$, model suite $\mathcal V$,
   target population, and unit of independence;
+- for a delayed outcome, its physical subject, ancestor-event lineage, horizon/window, assay,
+  uncertainty, censoring/follow-up rule, and measured-at environment;
 - all four arm definitions with exact fields;
 - the input-provenance DAG, state and assay timestamps, side inputs, availability rules, and
   no-future-state/no-outcome-informed-processing checks;
@@ -514,7 +574,8 @@ same frozen content. At minimum they contain:
 
 ### 3. Denominators and support
 
-- attempted events, observed events, common-support events, and counts by exclusion reason;
+- attempted events; target-eligible, followed, and assayed physical subjects; representation-
+  available and common-support subjects; and counts by exclusion reason;
 - event coverage and support loss, overall and by environment/outcome status;
 - the rule generating all decision instances, decision coverage, utility-weighted coverage where
   relevant, and lost-instance reasons;

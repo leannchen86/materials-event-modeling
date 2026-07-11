@@ -115,7 +115,10 @@ benchmark.
   portfolio for a process-recording-lab partner — round-robin, lossy-label intervention,
   born-L3 pilot). The cross-cutting formal object is the task-relevant compression audit in
   `docs/spine/task_relevant_compression_audit.md`; its paper-level novelty and evidence gates
-  are recorded in `docs/spine/compression_audit_publication_assessment.md`.
+  are recorded in `docs/spine/compression_audit_publication_assessment.md`. The separate
+  downstream-failure program and partner decision card are
+  `docs/spine/downstream_failure_research_program.md` and
+  `docs/controlled-collection/downstream_endpoint_decision_card.md`.
 - **Outreach (subfolder, logistics not research):** `docs/controlled-collection/outreach/` —
   Foundry application/proposal/emails, PI/collaborator outreach, personalization plan,
   outreach visuals (+ `figures/`), lab-outreach brief, next-steps.
@@ -123,9 +126,12 @@ benchmark.
   `audit_dryad_gelation_dataset.py`, `audit_opencrystaldata.py`,
   `run_durham_droplet_smoke_test.py`, `download_data.py`.
 - **Artifacts:** `schemas/material_event.schema.json`, `templates/`, `examples/track_b/`.
-- **Next step:** execute `docs/controlled-collection/pilot_design_prereg.md` (v0 drafted
-  2026-07-09): elicit + freeze the practitioner task, confirm the partner-lab envelope, then
-  the freeze commit becomes the pre-registration and collection begins. The design encodes
+- **Next step:** complete the remaining analysis-freeze blockers in
+  `docs/controlled-collection/pilot_design_prereg.md` (v1 collection design, analysis freeze
+  pending), confirm the partner-lab envelope, then commit the design lock and analysis freeze
+  before collection. In parallel, use the downstream endpoint decision card to qualify one
+  separate partner workflow; do not add a degradation or qualification endpoint to the current
+  48-event pilot. The design encodes
   every accumulated constraint (16x3 counterbalanced, >=4 sessions with cross-session
   replicate pairs — the held-out-batch falsification's measured requirement — failures
   retained, labels frozen, grammar-native logging at L3).

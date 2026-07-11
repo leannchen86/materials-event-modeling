@@ -10,15 +10,19 @@ Materials ML often learns to predict inherited labels: phase purity, impurity,
 metastability, synthesis success, and failure. This project treats those labels as
 historical compression layers rather than ground-truth ontology.
 
-The goal is to learn representations from raw measurement signals and material-making
-event metadata, then audit whether traditional labels are natural coordinates, lossy
-projections, or artifacts of the measurement/interpretation pipeline.
+The goal is to learn from raw measurement signals and material-making event metadata, then audit
+whether conventional reports and labels preserve the evidence needed for a declared downstream
+decision. The highest-value extension asks which early signals predict final-spec conformance,
+repeatability/intermediate precision, degradation, functional performance, or scale failure, and
+at which audited reporting edge those signals fail to be preserved. Cross-site reproducibility
+remains a separate claim requiring independent sites.
 
 ## First Claim To Test
 
-Raw/event-trained representations can support objective feedback tasks such as
-prediction, compression, retrieval, or search better than inherited labels alone. Phase
-labels and disagreement labels are diagnostic probes, not the final target.
+For a predeclared task, cutoff, and transfer environment, a richer or intermediate event
+representation can retain decision value that an inherited report discards. The project must also
+be able to conclude that a compact report is adequate. Phase labels and disagreement labels are
+comparators and diagnostic probes, not presumed truth or presumed error.
 
 ## Public Data Guardrail
 

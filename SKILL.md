@@ -24,7 +24,37 @@ provenance-stressed transfer before calling the residual signal useful. A null p
 earns only bounded, task/model/data-specific adequacy under a predeclared risk tolerance;
 it never proves universal sufficiency.
 
-## Current Scope Decision (2026-06-26)
+The active extension is the **downstream-failure compression program**
+(`docs/spine/downstream_failure_research_program.md`): attach the audit to one delayed,
+consequential outcome and one early action, localize the earliest audited failing edge along a
+verified transformation chain, and identify the least costly adequate intermediate. CaCO3 remains
+the methods calibration; independent-preparation final-spec conformance is the bridge; degradation
+or functional performance is a separately preregistered flagship, not a new endpoint added to the
+current 48-event pilot.
+
+## Current Scope Decision (2026-07-11)
+
+The research destination is no longer a generic `raw beats labels` result. It is a matched chain:
+
+```text
+native early evidence -> actual intermediate/report/grade -> delayed independent outcome -> action
+```
+
+Immediate order:
+
+1. finish and freeze the current known-mixture and CaCO3 methods audit without scope creep;
+2. exercise the full downstream ladder nonconfirmatorily on Severson;
+3. require one nonconfirmatory partner `golden bundle` with physical-unit lineage before expanding
+   schemas or code;
+4. choose one real endpoint, cutoff, action, and held-batch/site population;
+5. simulate and preregister the hierarchical design; and
+6. earn a downstream-value claim through held-batch and external-site validation.
+
+Do not count cycles, spectra, aliquots, specimens, or devices as independent material batches. Do
+not call within-lab session variation reproducibility. Do not let a feature packet invented after
+outcome access stand in for an actual conventional report.
+
+## Prior Scope Decision (2026-06-26)
 
 Two directions are active:
 

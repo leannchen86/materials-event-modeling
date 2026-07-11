@@ -1,9 +1,12 @@
 # Publication Assessment — Task-Relevant Compression Audit
 
-Date: 2026-07-10. Status: **paper-worthy protocol hypothesis; prospective validation not yet
+Date: updated 2026-07-11. Status: **paper-worthy protocol hypothesis; prospective validation not yet
 complete**. Companion formalism:
 [task_relevant_compression_audit.md](task_relevant_compression_audit.md). Prospective test:
-[pilot_design_prereg.md](../controlled-collection/pilot_design_prereg.md).
+[pilot_design_prereg.md](../controlled-collection/pilot_design_prereg.md). A separate program for
+consequential delayed outcomes is defined in
+[downstream_failure_research_program.md](downstream_failure_research_program.md); it does not
+retrofit the current pilot's primary claim.
 
 ## Verdict
 
@@ -33,6 +36,19 @@ The strongest credible positioning is:
 review. The current search found no primary paper combining all five elements, but absence from a
 search is not proof of priority.
 
+Two 2026 papers make the broadest framing explicitly unavailable as novelty. Iwata describes an
+`information loss cascade` from physical reality through characterization, reporting, and training
+features ([Iwata, 2026](https://doi.org/10.1002/csc3.70016)); Reeves-McLaren argues for native
+instrument files as a verification layer
+([Reeves-McLaren, 2026](https://doi.org/10.1021/acsomega.6c04971)). The paper must therefore avoid
+claiming the first recognition of materials-data compression, the first call for raw-data
+retention, or the first use of early traces to predict later performance. Early-cycle battery
+lifetime prediction is established
+([Severson et al., 2019](https://www.nature.com/articles/s41560-019-0356-8)), including later
+cross-condition work ([BatLiNet](https://www.nature.com/articles/s42256-024-00972-x)). Its novelty
+is the prospective decision procedure and localization to the earliest audited failing edge only
+when the input-provenance graph verifies a nested transformation.
+
 ## Closest prior work and the remaining gap
 
 | Area | What is established | Consequence for this paper |
@@ -43,6 +59,9 @@ search is not proof of priority.
 | scientific compression audits | optical-microscopy work measures downstream prediction distortion relative to raw sensor uncertainty ([Pomarico et al.](https://www.nature.com/articles/s41598-022-07445-4)); CryoEM work derives stage-specific precision and compression requirements ([Fluty & Ludtke](https://doi.org/10.1016/j.jsb.2022.107875)) | never claim the first task-aware audit of scientific compression; distinguish human reporting, deleted attempts, and provenance transfer |
 | missingness and selection | complete-case inference under nonrandom omission is a mature problem ([Rubin, 1976](https://doi.org/10.1093/biomet/63.3.581); [Heckman, 1979](https://doi.org/10.2307/1912352)) | support retention is a required denominator, not a new missing-data theory |
 | materials lineage | the Materials Provenance Store retains experimental histories and raw outputs for purpose-specific validation ([Statt et al.](https://www.nature.com/articles/s41597-023-02107-0)); ESAMP models event-sourced material state and analyses ([Statt et al.](https://doi.org/10.1039/D3DD00054K)) | claim quantitative diagnosis on top of provenance infrastructure, not invention of provenance graphs |
+| materials information-loss cascade | recent work explicitly connects abstraction across characterization, reporting, and training data to lost specimen/process history ([Iwata, 2026](https://doi.org/10.1002/csc3.70016)); native instrument retention has been proposed as a verification layer ([Reeves-McLaren, 2026](https://doi.org/10.1021/acsomega.6c04971)) | do not claim discovery of the cascade or generic raw-data advocacy; identify the earliest audited failing edge along a verified chain and the minimum adequate representation |
+| materials-data quality frameworks | acquisition--management--utilization quality control is already proposed as a lifecycle framework ([He et al., 2026](https://doi.org/10.1093/nsr/nwag108)) | do not claim the first operational materials-data quality framework; distinguish task-native decision loss, support deletion, transfer, and recoverability/cost |
+| early performance prediction | early experimental trajectories have long been used to predict delayed outcomes, including battery cycle life ([Severson et al., 2019](https://www.nature.com/articles/s41560-019-0356-8)) and broader ageing-condition transfer ([BatLiNet](https://www.nature.com/articles/s42256-024-00972-x)) | the downstream prediction itself is not novel; audit the actual intermediate/report ladder and localize lost transferable value |
 | environment robustness | domain-generalization and group-robust evaluation are established; materials [LOCO-CV](https://arxiv.org/abs/2206.08841) already warns against random-CV optimism | the contribution is making operator/session/instrument/lot stress a requirement of a reporting audit |
 
 The closest empirical challenge is Pomarico et al.: they already compare processed and raw
@@ -101,6 +120,23 @@ an industry-wide claim. A second instrument or modality at the same site adds in
 modality breadth, but does not establish industry transfer by itself. A single-site prospective
 pilot can support a methods proof; it cannot show generality across the industry.
 
+### Study 5 — separately preregistered downstream-value study
+
+The current studies validate the audit; they do not establish that reporting compression predicts
+an expensive materials failure. A higher-ambition paper requires a separate dataset with:
+
+- one delayed, scientifically or economically consequential outcome;
+- one action available before that outcome arrives;
+- immutable lineage from producing event through material batch/specimen/device to outcome;
+- the actual native trace, intermediate transformations, conventional report, and final grade;
+- target eligibility, censoring, failed attempts, and costs retained from the source ledger; and
+- held material/manufacturing batches followed by a frozen independent-site test.
+
+The first bridge endpoint is independent-preparation final-spec conformance. Degradation or later
+functional performance is the preferred flagship once the bridge and audit controls pass. The
+current CaCO3 outcome remains a methods endpoint; early-XRD to later-XRD continuity alone does not
+support an industrial-value claim.
+
 ## Required software and released artifacts
 
 The paper should ship an audit package rather than only figures:
@@ -141,6 +177,15 @@ The paper's intellectual claim is not `raw is better`. It is that reporting adeq
 task-specific, and jointly constrained by what a report predicts, what it omits, where its signal
 transfers, and whether discarded evidence still exists.
 
+The publication program has two rungs:
+
+1. **methods/audit paper:** known controls, CaCO3 prospective test, support accounting, stage
+   localization, and held preparation/measurement-session stress inside one site; and
+2. **downstream-value paper:** one costly delayed endpoint, one early action, a risk--cost frontier,
+   held-batch transfer, and external-site validation.
+
+Do not make the first paper carry the second paper's claim.
+
 ## Venue and ambition calibration
 
 - **Digital Discovery**: strongest initial fit for materials data, provenance, and ML methodology.
@@ -171,3 +216,8 @@ Proceed toward a methods paper if:
 Downgrade to a dataset/protocol note if the only positive result is structural deletion by
 construction, every learned increment is batch-local, or the adequacy analysis is too
 underpowered to distinguish adequacy from absence of evidence.
+
+Proceed from the methods paper to the downstream-value paper only if the audit classifies both a
+known-loss and a known-adequacy control correctly, one real partner workflow supplies a complete
+raw-to-report-to-outcome chain, and enough independent material/batch environments exist to test
+transfer. A strong random split on many descendants of a few batches does not satisfy this gate.

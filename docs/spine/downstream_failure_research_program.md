@@ -10,18 +10,19 @@ study; it is not retrofitted into an industrial qualification claim.
 
 The project will no longer treat `raw trace versus label` as the destination. The destination is:
 
-> Which early raw or intermediate signals predict an expensive downstream failure, which
-> conventional transformation first destroys their transferable decision value, and what is the
-> least costly representation that safely preserves that value?
+> Do early raw or intermediate signals predict an expensive downstream failure; if so, at which
+> earliest audited edge in the declared provenance graph does a conventional representation fail
+> to preserve transferable decision value, and what is the least costly adequate representation?
 
-The first consequential endpoint class is **independent-preparation reproducibility / final-spec
-conformance**. It is the bridge from the current event pilot to industrially meaningful outcomes:
-it has a real early decision (`continue`, `retest`, `rework`, `route`, or `stop`), shorter feedback
-than lifetime qualification, and a natural transfer test across sessions, lots, instruments, and
-sites.
+The first consequential endpoint class is **early final-spec conformance for independently
+prepared executions**. It is the bridge from the current event pilot to industrially meaningful
+outcomes: it has a real early decision (`continue`, `retest`, `rework`, `route`, or `stop`), shorter
+feedback than lifetime qualification, and natural measurement-precision or process-robustness tests
+across sessions, operators, instruments, and lots. `Reproducibility` is reserved for an
+independent-site study.
 
 Degradation or later functional performance is the preferred flagship after the audit and
-reproducibility bridge pass. Pilot-scale yield and formal qualification remain later stages. The
+conformance bridge pass. Pilot-scale yield and formal qualification remain later stages. The
 project will not bundle all of these into one small study.
 
 The current CaCO3 program has a narrower role:
@@ -44,7 +45,7 @@ The defensible contribution is operational and prospective:
 
 1. name one downstream decision and its native utility before outcome access;
 2. retain the actual raw-to-report transformation graph and attempted-event denominator;
-3. localize the first edge that violates predeclared risk, support, or collision bounds;
+3. localize the earliest audited failing edge only along a verified nested transformation chain;
 4. require the residual signal to survive held-environment and independent-site evaluation;
 5. distinguish an unavailable event from a lossy within-event summary;
 6. report whether the upstream artifact remains recoverable; and
@@ -53,9 +54,14 @@ The defensible contribution is operational and prospective:
 The strongest eventual claim is therefore not `raw wins`:
 
 > For outcome $Y$ and cutoff $\tau_s$, the conventional report was not task-adequate under
-> held-environment evaluation. Loss localized to transformation $T$. Intermediate representation
-> $Z$ retained the native trace's transferable decision value at lower total cost and improved a
-> predeclared early decision.
+> held-environment evaluation. Along the verified transformation chain, the earliest audited
+> failure occurred at edge $T$. Intermediate representation $Z$ retained the native trace's
+> transferable value at lower total cost and improved estimated utility under a frozen decision
+> rule.
+
+Actual improvement in actions, yield, scrap, or other outcomes is claimed only after the
+prospective decision trial in phase 4. For nonnested human/report stages, the result is conditional
+value, complementarity, or a bracket of possible sources—not localization to one causal edge.
 
 ## Program ladder
 
@@ -63,8 +69,8 @@ The strongest eventual claim is therefore not `raw wins`:
 | --- | --- | --- | --- |
 | 0. audit calibration | show the instrument returns the correct verdict on known cases | known-mixture fraction and threshold decisions | validated audit mechanics |
 | 1. prospective methods study | test the audit on a real process without industrial overclaim | CaCO3 24-hour phase fraction and failure from state sampled by 60 min | single-site methods proof |
-| 2. reproducibility bridge | test whether an early representation forecasts an independent execution falling outside a frozen specification | continuous replicate deviation primary; within-spec status secondary | transferable within-lab or cross-site QC evidence, depending on environments |
-| 3. consequential flagship | attach the audit to a slow or expensive functional endpoint | degradation, capacity retention, catalyst lifetime, strength, corrosion, or another partner-native property | high-impact downstream-value claim |
+| 2. independent-preparation conformance bridge | test whether an early representation forecasts the delayed final property of the same independently prepared execution | continuous final property or distance from an external specification primary; within-spec status secondary | early-QC evidence under declared intermediate-precision environments |
+| 3. consequential flagship | attach the audit to a slow or expensive functional endpoint | failure-aware degradation/lifetime, catalyst lifetime, strength, corrosion, or another partner-native property | high-impact downstream-value claim |
 | 4. decision trial | show that retained information changes actions and outcomes | cost, delay, scrap, false accept/reject, yield, or regret | operational/industry claim |
 | 5. scale and qualification | test production and certification relevance | pilot-lot yield, field durability, or qualification outcome | domain-specific deployment evidence |
 
@@ -73,36 +79,52 @@ power planning, but not recycle its outcomes as confirmatory evidence.
 
 ## Recommended first two studies
 
-### Study A — reproducibility / final-spec bridge
+### Study A — independent-preparation final-spec bridge
 
-The operational question is:
+Two estimands must remain separate.
 
-> Given evidence available from execution $i$ by cutoff $\tau_s$, should a user trust the process,
-> repeat it, rework it, route it to extra characterization, or stop before paying for a later
-> independent execution or assay?
+#### A1. Run-local early quality control
 
-The source representation comes only from execution $i$. The target is constructed from a later,
-independently prepared execution $j$ or a future batch, never from a group statistic that includes
-the held-out target row. Two targets should be frozen:
+The first bridge asks:
 
-1. a continuous deviation in the final property, such as $|q_i-q_j|$, with assay uncertainty
-   propagated; and
-2. a secondary binary decision, such as whether execution $j$ falls inside a practitioner-approved
-   tolerance window.
+> Given evidence available from independently prepared execution $i$ by cutoff $\tau_s$, should a
+> user continue, retest, rework, route, or stop before paying for the delayed final assay of that
+> same execution?
+
+The primary target is the continuous final property $q_i$ or its signed/absolute distance from a
+specification fixed independently of this sample. A secondary target is whether $q_i$ lies inside
+that pre-existing specification. This is an early-QC/conformance task; repeating it across changed
+sessions, operators, instruments, or material lots tests declared robustness axes, not cross-site
+reproducibility.
+
+#### A2. Future-process qualification
+
+A different question is whether a process or recipe is reliable for future independent
+executions. Its input is a frozen commissioning set $D_g$ for process $g$, and its target is a
+predictive distribution for a future $q_j$ or $P(q_j\in W)$ for an externally defined window $W$.
+It is not estimated by treating every overlapping $|q_i-q_j|$ pair as independent.
+
+Anchor/confirmation roles, the future execution, and whole-process train/test groups must be
+assigned before outcome access. If pairwise repeatability appears as a descriptive diagnostic,
+freeze its pair ledger, prevent any execution from entering both train and test through another
+pair, and resample the shared process/preparation cluster.
 
 `Repeatability`, `intermediate precision`, and `reproducibility` are not synonyms:
 
 - same apparatus/operator over a short interval tests repeatability;
-- changed day, operator, lot, or instrument within one laboratory tests intermediate precision;
+- changed day, operator, or instrument within one laboratory tests measurement-system intermediate
+  precision;
+- changed material lot or process condition may instead test process robustness and must be named
+  as such; and
 - independent sites test reproducibility.
 
 The claim must use the strongest term actually supported by the collection environments.
 
-The current CaCO3 pilot can estimate assay variance and exercise pair construction, but its three
-replicates per condition and four sessions are not the confirmatory reproducibility study. A
-follow-up should use fewer fixed conditions with more independent executions spread across at least
-the planned eight-session extension, then use an external site for a reproducibility claim. Exact
-counts follow cluster-aware simulation, not a universal minimum.
+The current CaCO3 pilot can estimate assay variance and exercise A1. Its three replicates per
+condition and four sessions are not a confirmatory A2 process-qualification or reproducibility
+study. A follow-up may use fewer fixed conditions with more independent executions and a prospectively
+held future set, but exact process groups, sessions, and counts follow cluster-aware simulation. An
+external site is required before using `reproducibility`.
 
 ### Study B — degradation / functional-performance flagship
 
@@ -115,21 +137,23 @@ A suitable workflow has:
 
 - native early current/voltage/temperature/time or process traces;
 - an actual conventional feature/report/grade used in practice;
-- a continuous delayed outcome such as capacity retention, cumulative energy throughput,
-  degradation rate, corrosion loss, strength, or catalyst activity retention;
+- a failure-aware delayed outcome such as cumulative energy throughput, survival/degradation,
+  corrosion loss, strength, or catalyst activity retention;
 - a real action before that outcome arrives;
 - multiple independent material or manufacturing batches and, eventually, a second site; and
 - retained failed, censored, interrupted, and retested units.
 
-For batteries, a continuous outcome at a frozen cycle or time is preferable as the primary target.
-Time-to-threshold is a secondary censored endpoint, not a scalar obtained by deleting surviving
-cells. A planning range such as 150--300 cells across 8--12 batches may be useful for partner
-discussions, but it is not a power calculation. Cells, cycles, or spectra do not substitute for
-independent material and manufacturing batches.
+For batteries, the endpoint must remain defined for early failures. Capacity retention at a frozen
+cycle selects survivors when cells fail before that cycle. Prefer a failure-aware continuous
+quantity such as cumulative delivered energy under a frozen rule, a survival endpoint with explicit
+censoring, or co-primary continuous and survival estimands. Do not encode an early failure as zero
+without a physical or utility justification. Cells, cycles, or spectra do not substitute for
+independent material and manufacturing batches; all counts follow pilot-informed hierarchical
+simulation rather than an unsupported planning anchor.
 
-If no battery partner can supply the complete ladder, use a less fashionable system that can. Ten
-well-crossed material batches with native traces and a credible outcome are stronger evidence than
-hundreds of cells from three confounded batches.
+If no battery partner can supply the complete ladder, use a less fashionable system that can.
+Several well-crossed material batches with native traces and a credible outcome are stronger
+evidence than many descendants of a few confounded batches.
 
 ## Required unit and lineage graph
 
@@ -151,17 +175,20 @@ performance or qualification endpoint is a separate versioned outcome product jo
 physical subject; it is not inserted into a free-form event summary and mistaken for the same
 unit.
 
-The first partner deliverable is one **golden event** that traverses the entire graph:
+The first partner deliverable is a small **golden bundle** that traverses the entire graph:
 
-- planned context and actual process record;
-- native trace and instrument metadata;
-- each intermediate representation and its construction version;
-- the conventional report and final label/grade;
-- the downstream outcome and assay uncertainty;
-- all interventions, retries, failures, and exclusions; and
+- at least one ordinary event with planned context and actual process record;
+- native trace, instrument metadata, and every intermediate transformation/version;
+- the conventional report, final grade, downstream outcome, and assay uncertainty;
+- a failure, censor, abort, retry, or rework example where one exists;
+- source-ledger aggregate counts needed to evaluate denominator completeness; and
 - acquisition, storage, processing, annotation, and turnaround costs.
 
-No model development starts until this one event can be reconstructed without an ambiguous join.
+All golden-bundle IDs and descendants are permanently nonconfirmatory and listed in the later
+preregistration, or their outcomes remain firewalled from the analysis team while a data engineer
+verifies the joins. No model development starts until the bundle can be reconstructed without an
+ambiguous join. A bundle validates lineage mechanics; it does not establish denominator
+completeness or estimate an effect.
 
 ## Representation ladder
 
@@ -182,14 +209,22 @@ Required arms include `C`, every genuine intermediate, the actual conventional r
 trace, and `trace + report` for complementarity. A human report with side information absent from
 the trace is a nonnested branch and must be analyzed as such.
 
-The endpoint horizon and input cutoff are frozen independently. The cutoff is the earliest time at
-which the declared action could save meaningful cost or delay, not the time that maximizes
-retrospective accuracy.
+For every representation, record four clocks separately: material-state time, acquisition time,
+construction time, and operational availability time. The endpoint horizon, input cutoff, and
+decision deadline are frozen independently. The cutoff is the earliest time at which the declared
+action could save meaningful cost or delay, not the time that maximizes retrospective accuracy.
+Evidence processed after the deadline may support a sampled-state scientific claim but is not an
+eligible operational input.
+
+A compact online representation and archival retention answer different questions. The online
+controller may safely use a compact report while immutable native evidence remains worth retaining
+for future tasks, verification, or incident analysis.
 
 ## Evaluation design
 
 All representation arms use the same strictly out-of-fold events and the same target definition.
-The split hierarchy is:
+Before outcome access, declare one primary transfer split. Other splits are named secondary
+estimands rather than a hierarchy from which the best result can be selected:
 
 1. random-unit split, diagnostic only;
 2. held session, operator, instrument, and lot;
@@ -199,7 +234,19 @@ The split hierarchy is:
 
 No scans, cycles, aliquots, or devices descended from the same independent material unit may cross
 train/test folds when the claim concerns material transfer. Feature learning, scaling, imputation,
-tuning, and calibration occur inside the training partition.
+tuning, and calibration occur inside the training partition. Conditions and chemistries must
+overlap across batches when `batch transfer` is the claim; otherwise batch and formulation shift
+cannot be separated.
+
+External evaluation distinguishes:
+
+1. zero-shot transport of a frozen model to an untouched site;
+2. transport after a predeclared site-calibration set; and
+3. protocol replication with site-specific retraining.
+
+Only the first is zero-shot model transfer. The third can validate the audit protocol without
+showing that the original predictor transferred. At every site, verify whether the report schema
+and transformation graph are actually the same; otherwise the study audits a new pipeline.
 
 Minimum baselines are:
 
@@ -223,21 +270,30 @@ The audit reports separately:
 - outcome-assay uncertainty; and
 - acquisition, storage, latency, annotation, and decision costs.
 
+Selective downstream follow-up is acceptable only when all eligible units are assayed, a
+predeclared probability sample has known inclusion probabilities, or a defensible selection model
+and sensitivity bounds are part of the estimand. Merely knowing which outcomes were not observed
+does not recover them.
+
 ## Decision gates
 
 | gate | required evidence | stop or downgrade condition |
 | --- | --- | --- |
-| G0: identifiable | joined raw/intermediate/report/outcome ladder, physical-unit lineage, retained failures | orphaned outcomes, ambiguous units, or no genuine report |
-| G1: valid target | assay precision, target variance, eligibility, censoring, and action utility are frozen | measurement uncertainty is comparable to the useful effect or the action is fictitious |
-| G2: calibrated audit | known-loss and known-adequacy controls receive the expected verdicts | the audit cannot distinguish loss from adequacy |
-| G3: local task loss | richer representation clears $\delta_R$ or compact stage violates support/collision bounds | conventional report is demonstrably adequate or the estimate is inconclusive |
-| G4: transfer | gain survives the relevant held batch/environment with no material harm cell | random-split gain disappears, reverses, or is explained by provenance |
-| G5: economical representation | value of the action exceeds acquisition, retention, computation, and latency cost | only an uneconomic native artifact works |
-| G6: external replication | frozen result survives an independent site or materially independent pipeline | single-site result only |
-| G7: decision value | prospective richer-feedback policy improves utility under an equal budget | prediction gain does not change decisions or outcomes |
+| G0: identifiable | joined raw/intermediate/report/outcome ladder, physical-unit lineage, actual report, retained attempt ledger, and a nonconfirmatory golden bundle | orphaned outcomes, ambiguous units, or invented report |
+| G1: valid target | assay precision, target variance, eligibility, censoring, follow-up design, and action utility are frozen | measurement uncertainty is comparable to the useful effect, follow-up is undefended, or the action is fictitious |
+| G2: calibrated audit | a known-loss control and a known-adequacy control defined independently of fitted results receive the expected verdicts | the audit cannot distinguish loss from adequacy |
+| G3: local task loss | common-support risk, structural support/collision, and downstream utility are reported separately | apparent gain is only deletion by construction, or uncertainty crosses the relevant bound |
+| G4: transfer | gain survives the predeclared primary held environment and no held environment crosses its harm bound | random-split gain disappears, reverses, or is explained by provenance |
+| G5: economical representation | estimated decision benefit exceeds acquisition, retention, computation, and latency cost by $\delta_U$ | only an uneconomic native artifact works |
+| G6: external replication | frozen zero-shot/site-calibrated transport or protocol replication at an independent site, with the mode named | single-site result only |
+| G7: decision value | shadow-mode safety followed by a prospective randomized/concurrent policy trial | prediction gain does not improve the declared causal policy estimand |
 
-Adequacy requires an upper confidence bound that excludes improvements larger than the
-predeclared meaningful margin. `Not significant` remains inconclusive.
+Orient the risk gap as compact-arm risk minus richer-arm risk. A useful richer-representation result
+requires the appropriate simultaneous lower confidence bound to exceed the frozen task-risk benefit
+$\delta_R$. Compact-stage adequacy requires the upper bound to exclude improvements larger than
+$\delta_R$ while support/collision bounds pass. Everything between is inconclusive. The utility
+threshold $\delta_U$ is separate from predictive risk. `Not significant` establishes neither loss
+nor adequacy.
 
 ## Closed-loop extension
 
@@ -254,6 +310,12 @@ study must therefore compare budget-matched policies driven by a conventional re
 intermediate representation, and richer evidence. The endpoint is policy value or regret under an
 independent assay, not experiments per day or one-step prediction accuracy.
 
+Acting on a policy can itself delete outcomes: a stopped, scrapped, or rerouted unit may never
+receive the reference assay. Begin in shadow mode, then use randomized or concurrent policy
+assignment with logged probabilities and a declared causal estimand. Continue reference follow-up
+on all units or a randomized audit subset, and model interference/adaptive collection where it is
+plausible. Equal budget alone does not identify policy value.
+
 ## Immediate execution order
 
 1. Finish and freeze the current known-mixture and CaCO3 audit without changing its primary claim.
@@ -261,7 +323,8 @@ independent assay, not experiments per day or one-step prediction accuracy.
    degradation` dry run to exercise the complete evaluator and expose software gaps. Treat any
    synthetic conventional packet as an engineering control until a practitioner validates it.
 3. Use the [downstream endpoint decision card](../controlled-collection/downstream_endpoint_decision_card.md)
-   in every partner conversation; require one golden event before promising a study.
+   in every partner conversation; require one nonconfirmatory golden bundle before promising a
+   study.
 4. Select one real endpoint, cutoff, action, physical-unit graph, and transfer population.
 5. Estimate assay, batch, missingness, and censoring components from nonconfirmatory pilot units.
 6. Simulate the full hierarchical design for both material-loss and bounded-adequacy power.
@@ -275,7 +338,7 @@ independent assay, not experiments per day or one-step prediction accuracy.
 - Do not call within-lab session variation cross-lab reproducibility.
 - Do not define a conventional report after inspecting which features make the trace win.
 - Do not let only promising units receive the expensive follow-up without auditing informative
-  censoring.
+  censoring and using a defensible follow-up design.
 - Do not count specimens, scans, cycles, or devices as independent material batches.
 - Do not claim industry value from early-XRD to later-XRD continuity alone.
 - Do not expand the evaluator API before one real physical-unit and outcome graph is known.

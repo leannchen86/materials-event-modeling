@@ -21,7 +21,8 @@ of every property that could later be measured.
 | false-reject cost | scientific or operational consequence |
 | measurement/delay cost | cost of waiting for the final outcome |
 | utility or loss | task-native function with units |
-| smallest useful benefit $\delta_R$ | elicited before outcome access |
+| smallest useful task-risk benefit $\delta_R$ | elicited before outcome access |
+| smallest useful utility/cost benefit $\delta_U$ | separate from predictive risk |
 
 Reject the candidate if no real person would take a different action at the declared time.
 
@@ -31,7 +32,7 @@ Reject the candidate if no real person would take a different action at the decl
 | --- | --- |
 | outcome ID and version | immutable target specification |
 | physical subject | execution, material batch, aliquot, specimen, device, pilot lot, or field unit |
-| continuous primary target | preferred where scientifically meaningful |
+| primary target | continuous and failure-aware where possible; survival/co-primary when needed |
 | secondary threshold/status | optional spec-pass, failure, or time-to-threshold target |
 | outcome horizon/window | frozen time or interval |
 | assay and adjudication | instrument, protocol, software, assessor, blinding |
@@ -41,8 +42,10 @@ Reject the candidate if no real person would take a different action at the decl
 | measured-at environment | site, instrument, session, operator, lot, and configuration |
 | outcome independence | why it is not merely the same transformation that produced the early report |
 
-Reject the candidate if target measurement error is comparable to the smallest useful effect or if
-follow-up is available only for hand-selected successes with no recoverable denominator.
+Reject the candidate if target measurement error is comparable to the smallest useful effect. If
+follow-up is selective, require one of: all eligible units assayed; predeclared probability sampling
+with known inclusion probabilities; or a defensible selection model plus sensitivity bounds. A
+recoverable denominator alone does not reveal the missing outcomes of hand-selected units.
 
 ## C. Physical-unit lineage
 
@@ -70,6 +73,9 @@ Reject the candidate if an outcome cannot be joined to its source evidence witho
 | --- | --- |
 | state cutoff $\tau_s$ | latest physical state allowed into any early representation |
 | decision deadline $\tau_d$ | when the representation and decision must be ready |
+| acquisition time | when each source artifact becomes available |
+| construction time | when each derived representation is produced |
+| operational availability | whether construction finishes before $\tau_d$ |
 | context $C$ | legitimate shared recipe/process information |
 | native evidence $X$ | exact modalities, files, machine state, and process logs |
 | intermediate stages | calibration, cleanup, fit, engineered features, residuals |
@@ -82,18 +88,28 @@ At minimum compare `C`, `C+L`, `C+S`, `C+X`, and `C+L+X`, plus genuine adjacent 
 stages. A human label with side evidence absent from $X$ is nonnested and must remain a separate
 branch.
 
+Keep online and archival decisions separate. A compact report may be adequate for the declared
+real-time action while native evidence remains worth retaining for future tasks or verification.
+
 ## E. Environments and independent units
 
 | claim | required held-out unit |
 | --- | --- |
 | repeatability | repeat execution on the same apparatus under short-term conditions |
-| intermediate precision | changed day/operator/lot/instrument within one lab |
+| measurement-system intermediate precision | changed day/operator/instrument within one lab |
+| process robustness | changed material lot or predeclared process nuisance |
 | reproducibility | independent site |
 | material transfer | independent material or manufacturing batch |
 | chemistry/process transfer | predeclared held formulation, condition, or family |
 
 Record expected counts at every level. Do not treat scans, timepoints, cycles, aliquots, specimens,
 or devices as independent when they descend from one material batch relevant to the claim.
+Require condition/chemistry overlap across batches when batch transfer is the primary estimand.
+
+For an external site, choose exactly one primary mode: zero-shot frozen-model transport;
+predeclared site calibration followed by a frozen test; or protocol replication with site-specific
+retraining. The last validates the method, not transfer of the original predictor. Verify whether
+the report schema and transformation graph are actually the same at the new site.
 
 ## F. Support and leakage contract
 
@@ -109,6 +125,9 @@ Freeze:
 - training-only feature learning, imputation, tuning, and calibration; and
 - provenance recoverability probes for every representation.
 
+Predeclare one primary transfer split. Random, held-batch, held-condition, held-chemistry, and
+held-site evaluations answer different questions and cannot be selected after seeing results.
+
 ## G. Costs and adequacy
 
 Collect from day one:
@@ -121,31 +140,39 @@ Collect from day one:
 - retest, rework, scrap, and false-decision costs; and
 - recoverability of the upstream artifact.
 
-Freeze meaningful risk, event-support, decision-support, collision, and harm bounds. The target is
-the least costly representation whose worst relevant environment remains inside all bounds.
+Freeze meaningful risk, utility, event-support, decision-support, collision, and harm bounds. The
+target is the least costly representation whose worst relevant environment remains inside all
+bounds.
 
-## H. Partner-entry checklist: one golden event
+## H. Partner-entry checklist: a golden bundle
 
-Before a full agreement, request one de-identified event containing:
+Before a full agreement, request a small de-identified bundle containing:
 
-- planned process and actual deviations;
-- complete native trace and instrument/process metadata;
-- every intermediate transformation with code/SOP version;
-- actual conventional report and final grade;
-- delayed outcome with uncertainty and subject lineage;
-- failures/retries/abstentions if they occurred; and
+- an ordinary event with planned process and actual deviations;
+- complete native trace, instrument/process metadata, and every transformation version;
+- actual conventional report, final grade, and delayed outcome with uncertainty and lineage;
+- a failure, censor, retry, rework, or abstention example where one exists;
+- aggregate source-ledger counts for denominator checks; and
 - rough cost and turnaround estimates.
+
+Golden-bundle IDs and descendants are permanently nonconfirmatory and listed in the
+preregistration, or their outcomes remain firewalled from the analysis team while a data engineer
+checks the joins.
 
 Required partner answers:
 
 1. Is the raw upstream artifact legally and technically accessible?
 2. Does the report reflect real practice, rather than a feature set invented for this project?
 3. Are failed and censored units visible in the source ledger?
-4. Can at least one material/batch-level environment be held out untouched?
+4. Are there enough crossed independent material/batch environments for simulation and an
+   untouched test, rather than merely one nominal held-out batch?
 5. Is an external instrument or site available after the model and claim freeze?
 6. Can results or at least aggregate audit outputs be released?
 
-If any of questions 1--4 is `no`, do not promise a consequential compression study.
+Hard, noncompensable entry gates are: a real early action; an actual report ladder; machine-
+resolvable lineage; a complete attempt/failure denominator; enough crossed batches for the planned
+transfer estimand; legally usable raw evidence; and publishable outputs. Do not promise a
+consequential compression study if any hard gate fails.
 
 ## I. Candidate scorecard
 
@@ -155,7 +182,7 @@ Score each item `0` (absent), `1` (partial), or `2` (strong):
 | --- | ---: |
 | delayed outcome is expensive, slow, destructive, or consequential |  |
 | real early action exists |  |
-| continuous outcome with credible uncertainty |  |
+| informative, failure-aware outcome with credible uncertainty/censoring |  |
 | actual raw-to-report ladder is accessible |  |
 | failed/censored attempts remain visible |  |
 | physical-unit lineage is machine-resolvable |  |
@@ -164,8 +191,9 @@ Score each item `0` (absent), `1` (partial), or `2` (strong):
 | storage/latency/action costs measurable |  |
 | data rights permit a scientific result |  |
 
-`16--20`: strong Phase 2/3 candidate. `12--15`: partner-development candidate with named gaps.
-Below `12`: calibration or engineering exercise, not a flagship.
+This total is a prioritization heuristic, not scientific evidence and not a substitute for the hard
+gates above. `16--20`: strong Phase 2/3 candidate. `12--15`: partner-development candidate with
+named gaps. Below `12`: calibration or engineering exercise, not a flagship.
 
 ## J. Freeze signatures
 
@@ -176,4 +204,6 @@ Below `12`: calibration or engineering exercise, not a flagship.
 - preregistration commit:
 - first outcome-access timestamp:
 
-The card is invalid if the preregistration commit does not precede outcome access.
+The card is invalid if the preregistration commit does not precede confirmatory outcome access.
+Golden-bundle and pilot outcomes must be explicitly identified as permanently nonconfirmatory or
+kept firewalled as described above.
