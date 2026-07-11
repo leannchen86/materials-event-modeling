@@ -6,6 +6,13 @@ and related early-trajectory analyses have already been inspected in this reposi
 is to exercise the complete downstream audit path before a partner study, not to create a new
 battery-lifetime claim.
 
+Amendment history: commit `c6a0b76` froze the initial design. A subsequent provenance review,
+before repository implementation, found that five nominal batch-1 targets are resolved from
+batch-2 barcode continuations. The primary target universe was therefore changed to exclude those
+five cells from **both fitting and scoring**, with the all-observed-EOL analysis retained only as a
+contaminated sensitivity. This is a leakage correction, not a result-driven estimand change; the
+run remains explicitly nonconfirmatory and the expected-result section below is unchanged.
+
 Program parent:
 [downstream_failure_research_program.md](../spine/downstream_failure_research_program.md).
 Existing related result:
@@ -35,8 +42,11 @@ The descriptive scientific question is narrower:
   collection shift and unseen-policy extrapolation.
 - Seven truncated cells are right-censored. The v0 scalar evaluator cannot use their partial target
   information, but they remain in the attempt and target-support ledger.
-- Five long-lived batch-1 cells use later barcode continuations for the outcome. Continuation
-  identity and existence are never input features and receive a sensitivity exclusion.
+- Five long-lived batch-1 cells use later batch-2 barcode continuations for the outcome. If those
+  targets train a model whose held environment is batch 2, information from the held environment
+  enters through target provenance. Continuation identity and existence are never input features.
+  The primary analysis excludes all five continuation-derived targets globally; a separate
+  all-observed-EOL sensitivity refits the complete pipeline and is labeled contaminated.
 
 No result from this run enters the headline results ledger or earns `raw`, `industry report`,
 `adequate`, `premature compression`, or `transferable across future batches` language.
@@ -50,16 +60,20 @@ No result from this run enters the headline results ledger or earns `raw`, `indu
 - **State cutoff:** end of cycle 100. Only quality-accepted observations at cycles 2--100 may
   enter an arm.
 - **Target Y:** `log10(cell.cycle_life_cycles)` for observed-EOL cells.
-- **Target support:** 128 observed-EOL cells; seven truncated/right-censored cells stay in the
-  ledger with their lower bound and an unavailable scalar target.
+- **Target support:** 128 observed-EOL cells, of which five have cross-batch continuation-derived
+  targets. The primary analysis uses the other 123. Seven truncated/right-censored cells stay in
+  the ledger with their lower bound and an unavailable scalar target.
 - **Environment E:** primary collection batch from `provenance.batch_id`.
 - **Uncertainty cluster:** charge-policy `event_group_id`, not cell or cycle.
 - **Primary descriptive loss:** MAE in log10 cycles.
 - **Primary transfer design:** leave one complete batch out. The three fixed folds are reported
   separately; no random split is produced by this run.
 
-Expected invariant counts before modeling are 135 attempts, 128 scalar-target-eligible cells,
-seven right-censored cells, and three held-batch folds. A count mismatch stops the run.
+Expected invariant counts before modeling are 135 attempts, 128 exact observed-EOL targets, five
+cross-batch continuation-derived targets, 123 primary scalar-target-eligible cells, seven
+right-censored cells, and three held-batch folds. Primary outer train/test target counts are
+`87/36`, `80/43`, and `79/44` when holding out batches 1, 2, and 3 respectively. A count mismatch
+stops the run.
 
 ## Frozen representation graph
 
@@ -80,8 +94,8 @@ The seven S100 values, in order, are:
 3. OLS slope over cycles 2--100;
 4. maximum minus final capacity;
 5. final minus first capacity;
-6. OLS slope over the second half of the grid; and
-7. `log10(var(first differences) + 1e-12)`.
+6. OLS slope over cycles 51--100 (array indices `49:99`); and
+7. `log10(var(first differences, ddof=0) + 1e-12)`.
 
 Frozen arms:
 
@@ -126,8 +140,12 @@ For each arm and held-batch outer fold:
 - tune `alpha` over `[1e-3, 1e-2, 1e-1, 1, 10, 100, 1000]`;
 - use inner `GroupKFold`, grouped by charge policy, with the number of splits capped by the number
   of represented training policies and at most five;
-- fit scaling, tuning, and the final model only on outer-training observed-EOL cells;
-- predict the held batch once;
+- score each candidate alpha by the mean of its per-policy inner-OOF MAEs and choose the smallest
+  alpha on an exact tie;
+- fit every scaler and ridge model without sample weights, only on outer-training cells eligible
+  for that analysis universe;
+- predict every representation-available attempt in the held batch once, including cells without
+  an eligible scalar target, but score only the analysis universe;
 - record train/test event counts, target counts, batch IDs, policy sets or hashes, chosen alpha,
   and all out-of-fold predictions; and
 - assert that no event or policy appears in both sides of an outer fold.
@@ -135,11 +153,21 @@ For each arm and held-batch outer fold:
 Policy overlap is expected to be zero because the source batches use disjoint policies. That is a
 property of this dataset, not a feature of a generally valid batch test.
 
+Run this entire nested procedure twice rather than masking a shared prediction ledger after fit:
+
+1. `primary_no_cross_batch_continuations`, with 123 exact targets; and
+2. `all_observed_eol_sensitivity`, with 128 exact targets and an explicit
+   `cross_batch_target_provenance=true` contamination flag.
+
+The second analysis is diagnostic only. Any changed alpha, scaler, coefficient, or prediction is
+part of the sensitivity and must be retained in the manifest.
+
 ## Weighting and audit call
 
 Primary risk is policy-macro: each eligible cell receives weight inversely proportional to the
 number of eligible cells in its charge policy, normalized only by the risk aggregator. Cell-micro
-risk is a labeled sensitivity.
+risk is a labeled sensitivity. Policy-macro weighting determines inner alpha selection and final
+evaluation; it does not weight the ridge fits themselves.
 
 Call `audit_prediction_bundle` with:
 
@@ -176,6 +204,11 @@ Based on the already known held-batch difficulty, predict:
 A large uniform X100 win would be surprising and require raw prediction/worst-case inspection. A
 large C win would trigger checks for scaling, interpolation, target alignment, and batch/policy
 shift before being interpreted as useful compression.
+
+Back-transform every OOF prediction to cycles for diagnostics. Report, but never clip, predictions
+below cycle 101 because all exact observed outcomes occur after the feature cutoff. Also report the
+worst absolute-error cells for each analysis and arm so a pooled contrast cannot hide a single
+extrapolation failure.
 
 ## Stop conditions and interpretation
 
