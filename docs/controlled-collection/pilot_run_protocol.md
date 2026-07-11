@@ -77,11 +77,13 @@ is a controlled axis).
 - Either valid visual precipitate or valid above-threshold XRD solid signal → nonfailure for the
   binary endpoint; retain any visual/XRD discordance.
 - Precipitate exists but the 24 h XRD is uninterpretable or unassignable → `ambiguous`.
-- Event interrupted (spill, power, time) → `aborted`; keep every observation already
-  collected. Partial records are first-class.
+- Event interrupted under the frozen execution rule → envelope status `aborted`; keep every
+  observation already collected. A later valid 24-hour endpoint may remain eligible for its
+  numeric task, but never erases the execution interruption. Partial records are first-class.
 - **No silent redos, ever.** If an event must be re-attempted, the original keeps its
   record and status; the redo enters as a new event id (`...:r<k>b`) noted in run order.
-  A pilot without failures is a failed pilot (it means the record was curated).
+  Zero observed failures makes the binary endpoint unestimable in this pilot; it does not by
+  itself prove curation. Silent deletion or redo of a failure does constitute a protocol breach.
 
 ## What gets recorded (the data contract)
 

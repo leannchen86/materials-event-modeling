@@ -98,22 +98,25 @@ Define the failure-task eligibility set as all attempted events for which the fr
 returns `0` or `1`. All attempted events remain in the support denominator, including those outside
 this set. In particular:
 
-- an aborted event without a valid 24-hour endpoint is ineligible, not a nonfailure;
+- an aborted event without a valid 24-hour endpoint is ineligible, not a nonfailure; an aborted
+  event with valid endpoint evidence may be numerically eligible under the same frozen rule, while
+  its envelope status remains `aborted`;
 - missing or invalid 24-hour evidence is unresolved, not a failure;
 - a visible precipitate with phase-uninterpretable XRD is a nonfailure for this binary target but
   may be `ambiguous` for phase quantification; and
 - an event with no visible precipitate but a validated above-threshold solid XRD signal is a
   nonfailure, with the visual/XRD discrepancy retained as a quality field.
 
-Map the event envelope independently from the numeric target:
+Map the event envelope independently from numeric-target eligibility. Execution abortion has
+precedence so that a later endpoint cannot erase what happened during the run:
 
 | condition | `outcome.status` |
 | --- | --- |
-| `Y_failure_24h = 1` | `failure` |
-| solid detected and phase target quantifiable | `success` |
-| solid detected but phase evidence uninterpretable/unassignable | `ambiguous` |
-| execution interrupted and endpoint not completed | `aborted` |
-| endpoint cannot be resolved for another reason | `unknown` |
+| execution meets the frozen interruption/abortion rule | `aborted`, regardless of later numeric-target eligibility |
+| otherwise `Y_failure_24h = 1` | `failure` |
+| otherwise solid detected and phase target quantifiable | `success` |
+| otherwise solid detected but phase evidence uninterpretable/unassignable | `ambiguous` |
+| otherwise endpoint cannot be resolved | `unknown` |
 
 The primary binary metric can be computed only if both classes occur and out-of-fold probability
 predictions are estimable. If the pilot contains no failures, report the observed prevalence and
@@ -224,7 +227,8 @@ Handling by event type:
 | successful single- or mixed-polymorph precipitate with accepted QPA | eligible |
 | no-precipitate failure | **ineligible; never encode as zero** |
 | visible precipitate but uninterpretable/unaccepted QPA | ineligible, `ambiguous` |
-| aborted before valid 24-hour endpoint | ineligible, `aborted` |
+| aborted before valid 24-hour endpoint | ineligible; envelope remains `aborted` |
+| aborted execution with valid accepted QPA | eligible under the ordinary quantitative rule; envelope remains `aborted` |
 | missing/corrupt endpoint evidence | ineligible, `unknown` or frozen quality status |
 | amorphous/unassigned/other-phase contribution above its frozen tolerance | ineligible unless the frozen denominator rule explicitly supports it |
 
@@ -270,6 +274,7 @@ permitted.
 The machine-readable product should include at least:
 
 - `failure_target_status` and nullable `y_failure_24h`;
+- `execution_aborted`, its frozen reason code, and the precedence-preserving envelope status;
 - visual and XRD solid-detection results plus the frozen threshold versions;
 - `vaterite_target_status` and nullable `y_vaterite_crystalline_pct`;
 - fitted crystalline phase weights and the denominator used;
