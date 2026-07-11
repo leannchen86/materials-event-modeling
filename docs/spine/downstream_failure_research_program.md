@@ -319,9 +319,11 @@ plausible. Equal budget alone does not identify policy value.
 ## Immediate execution order
 
 1. Finish and freeze the current known-mixture and CaCO3 audit without changing its primary claim.
-2. Run a nonconfirmatory Severson `C / conventional early summary / full early trace -> future
-   degradation` dry run to exercise the complete evaluator and expose software gaps. Treat any
-   synthetic conventional packet as an engineering control until a practitioner validates it.
+2. **Completed 2026-07-11:** the nonconfirmatory Severson
+   [`C / S100 / X100 -> cycle life` dry run](../controlled-collection/severson_downstream_compression_results.md)
+   now exercises the complete evaluator. The leakage-corrected primary result finds no stable
+   X100-over-S100 advantage, exposes a cross-batch target-provenance reversal, and remains an
+   engineering control rather than a practitioner-report result.
 3. Use the [downstream endpoint decision card](../controlled-collection/downstream_endpoint_decision_card.md)
    in every partner conversation; require one nonconfirmatory golden bundle before promising a
    study.
