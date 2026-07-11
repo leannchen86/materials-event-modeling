@@ -7,6 +7,21 @@ sessions/operators/lots/run-order — regenerable via
 partner lab needs to execute; the design is ours, the running is theirs. Deviations are
 fine — they must be *recorded*, never absorbed.
 
+## Do-not-start gate
+
+Before D1, the lab lead and study lead must record and verify all three values below. A blank,
+placeholder, dirty-worktree description, or uncommitted file is a **stop**; do not begin an event.
+
+- `design_lock_commit`: commit containing confirmed dates and certified assignment;
+- `analysis_freeze_commit`: later commit in the same history certifying every preregistration,
+  representation, outcome, and statistical freeze blocker; and
+- `pilot_assignment_sha256`: hash of the exact CSV loaded for execution, matching the analysis-
+  freeze manifest.
+
+Both commits must precede the first event timestamp. Record the three values in the session-D1
+header and have both leads sign the check. The current draft specifications do not satisfy this
+gate merely by existing.
+
 ## Materials (per the whole pilot)
 
 - CaCl2 and Na2CO3 (reagent grade). Prepare **two independent stock batches per reagent**
@@ -38,13 +53,16 @@ is a controlled axis).
    of the two solutions** — aging is part of the recorded event, so the t=5 and t=15
    aliquots fall *inside* the aging window for the slow route (withdraw them gently from
    the top without stirring; that is the intended design, capturing the aging trajectory).
-4. **Timed observations** (the clock = first contact):
-   - t ≈ 5 min, 15 min, 60 min: withdraw an aliquot (~2 mL), vacuum-filter or
-     drop-and-dry on a labeled slide/holder, **rinse briefly with ethanol to arrest
-     transformation** (amorphous/vaterite material keeps converting while wet — an
+4. **Timed observations** (the clock = first contact; the stated time is completed arrest,
+   not withdrawal start):
+   - t ≈ 5 min, 15 min, 60 min: begin withdrawing an aliquot (~2 mL) early enough to
+     vacuum-filter or drop-and-dry on a labeled slide/holder and **rinse briefly with ethanol
+     to arrest transformation** (amorphous/vaterite material keeps converting while wet — an
      un-arrested aliquot measures the drying process, not the solution state), then
-     dry at ≤40 °C. Note pH and visual state
-     (clear/cloudy/precipitate; color) at each pull, with the actual clock time.
+     dry at ≤40 °C. The t60 arrest must complete at or before 60:00. Record withdrawal
+     start, arrest start/completion, and pH/visual state (clear/cloudy/precipitate; color)
+     for every pull. The exact arrest procedure/windows remain analysis-freeze items in
+     [x60_input_spec.md](x60_input_spec.md).
    - t = 24 h (±2 h): collect the remaining solid the same way. Record final pH.
    - Throughout: video runs; note any disturbance, spill, hesitation, or deviation as a
      timestamped `human_note` — deviations are data.
@@ -53,9 +71,11 @@ is a controlled axis).
    order, instrument settings (range, step, dwell), and the measurement date/session.
    File naming: `<event_id>_t<minutes>.xy` (or native format + that stem).
 
-## Outcome rules (pre-stated; apply mechanically, do not judge)
+## Outcome rules (apply the frozen product mechanically, do not judge)
 
-- No visible precipitate at 24 h **and** ≤ noise-level XRD signal → `failure`.
+- No visible precipitate at 24 h **and** ≤ the frozen XRD solid-signal threshold → `failure`.
+- Either valid visual precipitate or valid above-threshold XRD solid signal → nonfailure for the
+  binary endpoint; retain any visual/XRD discordance.
 - Precipitate exists but the 24 h XRD is uninterpretable or unassignable → `ambiguous`.
 - Event interrupted (spill, power, time) → `aborted`; keep every observation already
   collected. Partial records are first-class.

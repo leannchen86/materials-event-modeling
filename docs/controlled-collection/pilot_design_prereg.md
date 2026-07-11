@@ -1,17 +1,22 @@
-# Controlled Pilot — Design Pre-Registration (v1, run-ready)
+# Controlled Pilot — Design Pre-Registration (v1 collection design; analysis freeze pending)
 
 Drafted 2026-07-09, v1 the same day. Supersedes the aspirational plan in
 [event_dataset.md](event_dataset.md) as the operational design; executes Tier 3 of
 [experiments.md](experiments.md). Division of labor: **the design is entirely ours; the
-partner lab only executes** — the run-ready package is this doc +
+partner lab only executes** — once both locks below exist, the event-execution package is this
+doc +
 [pilot_run_protocol.md](pilot_run_protocol.md) (verbatim lab procedure) +
 [pilot_assignment.csv](pilot_assignment.csv) (all 48 events pre-assigned; generated from a
 committed seed by `scripts/generate_pilot_assignment.py`, which also CERTIFIES the design
 against the project's own conformance checker: L0/L1 structure and L3 counterbalancing all
 pass on the design skeleton — 16/16 replicated groups with provenance variation — before
-any chemistry exists; manifest `data/manifests/pilot_assignment.json`). Status: **v1 —
-freezes when the partner confirms session dates**; the freeze commit must precede the
-first collected event (Run Discipline v2; the ordering lesson is recorded in
+any chemistry exists; manifest `data/manifests/pilot_assignment.json`). Status: **v1 collection
+design; analysis freeze pending**. Two distinct commits are required: a **design lock** after the
+partner confirms dates and the assignment is regenerated/certified, and an **analysis freeze**
+after every blocker below and in the linked input/outcome specifications is resolved. **Both
+commits must precede the first collected event.** The collection skeleton is executable, but the
+pilot is not authorized to start until the analysis freeze exists (Run Discipline v2; the ordering
+lesson is recorded in
 [severson_heldout_batch_ranking.md](severson_heldout_batch_ranking.md)).
 
 ## Why this design, in one paragraph
@@ -23,7 +28,8 @@ the event grammar — and to close the one gap public data measurably cannot: th
 held-out-batch run showed our within-recipe ranking advantage (0.756/0.779) collapses to
 chance (0.522) when the scoring model has never seen the test collection batch, and Severson's
 3 batches (one holding 85% of pairs) cannot settle whether that is fixable. A deliberately
-counterbalanced design with ≥4 sessions makes transfer a *powered, testable* question.
+counterbalanced design with ≥4 sessions makes a balanced held-out-session stress test possible;
+it does not by itself power inference to the population of future sessions or laboratories.
 
 ## System and factorial
 
@@ -97,29 +103,281 @@ Conformance targets, verified by `scripts/audit_event_grammar.py` on day one and
    here, grounded in the system's own applied literature rather than elicited (the design
    is ours by agreement; one step weaker than practitioner-elicited, and we say so):
    **predict the 24 h polymorph outcome — vaterite fraction and failure/no-precipitate —
-   from information available at t ≤ 60 min**, recipe-only (B) vs recipe + early trace
+   from material state sampled and arrested at t ≤ 60 min**, recipe-only (B) vs recipe + early trace
    (A). Polymorph selection under additive/temperature control is the canonical practical
    question for CaCO3 crystallization (vaterite stabilization vs calcite conversion), not
    a task chosen because labels are blind to it — and B can genuinely compete (the recipe
-   factors are designed to drive the outcome). Falsifier (pre-committed in the top-claim
-   decision memo): if A does not beat B here, claim 3 is "true but useless" and the
-   project pivots. If the partner or any practicing chemist later names a different task,
-   it is ADDED as task 1b before unblinding — never substituted after.
-2. **Representation A/B, replicated on born-L3 data:** within-condition replicate ranking
-   (grammar vs paper-shape; B is structurally 0.500 as always) on the practitioner-relevant
-   outcome, ridge + two non-tree families, cluster bootstrap over the 16 condition groups.
-   Expected pairs: 48 across 16 clusters (vs Severson's 160 dominated by 5).
-3. **Held-out-session transfer (the July-8 gap, now powered):** score every cell with models
-   trained only on the other 3 sessions; every pair is cross-session by design. Primary bar:
-   pooled held-out-session ranking ≥ 0.70 with cluster-CI excluding 0.50. Rough power: 48
-   pairs / 16 clusters resolves ~0.75 vs 0.50 but *not* ~0.60 vs 0.50 — hence the extension
-   rule: if the point estimate lands in (0.55, 0.70), extend to 96 events (16×6) before any
-   verdict; pre-registered, not post-hoc.
+   factors are designed to drive the outcome). This is the project-management reversal gate: if A
+   does not meet the frozen success rule, the project stops investing in claim 3 and pivots.
+   Scientifically, only an estimable, adequately supported interval excluding meaningful benefit
+   warrants the stronger `true but useless` interpretation; inadequate support or an unestimable
+   endpoint is a design failure, not evidence that B is sufficient. Target construction and
+   eligibility are governed by the freeze-blocking
+   [`outcome_24h_spec.md`](outcome_24h_spec.md); failure is never silently encoded as zero
+   vaterite. If the partner or any practicing chemist later names a different task, it is added as
+   secondary task 1b with its multiplicity/status frozen before unblinding—never substituted for
+   the primary task.
+2. **Pair-decision definition and structural diagnostic (descriptive):** construct every
+   within-condition replicate pair for `A = C+X60` and `B = C`. Because C is identical within a
+   factorial condition, B has a structural tie ceiling worth 0.500. The outcome is final vaterite
+   fraction among pairs whose two outcomes are resolvable under the frozen outcome specification.
+   This analysis freezes the pair ledger, support denominators, tie rule, and collision ceiling; it
+   is not an independent learned-performance claim. Core possible pairs: 48 across 16 clusters
+   before outcome or representation loss.
+3. **Pair-safe held-out-session stress (the July-8 gap):** for every pair spanning sessions `e1`
+   and `e2`, fit one scorer with **both sessions excluded**, then score both members with that same
+   fitted model. Separate leave-one-session-out scores are prohibited because each model would see
+   the other pair member's session and the scores would come from different fits. The primary bar
+   is condition-macro accuracy ≥ 0.70 with the predeclared condition-cluster lower bound above
+   0.50. The exact fixed learner/hyperparameters and pair-safe operating simulation are freeze
+   blockers; the executable two-stage extension rule is specified below.
 4. **Provenance audits as standard equipment:** session/operator/lot recoverability from raw
    XRD and from trajectory features (the protocol tool with grouped folds); reported
-   whatever the answer, and used to decide whether analyses 1–3 need residualization.
+   whatever the answer. The primary analyses are never replaced based on this result.
+   A residualized or matched analysis may appear only as an always-run, predeclared sensitivity
+   with its estimand and method frozen before outcomes are accessed.
 5. **Baselines until it hurts:** recipe-only, train-mean, per-event time-prior/interpolation
    (the oleogel clock lesson), strongest per-cell extrapolation where applicable.
+
+### Primary-analysis statistical contract and remaining freeze blockers
+
+This contract applies to analyses 1–3, not only to the secondary compression audit. Analysis 1
+uses two co-primary endpoint risks: MAE for vaterite fraction on the frozen quantifiable-outcome
+set and Brier score for failure/no-precipitate on its frozen eligibility set. Define
+`Δ = risk(B) - risk(A)`, so positive values favor `A = C+X60`. Both arms use identical
+leave-one-session-out outer folds; all preprocessing, feature reduction, tuning, and probability
+calibration are learned inside the training portion of each fold. The primary risk for each endpoint
+is the equal-condition macro average of within-condition mean loss on common-support events; events
+have equal weight within a condition and all 16 conditions have equal weight. A condition with no
+eligible common-support event fails the minimum-support gate rather than being dropped. Event-micro
+and importance-weighted risks are labeled sensitivities. Paired uncertainty resamples the 16
+planned-condition clusters rather than trace rows.
+
+Analysis-1 risk is computed only on the frozen intersection of target eligibility and both arms'
+representation availability. That common-support estimand never replaces attempt-level support:
+all 48 attempts remain in each representation's denominator, target eligibility is reported as a
+separate layer, and the availability/outcome association is audited. Before freeze, simulation must
+set `N_common_min`, `K_condition_min`, and endpoint-specific class/count minima, including the rule
+for every outer training fold. At minimum, all 16 conditions must contribute to any confirmatory
+condition-macro result and every failure-model training fold must contain both classes. Failure of a
+minimum is a design failure and no success verdict is permitted.
+
+Before freeze, the statistical manifest must commit a single primary learner/preprocessor per
+endpoint, the two non-tree sensitivity families, inner grouped folds, hyperparameter grids,
+probability-calibration rule, bootstrap seed and replicate count, and what happens when a training
+fold lacks an outcome class. It must also commit simultaneous one-sided 95% confidence bounds for
+the two co-primary risk gaps (a max-statistic condition-cluster bootstrap, including its exact
+studentization, is the default unless replaced before freeze) and a scientifically elicited harm
+tolerance for each endpoint, plus count- and importance-weighted X60 event-support tolerances.
+**A beats B** only when the simultaneous lower bound is above zero for
+at least one endpoint and above the negative harm tolerance for the other, the common-support
+minimum passes, and attempt-level X60 support loss is within its frozen tolerance. Any other result
+does not support the primary claim-3 reversal. An endpoint that cannot be estimated is reported as
+a design failure, not converted into a win or a null result. These unresolved numerical and model
+choices block collection freeze.
+
+Analyses 1 and 3 use a fixed-sequence claim hierarchy. Analysis 1 is tested first at familywise
+one-sided 0.05 across its two endpoints. Analysis 3 may earn a confirmatory positive interpretation
+only if analysis 1 passes; otherwise its ranking result is descriptive even if it clears its own
+two-stage boundary. The analysis-3 `0.01 + 0.04` spending below controls its two looks and is not
+combined with analysis 1 as a second independent route to an omnibus claim.
+
+Analysis 2 only fixes the decision universe and structural diagnostics. Analysis 3 is the sole
+confirmatory learned-ranking test: the frozen statistic is condition-macro accuracy of the `C+X60`
+continuous-vaterite scorer on pairs that are outcome-resolvable and representable by both compared
+arms. Each pair's two scores must come from the same dual-session-exclusion fit. The primary learner
+and hyperparameters are fixed before collection rather than selected separately for each pair.
+Simulation must freeze minimum effective pair and condition counts, predicted-tie scoring, pair
+weights, bootstrap construction, and behavior when excluding two sessions leaves an infeasible
+training set. A separate representation may not be substituted after seeing ranking results.
+
+The analysis-3 extension is a two-stage design, not a simple doubling of rows:
+
+- The 48-event core can declare a positive fixed-design result only if accuracy is at least 0.70
+  and its one-sided 99% condition-cluster bootstrap lower bound is above 0.50. If accuracy is at
+  most 0.55, collection stops and the result is negative/inconclusive under the predeclared rule.
+  Every other core result—including the original `(0.55, 0.70)` trigger range—extends.
+- Extension adds sessions **D5–D8** and three new executions per condition. Each condition assigns
+  its new executions to three distinct new sessions using a cyclic Latin rectangle. Every D5–D8
+  session receives exactly 12 extension events and is omitted by exactly four conditions. This
+  yields six replicates on six distinct sessions across the two stages, so all `C(6,2) = 15` pairs
+  per condition remain cross-session: 240 possible pairs across 16 condition clusters before
+  outcome or representation loss. The generator must also balance operator, reagent lot, and
+  measurement instrument/configuration within condition and stage so extension status is not a
+  proxy for another provenance axis.
+- At 96 events, a positive fixed-design result requires accuracy at least 0.70 and a one-sided 96%
+  condition-cluster bootstrap lower bound above 0.50. The 0.01 core and 0.04 final one-sided error
+  allocations bound the two-look false-positive rate by 0.05. This is not uncertainty over future
+  sessions.
+- The D5–D8 assignment generator, seed, dual-session-exclusion scoring implementation, exact
+  bootstrap, effective-support minima, and simulation confirming the operating rule must be
+  committed and certified before the first core event. Until then, the extension is specified
+  conceptually but is not authorized for execution.
+
+### Pre-freeze amendment (2026-07-10): task-relevant compression audit
+
+This amendment adds a **secondary** analysis and joins the freeze commitment above. It does
+not replace, weaken, or retrospectively redefine analysis 1: the recipe-only (B) versus
+recipe + early-trace (A) comparison, its targets and falsifier remain the
+primary analysis exactly as written. The secondary question is more diagnostic: conditional
+on the planned recipe/context, which candidate reporting layer first ceases to preserve
+useful information sampled by 60 min? Ex-situ assay and reporting latency are recorded separately;
+this pilot does not claim that the XRD-derived decision is available in real time at minute 60.
+
+For avoidance of doubt, the original primary `A = recipe + early trace` arm is now fixed as
+**C + X60** below. Video and free-form notes are not part of the primary claim-3 falsifier;
+the optional V60 arm is secondary and cannot rescue or overturn that primary verdict. The
+existing 16×6 extension rule belongs to held-out-session ranking analysis 3, not analysis 1.
+
+The formal definitions, support/risk separation, and verdict vocabulary are frozen in
+[`../spine/task_relevant_compression_audit.md`](../spine/task_relevant_compression_audit.md).
+The representation and outcome products are versioned separately in
+[`early_label_packet_spec.md`](early_label_packet_spec.md),
+[`conventional_s60_report_spec.md`](conventional_s60_report_spec.md),
+[`x60_input_spec.md`](x60_input_spec.md), and
+[`outcome_24h_spec.md`](outcome_24h_spec.md); all remain draft/freeze-blocking until their
+certification checklists pass.
+
+#### Representation arms to freeze
+
+All arms contain the same planned recipe/context **C**; adding C everywhere prevents recipe
+effects from being misattributed to a label or trace. They become frozen only when the
+representation specifications and statistical freeze items below are complete. The following
+arms will then be fit and scored on identical outer folds:
+
+1. **C:** recipe and planned-condition context only.
+2. **C + L60:** C plus an early human label assigned from a frozen packet containing only material
+   state sampled by t ≤ 60 min.
+3. **C + S60:** C plus a conventional scalar/report-shaped summary of specimens and observations
+   whose material state was fixed by t ≤ 60 min.
+4. **C + X60:** C plus the complete quantitative early trace sampled by t ≤ 60 min: early
+   XRD, pH, temperature, and acquisition/process timing. Video and free-form process notes
+   are excluded from X60 so their contribution is not silently bundled into this contrast.
+   Exact C fields, input levels, preprocessing, and missingness are governed by
+   [`x60_input_spec.md`](x60_input_spec.md).
+5. **C + L60 + X60:** the early label and quantitative trace together, to measure information
+   in X60 conditional on L60 and complementarity in the other direction.
+6. **Optional C + L60 + X60 + V60:** arm 5 plus video and timestamped process-log/human-note
+   observations recorded by t ≤ 60 min. This arm is run only if the pre-freeze acquisition
+   and feature-extraction specification is complete; otherwise it is omitted, not improvised
+   after outcome inspection.
+
+The pre-registered contrasts are C → C+L60, C → C+S60, C → C+X60,
+C+L60 → C+L60+X60 (raw-trace value conditional on the human label), and
+C+X60 → C+L60+X60 (human-label value conditional on the recorded trace). C+S60 and C+X60
+will also be compared on the same held-out events. A sequential “first lossy step” conclusion
+is permitted only if the freeze documentation establishes that the transformations are
+actually nested; otherwise these are candidate representations and the result is reported as
+conditional value/complementarity, not as a fictitious linear pipeline.
+
+#### L60: frozen early-label packet
+
+L60 may be assigned offline after the raw-record hash is frozen, but each labeler sees only a
+randomized packet containing material-state evidence fixed at t ≤ 60 min; later ex-situ assay and
+rendering remain blinded and timestamped. Before the pilot freeze,
+the packet template, included fields/plots, category vocabulary, instructions, labeler count,
+confidence scale, and the definition of `unclassifiable` must be committed. At minimum:
+
+- packets contain no 24 h result, later observation, downstream derived quantity, or future
+  quality flag;
+- session, operator, reagent-lot, run-order, filename, and other direct provenance identifiers
+  are removed or masked unless one is scientifically required and explicitly justified in
+  the freeze commit;
+- packet order is randomized, and labelers are blinded to the other labelers' responses;
+- every labeler records a category, confidence, and `unclassifiable` when the rubric cannot be
+  applied; disagreement and abstention are retained rather than adjudicated away; and
+- failures, ambiguous events, aborted events with an eligible partial record, and
+  unclassifiable packets remain in the coverage denominator.
+
+#### S60: practitioner-validated conventional report
+
+S60 is not a post-hoc feature subset. Before freeze, a practicing chemist or XRD practitioner
+must validate that its exact fields, units, calculation rules, missingness behavior, and
+precision resemble a report that could realistically be used at 60 min. That signed-off
+specification and the versioned generation code (or manual rubric) must be committed before
+outcomes are revealed. **An undefined or unvalidated S60 blocks the pilot freeze.** If no
+credible S60 can be specified, the freeze amendment must explicitly remove this arm rather
+than invent it after collection.
+
+#### Information-availability contract
+
+Every derived representation must ship with an availability record containing its event ID,
+source observation IDs/hashes, latest material-state time, assay-ready time, derivation code/rubric
+version, and creation timestamp. The confirmatory task uses a 60-minute **state cutoff**: no arm may
+consume material state sampled after it or processing informed by the 24-hour outcome. Ex-situ XRD
+may be acquired later only from an aliquot withdrawn and arrested under the frozen pre-cutoff rule,
+as specified in [`x60_input_spec.md`](x60_input_spec.md). Its later assay time is recorded and the
+claim remains `sampled by 60 minutes`, not `decision ready at 60 minutes`. Any later operational
+claim must add and pass a separate assay/decision deadline. Outcome tables and 24-hour artifacts
+remain inaccessible to labelers and representation builders until L60, S60, and all corresponding
+manifests are frozen. A violated state or declared decision cutoff is reported; the affected
+representation is not silently repaired. This contract applies to training-time preprocessing and
+feature selection as well as to final model inputs.
+
+#### Targets, losses, support, and verdicts
+
+The secondary audit uses the same 24 h targets as analysis 1: vaterite fraction and
+failure/no-precipitate. Primary results are in task-native units: MAE (with RMSE as a
+tail-sensitive companion) for vaterite fraction, Brier score for failure probability, and
+pairwise accuracy for the already registered within-condition ranking task. Calibrated,
+strictly out-of-fold log-loss differences may additionally be reported as bits/event, but
+bits are secondary and do not replace native error or decision metrics.
+
+For every arm and contrast, report separately:
+
+- **event support:** attempted events representable by the arm / all attempted events, stratified
+  by final status, with target eligibility reported separately rather than used to shrink the
+  denominator;
+- **decision support:** first all planned ranking pairs, then outcome-resolvable pairs, then pairs
+  representable by each arm and by both arms;
+- **common-support risk:** paired risk differences on events available to both compared arms,
+  with cluster-bootstrap intervals over the 16 planned-condition groups; and
+- reasons for non-representation, including absent observations, protocol deviations,
+  `unclassifiable`, and structurally unsupported failures/censored outcomes.
+
+Complete-case performance is never reported without these denominators. Encoding missing or
+`unclassifiable` as a model input may be a labeled sensitivity analysis, but it does not erase
+support loss and is not substituted for coverage reporting.
+
+For each pre-registered secondary contrast and task, define a scientifically meaningful adequacy
+risk tolerance in the task's native units **before the freeze commit**. The same freeze must set
+numerical count- and importance-weighted event-support tolerances, count- and utility-weighted
+decision-support tolerances, collision tolerances, and uncertainty rules for each proportion.
+Selecting and justifying those bounds is freeze-blocking; this amendment deliberately does not
+invent them. With lower risk better and Δ defined as compact-arm risk minus richer-arm risk:
+
+- a confidence interval wholly above the pre-declared loss tolerance is evidence that the
+  compact representation compressed task-relevant information too early;
+- an upper confidence bound below the positive loss tolerance, with support and collision bounds
+  passing, is bounded evidence of task-specific adequacy for these data, environments, and model
+  families;
+- an interval wholly below the negative tolerance additionally earns the descriptive verdict
+  `compact-arm advantage` under the tested data and model families, not evidence that the richer
+  source contains less information;
+- any interval overlapping the positive adequacy boundary is **inconclusive**; the optional
+  negative `compact-arm advantage` threshold is a subordinate descriptive label and never changes
+  an adequacy verdict; and
+- a nonsignificant difference alone is never called adequacy or sufficiency.
+
+The exact learner families, preprocessing, inner/outer folds, hyperparameter grids, probability
+calibration, confidence level, multiplicity rule across arms/tasks, and primary availability rule
+for every arm are also freeze-blocking. They must be committed before outcome access; `same outer
+folds` alone is not a complete statistical preregistration.
+
+#### Session-stress interpretation
+
+The secondary contrasts use the grouped/held-out-session evaluation specified above and report
+paired differences per held-out session as well as the pooled estimate. Two estimands remain
+separate:
+
+1. **fixed four-session design performance:** condition-cluster intervals describe event/condition
+   performance averaged over these scheduled sessions; and
+2. **population session transfer:** the session is the inferential unit, so four sessions provide
+   a descriptive stress test, not a population-level adequacy or invariance claim.
+
+A condition-cluster bootstrap is never cited as uncertainty over future sessions. Population
+session transfer remains unresolved until a justified session-level/hierarchical design has enough
+independent environments. Large row or pair counts within these four sessions do not change that.
 
 ## Resource envelope (to confirm with the partner)
 
@@ -130,8 +388,11 @@ sessions over ~2–3 weeks. Extension option doubles this; the 16×3 core is the
 ## What would make this design fail honestly
 
 - The practitioner task is won by the recipe baseline → claim-3 reversal fires (see memo).
-- Held-out-session ranking ≤ chance even here → the within-corpus story from Severson
-  repeats on designed data; the transferable-physics form of claim 3 is dead and the
-  structural form is all that survives. That would be a real, publishable negative.
-- Failure/ambiguous count = 0 across 48 events → the factorial was too tame; widen factor
-  ranges in the extension (a pilot that cannot produce failures cannot test failure value).
+- Held-out-session ranking ≤ chance across these four scheduled sessions → the within-corpus
+  story from Severson repeats on designed data; transferable physics remains unsupported and
+  only the structural form survives this pilot. That would be a real, publishable negative,
+  not a population-level proof about all future sessions.
+- Failure count = 0 across 48 events → the binary endpoint is unestimable under the core design,
+  regardless of the ambiguous-event count. The confirmatory extension must preserve the original
+  16 conditions; any widened-factor collection is a separate exploratory follow-on after the
+  confirmatory study closes.
