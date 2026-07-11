@@ -46,9 +46,11 @@ the distinction could be ambiguous.
 
 For event $i$, define:
 
-- $X_i^{\leq \tau}$: the richer event record available by a predeclared cutoff $\tau$, such as
-  spectra, video, process logs, notes, and time-resolved measurements. `Raw` here means the richest
-  retained record in the audit, not an unmediated view of reality.
+- $X_i^{\leq \tau_s}$: the richer event record whose material state or source information is fixed
+  by a predeclared state cutoff $\tau_s$, such as spectra, video, process logs, notes, and
+  time-resolved measurements. An optional decision deadline $\tau_d$ says when all required assays
+  and derived representations must actually be ready. `Raw` here means the richest retained record
+  in the audit, not an unmediated view of reality.
 - $L_i^{\leq \tau}$: the label, conventional report, scalar summary, or other compressed
   representation under audit. It may be categorical, continuous, structured, or absent.
 - $C_i^{\leq \tau}$: allowed context that both arms may use, such as the planned recipe, initial
@@ -69,7 +71,8 @@ For event $i$, define:
 
 The audit estimand is always named in full:
 
-> TRCL for $Y$, using information available by $\tau$, under loss $\ell$, contexts $C$,
+> TRCL for $Y$, using material state fixed by $\tau_s$ and, when operationally claimed, evidence
+> ready by $\tau_d$, under loss $\ell$, contexts $C$,
 > environments $E$, learner families $\mathcal V$, and the observed sample size and cluster
 > structure.
 
@@ -83,17 +86,25 @@ Every representation must ship with an input and time contract before outcomes a
 | field | required declaration |
 | --- | --- |
 | representation ID | immutable name and schema/version |
-| prediction cutoff | latest event time whose information may enter |
+| state cutoff $\tau_s$ | latest event/material-state time whose information may enter |
+| decision deadline $\tau_d$ | optional latest time by which required assays and representations must be ready |
 | actual inputs | fields, modalities, and side information used to construct it |
 | construction time | when the representation was produced |
 | blinding | outcomes, future observations, and provenance identifiers hidden from its producer |
 | availability rule | what makes an event representable or unrepresentable |
 | upstream retention | retained exactly, approximately recoverable, deleted, or never captured |
 
-Construction time may be later than the prediction cutoff. For example, an early human label may
-be assigned offline from a frozen packet after collection, provided the packet contains only
-information available by $\tau$, is randomized, and hides the eventual outcome and prohibited
-provenance. No representation may consume a datum created after its declared information cutoff.
+Two clocks must not be conflated. Construction may occur after the state cutoff: an early human
+label may be assigned offline from a frozen packet, and an ex-situ instrument may assay a specimen
+withdrawn and irreversibly arrested before $\tau_s$. That is valid only when lineage establishes the
+pre-cutoff state, all later acquisition/derivation remains blinded to the outcome and prohibited
+future evidence, and the claim is worded as **sampled by** $\tau_s$. It is not evidence that a
+decision was available at $\tau_s$. A real-time or turnaround claim must additionally declare
+$\tau_d$ and show that the assay, report, and decision were ready by it. No representation may
+consume material-state evidence from after $\tau_s$ or outcome-informed processing at any time.
+For ex-situ sampling, state time is completion of a validated irreversible arrest/fixation, not
+withdrawal start. Stability through later preparation, storage, and assay must be established at
+the resolution relevant to the task.
 
 ## Common-support risk
 
@@ -494,11 +505,11 @@ same frozen content. At minimum they contain:
 
 ### 2. Estimand and availability
 
-- $Y$, optional action/utility, $\tau$, $C$, $E$, loss $\ell$, model suite $\mathcal V$,
+- $Y$, optional action/utility, $\tau_s$, optional $\tau_d$, $C$, $E$, loss $\ell$, model suite $\mathcal V$,
   target population, and unit of independence;
 - all four arm definitions with exact fields;
-- the input-provenance DAG, node timestamps, side inputs, availability rules, and no-future-
-  information checks;
+- the input-provenance DAG, state and assay timestamps, side inputs, availability rules, and
+  no-future-state/no-outcome-informed-processing checks;
 - upstream retention/recoverability classification for every audited edge.
 
 ### 3. Denominators and support

@@ -105,7 +105,8 @@ pilot can support a methods proof; it cannot show generality across the industry
 
 The paper should ship an audit package rather than only figures:
 
-- representation manifests with exact fields, parents, timestamps, and availability rules;
+- representation manifests with exact fields, parents, state/assay/construction timestamps, and
+  availability rules;
 - attempted-event and decision denominators;
 - strictly out-of-fold predictions and common-support masks;
 - task-native paired risk gaps with clustered uncertainty;

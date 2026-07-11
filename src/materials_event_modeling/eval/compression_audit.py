@@ -5,7 +5,7 @@ models, features, and cross-fitting scheme are credible; this module standardize
 that should not vary between tasks:
 
 * risk on the events both representations can express,
-* event and decision-weighted support loss,
+* count- and importance-weighted event support plus explicit decision-instance support,
 * paired cluster-bootstrap uncertainty,
 * environment-specific diagnostics, and
 * bounded-adequacy versus premature-compression verdicts.
@@ -18,8 +18,12 @@ reported separately.
 
 from __future__ import annotations
 
+import math
 from collections.abc import Callable
 from dataclasses import dataclass, field
+from datetime import date, datetime
+from decimal import Decimal
+from numbers import Number
 from typing import Any
 
 import numpy as np
@@ -94,10 +98,20 @@ def _availability(arm: PredictionArm, n: int) -> np.ndarray:
         raise ValueError(f"arm {arm.name!r} must have {n} predictions")
     if arm.available is None:
         return np.ones(n, dtype=bool)
-    available = np.asarray(arm.available, dtype=bool)
-    if available.shape != (n,):
-        raise ValueError(f"arm {arm.name!r} availability must have shape ({n},)")
-    return available
+    return _boolean_mask(
+        arm.available,
+        n,
+        name=f"arm {arm.name!r} availability",
+    )
+
+
+def _boolean_mask(values: np.ndarray, n: int, *, name: str) -> np.ndarray:
+    mask = np.asarray(values)
+    if mask.shape != (n,):
+        raise ValueError(f"{name} must have shape ({n},)")
+    if not np.issubdtype(mask.dtype, np.bool_):
+        raise ValueError(f"{name} must contain strict booleans without missing values")
+    return mask
 
 
 def _finite_rows(values: np.ndarray) -> np.ndarray:
@@ -133,11 +147,39 @@ def _weighted_mean(values: np.ndarray, weights: np.ndarray) -> float:
     return float(np.sum(values * weights) / total)
 
 
+def _missing_or_nonfinite_scalar(value: object) -> bool:
+    if value is None:
+        return True
+    array = np.asarray(value)
+    if array.ndim != 0:
+        return True
+    if array.dtype.kind in "mM":
+        return bool(np.isnat(array))
+    if isinstance(value, Number):
+        try:
+            return not bool(np.isfinite(value))
+        except TypeError:
+            try:
+                return not math.isfinite(float(str(value)))
+            except (TypeError, ValueError):
+                return True
+    try:
+        equals_self = value == value
+        return not bool(equals_self)
+    except (TypeError, ValueError):
+        return True
+
+
 def _label_token(value: object, *, name: str) -> str:
-    if value is None or (
-        isinstance(value, (float, np.floating)) and not np.isfinite(value)
-    ):
+    if _missing_or_nonfinite_scalar(value):
         raise ValueError(f"{name} contains a missing or non-finite label")
+    if not isinstance(
+        value,
+        (str, bytes, bool, int, float, complex, Decimal, date, datetime, np.generic),
+    ):
+        raise ValueError(
+            f"{name} labels must use stable scalar string, numeric, or date/time types"
+        )
     try:
         hash(value)
     except TypeError as exc:
@@ -155,6 +197,24 @@ def _encode_labels(values: np.ndarray, mask: np.ndarray, *, name: str) -> np.nda
     return encoded
 
 
+def _valid_representation_rows(values: np.ndarray) -> np.ndarray:
+    if values.dtype.kind in "biufc":
+        return _finite_rows(values)
+    if values.dtype.kind in "mM":
+        missing = np.isnat(values)
+        if values.ndim == 1:
+            return ~missing
+        return ~np.any(missing, axis=tuple(range(1, values.ndim)))
+    flattened = values.reshape(values.shape[0], -1)
+    return np.array(
+        [
+            not any(_missing_or_nonfinite_scalar(value) for value in row.tolist())
+            for row in flattened
+        ],
+        dtype=bool,
+    )
+
+
 def mean_risk(losses: np.ndarray, weights: np.ndarray) -> float:
     """Weighted arithmetic mean for additive per-example losses."""
     return _weighted_mean(losses, weights)
@@ -166,6 +226,38 @@ def root_mean_risk(squared_losses: np.ndarray, weights: np.ndarray) -> float:
     if mean < 0.0:
         raise ValueError("root_mean_risk requires non-negative per-example losses")
     return float(np.sqrt(mean))
+
+
+def _aggregate_risk(
+    aggregate: RiskAggregator,
+    losses: np.ndarray,
+    weights: np.ndarray,
+) -> float:
+    value = np.asarray(aggregate(losses, weights))
+    if value.shape != () or not np.isfinite(value):
+        raise ValueError("risk aggregate must return a finite scalar")
+    return float(value)
+
+
+def _evaluate_arm_loss(
+    loss: LossFunction,
+    truth: np.ndarray,
+    predictions: np.ndarray,
+    eligible: np.ndarray,
+    *,
+    arm_name: str,
+) -> np.ndarray:
+    values = np.full(truth.size, np.nan, dtype=float)
+    count = int(eligible.sum())
+    if count == 0:
+        return values
+    evaluated = np.asarray(loss(truth[eligible], predictions[eligible]), dtype=float)
+    if evaluated.shape != (count,):
+        raise ValueError("loss must return one value per eligible example")
+    if not np.all(np.isfinite(evaluated)):
+        raise ValueError(f"{arm_name} arm has a non-finite loss on an available event")
+    values[eligible] = evaluated
+    return values
 
 
 def _cluster_bootstrap_ci(
@@ -187,10 +279,17 @@ def _cluster_bootstrap_ci(
     for _ in range(n_boot):
         sampled = rng.integers(0, len(unique), size=len(unique))
         draw = np.concatenate([indices[unique[index]] for index in sampled])
-        statistics.append(
-            aggregate(compressed_loss[draw], weights[draw])
-            - aggregate(reference_loss[draw], weights[draw])
+        compressed_risk = _aggregate_risk(
+            aggregate,
+            compressed_loss[draw],
+            weights[draw],
         )
+        reference_risk = _aggregate_risk(
+            aggregate,
+            reference_loss[draw],
+            weights[draw],
+        )
+        statistics.append(compressed_risk - reference_risk)
     return [
         float(np.percentile(statistics, 2.5)),
         float(np.percentile(statistics, 97.5)),
@@ -203,11 +302,23 @@ def _risk_verdict(ci95: list[float | None], risk_tolerance: float) -> str:
         return "inconclusive"
     if low > risk_tolerance:
         return "premature_compression"
-    if high < -risk_tolerance:
-        return "compressed_representation_better"
     if high <= risk_tolerance:
         return "bounded_risk_adequacy"
     return "inconclusive"
+
+
+def _compact_advantage_verdict(
+    ci95: list[float | None],
+    tolerance: float | None,
+) -> str:
+    if tolerance is None:
+        return "not_declared"
+    _, high = ci95
+    if high is None:
+        return "inconclusive"
+    if high < -tolerance:
+        return "compact_arm_advantage"
+    return "not_demonstrated"
 
 
 def _risk_result(
@@ -219,6 +330,7 @@ def _risk_result(
     *,
     aggregate: RiskAggregator,
     risk_tolerance: float,
+    compact_advantage_tolerance: float | None,
     seed: int,
     n_boot: int,
 ) -> dict[str, Any]:
@@ -231,6 +343,7 @@ def _risk_result(
             "risk_gap_compressed_minus_reference": None,
             "risk_gap_ci95": [None, None],
             "verdict": "not_estimable",
+            "compact_advantage_verdict": "not_estimable",
         }
     weights = sample_weights[selected]
     compressed = compressed_loss[selected]
@@ -244,10 +357,8 @@ def _risk_result(
         seed=seed,
         n_boot=n_boot,
     )
-    compressed_risk = aggregate(compressed, weights)
-    reference_risk = aggregate(reference, weights)
-    if not np.isfinite(compressed_risk) or not np.isfinite(reference_risk):
-        raise ValueError("risk aggregate must return a finite scalar")
+    compressed_risk = _aggregate_risk(aggregate, compressed, weights)
+    reference_risk = _aggregate_risk(aggregate, reference, weights)
     return {
         "common_support_count": int(selected.size),
         "compressed_risk": compressed_risk,
@@ -255,6 +366,10 @@ def _risk_result(
         "risk_gap_compressed_minus_reference": compressed_risk - reference_risk,
         "risk_gap_ci95": ci95,
         "verdict": _risk_verdict(ci95, risk_tolerance),
+        "compact_advantage_verdict": _compact_advantage_verdict(
+            ci95,
+            compact_advantage_tolerance,
+        ),
     }
 
 
@@ -262,10 +377,10 @@ def _support_result(
     universe_mask: np.ndarray,
     compressed_available: np.ndarray,
     reference_available: np.ndarray,
-    decision_weights: np.ndarray,
+    event_importance_weights: np.ndarray,
     *,
     event_support_tolerance: float,
-    decision_support_tolerance: float,
+    weighted_event_support_tolerance: float,
 ) -> dict[str, Any]:
     reference_population = universe_mask & reference_available
     compressed_population = universe_mask & compressed_available
@@ -276,27 +391,36 @@ def _support_result(
     relative_excluded_fraction = (
         float(excluded.sum() / reference_count) if reference_count else None
     )
-    decision_reference_weight = float(np.sum(decision_weights[reference_population]))
-    decision_excluded_weight = float(np.sum(decision_weights[excluded]))
-    decision_universe_weight = float(np.sum(decision_weights[universe_mask]))
-    compressed_decision_missing_weight = float(np.sum(decision_weights[compressed_missing]))
-    decision_excluded_fraction = (
-        decision_excluded_weight / decision_reference_weight
-        if decision_reference_weight > 0.0
+    reference_importance_weight = float(np.sum(event_importance_weights[reference_population]))
+    excluded_importance_weight = float(np.sum(event_importance_weights[excluded]))
+    universe_importance_weight = float(np.sum(event_importance_weights[universe_mask]))
+    compressed_missing_importance_weight = float(
+        np.sum(event_importance_weights[compressed_missing])
+    )
+    importance_excluded_fraction = (
+        excluded_importance_weight / reference_importance_weight
+        if reference_importance_weight > 0.0
         else None
     )
-    support_exceeds_margin = (
-        (
-            universe_mask.any()
-            and compressed_missing.sum() / universe_mask.sum() > event_support_tolerance
-        )
-        or (
-            decision_universe_weight > 0.0
-            and compressed_decision_missing_weight / decision_universe_weight
-            > decision_support_tolerance
-        )
-    )
     universe_count = int(universe_mask.sum())
+    event_support_loss = (
+        float(compressed_missing.sum() / universe_count) if universe_count else None
+    )
+    weighted_event_support_loss = (
+        compressed_missing_importance_weight / universe_importance_weight
+        if universe_importance_weight > 0.0
+        else None
+    )
+    if event_support_loss is None:
+        support_verdict = "not_estimable"
+    elif event_support_loss > event_support_tolerance:
+        support_verdict = "support_loss"
+    elif weighted_event_support_loss is None:
+        support_verdict = "not_estimable"
+    elif weighted_event_support_loss > weighted_event_support_tolerance:
+        support_verdict = "support_loss"
+    else:
+        support_verdict = "within_support_tolerances"
     return {
         "universe_count": universe_count,
         "compressed_event_count": int(compressed_population.sum()),
@@ -307,26 +431,20 @@ def _support_result(
         "reference_event_coverage": (
             float(reference_population.sum() / universe_count) if universe_count else None
         ),
-        "compressed_event_support_loss_fraction": (
-            float(compressed_missing.sum() / universe_count) if universe_count else None
-        ),
+        "compressed_event_support_loss_fraction": event_support_loss,
         "reference_event_support_loss_fraction": (
             float(reference_missing.sum() / universe_count) if universe_count else None
         ),
-        "compressed_decision_weight_support_loss_fraction": (
-            compressed_decision_missing_weight / decision_universe_weight
-            if decision_universe_weight > 0.0
-            else None
-        ),
+        "compressed_event_importance_support_loss_fraction": weighted_event_support_loss,
         "events_excluded_by_compression_count": int(excluded.sum()),
         "events_excluded_by_compression_fraction_of_reference": relative_excluded_fraction,
-        "decision_weight_excluded_by_compression": decision_excluded_weight,
-        "decision_weight_excluded_by_compression_fraction_of_reference": (
-            decision_excluded_fraction
+        "event_importance_excluded_by_compression": excluded_importance_weight,
+        "event_importance_excluded_by_compression_fraction_of_reference": (
+            importance_excluded_fraction
         ),
         "event_support_tolerance": float(event_support_tolerance),
-        "decision_support_tolerance": float(decision_support_tolerance),
-        "verdict": "support_loss" if support_exceeds_margin else "within_support_tolerances",
+        "weighted_event_support_tolerance": float(weighted_event_support_tolerance),
+        "verdict": support_verdict,
     }
 
 
@@ -339,32 +457,80 @@ def _component_verdict(support: dict[str, Any], risk: dict[str, Any]) -> str:
         and risk["verdict"] == "bounded_risk_adequacy"
     ):
         return "bounded_event_support_and_common_risk"
-    if (
-        support["verdict"] == "within_support_tolerances"
-        and risk["verdict"] == "compressed_representation_better"
-    ):
-        return "compressed_representation_better_on_common_support"
     return "inconclusive"
 
 
 def audit_information_cutoff(
-    latest_input_time: np.ndarray,
-    cutoff: float,
+    latest_state_time: np.ndarray,
+    state_cutoff: float,
     *,
     available: np.ndarray | None = None,
+    assay_ready_time: np.ndarray | None = None,
+    decision_deadline: float | None = None,
 ) -> dict[str, Any]:
-    """Check that a representation consumed no information created after its cutoff."""
-    if not np.isfinite(cutoff):
-        raise ValueError("cutoff must be finite")
-    times = np.asarray(latest_input_time, dtype=float)
-    if times.ndim != 1:
-        raise ValueError("latest_input_time must be one-dimensional")
-    mask = np.ones(times.size, dtype=bool) if available is None else np.asarray(available, bool)
-    if mask.shape != times.shape:
-        raise ValueError("available must have the same shape as latest_input_time")
-    violations = np.flatnonzero(mask & np.isfinite(times) & (times > cutoff))
-    unknown = np.flatnonzero(mask & ~np.isfinite(times))
-    observed = times[mask & np.isfinite(times)]
+    """Audit material-state and optional decision-availability cutoffs separately.
+
+    An offline task may assay a specimen after it was arrested, so long as the specimen's state
+    time satisfies ``state_cutoff`` and later acquisition remains blinded.  A real-time or
+    turnaround claim additionally supplies ``assay_ready_time`` and ``decision_deadline``.
+    """
+    if not np.isfinite(state_cutoff):
+        raise ValueError("state_cutoff must be finite")
+    state_times = np.asarray(latest_state_time, dtype=float)
+    if state_times.ndim != 1:
+        raise ValueError("latest_state_time must be one-dimensional")
+    mask = (
+        np.ones(state_times.size, dtype=bool)
+        if available is None
+        else _boolean_mask(available, state_times.size, name="available")
+    )
+    if decision_deadline is not None:
+        if not np.isfinite(decision_deadline):
+            raise ValueError("decision_deadline must be finite")
+        if decision_deadline < state_cutoff:
+            raise ValueError("decision_deadline must not precede state_cutoff")
+        if assay_ready_time is None:
+            raise ValueError("assay_ready_time is required when decision_deadline is declared")
+
+    assay_times: np.ndarray | None = None
+    if assay_ready_time is not None:
+        assay_times = np.asarray(assay_ready_time, dtype=float)
+        if assay_times.shape != state_times.shape:
+            raise ValueError("assay_ready_time must have the same shape as latest_state_time")
+
+    state_violations = np.flatnonzero(
+        mask & np.isfinite(state_times) & (state_times > state_cutoff)
+    )
+    unknown_state = np.flatnonzero(mask & ~np.isfinite(state_times))
+    observed_state = state_times[mask & np.isfinite(state_times)]
+
+    if assay_times is None:
+        assay_violations = np.array([], dtype=int)
+        chronology_violations = np.array([], dtype=int)
+        unknown_assay = np.array([], dtype=int)
+        observed_assay = np.array([], dtype=float)
+    else:
+        unknown_assay = np.flatnonzero(mask & ~np.isfinite(assay_times))
+        observed_assay = assay_times[mask & np.isfinite(assay_times)]
+        assay_violations = (
+            np.array([], dtype=int)
+            if decision_deadline is None
+            else np.flatnonzero(
+                mask & np.isfinite(assay_times) & (assay_times > decision_deadline)
+            )
+        )
+        chronology_violations = np.flatnonzero(
+            mask
+            & np.isfinite(state_times)
+            & np.isfinite(assay_times)
+            & (assay_times < state_times)
+        )
+
+    violations = np.union1d(
+        np.union1d(state_violations, assay_violations),
+        chronology_violations,
+    )
+    unknown = np.union1d(unknown_state, unknown_assay)
     if violations.size:
         verdict = "violated"
     elif unknown.size:
@@ -372,13 +538,30 @@ def audit_information_cutoff(
     else:
         verdict = "passed"
     return {
-        "cutoff": float(cutoff),
-        "checked_count": int(observed.size),
+        "state_cutoff": float(state_cutoff),
+        "decision_deadline": (
+            float(decision_deadline) if decision_deadline is not None else None
+        ),
+        "operational_mode": (
+            "deadline_constrained" if decision_deadline is not None else "offline_sampled_state"
+        ),
+        "state_time_checked_count": int(observed_state.size),
+        "assay_time_checked_count": int(observed_assay.size),
         "violation_count": int(violations.size),
         "violation_indices": violations.tolist(),
+        "state_violation_indices": state_violations.tolist(),
+        "assay_deadline_violation_indices": assay_violations.tolist(),
+        "assay_before_state_violation_indices": chronology_violations.tolist(),
         "unknown_time_count": int(unknown.size),
         "unknown_time_indices": unknown.tolist(),
-        "latest_observed_input_time": float(observed.max()) if observed.size else None,
+        "unknown_state_time_indices": unknown_state.tolist(),
+        "unknown_assay_time_indices": unknown_assay.tolist(),
+        "latest_observed_state_time": (
+            float(observed_state.max()) if observed_state.size else None
+        ),
+        "latest_observed_assay_time": (
+            float(observed_assay.max()) if observed_assay.size else None
+        ),
         "verdict": verdict,
         "passed": verdict == "passed",
     }
@@ -391,11 +574,16 @@ def audit_pair_collisions(
     available: np.ndarray | None = None,
     pair_universe: np.ndarray | None = None,
     decision_weights: np.ndarray | None = None,
+    decision_support_tolerance: float = 0.0,
+    weighted_decision_support_tolerance: float = 0.0,
+    collision_tolerance: float | None = None,
+    weighted_collision_tolerance: float | None = None,
 ) -> dict[str, Any]:
     """Measure pair decisions that a representation collapses to identical inputs.
 
-    ``pairs`` contains integer event indices.  The reported pairwise-accuracy ceiling assumes a
-    deterministic scorer, perfect ordering on non-colliding pairs, and ties worth 0.5.
+    ``pairs`` contains integer event indices.  Count- and decision-weighted support are separate.
+    The pairwise-accuracy ceilings assume a deterministic scorer, perfect ordering on
+    non-colliding pairs, and ties worth 0.5.
     """
     values = np.asarray(representation)
     if values.ndim == 0:
@@ -408,20 +596,38 @@ def audit_pair_collisions(
         raise ValueError("pairs must contain integer event indices")
     if pair_indices.size and (pair_indices.min() < 0 or pair_indices.max() >= n):
         raise ValueError("pairs contain an event index outside the representation")
+    if pair_indices.size and np.any(pair_indices[:, 0] == pair_indices[:, 1]):
+        raise ValueError("pairs must not contain self-comparisons")
     event_available = (
-        np.ones(n, dtype=bool) if available is None else np.asarray(available, dtype=bool)
+        np.ones(n, dtype=bool)
+        if available is None
+        else _boolean_mask(available, n, name="available")
     )
-    if event_available.shape != (n,):
-        raise ValueError(f"available must have shape ({n},)")
     n_pairs = pair_indices.shape[0]
     universe = (
         np.ones(n_pairs, dtype=bool)
         if pair_universe is None
-        else np.asarray(pair_universe, dtype=bool)
+        else _boolean_mask(pair_universe, n_pairs, name="pair_universe")
     )
-    if universe.shape != (n_pairs,):
-        raise ValueError(f"pair_universe must have shape ({n_pairs},)")
+    for tolerance, name in (
+        (decision_support_tolerance, "decision_support_tolerance"),
+        (weighted_decision_support_tolerance, "weighted_decision_support_tolerance"),
+    ):
+        if not np.isfinite(tolerance) or not 0.0 <= tolerance <= 1.0:
+            raise ValueError(f"{name} must be finite and lie in [0, 1]")
+    for tolerance, name in (
+        (collision_tolerance, "collision_tolerance"),
+        (weighted_collision_tolerance, "weighted_collision_tolerance"),
+    ):
+        if tolerance is not None and (
+            not np.isfinite(tolerance) or not 0.0 <= tolerance <= 1.0
+        ):
+            raise ValueError(f"{name} must be finite and lie in [0, 1]")
     weights = _weights(decision_weights, n_pairs, name="decision_weights")
+
+    valid_rows = _valid_representation_rows(values)
+    if not np.all(valid_rows[event_available]):
+        raise ValueError("representation has a missing or non-finite value on an available event")
 
     left_indices, right_indices = pair_indices[:, 0], pair_indices[:, 1]
     representable = universe & event_available[left_indices] & event_available[right_indices]
@@ -434,23 +640,86 @@ def audit_pair_collisions(
         )
     collisions = representable & identical
     universe_weight = float(np.sum(weights[universe]))
+    if decision_count := int(universe.sum()):
+        if universe_weight <= 0.0:
+            raise ValueError("decision_weights must have positive total weight in pair_universe")
     representable_weight = float(np.sum(weights[representable]))
     collision_weight = float(np.sum(weights[collisions]))
+    representable_count = int(representable.sum())
+    decision_coverage = representable_count / decision_count if decision_count else None
+    decision_weight_coverage = (
+        representable_weight / universe_weight if universe_weight > 0.0 else None
+    )
+    decision_support_loss = (
+        1.0 - decision_coverage if decision_coverage is not None else None
+    )
+    weighted_decision_support_loss = (
+        1.0 - decision_weight_coverage if decision_weight_coverage is not None else None
+    )
+    if decision_support_loss is None or weighted_decision_support_loss is None:
+        support_verdict = "not_estimable"
+    elif (
+        decision_support_loss > decision_support_tolerance
+        or weighted_decision_support_loss > weighted_decision_support_tolerance
+    ):
+        support_verdict = "decision_support_loss"
+    else:
+        support_verdict = "within_decision_support_tolerances"
     weighted_collision_rate = (
         collision_weight / representable_weight if representable_weight > 0.0 else None
     )
+    collision_rate = (
+        float(collisions.sum() / representable.sum()) if representable.any() else None
+    )
+    if collision_tolerance is None and weighted_collision_tolerance is None:
+        collision_verdict = "not_declared"
+    elif (
+        (collision_tolerance is not None and collision_rate is None)
+        or (weighted_collision_tolerance is not None and weighted_collision_rate is None)
+    ):
+        collision_verdict = "not_estimable"
+    elif (
+        collision_tolerance is not None
+        and collision_rate is not None
+        and collision_rate > collision_tolerance
+    ) or (
+        weighted_collision_tolerance is not None
+        and weighted_collision_rate is not None
+        and weighted_collision_rate > weighted_collision_tolerance
+    ):
+        collision_verdict = "collision_bound_exceeded"
+    else:
+        collision_verdict = "within_collision_tolerance"
     return {
-        "decision_count": int(universe.sum()),
-        "representable_decision_count": int(representable.sum()),
-        "decision_coverage": (
-            representable_weight / universe_weight if universe_weight > 0.0 else None
+        "decision_count": decision_count,
+        "representable_decision_count": representable_count,
+        "decision_coverage": decision_coverage,
+        "decision_weight_coverage": decision_weight_coverage,
+        "decision_support_loss_fraction": decision_support_loss,
+        "decision_weight_support_loss_fraction": weighted_decision_support_loss,
+        "decision_support_tolerance": float(decision_support_tolerance),
+        "weighted_decision_support_tolerance": float(
+            weighted_decision_support_tolerance
         ),
+        "decision_support_verdict": support_verdict,
         "collision_count": int(collisions.sum()),
-        "collision_rate_on_representable_decisions": (
-            float(collisions.sum() / representable.sum()) if representable.any() else None
-        ),
+        "collision_rate_on_representable_decisions": collision_rate,
         "decision_weighted_collision_rate": weighted_collision_rate,
+        "collision_tolerance": (
+            float(collision_tolerance) if collision_tolerance is not None else None
+        ),
+        "weighted_collision_tolerance": (
+            float(weighted_collision_tolerance)
+            if weighted_collision_tolerance is not None
+            else None
+        ),
+        "collision_verdict": collision_verdict,
         "pairwise_accuracy_ceiling_if_noncollisions_perfect": (
+            1.0 - 0.5 * collision_rate
+            if collision_rate is not None
+            else None
+        ),
+        "decision_weighted_pairwise_accuracy_ceiling_if_noncollisions_perfect": (
             1.0 - 0.5 * weighted_collision_rate
             if weighted_collision_rate is not None
             else None
@@ -464,17 +733,19 @@ def audit_compression_pair(
     reference: PredictionArm,
     *,
     loss: LossFunction,
-    aggregate: RiskAggregator = mean_risk,
     metric_name: str,
     risk_tolerance: float,
     clusters: np.ndarray,
+    aggregate: RiskAggregator = mean_risk,
+    compact_advantage_tolerance: float | None = None,
     event_support_tolerance: float = 0.0,
-    decision_support_tolerance: float = 0.0,
+    weighted_event_support_tolerance: float = 0.0,
     universe: np.ndarray | None = None,
     sample_weights: np.ndarray | None = None,
-    decision_weights: np.ndarray | None = None,
+    event_importance_weights: np.ndarray | None = None,
     environments: np.ndarray | None = None,
     transfer_rule: str | None = None,
+    environment_evaluation: str = "descriptive_slices",
     seed: int = 0,
     n_boot: int = 2000,
 ) -> dict[str, Any]:
@@ -490,31 +761,46 @@ def audit_compression_pair(
     n = truth.size
     if not np.isfinite(risk_tolerance) or risk_tolerance < 0.0:
         raise ValueError("risk_tolerance must be finite and non-negative")
+    if compact_advantage_tolerance is not None and (
+        not np.isfinite(compact_advantage_tolerance) or compact_advantage_tolerance < 0.0
+    ):
+        raise ValueError("compact_advantage_tolerance must be finite and non-negative")
     if not 0.0 <= event_support_tolerance <= 1.0:
         raise ValueError("event_support_tolerance must lie in [0, 1]")
-    if not 0.0 <= decision_support_tolerance <= 1.0:
-        raise ValueError("decision_support_tolerance must lie in [0, 1]")
+    if not 0.0 <= weighted_event_support_tolerance <= 1.0:
+        raise ValueError("weighted_event_support_tolerance must lie in [0, 1]")
     if n_boot <= 0:
         raise ValueError("n_boot must be positive")
     if transfer_rule not in (None, "all_environments"):
         raise ValueError("transfer_rule must be None or 'all_environments'")
+    if transfer_rule is not None and environments is None:
+        raise ValueError("a transfer_rule requires environment labels")
+    if environment_evaluation not in ("descriptive_slices", "held_out_environment"):
+        raise ValueError(
+            "environment_evaluation must be 'descriptive_slices' or 'held_out_environment'"
+        )
+    if transfer_rule is not None and environment_evaluation != "held_out_environment":
+        raise ValueError(
+            "a transfer_rule requires predictions from a declared held_out_environment design"
+        )
 
     compressed_predictions = np.asarray(compressed.predictions)
     reference_predictions = np.asarray(reference.predictions)
     compressed_available = _availability(compressed, n)
     reference_available = _availability(reference, n)
     universe_mask = (
-        np.ones(n, dtype=bool) if universe is None else np.asarray(universe, dtype=bool)
+        np.ones(n, dtype=bool)
+        if universe is None
+        else _boolean_mask(universe, n, name="universe")
     )
-    if universe_mask.shape != (n,):
-        raise ValueError(f"universe must have shape ({n},)")
-    row_weights = _weights(
-        sample_weights,
+    row_weights = _weights(sample_weights, n, name="sample_weights")
+    if np.any(row_weights[universe_mask] <= 0.0):
+        raise ValueError("sample_weights must be strictly positive in the declared universe")
+    event_importance = _weights(
+        event_importance_weights,
         n,
-        name="sample_weights",
-        allow_zero=False,
+        name="event_importance_weights",
     )
-    decision = _weights(decision_weights, n, name="decision_weights")
     raw_cluster_values = np.asarray(clusters)
     if raw_cluster_values.shape != (n,):
         raise ValueError(f"clusters must have shape ({n},)")
@@ -524,10 +810,6 @@ def audit_compression_pair(
         name="clusters",
     )
 
-    compressed_loss = np.asarray(loss(truth, compressed_predictions), dtype=float)
-    reference_loss = np.asarray(loss(truth, reference_predictions), dtype=float)
-    if compressed_loss.shape != (n,) or reference_loss.shape != (n,):
-        raise ValueError("loss must return one value per example")
     if not np.all(_finite_rows(truth)[universe_mask]):
         raise ValueError("y_true contains a non-finite value in the declared universe")
     compressed_eligible = universe_mask & compressed_available
@@ -536,19 +818,29 @@ def audit_compression_pair(
         raise ValueError("compressed arm has a non-finite prediction on an available event")
     if not np.all(_finite_rows(reference_predictions)[reference_eligible]):
         raise ValueError("reference arm has a non-finite prediction on an available event")
-    if not np.all(np.isfinite(compressed_loss[compressed_eligible])):
-        raise ValueError("compressed arm has a non-finite loss on an available event")
-    if not np.all(np.isfinite(reference_loss[reference_eligible])):
-        raise ValueError("reference arm has a non-finite loss on an available event")
+    compressed_loss = _evaluate_arm_loss(
+        loss,
+        truth,
+        compressed_predictions,
+        compressed_eligible,
+        arm_name="compressed",
+    )
+    reference_loss = _evaluate_arm_loss(
+        loss,
+        truth,
+        reference_predictions,
+        reference_eligible,
+        arm_name="reference",
+    )
     common = universe_mask & compressed_available & reference_available
 
     support = _support_result(
         universe_mask,
         compressed_available,
         reference_available,
-        decision,
+        event_importance,
         event_support_tolerance=event_support_tolerance,
-        decision_support_tolerance=decision_support_tolerance,
+        weighted_event_support_tolerance=weighted_event_support_tolerance,
     )
 
     risk = _risk_result(
@@ -559,6 +851,7 @@ def audit_compression_pair(
         cluster_values,
         aggregate=aggregate,
         risk_tolerance=risk_tolerance,
+        compact_advantage_tolerance=compact_advantage_tolerance,
         seed=seed,
         n_boot=n_boot,
     )
@@ -574,6 +867,8 @@ def audit_compression_pair(
             name="environments",
         )
         unique_environments = list(dict.fromkeys(environment_values[universe_mask].tolist()))
+        if transfer_rule is not None and len(unique_environments) < 2:
+            raise ValueError("a transfer_rule requires at least two represented environments")
         for value in unique_environments:
             in_environment = universe_mask & (environment_values == value)
             environment_results[str(value)] = {
@@ -581,9 +876,9 @@ def audit_compression_pair(
                     in_environment,
                     compressed_available,
                     reference_available,
-                    decision,
+                    event_importance,
                     event_support_tolerance=event_support_tolerance,
-                    decision_support_tolerance=decision_support_tolerance,
+                    weighted_event_support_tolerance=weighted_event_support_tolerance,
                 ),
                 "common_support_risk": _risk_result(
                     compressed_loss,
@@ -593,6 +888,7 @@ def audit_compression_pair(
                     cluster_values,
                     aggregate=aggregate,
                     risk_tolerance=risk_tolerance,
+                    compact_advantage_tolerance=compact_advantage_tolerance,
                     seed=seed,
                     n_boot=n_boot,
                 ),
@@ -603,30 +899,36 @@ def audit_compression_pair(
             )
 
     pooled_component_verdict = _component_verdict(support, risk)
+    per_environment = [result["component_verdict"] for result in environment_results.values()]
+    if environments is None:
+        environment_consistency_verdict = "not_evaluated"
+    elif len(environment_results) < 2:
+        environment_consistency_verdict = "not_estimable"
+    elif all(verdict == "loss_detected" for verdict in per_environment):
+        environment_consistency_verdict = "loss_detected_in_every_observed_environment"
+    elif all(
+        verdict == "bounded_event_support_and_common_risk" for verdict in per_environment
+    ):
+        environment_consistency_verdict = (
+            "bounded_event_support_and_common_risk_in_every_observed_environment"
+        )
+    else:
+        environment_consistency_verdict = "inconclusive_or_heterogeneous"
+
     if environments is None:
         transfer_verdict = "not_evaluated"
     elif transfer_rule is None:
         transfer_verdict = "not_declared"
     elif len(environment_results) < 2:
         transfer_verdict = "not_estimable"
+    elif environment_consistency_verdict == "loss_detected_in_every_observed_environment":
+        transfer_verdict = "loss_detected_in_every_held_out_environment"
+    elif environment_consistency_verdict.startswith("bounded_event_support"):
+        transfer_verdict = (
+            "bounded_event_support_and_common_risk_in_every_held_out_environment"
+        )
     else:
-        per_environment = [
-            result["component_verdict"] for result in environment_results.values()
-        ]
-        if all(verdict == "loss_detected" for verdict in per_environment):
-            transfer_verdict = "loss_detected_in_every_environment"
-        elif all(
-            verdict == "bounded_event_support_and_common_risk"
-            for verdict in per_environment
-        ):
-            transfer_verdict = "bounded_event_support_and_common_risk_in_every_environment"
-        elif all(
-            verdict == "compressed_representation_better_on_common_support"
-            for verdict in per_environment
-        ):
-            transfer_verdict = "compressed_representation_better_in_every_environment"
-        else:
-            transfer_verdict = "inconclusive_or_heterogeneous"
+        transfer_verdict = "inconclusive_or_heterogeneous_across_held_out_environments"
 
     return {
         "task": "task_relevant_compression_audit",
@@ -636,9 +938,16 @@ def audit_compression_pair(
         "risk_aggregation": getattr(aggregate, "__name__", repr(aggregate)),
         "positive_gap_means": "reference representation has lower task risk",
         "risk_tolerance": float(risk_tolerance),
+        "compact_advantage_tolerance": (
+            float(compact_advantage_tolerance)
+            if compact_advantage_tolerance is not None
+            else None
+        ),
         "support": support,
         "common_support_risk": risk,
         "environment_results": environment_results,
+        "environment_evaluation": environment_evaluation,
+        "environment_consistency_verdict": environment_consistency_verdict,
         "pooled_component_verdict": pooled_component_verdict,
         "transfer_rule": transfer_rule,
         "transfer_verdict": transfer_verdict,
