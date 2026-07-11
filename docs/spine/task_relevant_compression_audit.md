@@ -51,9 +51,9 @@ For event $i$, define:
   time-resolved measurements. An optional decision deadline $\tau_d$ says when all required assays
   and derived representations must actually be ready. `Raw` here means the richest retained record
   in the audit, not an unmediated view of reality.
-- $L_i^{\leq \tau}$: the label, conventional report, scalar summary, or other compressed
+- $L_i^{\leq \tau_s}$: the label, conventional report, scalar summary, or other compressed
   representation under audit. It may be categorical, continuous, structured, or absent.
-- $C_i^{\leq \tau}$: allowed context that both arms may use, such as the planned recipe, initial
+- $C_i^{\leq \tau_s}$: allowed context that both arms may use, such as the planned recipe, initial
   conditions, and legitimately available metadata. Context must not include the answer by another
   name.
 - $Y_i$: the predeclared downstream target. For a decision audit, also declare action $a$, utility
