@@ -113,7 +113,9 @@ benchmark.
   A/B, low-equipment droplet pilot, MPS provenance-store evaluation, public-dataset audits
   (Durham, Dryad, OpenCrystalData), and **`experiments.md`** (parked three-tier XRD
   portfolio for a process-recording-lab partner — round-robin, lossy-label intervention,
-  born-L3 pilot).
+  born-L3 pilot). The cross-cutting formal object is the task-relevant compression audit in
+  `docs/spine/task_relevant_compression_audit.md`; its paper-level novelty and evidence gates
+  are recorded in `docs/spine/compression_audit_publication_assessment.md`.
 - **Outreach (subfolder, logistics not research):** `docs/controlled-collection/outreach/` —
   Foundry application/proposal/emails, PI/collaborator outreach, personalization plan,
   outreach visuals (+ `figures/`), lab-outreach brief, next-steps.

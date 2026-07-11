@@ -33,6 +33,9 @@ impurity`, `failed synthesis`, `metastable`, and `ambiguous XRD` can be useful, 
 insufficient depending on the measurement task and collection context. The repository
 tests that claim with raw measurements, strong non-neural baselines, and provenance-aware
 splits; it does not assume that labels or raw measurements are intrinsically privileged.
+The formal audit separates common-support task risk (TRCL), event/decision support retention,
+representation collisions, and upstream recoverability; it is defined in
+[task_relevant_compression_audit.md](docs/spine/task_relevant_compression_audit.md).
 
 The work has two active directions and one retained reference archive. See
 [PROJECTS.md](PROJECTS.md) for the current decision record.

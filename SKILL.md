@@ -17,6 +17,13 @@ intervention—and compare against labels, process variables, interpolation/time
 collection-provenance baselines. Interpretability is useful only after the task and controls
 are credible.
 
+The formal comparison is now the **task-relevant compression audit**
+(`docs/spine/task_relevant_compression_audit.md`): report common-support task risk separately
+from attempted-event/decision support retention and representation collisions, then require
+provenance-stressed transfer before calling the residual signal useful. A null performance gap
+earns only bounded, task/model/data-specific adequacy under a predeclared risk tolerance;
+it never proves universal sufficiency.
+
 ## Current Scope Decision (2026-06-26)
 
 Two directions are active:
