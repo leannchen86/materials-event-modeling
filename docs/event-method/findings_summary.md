@@ -4,6 +4,10 @@ Status: completed calibration archive. Detailed chronology and preregistered ver
 [run_log.md](run_log.md); canonical magnitudes point to manifests through the
 [results ledger](../spine/results_ledger.json).
 
+Run-once synthetic and oleogel reproduction code was removed from the live tree during cleanup.
+Its final pre-removal snapshot is Git commit `8efe5bb`; use `git show` or a detached worktree if the
+historical machinery is ever needed.
+
 ## What the campaign established
 
 ### Oleogel trajectories

@@ -1,8 +1,7 @@
 # Refined-a Target Dataset: Oleogel Polymorphic Transitions (zenodo 15268752)
 
-Real-trajectory target for the event-method **refined-a** falsification. See
-[../spine/capture_vs_representation_design_note.md](../spine/capture_vs_representation_design_note.md),
-[masked_event_model.md](masked_event_model.md).
+Historical real-trajectory target for the completed public-data campaign. See
+[../spine/capture_vs_representation_design_note.md](../spine/capture_vs_representation_design_note.md).
 Downloaded to `data/raw/oleogel_zenodo_15268752/` (gitignored). License CC-BY-4.0.
 
 ## What it is

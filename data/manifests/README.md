@@ -13,12 +13,12 @@ Current rules:
   hash, and store the table in an external artifact or an identified Git snapshot.
 - Bare `NaN` is not valid JSON; use `null` with an explicit missing-value reason.
 
-For the five archived synthetic row tables, each compact manifest has an `archived_rows` block. The
-full table can be inspected without restoring it into the checkout:
+The closed synthetic event-method manifests were removed from the live tree. Their compact final
+snapshot is commit `8efe5bb`; the full row-bearing snapshot is commit `c137a89`. Inspect either
+without restoring it into the checkout:
 
 ```bash
-git show <source_commit>:<source_path> | jq '.rows'
+git show <commit>:<path>
 ```
 
-The synthetic event-method branch is closed; these artifacts are retained only as calibration
-history.
+They are calibration history, not active inputs.

@@ -16,9 +16,6 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-train = [
-  "torch>=2.2",
-]
 dev = [
   "pytest>=8.0",
   "ruff>=0.4",
@@ -55,9 +52,6 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "scripts/**" = ["E402"]  # scripts may set up sys.path before imports
-# Archived event-method oleogel scripts: helpers close over a loop var but are called
-# same-iteration (safe); documented rather than churned in a closed reference archive.
-"scripts/run_oleogel_*.py" = ["B023"]
 
 # Type-check reusable library code and tests; scripts remain ruff-covered.
 [tool.ty.environment]
@@ -65,6 +59,3 @@ python = ".venv"
 
 [tool.ty.src]
 include = ["src", "tests"]
-# oleogel_masked is archived campaign code importing torch, which is an OPTIONAL extra
-# ([train]) not installed in CI — excluded from the type gate, still ruff-covered.
-exclude = ["src/materials_event_modeling/track_b/oleogel_masked.py"]
