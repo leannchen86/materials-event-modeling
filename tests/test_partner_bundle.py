@@ -564,3 +564,97 @@ def test_confirmatory_start_requires_external_validation_reservation(
     ]
     assert readiness_errors
     assert "external_validation_reserved" in readiness_errors[0]["failed_requirements"]
+
+
+def test_complete_confirmatory_start_contract_can_pass(tmp_path: Path) -> None:
+    root = _copy_bundle(tmp_path)
+    scoped_tables = (
+        "assignments",
+        "attempts",
+        "physical_nodes",
+        "physical_edges",
+        "artifacts",
+        "transformations",
+        "representations",
+        "outcomes",
+        "costs",
+        "decisions",
+        "corrections",
+    )
+    for table_id in scoped_tables:
+        rows = _load_table(root, table_id)
+        for row in rows:
+            row["nonconfirmatory"] = False
+            if table_id == "physical_nodes":
+                row["partition"] = "unassigned"
+        if table_id == "assignments":
+            rows[0]["domain_payload"]["stream"] = "native"
+            rows[1]["domain_payload"]["stream"] = "bridge"
+        _write_table(root, table_id, rows)
+
+    index_path = root / "bundle.json"
+    index = _read_object(index_path)
+    index["purpose"] = "confirmatory_collection"
+    index["inference_status"] = "firewalled_preanalysis"
+    scope = cast(JsonObject, index["nonconfirmatory_scope"])
+    for field_name in ("assignment_ids", "attempt_ids", "physical_node_ids", "artifact_ids"):
+        scope[field_name] = []
+    _write_object(index_path, index)
+
+    artifacts = _load_table(root, "artifacts")
+    artifact_by_id = {str(row["artifact_id"]): row for row in artifacts}
+    manifest = artifact_by_id["artifact-practitioner-validation"]
+    site_set = artifact_by_id["artifact-assignment-snapshot"]
+    study = _read_object(root / "study_spec.json")
+    study["inference_status"] = "preregistered_confirmatory"
+    firewall = cast(JsonObject, study["firewall_and_freeze"])
+    firewall["assignment_sha256"] = _sha256(root / "ledgers/assignments.json")
+    firewall["study_spec_sha256"] = manifest["sha256"]
+    firewall["golden_bundle_policy"] = "outcomes_firewalled_from_analysis_team"
+    for lock_name in (
+        "design_lock",
+        "analysis_freeze",
+        "raw_freeze",
+        "representation_freeze",
+    ):
+        firewall[lock_name] = {
+            "status": "locked",
+            "git_commit": "bf55273",
+            "manifest_artifact_id": manifest["artifact_id"],
+            "manifest_sha256": manifest["sha256"],
+            "locked_at": "2026-01-01T00:00:00Z",
+        }
+    signoffs = cast(JsonObject, study["signoffs"])
+    for signoff_name in (
+        "scientific_owner",
+        "practitioner_action_owner",
+        "outcome_assay_owner",
+        "data_lineage_owner",
+    ):
+        signoff = cast(JsonObject, signoffs[signoff_name])
+        signoff["status"] = "signed"
+        signoff["signed_at"] = "2026-01-01T00:00:00Z"
+        signoff["signed_spec_sha256"] = manifest["sha256"]
+    environment = cast(JsonObject, study["environment_design"])
+    external = cast(JsonObject, environment["external_validation"])
+    external.update(
+        {
+            "mode": "zero_shot",
+            "site_set_artifact_id": site_set["artifact_id"],
+            "site_set_sha256": site_set["sha256"],
+            "calibration_unit_count": 0,
+            "frozen_test_unit_count": 1,
+            "model_retraining_allowed": False,
+            "same_report_schema_required": True,
+            "same_transformation_graph_required": True,
+        }
+    )
+    _write_study(root, study)
+
+    report = _validate(root, readiness="confirmatory_start")
+
+    assert report["valid"] is True
+    assert report["readiness"]["confirmatory_start"]["ready"] is True
+    requirements = report["readiness"]["confirmatory_start"]["requirements"]
+    assert "negative_or_censored_attempt_present" not in requirements
+    assert "outcome_rows_present" not in requirements

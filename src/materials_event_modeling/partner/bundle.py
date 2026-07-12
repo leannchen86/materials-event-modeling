@@ -2739,10 +2739,10 @@ def _validate_study_contract(
         site_artifact = artifacts.get(str(site_artifact_id))
         if site_artifact is None or site_artifact.get("sha256") != external_validation.get(
             "site_set_sha256"
-        ):
+        ) or site_artifact.get("artifact_role") not in {"assignment", "external_reference"}:
             report.error(
                 "external_site_set_hash_mismatch",
-                "external site-set ID/hash must match an artifact ledger row",
+                "external site-set ID/hash must match a frozen assignment/reference artifact",
                 target_id=site_artifact_id,
             )
         mode = external_validation.get("mode")
