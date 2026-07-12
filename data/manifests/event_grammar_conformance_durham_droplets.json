@@ -1,10 +1,11 @@
 {
   "caveats": [
-    "Levels grade what the dataset RECORDS, not the quality of the science.",
+    "Levels grade the ADAPTED RECORD, not capture completeness or scientific quality.",
+    "Signals omitted before the adapter output are outside every level and must be declared in a separate capture-policy audit.",
     "A dataset with no negative outcomes fails L2 by design: from the outside, 'all successes' and 'failures filtered out' are indistinguishable.",
     "trace_richness is reported but not gated: single-observation events are valid, but a dataset of them is a measurement archive, not event traces."
   ],
-  "created_at": "2026-07-04T00:39:19.316805+00:00",
+  "created_at": "2026-07-12T09:12:27.652870+00:00",
   "dataset": "durham_droplets",
   "event_count": 9,
   "events_path": "data/interim/event_grammar_v1/durham_droplets/events.json",
@@ -93,16 +94,18 @@
       "--events",
       "data/interim/event_grammar_v1/durham_droplets/events.json",
       "--dataset",
-      "durham_droplets"
+      "durham_droplets",
+      "--output",
+      "/tmp/event_grammar_conformance_durham_droplets.json"
     ],
-    "captured_at": "2026-07-04T00:39:21.031095+00:00",
-    "git_commit": "eeab85ef65a32da0379bdb2bb24a97c4f5c5d4a5",
+    "captured_at": "2026-07-12T09:12:27.706074+00:00",
+    "git_commit": "d647a0c97bdbbc45a85548427c88f785109e9a97",
     "git_dirty": false,
     "packages": {
-      "numpy": "2.4.6",
+      "numpy": "2.5.1",
       "pandas": "3.0.3",
-      "scipy": "1.17.1",
-      "sklearn": "1.8.0",
+      "scipy": "1.18.0",
+      "sklearn": "1.9.0",
       "torch": "2.12.0"
     },
     "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
