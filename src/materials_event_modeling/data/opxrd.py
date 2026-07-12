@@ -5,7 +5,6 @@ from __future__ import annotations
 import json
 import math
 import zipfile
-from collections import Counter
 from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -78,44 +77,6 @@ def select_member_names(
         indices = np.linspace(0, len(member_names) - 1, num=max_spectra, dtype=np.int64)
         return [member_names[int(index)] for index in indices]
     raise ValueError(f"Unsupported opXRD member selection strategy: {strategy}")
-
-
-def extension_counts(archive_path: Path) -> Counter[str]:
-    counts: Counter[str] = Counter()
-    with zipfile.ZipFile(archive_path) as archive:
-        for info in archive.infolist():
-            if info.is_dir():
-                counts["<dir>"] += 1
-                continue
-            suffix = Path(info.filename).suffix.lower() or "<none>"
-            counts[suffix] += 1
-    return counts
-
-
-def archive_inventory(archive_path: Path, sample_paths: int = 20) -> dict[str, object]:
-    with zipfile.ZipFile(archive_path) as archive:
-        infos = archive.infolist()
-        file_infos = [info for info in infos if not info.is_dir()]
-        top_level = Counter(info.filename.split("/", 1)[0] for info in infos if info.filename)
-        extensions: Counter[str] = Counter()
-        for info in infos:
-            if info.is_dir():
-                extensions["<dir>"] += 1
-            else:
-                extensions[Path(info.filename).suffix.lower() or "<none>"] += 1
-
-        return {
-            "archive_path": str(archive_path),
-            "archive_size_bytes": archive_path.stat().st_size,
-            "entries": len(infos),
-            "files": len(file_infos),
-            "directories": len(infos) - len(file_infos),
-            "compressed_size_bytes": int(sum(info.compress_size for info in file_infos)),
-            "uncompressed_size_bytes": int(sum(info.file_size for info in file_infos)),
-            "extension_counts": dict(sorted(extensions.items())),
-            "top_level_counts": dict(sorted(top_level.items())),
-            "sample_paths": [info.filename for info in file_infos[:sample_paths]],
-        }
 
 
 def parse_nested_json(value: object) -> dict[str, object]:
@@ -238,38 +199,3 @@ def pattern_summary(pattern: OpxrdPattern) -> dict[str, object]:
         "tags": pattern.metadata.get("tags", []),
     }
 
-
-def summarize_patterns(patterns: Iterable[OpxrdPattern]) -> dict[str, object]:
-    total = 0
-    labeled = 0
-    phase_counts: Counter[int] = Counter()
-    point_counts: Counter[int] = Counter()
-    institutions: Counter[str] = Counter()
-    formats: Counter[str] = Counter()
-    theta_min = None
-    theta_max = None
-
-    for pattern in patterns:
-        total += 1
-        labeled += int(pattern.is_labeled)
-        phase_counts[pattern.phase_count] += 1
-        point_counts[int(pattern.two_theta.shape[0])] += 1
-        institution = pattern.metadata.get("institution") or "<missing>"
-        formats[str(pattern.metadata.get("original_file_format") or "<missing>")] += 1
-        institutions[str(institution)] += 1
-        current_min = float(np.min(pattern.two_theta))
-        current_max = float(np.max(pattern.two_theta))
-        theta_min = current_min if theta_min is None else min(theta_min, current_min)
-        theta_max = current_max if theta_max is None else max(theta_max, current_max)
-
-    return {
-        "parsed_patterns": total,
-        "labeled_patterns": labeled,
-        "unlabeled_patterns": total - labeled,
-        "phase_count_distribution": dict(sorted(phase_counts.items())),
-        "point_count_top20": dict(point_counts.most_common(20)),
-        "institution_top20": dict(institutions.most_common(20)),
-        "original_file_format_top20": dict(formats.most_common(20)),
-        "theta_min": theta_min,
-        "theta_max": theta_max,
-    }

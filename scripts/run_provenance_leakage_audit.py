@@ -213,7 +213,7 @@ USABLE_WAVELENGTHS = (514.0, 532.0, 780.0, 785.0)
 def load_rruff(args: argparse.Namespace) -> dict[str, Any]:
     import zipfile
 
-    from materials_event_modeling.data.rruff import _parse
+    from materials_event_modeling.data.rruff import parse_spectrum_text
 
     root = project_root()
     events_path = root / "data/interim/event_grammar_v1/rruff/events.json"
@@ -244,7 +244,7 @@ def load_rruff(args: argparse.Namespace) -> dict[str, Any]:
                 raw = zf.read(member).decode("utf-8")
             except UnicodeDecodeError:
                 raw = zf.read(member).decode("latin-1")
-            _, xs, ys = _parse(raw)
+            _, xs, ys = parse_spectrum_text(raw)
             if xs.size < 10:
                 continue
             peak = float(np.max(np.abs(ys))) or 1.0

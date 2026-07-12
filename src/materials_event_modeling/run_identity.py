@@ -22,7 +22,6 @@ _RESULT_PACKAGES = {
     "scipy": "scipy",
     "sklearn": "scikit-learn",
     "pandas": "pandas",
-    "torch": "torch",
 }
 
 

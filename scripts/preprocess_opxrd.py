@@ -31,7 +31,7 @@ def preprocess(max_spectra: int, points: int, selection: str) -> dict[str, objec
     archive_path = raw_archive_path(root)
     if not archive_path.exists():
         raise FileNotFoundError(
-            f"Missing {archive_path}. Run `python3 scripts/download_data.py opxrd` first."
+            f"Missing {archive_path}. Run `python3 scripts/download_data.py` first."
         )
 
     output_dir = root / "data" / "processed" / DATASET_ID
