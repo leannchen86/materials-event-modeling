@@ -1,0 +1,1124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://materials-event-modeling.org/schemas/partner_rows.v1.schema.json",
+  "title": "Partner Downstream-Outcome Ledger Rows v1",
+  "description": "Strict row contracts for the ledgers in a partner downstream-outcome collection bundle. Domain-specific content is allowed only in explicitly named domain_payload objects.",
+  "oneOf": [
+    {"$ref": "#/$defs/assignment"},
+    {"$ref": "#/$defs/attempt"},
+    {"$ref": "#/$defs/physicalNode"},
+    {"$ref": "#/$defs/physicalEdge"},
+    {"$ref": "#/$defs/artifact"},
+    {"$ref": "#/$defs/transformation"},
+    {"$ref": "#/$defs/representation"},
+    {"$ref": "#/$defs/outcome"},
+    {"$ref": "#/$defs/cost"},
+    {"$ref": "#/$defs/decision"},
+    {"$ref": "#/$defs/correction"}
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+    },
+    "nullableId": {
+      "oneOf": [
+        {"$ref": "#/$defs/id"},
+        {"type": "null"}
+      ]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "nullableSha256": {
+      "oneOf": [
+        {"$ref": "#/$defs/sha256"},
+        {"type": "null"}
+      ]
+    },
+    "reasonCode": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$"
+    },
+    "reasonCodes": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/reasonCode"},
+      "uniqueItems": true
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nullableTimestamp": {
+      "oneOf": [
+        {"$ref": "#/$defs/timestamp"},
+        {"type": "null"}
+      ]
+    },
+    "elapsedValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit", "origin"],
+      "properties": {
+        "value": {"type": "number"},
+        "unit": {
+          "type": "string",
+          "enum": ["microseconds", "milliseconds", "seconds", "minutes", "hours", "days", "cycles", "process_steps"]
+        },
+        "origin": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Named zero point, for example first_reagent_contact, formation_start, or cycle_0."
+        }
+      }
+    },
+    "nullableElapsedValue": {
+      "oneOf": [
+        {"$ref": "#/$defs/elapsedValue"},
+        {"type": "null"}
+      ]
+    },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit"],
+      "properties": {
+        "value": {"type": "number"},
+        "unit": {"type": "string", "minLength": 1}
+      }
+    },
+    "nullableQuantity": {
+      "oneOf": [
+        {"$ref": "#/$defs/quantity"},
+        {"type": "null"}
+      ]
+    },
+    "domainPayload": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "sourceRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_system", "source_record_id", "source_artifact_id", "source_sha256"],
+      "properties": {
+        "source_system": {"type": "string", "minLength": 1},
+        "source_record_id": {"type": "string", "minLength": 1},
+        "source_artifact_id": {"$ref": "#/$defs/nullableId"},
+        "source_sha256": {"$ref": "#/$defs/nullableSha256"}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "site_id",
+        "lab_id",
+        "batch_id",
+        "lot_id",
+        "operator_id",
+        "instrument_id",
+        "instrument_session_id",
+        "measurement_day",
+        "run_order",
+        "configuration_id",
+        "domain_payload"
+      ],
+      "properties": {
+        "site_id": {"type": ["string", "null"]},
+        "lab_id": {"type": ["string", "null"]},
+        "batch_id": {"type": ["string", "null"]},
+        "lot_id": {"type": ["string", "null"]},
+        "operator_id": {"type": ["string", "null"]},
+        "instrument_id": {"type": ["string", "null"]},
+        "instrument_session_id": {"type": ["string", "null"]},
+        "measurement_day": {"type": ["string", "null"]},
+        "run_order": {"type": ["number", "null"]},
+        "configuration_id": {"type": ["string", "null"]},
+        "domain_payload": {"$ref": "#/$defs/domainPayload"}
+      }
+    },
+    "partition": {
+      "type": "string",
+      "enum": ["train", "validation", "test", "external_test", "nonconfirmatory", "unassigned"]
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "method", "standard_uncertainty", "interval", "coverage_level", "components"],
+      "properties": {
+        "status": {"type": "string", "enum": ["reported", "unavailable", "not_applicable"]},
+        "method": {"type": ["string", "null"]},
+        "standard_uncertainty": {"$ref": "#/$defs/nullableQuantity"},
+        "interval": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["lower", "upper", "unit"],
+              "properties": {
+                "lower": {"type": "number"},
+                "upper": {"type": "number"},
+                "unit": {"type": "string", "minLength": 1}
+              }
+            },
+            {"type": "null"}
+          ]
+        },
+        "coverage_level": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "components": {"$ref": "#/$defs/domainPayload"}
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "row_type",
+        "study_id",
+        "decision_id",
+        "subject_node_id",
+        "attempt_id",
+        "actual_report_available",
+        "actual_report_artifact_id",
+        "available_representation_ids",
+        "decision_maker_id",
+        "decision_maker_role",
+        "decision_mode",
+        "decided_at",
+        "decision_deadline",
+        "decision_deadline_at",
+        "allowed_actions",
+        "actual_action",
+        "rationale",
+        "fallback",
+        "research_output_visible",
+        "action_propensity",
+        "action_can_affect_outcome",
+        "nonconfirmatory",
+        "domain_payload"
+      ],
+      "properties": {
+        "schema_version": {"const": "partner_rows.v1"},
+        "row_type": {"const": "decision"},
+        "study_id": {"$ref": "#/$defs/id"},
+        "decision_id": {"$ref": "#/$defs/id"},
+        "subject_node_id": {"$ref": "#/$defs/id"},
+        "attempt_id": {"$ref": "#/$defs/id"},
+        "actual_report_available": {"type": "boolean"},
+        "actual_report_artifact_id": {"$ref": "#/$defs/nullableId"},
+        "available_representation_ids": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/id"},
+          "uniqueItems": true
+        },
+        "decision_maker_id": {"type": "string", "minLength": 1},
+        "decision_maker_role": {"type": "string", "minLength": 1},
+        "decision_mode": {"type": "string", "enum": ["shadow", "live_policy", "retrospective_record"]},
+        "decided_at": {"$ref": "#/$defs/timestamp"},
+        "decision_deadline": {"$ref": "#/$defs/elapsedValue"},
+        "decision_deadline_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "allowed_actions": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "actual_action": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string", "minLength": 1},
+        "fallback": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["used", "action", "reason_codes"],
+          "properties": {
+            "used": {"type": "boolean"},
+            "action": {"type": ["string", "null"]},
+            "reason_codes": {"$ref": "#/$defs/reasonCodes"}
+          },
+          "allOf": [
+            {
+              "if": {"properties": {"used": {"const": true}}, "required": ["used"]},
+              "then": {
+                "properties": {
+                  "action": {"type": "string", "minLength": 1},
+                  "reason_codes": {"minItems": 1}
+                }
+              }
+            },
+            {
+              "if": {"properties": {"used": {"const": false}}, "required": ["used"]},
+              "then": {"properties": {"action": {"type": "null"}}}
+            }
+          ]
+        },
+        "research_output_visible": {"type": "boolean"},
+        "action_propensity": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "action_can_affect_outcome": {"type": "boolean"},
+        "nonconfirmatory": {"type": "boolean"},
+        "domain_payload": {"$ref": "#/$defs/domainPayload"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"decision_mode": {"const": "shadow"}}, "required": ["decision_mode"]},
+          "then": {"properties": {"research_output_visible": {"const": false}}}
+        },
+        {
+          "if": {"properties": {"actual_report_available": {"const": true}}, "required": ["actual_report_available"]},
+          "then": {"properties": {"actual_report_artifact_id": {"$ref": "#/$defs/id"}}}
+        },
+        {
+          "if": {"properties": {"actual_report_available": {"const": false}}, "required": ["actual_report_available"]},
+          "then": {"properties": {"actual_report_artifact_id": {"type": "null"}}}
+        }
+      ]
+    },
+    "correction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "row_type",
+        "study_id",
+        "correction_id",
+        "correction_type",
+        "affected_records",
+        "before_hashes",
+        "after_hashes",
+        "discovered_at",
+        "discovered_by",
+        "outcome_access_state",
+        "proposed_change",
+        "applied_change",
+        "approvals",
+        "status",
+        "impact",
+        "supersedes_correction_id",
+        "nonconfirmatory",
+        "domain_payload"
+      ],
+      "properties": {
+        "schema_version": {"const": "partner_rows.v1"},
+        "row_type": {"const": "correction"},
+        "study_id": {"$ref": "#/$defs/id"},
+        "correction_id": {"$ref": "#/$defs/id"},
+        "correction_type": {
+          "type": "string",
+          "enum": ["metadata", "identifier_or_lineage", "artifact_hash", "transformation", "representation", "outcome", "denominator", "partition", "protocol", "other"]
+        },
+        "affected_records": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["row_type", "record_id", "before_sha256"],
+            "properties": {
+              "row_type": {"type": "string", "enum": ["assignment", "attempt", "event", "physical_node", "physical_edge", "artifact", "transformation", "representation", "outcome", "cost", "decision", "correction", "study_spec", "bundle"]},
+              "record_id": {"$ref": "#/$defs/id"},
+              "before_sha256": {"$ref": "#/$defs/nullableSha256"}
+            }
+          }
+        },
+        "before_hashes": {"type": "array", "items": {"$ref": "#/$defs/sha256"}, "minItems": 1, "uniqueItems": true},
+        "after_hashes": {"type": "array", "items": {"$ref": "#/$defs/sha256"}, "uniqueItems": true},
+        "discovered_at": {"$ref": "#/$defs/timestamp"},
+        "discovered_by": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["actor_id", "role"],
+          "properties": {
+            "actor_id": {"type": "string", "minLength": 1},
+            "role": {"type": "string", "minLength": 1}
+          }
+        },
+        "outcome_access_state": {"type": "string", "enum": ["no_outcome_access", "outcomes_firewalled", "outcomes_accessed", "unverifiable"]},
+        "proposed_change": {"type": "string", "minLength": 1},
+        "applied_change": {"type": ["string", "null"]},
+        "approvals": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["approver_id", "role", "status", "decided_at"],
+            "properties": {
+              "approver_id": {"type": "string", "minLength": 1},
+              "role": {"type": "string", "minLength": 1},
+              "status": {"type": "string", "enum": ["pending", "approved", "rejected"]},
+              "decided_at": {"$ref": "#/$defs/nullableTimestamp"}
+            }
+          }
+        },
+        "status": {"type": "string", "enum": ["proposed", "approved", "applied", "rejected", "superseded", "invalidates_analysis"]},
+        "impact": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["eligibility", "support", "analysis", "claim", "description"],
+          "properties": {
+            "eligibility": {"type": "string", "enum": ["none", "potential", "changed", "invalidated", "unknown"]},
+            "support": {"type": "string", "enum": ["none", "potential", "changed", "invalidated", "unknown"]},
+            "analysis": {"type": "string", "enum": ["none", "rerun_required", "invalidated", "unknown"]},
+            "claim": {"type": "string", "enum": ["unchanged", "requires_refreeze", "downgraded", "withdrawn", "unknown"]},
+            "description": {"type": "string", "minLength": 1}
+          }
+        },
+        "supersedes_correction_id": {"$ref": "#/$defs/nullableId"},
+        "nonconfirmatory": {"type": "boolean"},
+        "domain_payload": {"$ref": "#/$defs/domainPayload"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "applied"}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "applied_change": {"type": "string", "minLength": 1},
+              "after_hashes": {"minItems": 1},
+              "approvals": {"minItems": 1}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "superseded"}}, "required": ["status"]},
+          "then": {"properties": {"supersedes_correction_id": {"$ref": "#/$defs/id"}}}
+        }
+      ]
+    },
+    "assignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "row_type",
+        "study_id",
+        "assignment_id",
+        "planned_event_id",
+        "plan_id",
+        "event_group_id",
+        "planned_condition",
+        "planned_environment",
+        "planned_independent_unit_id",
+        "randomization",
+        "status",
+        "status_reason_codes",
+        "scheduled_at",
+        "created_at",
+        "source_record",
+        "nonconfirmatory",
+        "domain_payload"
+      ],
+      "properties": {
+        "schema_version": {"const": "partner_rows.v1"},
+        "row_type": {"const": "assignment"},
+        "study_id": {"$ref": "#/$defs/id"},
+        "assignment_id": {"$ref": "#/$defs/id"},
+        "planned_event_id": {"$ref": "#/$defs/id"},
+        "plan_id": {"$ref": "#/$defs/id"},
+        "event_group_id": {"$ref": "#/$defs/id"},
+        "planned_condition": {"$ref": "#/$defs/domainPayload"},
+        "planned_environment": {"$ref": "#/$defs/domainPayload"},
+        "planned_independent_unit_id": {"$ref": "#/$defs/id"},
+        "randomization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["method", "seed", "generator_version", "generator_sha256", "stratum", "sequence_position"],
+          "properties": {
+            "method": {"type": "string", "enum": ["randomized", "deterministic_counterbalance", "source_assigned", "not_applicable"]},
+            "seed": {"type": ["integer", "null"]},
+            "generator_version": {"type": ["string", "null"]},
+            "generator_sha256": {"$ref": "#/$defs/nullableSha256"},
+            "stratum": {"type": ["string", "null"]},
+            "sequence_position": {"type": ["integer", "null"], "minimum": 1}
+          }
+        },
+        "status": {"type": "string", "enum": ["planned", "released", "not_started", "cancelled"]},
+        "status_reason_codes": {"$ref": "#/$defs/reasonCodes"},
+        "scheduled_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "created_at": {"$ref": "#/$defs/timestamp"},
+        "source_record": {"$ref": "#/$defs/sourceRecord"},
+        "nonconfirmatory": {"type": "boolean"},
+        "domain_payload": {"$ref": "#/$defs/domainPayload"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"enum": ["not_started", "cancelled"]}}, "required": ["status"]},
+          "then": {"properties": {"status_reason_codes": {"minItems": 1}}}
+        }
+      ]
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "row_type",
+        "study_id",
+        "attempt_id",
+        "assignment_id",
+        "event_id",
+        "attempt_state",
+        "execution_status",
+        "started_at",
+        "ended_at",
+        "retry_of_attempt_id",
+        "rework_of_attempt_id",
+        "disposition",
+        "status_reason_codes",
+        "protocol_deviation",
+        "provenance",
+        "declared_independent_units",
+        "created_at",
+        "source_record",
+        "nonconfirmatory",
+        "domain_payload"
+      ],
+      "properties": {
+        "schema_version": {"const": "partner_rows.v1"},
+        "row_type": {"const": "attempt"},
+        "study_id": {"$ref": "#/$defs/id"},
+        "attempt_id": {"$ref": "#/$defs/id"},
+        "assignment_id": {"$ref": "#/$defs/id"},
+        "event_id": {"$ref": "#/$defs/id"},
+        "attempt_state": {"type": "string", "enum": ["initiated", "in_progress", "completed", "interrupted", "abandoned"]},
+        "execution_status": {"type": "string", "enum": ["success", "failure", "ambiguous", "aborted", "unknown"]},
+        "started_at": {"$ref": "#/$defs/timestamp"},
+        "ended_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "retry_of_attempt_id": {"$ref": "#/$defs/nullableId"},
+        "rework_of_attempt_id": {"$ref": "#/$defs/nullableId"},
+        "disposition": {"type": "string", "enum": ["retained", "consumed", "scrapped", "transferred", "in_progress", "unknown"]},
+        "status_reason_codes": {"$ref": "#/$defs/reasonCodes"},
+        "protocol_deviation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["occurred", "reason_codes", "notes"],
+          "properties": {
+            "occurred": {"type": "boolean"},
+            "reason_codes": {"$ref": "#/$defs/reasonCodes"},
+            "notes": {"type": ["string", "null"]}
+          }
+        },
+        "provenance": {"$ref": "#/$defs/provenance"},
+        "declared_independent_units": {
+          "type": "object",
+          "additionalProperties": {"$ref": "#/$defs/id"}
+        },
+        "created_at": {"$ref": "#/$defs/timestamp"},
+        "source_record": {"$ref": "#/$defs/sourceRecord"},
+        "nonconfirmatory": {"type": "boolean"},
+        "domain_payload": {"$ref": "#/$defs/domainPayload"}
+      }
+    },
+    "physicalNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "row_type",
+        "study_id",
+        "node_id",
+        "node_type",
+        "source_attempt_ids",
+        "independent_parent_id",
+        "partition",
+        "created_at",
+        "amount",
+        "geometry",
+        "storage_and_handling",
+        "provenance",
+        "reason_codes",
+        "nonconfirmatory",
+        "domain_payload"
+      ],
+      "properties": {
+        "schema_version": {"const": "partner_rows.v1"},
+        "row_type": {"const": "physical_node"},
+        "study_id": {"$ref": "#/$defs/id"},
+        "node_id": {"$ref": "#/$defs/id"},
+        "node_type": {
+          "type": "string",
+          "enum": ["planned_process", "execution", "material_batch", "aliquot", "specimen", "device", "pilot_lot", "field_unit", "assay_subject", "pooled_material", "other"]
+        },
+        "source_attempt_ids": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/id"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "independent_parent_id": {"$ref": "#/$defs/nullableId"},
+        "partition": {"$ref": "#/$defs/partition"},
+        "created_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "amount": {"$ref": "#/$defs/nullableQuantity"},
+        "geometry": {"$ref": "#/$defs/domainPayload"},
+        "storage_and_handling": {"$ref": "#/$defs/domainPayload"},
+        "provenance": {"$ref": "#/$defs/provenance"},
+        "reason_codes": {"$ref": "#/$defs/reasonCodes"},
+        "nonconfirmatory": {"type": "boolean"},
+        "domain_payload": {"$ref": "#/$defs/domainPayload"}
+      }
+    },
+    "physicalEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "row_type",
+        "study_id",
+        "edge_id",
+        "source_node_ids",
+        "target_node_ids",
+        "relation",
+        "occurred_at",
+        "amount_transferred",
+        "consumes_source",
+        "reason_codes",
+        "domain_payload"
+      ],
+      "properties": {
+        "schema_version": {"const": "partner_rows.v1"},
+        "row_type": {"const": "physical_edge"},
+        "study_id": {"$ref": "#/$defs/id"},
+        "edge_id": {"$ref": "#/$defs/id"},
+        "source_node_ids": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/id"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "target_node_ids": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/id"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "relation": {
+          "type": "string",
+          "enum": ["produced_from", "split_from", "merged_from", "prepared_from", "consumed_by", "transferred_from", "assembled_from", "assay_subject_from", "reworked_from"]
+        },
+        "occurred_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "amount_transferred": {"$ref": "#/$defs/nullableQuantity"},
+        "consumes_source": {"type": ["boolean", "null"]},
+        "reason_codes": {"$ref": "#/$defs/reasonCodes"},
+        "domain_payload": {"$ref": "#/$defs/domainPayload"}
+      }
+    },
+    "artifactLocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "path", "uri"],
+      "properties": {
+        "status": {"type": "string", "enum": ["available_bundle_file", "available_external", "inaccessible", "deleted", "never_captured"]},
+        "path": {"type": ["string", "null"]},
+        "uri": {"type": ["string", "null"], "format": "uri"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "available_bundle_file"}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"},
+              "uri": {"type": "null"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "available_external"}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "path": {"type": "null"},
+              "uri": {"type": "string", "format": "uri"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"enum": ["inaccessible", "deleted", "never_captured"]}}, "required": ["status"]},
+          "then": {"properties": {"path": {"type": "null"}, "uri": {"type": "null"}}}
+        }
+      ]
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "row_type",
+        "study_id",
+        "artifact_id",
+        "artifact_role",
+        "subject_node_ids",
+        "attempt_ids",
+        "location",
+        "sha256",
+        "bytes",
+        "media_type",
+        "native_format",
+        "latest_material_state",
+        "acquired_at",
+        "created_at",
+        "provenance",
+        "retention_class",
+        "immutability_status",
+        "source_artifact_ids",
+        "reason_codes",
+        "nonconfirmatory",
+        "domain_payload"
+      ],
+      "properties": {
+        "schema_version": {"const": "partner_rows.v1"},
+        "row_type": {"const": "artifact"},
+        "study_id": {"$ref": "#/$defs/id"},
+        "artifact_id": {"$ref": "#/$defs/id"},
+        "artifact_role": {
+          "type": "string",
+          "enum": ["native_trace", "process_log", "instrument_metadata", "calibration", "external_reference", "intermediate", "conventional_report", "label_or_grade", "outcome_evidence", "outcome_product", "assignment", "protocol", "signoff", "other"]
+        },
+        "subject_node_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "attempt_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "location": {"$ref": "#/$defs/artifactLocation"},
+        "sha256": {"$ref": "#/$defs/nullableSha256"},
+        "bytes": {"type": ["integer", "null"], "minimum": 0},
+        "media_type": {"type": ["string", "null"]},
+        "native_format": {"type": ["string", "null"]},
+        "latest_material_state": {"$ref": "#/$defs/nullableElapsedValue"},
+        "acquired_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "created_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "provenance": {"$ref": "#/$defs/provenance"},
+        "retention_class": {"type": "string", "enum": ["exact_native", "deterministic_derivative", "lossy_derivative", "reconstructable", "deleted_inaccessible", "never_captured"]},
+        "immutability_status": {"type": "string", "enum": ["frozen", "mutable_source_snapshot", "tombstone"]},
+        "source_artifact_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "reason_codes": {"$ref": "#/$defs/reasonCodes"},
+        "nonconfirmatory": {"type": "boolean"},
+        "domain_payload": {"$ref": "#/$defs/domainPayload"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"location": {"properties": {"status": {"enum": ["available_bundle_file", "available_external"]}}, "required": ["status"]}}},
+          "then": {
+            "properties": {
+              "sha256": {"$ref": "#/$defs/sha256"},
+              "bytes": {"type": "integer", "minimum": 0},
+              "media_type": {"type": "string", "minLength": 1}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"location": {"properties": {"status": {"enum": ["inaccessible", "deleted", "never_captured"]}}, "required": ["status"]}}},
+          "then": {"properties": {"reason_codes": {"minItems": 1}}}
+        }
+      ]
+    },
+    "versionedMethod": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "sha256", "artifact_id"],
+      "properties": {
+        "version": {"type": ["string", "null"]},
+        "sha256": {"$ref": "#/$defs/nullableSha256"},
+        "artifact_id": {"$ref": "#/$defs/nullableId"}
+      }
+    },
+    "transformation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "row_type",
+        "study_id",
+        "transformation_id",
+        "transformation_role",
+        "input_artifact_ids",
+        "input_representation_ids",
+        "output_artifact_ids",
+        "output_representation_ids",
+        "reference_artifact_ids",
+        "method_type",
+        "code",
+        "configuration",
+        "builder_role",
+        "operator_id",
+        "started_at",
+        "finished_at",
+        "outcome_access_status",
+        "prohibited_input_check",
+        "reason_codes",
+        "domain_payload"
+      ],
+      "properties": {
+        "schema_version": {"const": "partner_rows.v1"},
+        "row_type": {"const": "transformation"},
+        "study_id": {"$ref": "#/$defs/id"},
+        "transformation_id": {"$ref": "#/$defs/id"},
+        "transformation_role": {"type": "string", "enum": ["calibration", "cleanup", "normalization", "fit", "feature_engineering", "report_generation", "label_assignment", "grade_assignment", "outcome_construction", "other"]},
+        "input_artifact_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "input_representation_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "output_artifact_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "output_representation_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "reference_artifact_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "method_type": {"type": "string", "enum": ["deterministic_code", "manual", "hybrid", "vendor_black_box"]},
+        "code": {"$ref": "#/$defs/versionedMethod"},
+        "configuration": {"$ref": "#/$defs/versionedMethod"},
+        "builder_role": {"type": "string", "minLength": 1},
+        "operator_id": {"type": ["string", "null"]},
+        "started_at": {"$ref": "#/$defs/timestamp"},
+        "finished_at": {"$ref": "#/$defs/timestamp"},
+        "outcome_access_status": {"type": "string", "enum": ["blinded", "permitted_postfreeze", "outcome_builder", "unverifiable"]},
+        "prohibited_input_check": {"type": "string", "enum": ["passed", "failed", "unverifiable", "not_applicable"]},
+        "reason_codes": {"$ref": "#/$defs/reasonCodes"},
+        "domain_payload": {"$ref": "#/$defs/domainPayload"}
+      },
+      "allOf": [
+        {
+          "anyOf": [
+            {"properties": {"input_artifact_ids": {"minItems": 1}}},
+            {"properties": {"input_representation_ids": {"minItems": 1}}}
+          ]
+        },
+        {
+          "anyOf": [
+            {"properties": {"output_artifact_ids": {"minItems": 1}}},
+            {"properties": {"output_representation_ids": {"minItems": 1}}}
+          ]
+        }
+      ]
+    },
+    "featureSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "sha256", "ordered_field_names"],
+      "properties": {
+        "version": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "ordered_field_names": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      }
+    },
+    "representation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "row_type",
+        "study_id",
+        "representation_id",
+        "representation_spec_id",
+        "subject_node_id",
+        "attempt_id",
+        "status",
+        "primary_analysis_available",
+        "availability_reason_codes",
+        "source_artifact_ids",
+        "source_representation_ids",
+        "transformation_ids",
+        "value_artifact_id",
+        "inline_domain_values",
+        "feature_schema",
+        "latest_material_state",
+        "operational_ready_elapsed",
+        "material_state_at",
+        "acquired_at",
+        "constructed_at",
+        "operationally_available_at",
+        "declared_state_cutoff",
+        "declared_decision_deadline",
+        "state_cutoff_status",
+        "decision_deadline_status",
+        "actual_workflow_artifact_id",
+        "prohibited_input_check",
+        "builder_blinding_attestation",
+        "frozen_at",
+        "nonconfirmatory",
+        "domain_payload"
+      ],
+      "properties": {
+        "schema_version": {"const": "partner_rows.v1"},
+        "row_type": {"const": "representation"},
+        "study_id": {"$ref": "#/$defs/id"},
+        "representation_id": {"$ref": "#/$defs/id"},
+        "representation_spec_id": {"$ref": "#/$defs/id"},
+        "subject_node_id": {"$ref": "#/$defs/id"},
+        "attempt_id": {"$ref": "#/$defs/id"},
+        "status": {"type": "string", "enum": ["available", "partially_available", "unavailable", "cutoff_violated", "lineage_unverifiable"]},
+        "primary_analysis_available": {"type": "boolean"},
+        "availability_reason_codes": {"$ref": "#/$defs/reasonCodes"},
+        "source_artifact_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "source_representation_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "transformation_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "value_artifact_id": {"$ref": "#/$defs/nullableId"},
+        "inline_domain_values": {
+          "oneOf": [
+            {"$ref": "#/$defs/domainPayload"},
+            {"type": "null"}
+          ]
+        },
+        "feature_schema": {"$ref": "#/$defs/featureSchema"},
+        "latest_material_state": {"$ref": "#/$defs/nullableElapsedValue"},
+        "operational_ready_elapsed": {"$ref": "#/$defs/nullableElapsedValue"},
+        "material_state_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "acquired_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "constructed_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "operationally_available_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "declared_state_cutoff": {"$ref": "#/$defs/elapsedValue"},
+        "declared_decision_deadline": {"$ref": "#/$defs/nullableElapsedValue"},
+        "state_cutoff_status": {"type": "string", "enum": ["passed", "failed", "unverifiable"]},
+        "decision_deadline_status": {"type": "string", "enum": ["passed", "failed", "unverifiable", "not_declared"]},
+        "actual_workflow_artifact_id": {"$ref": "#/$defs/nullableId"},
+        "prohibited_input_check": {"type": "string", "enum": ["passed", "failed", "unverifiable"]},
+        "builder_blinding_attestation": {"type": "boolean"},
+        "frozen_at": {"$ref": "#/$defs/timestamp"},
+        "nonconfirmatory": {"type": "boolean"},
+        "domain_payload": {"$ref": "#/$defs/domainPayload"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "available"}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "primary_analysis_available": {"const": true},
+              "latest_material_state": {"$ref": "#/$defs/elapsedValue"},
+              "operational_ready_elapsed": {"$ref": "#/$defs/elapsedValue"},
+              "material_state_at": {"$ref": "#/$defs/timestamp"},
+              "acquired_at": {"$ref": "#/$defs/timestamp"},
+              "constructed_at": {"$ref": "#/$defs/timestamp"},
+              "operationally_available_at": {"$ref": "#/$defs/timestamp"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"enum": ["partially_available", "unavailable", "cutoff_violated", "lineage_unverifiable"]}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "primary_analysis_available": {"const": false},
+              "availability_reason_codes": {"minItems": 1}
+            }
+          }
+        }
+      ]
+    },
+    "outcomeValue": {
+      "oneOf": [
+        {"type": "number"},
+        {"type": "string", "minLength": 1},
+        {"type": "boolean"}
+      ]
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "row_type",
+        "study_id",
+        "outcome_id",
+        "outcome_spec_id",
+        "outcome_spec_version",
+        "subject_node_id",
+        "source_attempt_ids",
+        "target_name",
+        "target_type",
+        "target_unit",
+        "status",
+        "eligible",
+        "value",
+        "lower_bound",
+        "upper_bound",
+        "censoring_reason_code",
+        "followup_status",
+        "eligibility_reason_codes",
+        "outcome_horizon",
+        "assayed_at",
+        "accessible_at",
+        "assay_environment",
+        "source_artifact_ids",
+        "transformation_ids",
+        "uncertainty",
+        "independent_of_early_report",
+        "independence_rationale",
+        "builder_blinding_attestation",
+        "created_at",
+        "nonconfirmatory",
+        "domain_payload"
+      ],
+      "properties": {
+        "schema_version": {"const": "partner_rows.v1"},
+        "row_type": {"const": "outcome"},
+        "study_id": {"$ref": "#/$defs/id"},
+        "outcome_id": {"$ref": "#/$defs/id"},
+        "outcome_spec_id": {"$ref": "#/$defs/id"},
+        "outcome_spec_version": {"type": "string", "minLength": 1},
+        "subject_node_id": {"$ref": "#/$defs/id"},
+        "source_attempt_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "minItems": 1, "uniqueItems": true},
+        "target_name": {"type": "string", "minLength": 1},
+        "target_type": {"type": "string", "enum": ["continuous", "binary", "categorical", "ordinal", "time_to_event", "count"]},
+        "target_unit": {"type": ["string", "null"]},
+        "status": {"type": "string", "enum": ["observed_exact", "right_censored", "left_censored", "interval_censored", "missing", "not_followed", "unresolved", "ineligible"]},
+        "eligible": {"type": "boolean"},
+        "value": {
+          "oneOf": [
+            {"$ref": "#/$defs/outcomeValue"},
+            {"type": "null"}
+          ]
+        },
+        "lower_bound": {"type": ["number", "null"]},
+        "upper_bound": {"type": ["number", "null"]},
+        "censoring_reason_code": {
+          "oneOf": [
+            {"$ref": "#/$defs/reasonCode"},
+            {"type": "null"}
+          ]
+        },
+        "followup_status": {"type": "string", "enum": ["complete", "ongoing", "lost", "not_selected", "terminated_by_action", "unknown"]},
+        "eligibility_reason_codes": {"$ref": "#/$defs/reasonCodes"},
+        "outcome_horizon": {"$ref": "#/$defs/elapsedValue"},
+        "assayed_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "accessible_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "assay_environment": {"$ref": "#/$defs/provenance"},
+        "source_artifact_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "transformation_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "uncertainty": {"$ref": "#/$defs/uncertainty"},
+        "independent_of_early_report": {"type": "boolean"},
+        "independence_rationale": {"type": "string", "minLength": 1},
+        "builder_blinding_attestation": {"type": "boolean"},
+        "created_at": {"$ref": "#/$defs/timestamp"},
+        "nonconfirmatory": {"type": "boolean"},
+        "domain_payload": {"$ref": "#/$defs/domainPayload"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "observed_exact"}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "eligible": {"const": true},
+              "value": {"$ref": "#/$defs/outcomeValue"},
+              "lower_bound": {"type": "null"},
+              "upper_bound": {"type": "null"},
+              "censoring_reason_code": {"type": "null"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "right_censored"}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "eligible": {"const": true},
+              "value": {"type": "null"},
+              "lower_bound": {"type": "number"},
+              "upper_bound": {"type": "null"},
+              "censoring_reason_code": {"$ref": "#/$defs/reasonCode"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "left_censored"}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "eligible": {"const": true},
+              "value": {"type": "null"},
+              "lower_bound": {"type": "null"},
+              "upper_bound": {"type": "number"},
+              "censoring_reason_code": {"$ref": "#/$defs/reasonCode"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "interval_censored"}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "eligible": {"const": true},
+              "value": {"type": "null"},
+              "lower_bound": {"type": "number"},
+              "upper_bound": {"type": "number"},
+              "censoring_reason_code": {"$ref": "#/$defs/reasonCode"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"enum": ["missing", "not_followed", "unresolved", "ineligible"]}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "value": {"type": "null"},
+              "lower_bound": {"type": "null"},
+              "upper_bound": {"type": "null"},
+              "eligibility_reason_codes": {"minItems": 1}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "ineligible"}}, "required": ["status"]},
+          "then": {"properties": {"eligible": {"const": false}}}
+        }
+      ]
+    },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "row_type",
+        "study_id",
+        "cost_id",
+        "cost_type",
+        "linked_attempt_id",
+        "linked_node_id",
+        "linked_artifact_id",
+        "linked_representation_id",
+        "study_level",
+        "quantity",
+        "monetary_equivalent",
+        "incurred_at",
+        "measurement_window",
+        "estimate_status",
+        "estimation_method",
+        "evidence_artifact_ids",
+        "reason_codes",
+        "created_at",
+        "domain_payload"
+      ],
+      "properties": {
+        "schema_version": {"const": "partner_rows.v1"},
+        "row_type": {"const": "cost"},
+        "study_id": {"$ref": "#/$defs/id"},
+        "cost_id": {"$ref": "#/$defs/id"},
+        "cost_type": {"type": "string", "enum": ["acquisition_time", "instrument_time", "storage_volume", "storage_duration", "processing_time", "compute", "annotation", "turnaround", "retest", "rework", "scrap", "false_decision", "other"]},
+        "linked_attempt_id": {"$ref": "#/$defs/nullableId"},
+        "linked_node_id": {"$ref": "#/$defs/nullableId"},
+        "linked_artifact_id": {"$ref": "#/$defs/nullableId"},
+        "linked_representation_id": {"$ref": "#/$defs/nullableId"},
+        "study_level": {"type": "boolean"},
+        "quantity": {"$ref": "#/$defs/nullableQuantity"},
+        "monetary_equivalent": {"$ref": "#/$defs/nullableQuantity"},
+        "incurred_at": {"$ref": "#/$defs/nullableTimestamp"},
+        "measurement_window": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["start", "end"],
+          "properties": {
+            "start": {"$ref": "#/$defs/nullableTimestamp"},
+            "end": {"$ref": "#/$defs/nullableTimestamp"}
+          }
+        },
+        "estimate_status": {"type": "string", "enum": ["measured", "estimated", "not_available"]},
+        "estimation_method": {"type": ["string", "null"]},
+        "evidence_artifact_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
+        "reason_codes": {"$ref": "#/$defs/reasonCodes"},
+        "created_at": {"$ref": "#/$defs/timestamp"},
+        "domain_payload": {"$ref": "#/$defs/domainPayload"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"estimate_status": {"const": "not_available"}}, "required": ["estimate_status"]},
+          "then": {"properties": {"reason_codes": {"minItems": 1}}}
+        },
+        {
+          "anyOf": [
+            {"properties": {"study_level": {"const": true}}},
+            {"properties": {"linked_attempt_id": {"$ref": "#/$defs/id"}}},
+            {"properties": {"linked_node_id": {"$ref": "#/$defs/id"}}},
+            {"properties": {"linked_artifact_id": {"$ref": "#/$defs/id"}}},
+            {"properties": {"linked_representation_id": {"$ref": "#/$defs/id"}}}
+          ]
+        }
+      ]
+    }
+  }
+}

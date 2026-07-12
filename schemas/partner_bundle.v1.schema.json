@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://materials-event-modeling.org/schemas/partner_bundle.v1.schema.json",
+  "title": "Partner Downstream-Outcome Bundle Index v1",
+  "description": "Strict, hash-linked index for a partner golden bundle, pilot collection, confirmatory collection, external validation set, or analysis release.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "bundle_id",
+    "study_id",
+    "purpose",
+    "inference_status",
+    "created_at",
+    "study_spec",
+    "tables",
+    "source_denominator_counts",
+    "nonconfirmatory_scope",
+    "rights",
+    "release_status"
+  ],
+  "properties": {
+    "schema_version": {"const": "partner_bundle.v1"},
+    "bundle_id": {"$ref": "partner_rows.v1.schema.json#/$defs/id"},
+    "study_id": {"$ref": "partner_rows.v1.schema.json#/$defs/id"},
+    "purpose": {
+      "type": "string",
+      "enum": ["golden_bundle_nonconfirmatory", "pilot_nonconfirmatory", "confirmatory_collection", "external_validation", "analysis_release"]
+    },
+    "inference_status": {
+      "type": "string",
+      "enum": ["nonconfirmatory", "firewalled_preanalysis", "preregistered_confirmatory", "external_frozen_test", "analysis_complete"]
+    },
+    "created_at": {"$ref": "partner_rows.v1.schema.json#/$defs/timestamp"},
+    "study_spec": {"$ref": "#/$defs/studySpecDescriptor"},
+    "tables": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/tableDescriptor"},
+      "minItems": 12,
+      "maxItems": 12,
+      "uniqueItems": true,
+      "allOf": [
+        {"contains": {"properties": {"table_id": {"const": "assignments"}}, "required": ["table_id"]}, "minContains": 1},
+        {"contains": {"properties": {"table_id": {"const": "attempts"}}, "required": ["table_id"]}, "minContains": 1},
+        {"contains": {"properties": {"table_id": {"const": "events"}}, "required": ["table_id"]}, "minContains": 1},
+        {"contains": {"properties": {"table_id": {"const": "physical_nodes"}}, "required": ["table_id"]}, "minContains": 1},
+        {"contains": {"properties": {"table_id": {"const": "physical_edges"}}, "required": ["table_id"]}, "minContains": 1},
+        {"contains": {"properties": {"table_id": {"const": "artifacts"}}, "required": ["table_id"]}, "minContains": 1},
+        {"contains": {"properties": {"table_id": {"const": "transformations"}}, "required": ["table_id"]}, "minContains": 1},
+        {"contains": {"properties": {"table_id": {"const": "representations"}}, "required": ["table_id"]}, "minContains": 1},
+        {"contains": {"properties": {"table_id": {"const": "outcomes"}}, "required": ["table_id"]}, "minContains": 1},
+        {"contains": {"properties": {"table_id": {"const": "costs"}}, "required": ["table_id"]}, "minContains": 1},
+        {"contains": {"properties": {"table_id": {"const": "decisions"}}, "required": ["table_id"]}, "minContains": 1},
+        {"contains": {"properties": {"table_id": {"const": "corrections"}}, "required": ["table_id"]}, "minContains": 1}
+      ]
+    },
+    "source_denominator_counts": {"$ref": "#/$defs/sourceDenominatorCounts"},
+    "nonconfirmatory_scope": {"$ref": "#/$defs/nonconfirmatoryScope"},
+    "rights": {"$ref": "#/$defs/rights"},
+    "release_status": {"$ref": "#/$defs/releaseStatus"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"purpose": {"enum": ["golden_bundle_nonconfirmatory", "pilot_nonconfirmatory"]}}, "required": ["purpose"]},
+      "then": {"properties": {"inference_status": {"const": "nonconfirmatory"}}}
+    },
+    {
+      "if": {"properties": {"purpose": {"const": "external_validation"}}, "required": ["purpose"]},
+      "then": {"properties": {"inference_status": {"const": "external_frozen_test"}}}
+    }
+  ],
+  "$defs": {
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+    },
+    "studySpecDescriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "bytes", "schema_version", "schema_sha256"],
+      "properties": {
+        "path": {"$ref": "#/$defs/relativePath"},
+        "sha256": {"$ref": "partner_rows.v1.schema.json#/$defs/sha256"},
+        "bytes": {"type": "integer", "minimum": 1},
+        "schema_version": {"const": "partner_study.v1"},
+        "schema_sha256": {"$ref": "partner_rows.v1.schema.json#/$defs/sha256"}
+      }
+    },
+    "tableDescriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["table_id", "path", "sha256", "bytes", "row_count", "row_schema"],
+      "properties": {
+        "table_id": {
+          "type": "string",
+          "enum": ["assignments", "attempts", "events", "physical_nodes", "physical_edges", "artifacts", "transformations", "representations", "outcomes", "costs", "decisions", "corrections"]
+        },
+        "path": {"$ref": "#/$defs/relativePath"},
+        "sha256": {"$ref": "partner_rows.v1.schema.json#/$defs/sha256"},
+        "bytes": {"type": "integer", "minimum": 0},
+        "row_count": {"type": "integer", "minimum": 0},
+        "row_schema": {"type": "string", "minLength": 1}
+      }
+    },
+    "sourceDenominatorCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_system",
+        "extract_id",
+        "as_of",
+        "source_ledger_artifact_id",
+        "source_ledger_sha256",
+        "source_population_count",
+        "planned_assignments",
+        "released_assignments",
+        "not_started_assignments",
+        "cancelled_assignments",
+        "initiated_attempts",
+        "completed_attempts",
+        "failed_attempts",
+        "ambiguous_attempts",
+        "aborted_attempts",
+        "unknown_attempts",
+        "retries",
+        "reworks",
+        "eligible_followup_units",
+        "followed_units",
+        "right_censored_units",
+        "missing_outcome_units",
+        "domain_counts"
+      ],
+      "properties": {
+        "source_system": {"type": "string", "minLength": 1},
+        "extract_id": {"$ref": "partner_rows.v1.schema.json#/$defs/id"},
+        "as_of": {"$ref": "partner_rows.v1.schema.json#/$defs/timestamp"},
+        "source_ledger_artifact_id": {"$ref": "partner_rows.v1.schema.json#/$defs/id"},
+        "source_ledger_sha256": {"$ref": "partner_rows.v1.schema.json#/$defs/sha256"},
+        "source_population_count": {"type": "integer", "minimum": 0},
+        "planned_assignments": {"type": "integer", "minimum": 0},
+        "released_assignments": {"type": "integer", "minimum": 0},
+        "not_started_assignments": {"type": "integer", "minimum": 0},
+        "cancelled_assignments": {"type": "integer", "minimum": 0},
+        "initiated_attempts": {"type": "integer", "minimum": 0},
+        "completed_attempts": {"type": "integer", "minimum": 0},
+        "failed_attempts": {"type": "integer", "minimum": 0},
+        "ambiguous_attempts": {"type": "integer", "minimum": 0},
+        "aborted_attempts": {"type": "integer", "minimum": 0},
+        "unknown_attempts": {"type": "integer", "minimum": 0},
+        "retries": {"type": "integer", "minimum": 0},
+        "reworks": {"type": "integer", "minimum": 0},
+        "eligible_followup_units": {"type": "integer", "minimum": 0},
+        "followed_units": {"type": "integer", "minimum": 0},
+        "right_censored_units": {"type": "integer", "minimum": 0},
+        "missing_outcome_units": {"type": "integer", "minimum": 0},
+        "domain_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}}
+      }
+    },
+    "nonconfirmatoryScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assignment_ids", "attempt_ids", "physical_node_ids", "artifact_ids", "descendants_inherit", "reason"],
+      "properties": {
+        "assignment_ids": {"type": "array", "items": {"$ref": "partner_rows.v1.schema.json#/$defs/id"}, "uniqueItems": true},
+        "attempt_ids": {"type": "array", "items": {"$ref": "partner_rows.v1.schema.json#/$defs/id"}, "uniqueItems": true},
+        "physical_node_ids": {"type": "array", "items": {"$ref": "partner_rows.v1.schema.json#/$defs/id"}, "uniqueItems": true},
+        "artifact_ids": {"type": "array", "items": {"$ref": "partner_rows.v1.schema.json#/$defs/id"}, "uniqueItems": true},
+        "descendants_inherit": {"const": true},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "rights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["legal_basis", "agreement_id", "agreement_sha256", "raw_upstream_accessible", "study_use_permitted", "external_sharing_permitted", "publication_permitted", "privacy_classification", "restrictions", "owner", "licensee", "permitted_purpose", "derivatives_permitted", "model_ip_rule", "term", "termination_disposition", "security_jurisdiction", "subprocessors", "max_partner_review_days", "minimum_release", "independent_verifier_access"],
+      "properties": {
+        "legal_basis": {"type": "string", "minLength": 1},
+        "agreement_id": {"type": ["string", "null"]},
+        "agreement_sha256": {"$ref": "partner_rows.v1.schema.json#/$defs/nullableSha256"},
+        "raw_upstream_accessible": {"type": "boolean"},
+        "study_use_permitted": {"type": "boolean"},
+        "external_sharing_permitted": {"type": "boolean"},
+        "publication_permitted": {"type": "boolean"},
+        "privacy_classification": {"type": "string", "enum": ["public", "deidentified", "confidential", "restricted"]},
+        "restrictions": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "owner": {"type": "string", "minLength": 1},
+        "licensee": {"type": "string", "minLength": 1},
+        "permitted_purpose": {"type": "string", "minLength": 1},
+        "derivatives_permitted": {"type": "boolean"},
+        "model_ip_rule": {"type": "string", "minLength": 1},
+        "term": {"type": "string", "minLength": 1},
+        "termination_disposition": {"type": "string", "minLength": 1},
+        "security_jurisdiction": {"type": "string", "minLength": 1},
+        "subprocessors": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "max_partner_review_days": {"type": "integer", "minimum": 0},
+        "minimum_release": {"type": "string", "enum": ["aggregate_audit_outputs", "deidentified_row_level", "deidentified_bundle", "public_bundle"]},
+        "independent_verifier_access": {"type": "boolean"}
+      }
+    },
+    "releaseStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "publishable_outputs", "partner_approval_required", "approved_at", "release_artifact_id", "release_sha256", "reason_codes"],
+      "properties": {
+        "status": {"type": "string", "enum": ["internal_only", "aggregate_only", "deidentified_bundle", "public", "pending", "blocked"]},
+        "publishable_outputs": {"type": "boolean"},
+        "partner_approval_required": {"type": "boolean"},
+        "approved_at": {"$ref": "partner_rows.v1.schema.json#/$defs/nullableTimestamp"},
+        "release_artifact_id": {"$ref": "partner_rows.v1.schema.json#/$defs/nullableId"},
+        "release_sha256": {"$ref": "partner_rows.v1.schema.json#/$defs/nullableSha256"},
+        "reason_codes": {"$ref": "partner_rows.v1.schema.json#/$defs/reasonCodes"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"enum": ["public", "deidentified_bundle", "aggregate_only"]}}, "required": ["status"]},
+          "then": {
+            "properties": {
+              "approved_at": {"$ref": "partner_rows.v1.schema.json#/$defs/timestamp"},
+              "release_artifact_id": {"$ref": "partner_rows.v1.schema.json#/$defs/id"},
+              "release_sha256": {"$ref": "partner_rows.v1.schema.json#/$defs/sha256"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "blocked"}}, "required": ["status"]},
+          "then": {"properties": {"reason_codes": {"minItems": 1}}}
+        }
+      ]
+    }
+  }
+}
