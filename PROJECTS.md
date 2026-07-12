@@ -118,14 +118,18 @@ benchmark.
   are recorded in `docs/spine/compression_audit_publication_assessment.md`. The separate
   downstream-failure program and partner decision card are
   `docs/spine/downstream_failure_research_program.md` and
-  `docs/controlled-collection/downstream_endpoint_decision_card.md`.
+  `docs/controlled-collection/downstream_endpoint_decision_card.md`; the executable partner
+  contract and G1--G7 lifecycle are in
+  `docs/controlled-collection/partner_collection_pipeline.md`.
 - **Outreach (subfolder, logistics not research):** `docs/controlled-collection/outreach/` —
   Foundry application/proposal/emails, PI/collaborator outreach, personalization plan,
   outreach visuals (+ `figures/`), lab-outreach brief, next-steps.
 - **Scripts:** `audit_track_b_event_dataset.py`, `audit_durham_ipa_droplets.py`,
   `audit_dryad_gelation_dataset.py`, `audit_opencrystaldata.py`,
-  `run_durham_droplet_smoke_test.py`, `download_data.py`.
-- **Artifacts:** `schemas/material_event.schema.json`, `templates/`, `examples/track_b/`.
+  `run_durham_droplet_smoke_test.py`, `validate_partner_bundle.py`, `download_data.py`.
+- **Artifacts:** `schemas/material_event.schema.json`, the strict `partner_study.v1`,
+  `partner_rows.v1`, and `partner_bundle.v1` schemas, the permanently nonconfirmatory
+  `data/examples/partner_golden_bundle_synthetic/`, `templates/`, and `examples/track_b/`.
 - **Next step:** complete the remaining analysis-freeze blockers in
   `docs/controlled-collection/pilot_design_prereg.md` (v1 collection design, analysis freeze
   pending), confirm the partner-lab envelope, then commit the design lock and analysis freeze
@@ -135,6 +139,9 @@ benchmark.
   every accumulated constraint (16x3 counterbalanced, >=4 sessions with cross-session
   replicate pairs — the held-out-batch falsification's measured requirement — failures
   retained, labels frozen, grammar-native logging at L3).
+  For the separate consequential program, the next evidence-producing step is no longer schema
+  work: select one partner decision with the card and make that partner's own small golden bundle
+  pass `validate_partner_bundle.py --readiness golden`.
 
 ## Spine (cross-cutting)
 `docs/spine/` — concise thesis, strategy, publication assessments, and infrastructure.

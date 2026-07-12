@@ -13,3 +13,6 @@ From the repository root, validate it with:
 ```
 
 A successful run prints a JSON report with `"valid": true` and exits with status 0.
+The committed clean-run receipt is
+[partner_golden_bundle_validation.json](../../manifests/partner_golden_bundle_validation.json).
+It certifies mechanics only—not prevalence, effect size, transfer, or materials performance.

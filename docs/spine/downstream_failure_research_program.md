@@ -326,7 +326,8 @@ plausible. Equal budget alone does not identify policy value.
    engineering control rather than a practitioner-report result.
 3. Use the [downstream endpoint decision card](../controlled-collection/downstream_endpoint_decision_card.md)
    and [partner collection pipeline](../controlled-collection/partner_collection_pipeline.md) in
-   every partner conversation; require one nonconfirmatory golden bundle before pricing or
+   every partner conversation. The v1 schemas, validator, adversarial tests, and synthetic golden
+   bundle are now executable; require the partner's own `golden` gate to pass before pricing or
    promising a study.
 4. Select one real endpoint, cutoff, action, physical-unit graph, and transfer population.
 5. Estimate assay, batch, missingness, and censoring components from nonconfirmatory pilot units.

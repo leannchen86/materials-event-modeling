@@ -9,6 +9,61 @@ before confirmatory outcomes are accessed.
 Companion intake instrument:
 [downstream endpoint and decision card](downstream_endpoint_decision_card.md).
 
+## Executable v1 contract
+
+The strategy is implemented, not only described. The strict contract consists of:
+
+- [study specification schema](../../schemas/partner_study.v1.schema.json), which freezes the
+  decision, unit graph, representation DAG and arms, delayed outcome, environment design,
+  firewall, artifact policy, release terms, and sign-offs;
+- [row schema](../../schemas/partner_rows.v1.schema.json), covering assignments, attempts,
+  physical lineage, artifacts, transformations, representations, outcomes, decisions, costs,
+  and append-only corrections;
+- [bundle index schema](../../schemas/partner_bundle.v1.schema.json), which binds all twelve
+  ledgers and their exact row schemas by path, byte count, row count, and SHA-256;
+- [semantic validator](../../scripts/validate_partner_bundle.py), which enforces the cross-file
+  properties JSON Schema cannot express; and
+- a wholly fictitious, permanently nonconfirmatory
+  [synthetic golden bundle](../../data/examples/partner_golden_bundle_synthetic/README.md) with a
+  committed [validation receipt](../../data/manifests/partner_golden_bundle_validation.json).
+
+Run the mechanics gate from the repository root:
+
+```bash
+.venv/bin/python scripts/validate_partner_bundle.py \
+  data/examples/partner_golden_bundle_synthetic/bundle.json \
+  --readiness golden
+```
+
+The validator rejects nonfinite or duplicate-key JSON, unsafe and symlink-escaping paths, wrong
+or reused IDs, schema substitution, hash or byte mismatch, orphaned joins, cyclic physical or
+representation lineage, invented parent groups, partition leakage, cutoff/deadline violations,
+post-outcome representation freezing, inconsistent censoring, unlinked reports, silent retries,
+unreconciled independent source counts, incomplete crossing, invalid corrections, and vacuous
+readiness. A readiness result can never be `true` when a core schema, hash, lineage, or semantic
+check has failed.
+
+Readiness is deliberately split by lifecycle. A confirmatory-start package is not required to
+contain outcomes that do not yet exist, and an otherwise valid confirmatory cohort is not failed
+merely because no natural negative occurs. The negative/censor/retry example is mandatory for the
+golden mechanics bundle; later gates require complete denominators and explicit outcome states.
+
+| validator readiness | operational gate | what it authorizes |
+| --- | --- | --- |
+| `golden` | G1 | mechanics audit on permanently nonconfirmatory examples |
+| `pilot` | pilot close | use of the permanent development cohort for design estimation |
+| `confirmatory_start` | G3 | start collection after frozen assignments, design, rights, external reservation, hashes, and owner signatures |
+| `input_close` | G4 | close early inputs after actual crossed environments, native/report chains, decisions, and costs reconcile |
+| `outcome_reveal` | G5 | reveal/analyze outcomes after full subject coverage, lineage-aware unit freezes, and blinded outcome evidence pass |
+| `external_validation` | G6 | evaluate the prospectively frozen external test population |
+| `release` | G7 | release the approved reproducibility product |
+
+For confirmatory gates, `firewall_and_freeze.study_spec_sha256` denotes the detached design-lock
+manifest artifact. It must match that artifact and every signed owner hash. It is not a hash of the
+self-containing `study_spec.json`, which would be self-referential. Likewise,
+`assignment_sha256` must equal the delivered assignment ledger, and every locked freeze manifest,
+external site set, and release product is an artifact-ledger ID/hash pair.
+
 ## Strategy in one sentence
 
 For one real decision at one frozen deadline, collect a matched and versioned chain from native
@@ -336,6 +391,12 @@ log, or order system—at least weekly and at batch close. Report counts by batc
 condition, and status, not only overall. Golden, pilot, calibration, and confirmatory roles are
 immutable.
 
+Each delivered bundle includes a strict `partner_source_denominator.v1` snapshot of that
+independent source. Its source system, extract ID/time, assignment/attempt/follow-up state counts,
+and domain-stratified counts must equal the bundle declaration and its bytes must equal the
+artifact-ledger hash. Pointing at an arbitrary file with the expected hash field is not
+reconciliation; the validator parses and compares the snapshot contents.
+
 Every batch and outcome handoff is transactional: sender and receiver sign the file/schema/hash
 manifest, transport method, acceptance or rejection, discrepancy list and resolution deadline,
 and supersession chain. Batch close fails while denominator, lineage, checksum, or clock
@@ -359,16 +420,16 @@ fully recorded.
 
 ## Access gates
 
-| gate | evidence required | release |
-| --- | --- | --- |
-| G0 legal and operational | rights, security, release mode, named roles, real action/report | de-identified schema/examples |
-| G1 golden bundle | ordinary and failure/censor lineage reconstruct; source counts reconcile | permanently nonconfirmatory bundle |
-| G2 capture qualification | native export, escrow, hashes, clocks, decoder, report DAG pass | blinded input dry run |
-| G3 scientific freeze | endpoint, cutoff, assignment, QC, transforms, analysis, costs, release signed and committed | confirmatory early inputs only |
-| G4 batch/input close | attempts reconciled; native artifacts, reports, QC, and corrections frozen | read-only input snapshot |
-| G5 outcome reveal | horizon complete; target hash, eligibility counts, access review, joins, reveal certificate signed | exact confirmatory outcomes |
-| G6 external validation | model and claim frozen; external mode and calibration IDs declared | independent-site data |
-| G7 release | fixed confidentiality/patent review complete; hashes verified | agreed reproducibility package |
+| gate | validator readiness | evidence required | release |
+| --- | --- | --- | --- |
+| G0 legal and operational | intake only | rights, security, release mode, named roles, real action/report | de-identified schema/examples |
+| G1 golden bundle | `golden` | ordinary and failure/censor lineage reconstruct; source counts reconcile | permanently nonconfirmatory bundle |
+| G2 capture qualification | `pilot` plus qualification review | native export, escrow, hashes, clocks, decoder, report DAG pass | blinded input dry run |
+| G3 scientific freeze | `confirmatory_start` | endpoint, cutoff, assignment, QC, transforms, analysis, costs, release signed and committed | confirmatory early inputs only |
+| G4 batch/input close | `input_close` | attempts reconciled; native artifacts, reports, QC, and corrections frozen | read-only input snapshot |
+| G5 outcome reveal | `outcome_reveal` | horizon complete; target hash, eligibility counts, access review, joins, reveal certificate signed | exact confirmatory outcomes |
+| G6 external validation | `external_validation` | model and claim frozen; external mode and calibration IDs declared | independent-site data |
+| G7 release | `release` | fixed confidentiality/patent review complete; hashes verified | agreed reproducibility package |
 
 The reveal certificate records the preregistration commit, assignment hash, input-manifest hash,
 target hash, eligibility/censor counts, unresolved corrections, access-log review, and exact first

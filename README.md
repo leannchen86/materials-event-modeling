@@ -42,6 +42,13 @@ reproducibility, degradation, or functional performance as separately defined ta
 identify the cheapest reporting stage that preserves transferable decision value. The staged scope
 and stop rules are in
 [downstream_failure_research_program.md](docs/spine/downstream_failure_research_program.md).
+The partner-facing implementation is in the
+[partner collection pipeline](docs/controlled-collection/partner_collection_pipeline.md), backed
+by strict [study](schemas/partner_study.v1.schema.json),
+[row](schemas/partner_rows.v1.schema.json), and
+[bundle](schemas/partner_bundle.v1.schema.json) contracts, an executable
+[validator](scripts/validate_partner_bundle.py), and a permanently nonconfirmatory
+[synthetic golden bundle](data/examples/partner_golden_bundle_synthetic/README.md).
 
 The work has two active directions and one retained reference archive. See
 [PROJECTS.md](PROJECTS.md) for the current decision record.
