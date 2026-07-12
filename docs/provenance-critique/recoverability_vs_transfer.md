@@ -1,10 +1,9 @@
 # Recoverability is a risk signal, not a transfer predictor (opXRD, n=6)
 
-As of 2026-07-03. Closes the provenance branch's open question — *connect recoverability
-to a downstream evaluation, not just report the probe* (PROJECTS.md next step). It
-correlates, per opXRD source, how identifiable the source is against how hard the residual
-CNN transfers to it when held out. Analysis over two committed manifests; no model run.
-Reproduce: `scripts/analyze_opxrd_recoverability_vs_transfer.py`.
+As of 2026-07-03. Correlates, per opXRD source, how identifiable the source is against how
+hard the historical residual CNN transfers to it when held out. Analysis over two committed
+manifests; no model run. The retired analysis command and source manifests are available at Git
+commit `12e7d7f`; the compact result manifest remains live.
 
 > Read with [../spine/data_assumptions_and_limits.md](../spine/data_assumptions_and_limits.md):
 > **n=6 sources** — every correlation here is descriptive, not inferential.
@@ -24,11 +23,13 @@ Transfer badness > 0 means the CNN loses to interpolation on that held-out sourc
 
 ## Finding
 
-- **Spectral recoverability does not predict transfer difficulty**: Spearman **+0.029**
+- **Spectral recoverability does not predict transfer difficulty**: Spearman **0.03**
+  (unrounded +0.029)
   (essentially zero). The most recoverable source (LBNL, 0.979) transfers *well*; a
   poorly recoverable one (HKUST, 0.565) transfers *badly*.
 - **Metadata recoverability barely predicts it**: +0.203 (weak).
-- **What predicts transfer is source size**: Spearman(log n, badness) = **−0.714**. The
+- **What predicts transfer is source size**: Spearman(log n, badness) = **-0.71**
+  (unrounded -0.714). The
   two sources the CNN loses on (EMPA n=34, HKUST n=23) are the small ones; the strong
   winners are the two largest (INT, LBNL). This matches the branch's earlier per-source
   diagnostic (EMPA: small, low intensity, dense peaks; HKUST: sparse, interpolation-

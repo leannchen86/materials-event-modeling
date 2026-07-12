@@ -81,21 +81,19 @@
     ]
   },
   "severson_ab_primary_rank_ridge": {
-    "metric": "Severson A-full within-policy replicate ranking, ridge, PRIMARY A/B run (distinct from the ranking-robustness follow-up: this is 0.765 with CI [0.529, 0.941], exact binomial p=0.0245, 13/17). NOTE the near-collision with severson_ab_rank_ridge (0.756) -- do not transpose.",
+    "metric": "Legacy Severson primary A/B table: A-full within-policy replicate ranking under ridge. The surviving live manifest was later regenerated on a different/full event set and does not contain this exact cell; do not use this magnitude as a headline.",
     "display": "0.765",
     "ci95_display": "[0.529, 0.941]",
-    "robustness": "sample-dependent",
-    "claim_served": "claim 3 primary A/B: A-full ranks replicates above chance under ridge.",
+    "robustness": "legacy-unpinned",
+    "claim_served": "historical result-table value retained for auditability; superseded for current claims by manifest-backed ranking robustness and held-batch results.",
     "eval_date": "2026-07-03",
     "source": {
       "kind": "literal",
       "value": 0.765,
-      "provenance": "docs/controlled-collection/severson_representation_ab.md within-policy ranking table (A-full ridge); backed by data/manifests/severson_representation_ab.json. Pointer not yet pinned -- resolve and convert to kind:manifest.",
-      "pointer_todo": true
+      "provenance": "docs/controlled-collection/severson_representation_ab.md within-policy ranking table (A-full ridge); no surviving manifest pointer reproduces this exact historical cell."
     },
     "cited_in": [
-      "docs/controlled-collection/severson_representation_ab.md",
-      "docs/provenance-critique/second_dataset_replication.md"
+      "docs/controlled-collection/severson_representation_ab.md"
     ]
   },
   "severson_batch_recoverability": {
@@ -112,7 +110,6 @@
     "_note": "SKILL.md states this result qualitatively (no magnitude), so it is intentionally NOT in cited_in.",
     "cited_in": [
       "docs/controlled-collection/severson_representation_ab.md",
-      "docs/provenance-critique/provenance_leakage_audit.md",
       "docs/provenance-critique/second_dataset_replication.md"
     ]
   },
@@ -127,9 +124,7 @@
       "manifest": "data/manifests/provenance_leakage_audit_opxrd_r2.json",
       "pointer": "worst_provenance_recoverability_score"
     },
-    "cited_in": [
-      "docs/provenance-critique/provenance_leakage_audit.md"
-    ]
+    "cited_in": []
   },
   "recoverability_vs_transfer_spectral": {
     "metric": "opXRD recoverability-vs-downstream-transfer: Spearman of per-source SPECTRAL recoverability vs held-out-source transfer badness. ~0 -- recoverability does NOT predict transfer difficulty.",

@@ -1,188 +1,93 @@
-# Provenance-recoverability audit
+# Provenance-Recoverability Audit
 
-> **Terminology correction (2026-07-12).** The opXRD spectral arm is the archive's deposited
-> pattern after fixed-grid interpolation, minimum shift, and max normalization. Historical feature
-> IDs such as `xrd_pca` are retained for manifest compatibility, but `raw spectra` below means this
-> standardized deposited spectrum, not the native instrument artifact. The archive-to-standardized
-> edge and input content hashes were not audited in these runs.
+Status: maintained control module. CLI:
+[`run_provenance_leakage_audit.py`](../../scripts/run_provenance_leakage_audit.py); core:
+[`provenance_leakage.py`](../../src/materials_event_modeling/audit/provenance_leakage.py).
 
-A reusable, dataset-agnostic diagnostic that answers one question: **how much of an
-*incidental* provenance label can a simple model recover from a record's features?**
+## Question
 
-- **Core:** [`src/materials_event_modeling/audit/provenance_leakage.py`](../../src/materials_event_modeling/audit/provenance_leakage.py) — modality-agnostic, `numpy` + `scikit-learn` only.
-- **CLI / adapters:** [`scripts/run_provenance_leakage_audit.py`](../../scripts/run_provenance_leakage_audit.py)
-- **Tests:** [`tests/test_provenance_leakage.py`](../../tests/test_provenance_leakage.py)
+How much of an incidental collection label can a simple model recover from a representation?
 
-It unifies the four ad-hoc opXRD scripts (`analyze_opxrd_source_predictability`,
-`analyze_opxrd_normalization_controls`, `analyze_opxrd_source_diagnostics`,
-`run_opxrd_source_transfer`) behind one tool with a normalized 0–1 recoverability score,
-a heuristic `clean / elevated / severe` risk band, and a control-efficacy check.
+The answer is a screening signal. High recoverability says that a held-environment task evaluation
+and carrier ablations are necessary; it does not prove that a downstream model used the signal or
+that the signal harms transfer.
 
-> **Replicated on a second experimental dataset (2026-07-03).** The opXRD finding below
-> is no longer single-dataset: it replicates on RRUFF mineral Raman (laser-line
-> recoverable, severe) and generalizes to a non-spectral modality (Severson battery
-> cycling). The RRUFF **chemistry-matched control** — which opXRD could not run — shows
-> the composition-invariant provenance signal lives in *acquisition geometry* (point
-> count, coverage), while spectral-content recovery is mostly chemistry. See
-> [second_dataset_replication.md](second_dataset_replication.md). That control is the
-> reason a second dataset mattered: it decomposes what opXRD could only observe.
+## Procedure
 
-## Scope
+For each representation:
 
-This is a materials-measurement diagnostic. It asks whether source-associated variation is
-recoverable from a spectrum or its metadata. A high score warrants coverage controls,
-source/session-held-out evaluation, and a downstream sensitivity check. It does **not**
-by itself establish contamination, an instrument effect, or a downstream shortcut.
+1. define the real provenance unit and the variables bundled by its label;
+2. keep preprocessing, PCA, model selection, and calibration inside CV folds;
+3. report balanced accuracy, chance, normalized recoverability, fold/seed spread, and class counts;
+4. test metadata, coverage/acquisition geometry, measurement content, and physically motivated
+   controls separately;
+5. use specimen/material groups when descendants could cross folds; and
+6. pair the probe with held-source/session task performance.
 
-## What it measures
+The normalized score is
 
-For each feature representation, a balanced logistic-regression probe (vs a
-most-frequent baseline) under stratified k-fold recovers the provenance label. The
-balanced accuracy is normalized against chance:
+\[
+\frac{\mathrm{balanced\ accuracy}-1/K}{1-1/K},
+\]
 
-```
-recoverability_score = (balanced_accuracy − chance) / (1 − chance)   # 0 at chance, 1 at perfect recovery
-```
+where $K$ is the number of provenance classes. The risk bands are heuristic triage thresholds, not
+probabilities of contamination.
 
-Verdict bands (heuristic, tunable): `clean < 0.15 ≤ elevated < 0.50 ≤ severe`.
+## opXRD calibration result
 
-With `--include-controls` it also asks the **remediation** question — does a
-preprocessing control neutralize the confound? — by comparing the raw representation to
-the strongest control (coverage-crop + row z-score + derivative).
+The current manifest is
+[`provenance_leakage_audit_opxrd_r2.json`](../../data/manifests/provenance_leakage_audit_opxrd_r2.json).
+It records repeated fold-local evaluation, curation-flag ablation, coverage controls, and run
+identity. Source was recoverable from both metadata and standardized deposited spectra; cropping,
+row normalization, and derivatives reduced but did not eliminate recovery.
 
-## Revision 1 result on opXRD (reproduces the prior runs — superseded, see Revision 2)
+Terminology matters: opXRD `xrd_pca` is the deposited pattern after fixed-grid interpolation,
+minimum shift, and max normalization—not native instrument bytes. `Source` also bundles chemistry,
+laboratory, instrument, software, and curation. The archive-to-standardization edge and input content
+hashes were not audited in the historical run.
 
-> **Methodological caveat (found 2026-07-02, fixed in Revision 2):** these numbers were
-> produced with PCA fit on the full matrix *before* cross-validation (transductive), so
-> test rows shaped the basis and PCA-based scores are somewhat inflated; the `metadata`
-> set also included `is_labeled`, a dataset-curation flag that is near-deterministic per
-> source. Retained for the record; quote Revision 2 numbers externally.
-
-```
-.venv/bin/python scripts/run_provenance_leakage_audit.py --dataset opxrd --include-controls
-```
-
-6 sources, 4093 spectra, chance balanced-acc 0.167:
-
-| feature set | recoverability | bal-acc | risk |
-| --- | ---: | ---: | --- |
-| metadata | 0.974 | 0.978 | severe |
-| coverage_mask_pca | 0.878 | 0.898 | severe |
-| xrd_pca (raw spectra) | 0.743 | 0.786 | severe |
-| spectrum_summary | 0.602 | 0.668 | severe |
-| crop_xrd_derivative_pca (strongest control) | 0.467 | 0.556 | elevated |
-
-**Control efficacy:** raw `full_xrd_pca` (0.743) → `crop_xrd_derivative_pca` (0.467) =
-37% recoverability reduction, **still elevated**. Read: coverage-related metadata
-distinguishes sources strongly, and aggressive preprocessing only partially reduces that
-association. Treat source as a risk factor to control and test, not as an effect that
-normalization has removed.
-
-## Revision 2 (pre-registered 2026-07-03): in-fold PCA, curation-flag ablation, seed floor
-
-Ladder placement: rung 2 (audit-power) of `docs/spine/event_grammar_validation_note.md`;
-serves the evidence hygiene of the provenance protocol before second-dataset replication.
-Null attacked: the Revision 1 numbers survive honest evaluation unchanged.
-
-Three defects to fix (surfaced by external review 2026-07-02):
-
-1. **Transductive PCA.** PCA was fit on all 4,093 spectra before `StratifiedKFold`; only
-   scaler + logistic regression sat inside the fold. Fix: PCA now fits inside each fold
-   on the train split only (`pca_components` in the audit core).
-2. **Curation-flag tautology.** `is_labeled` (labeled fraction per source:
-   1.0/1.0/1.0/0.04/0.0/0.0) nearly dichotomizes the sources by bookkeeping, not physics.
-   Fix: default `metadata` drops it; `metadata_plus_curation` keeps the old 8-feature set
-   for transparency; `--feature-ablation` audits every metadata feature alone.
-3. **Single-seed, threshold-adjacent verdict.** The quotable "elevated, not severe" call
-   (0.467 vs the 0.50 cutoff) rested on one CV seed, 3 folds. Fix: `--cv-repeats 3` pools
-   folds across shifted seeds; verdicts near a band boundary must be reported as
-   mean ± std.
-
-Pre-registered hypotheses and expected numbers (written and committed before the run):
-
-- **H1 (in-fold PCA):** spectral recoverability drops slightly but stays severe.
-  Expected: `xrd_pca` bal-acc 0.786 → 0.70–0.79, score ≥ 0.50. *Falsifier:* score below
-  0.50 means the "recoverable from spectra" claim was substantially a CV artifact →
-  retract the spectra claim (metadata claim unaffected) and re-report everywhere it is
-  quoted.
-- **H2 (drop `is_labeled`):** metadata stays severe without the curation flag. Expected:
-  score 0.974 → ≥ 0.85 (theta range/points are near-deterministic per source).
-  *Falsifier:* score < 0.50 means the headline metadata number was mostly bookkeeping.
-- **H3 (feature ablation):** `theta_min` / `theta_max` / `theta_span` and `is_labeled`
-  are each individually elevated-or-severe; intensity features are weaker.
-- **H4 (seed floor):** `crop_xrd_derivative_pca` mean ± std straddles or approaches the
-  0.50 boundary → the published claim downgrades from "elevated, not severe" to
-  "borderline elevated/severe (≈0.40–0.55)".
-- **Decision this changes:** whether the tool can be applied as-is to the second dataset
-  (protocol replication) and quoted externally.
-
-Run command:
-
-```
-.venv/bin/python scripts/run_provenance_leakage_audit.py --dataset opxrd \
-  --include-controls --feature-ablation --cv-repeats 3 \
+```bash
+.venv/bin/python scripts/preprocess_opxrd.py --max-spectra 4096 --points 4096
+.venv/bin/python scripts/run_provenance_leakage_audit.py \
+  --dataset opxrd --include-controls --feature-ablation --cv-repeats 3 \
   --output data/manifests/provenance_leakage_audit_opxrd_r2.json
 ```
 
-### Revision 2 results (run 2026-07-03, commit `eeb559d`, manifest `provenance_leakage_audit_opxrd_r2.json`)
+## Why the second dataset mattered
 
-6 sources, 4,093 spectra, chance bal-acc 0.167, 3-fold × 3 seed repeats, PCA in-fold.
-These are the externally quotable numbers.
+The [RRUFF and Severson replication](second_dataset_replication.md) separated two mechanisms that
+opXRD confounds. In a chemistry-matched RRUFF subset, broad spectral content lost much of its laser-
+line recoverability while acquisition geometry/coverage remained strong. Severson showed that
+collection recoverability is not limited to spectra.
 
-| feature set | recoverability | bal-acc ± std | risk |
-| --- | ---: | ---: | --- |
-| metadata (no `is_labeled`) | 0.972 | 0.976 ± 0.012 | severe |
-| metadata_plus_curation (old 8-feature set) | 0.977 | 0.981 ± 0.009 | severe |
-| coverage_mask_pca | 0.887 | 0.906 ± 0.018 | severe |
-| xrd_pca (raw spectra) | 0.743 | 0.786 ± 0.055 | severe |
-| spectrum_summary | 0.597 | 0.664 ± 0.061 | severe |
-| crop_xrd_derivative_pca (strongest control) | 0.409 | 0.508 ± 0.030 | elevated |
+RRUFF inputs are primarily the archive's `Processed` Raman export. The RAW-to-Processed edge was
+not tested. Severson batch/date bundles lot, policy, and collection style. These caveats bound the
+mechanism claim without erasing the screening result.
 
-Single-feature ablation (each metadata feature audited alone): `points` 0.728 (severe);
-`theta_min` 0.477, `theta_span` 0.435, `phase_count` 0.400, `theta_max` 0.343 (elevated);
-`intensity_max` 0.202, `is_labeled` 0.200 (elevated); `intensity_min` 0.126 (clean).
+## Downstream interpretation
 
-**Control efficacy:** `full_xrd_pca` (0.743) → `crop_xrd_derivative_pca` (0.409) = 45%
-recoverability reduction, still elevated.
+The [n=6 opXRD comparison](recoverability_vs_transfer.md) found no descriptive relationship between
+spectral recoverability and held-source task difficulty. That is the intended discipline:
 
-### Verdict against the pre-registered hypotheses
+```text
+recoverability -> inspect carriers and require held-environment evaluation
+recoverability != demonstrated shortcut use or predicted transfer failure
+```
 
-- **H1 validated.** In-fold PCA left raw-spectra recoverability essentially unchanged:
-  `xrd_pca` 0.743 / bal-acc 0.786 (predicted 0.70–0.79). The severe verdict on spectra
-  survives honest evaluation; the transductive fitting had negligible effect on the
-  strong sets.
-- **H2 validated.** Dropping `is_labeled` moved metadata recoverability from 0.977 to
-  0.972 (predicted ≥ 0.85). The headline metadata claim was **not** the curation-flag
-  tautology; it is carried by acquisition bookkeeping.
-- **H3 partially validated.** The strongest single carrier is `points` (0.728, severe),
-  then the theta-coverage family (0.343–0.477, elevated). `is_labeled` alone is weak
-  (0.200: it separates the three fully-labeled from the three unlabeled sources as
-  groups but cannot distinguish within groups). No single feature approaches the
-  combined 0.972 — the lab fingerprint is a *combination* of bookkeeping fields, which
-  is exactly why per-field normalization does not remove it.
-- **H4 validated with a twist.** The borderline claim was the one number transductive
-  PCA had inflated: the honest in-fold value is 0.409 ± ~0.04 (was 0.467), now ~2.5 std
-  *below* the 0.50 severe cutoff rather than 0.7 std under it. The remediation verdict
-  becomes cleaner, not murkier: control efficacy improves from 37% to 45% reduction, and
-  "elevated, not severe" is now a defensible statement with uncertainty attached.
-- **Decision:** the tool is fit to carry to the second dataset unchanged, and Revision 2
-  numbers replace Revision 1 anywhere the result is quoted. Belief update: the finding
-  is robust to all three fixes; the one number that moved (0.467 → 0.409) moved in the
-  direction the review predicted, which is evidence the review process itself works.
+## Adding an active dataset
 
-## Adding a dataset
+Add a loader returning named feature matrices, provenance labels, independent-unit groups, and
+declared control pairs. Record exact input hashes and the capture/adapter edge above each matrix.
+Do not add a dataset merely to increase a replication count; it must test a new carrier or a real
+downstream decision.
 
-Write one adapter returning `{feature_sets, labels, control_pairs, pca_spec, meta}` and
-register it in `DATASETS` in the CLI. Matrices named in `pca_spec` are reduced by PCA
-*inside* each fold. No change to the core. Natural next target: NIST or HTEM (both
-already audited in `data/manifests/`), to make this a *protocol applied across ≥2
-datasets* rather than a single-dataset diagnostic.
+## Limits
 
-## Scope / honest limits
+- provenance labels are often bundled proxies rather than clean causal factors;
+- public archives are selected and processed before this audit sees them;
+- few provenance units make confidence intervals and generalization claims fragile;
+- a probe may miss nonlinear or rare provenance signal; and
+- removing provenance predictability can remove legitimate physical information.
 
-- Random folds answer whether the imprint is **present**, not whether it **generalizes
-  to unseen sources**. The leave-one-source-out *reconstruction* transfer
-  (`run_opxrd_source_transfer.py`, needs torch) is the deeper layer and can be folded in
-  as a third audit stage later.
-- A high score flags collection-associated variation, not a proven downstream failure or
-  a causal attribution to instrumentation.
+Use the audit to make evaluation harder and interpretations narrower, not to declare a
+representation invariant.

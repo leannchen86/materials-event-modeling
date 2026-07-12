@@ -199,9 +199,7 @@ metadata, report leave-one-source-out, and do not assume spectral normalization 
 provenance). Publishability: this is now a genuine cross-dataset methods result with a
 control that strengthens rather than merely repeats it.
 
-Follow-ons: (a) fold the chemistry-matched-control framing into
-`provenance_leakage_audit.md` (the flagship doc) as the "why a second dataset mattered"
-section; (b) an HTEM within-library run is the natural third dataset where grouped folds
-DO bite (positions nested in libraries) — but only if a third dataset changes a decision,
-not for completeness; (c) the acquisition-geometry finding is the strongest single
-sentence for the methods paper — lead with it.
+Current decision (2026-07-12): the public-data branch is closed. The chemistry-matched-control
+framing now lives in `provenance_leakage_audit.md`; HTEM model extensions and one-off replication
+scripts were retired to Git history. Provenance recoverability remains a maintained control inside
+the prospective compression program, not a reason to add a third public leaderboard.
