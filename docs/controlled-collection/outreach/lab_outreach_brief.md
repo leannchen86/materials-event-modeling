@@ -1,63 +1,68 @@
-# Track B Lab Outreach Brief
+# Lab and Data-Partner Brief
 
-## Short Pitch
+Status: current outreach one-pager, revised 2026-07-12.
 
-We are building a small event-level materials dataset. The goal is not to optimize a
-known phase label or make a clean success-only dataset. The goal is to preserve raw
-material-making events: process history, raw measurements, ambiguous outcomes, failed or
-partial events, and later human labels as probes.
+## The question
 
-The first candidate system is calcium carbonate polymorph crystallization, but the exact
-procedure, safety review, chemical handling, waste handling, and instrument SOPs must come
-from the partner lab.
+For one real materials decision, which early signals are lost when an experiment becomes a report
+or grade, and does any richer signal transfer across batches, instruments, or sites?
 
-## What We Are Asking For
+We do not assume raw data wins. The desired result is the least costly representation that preserves
+decision value, with upstream evidence retained when future tasks or verification justify it.
 
-- Feedback on whether our event schema is realistic to collect.
-- Permission to save raw measurement files, not only processed summaries.
-- Powder XRD access with raw export metadata.
-- Basic event metadata logging: date, operator, batch, reagent lot, instrument session.
-- Separate logging for planned conditions versus observed trajectory:
-  planned settings before execution, and actual pH/temperature/timing/deviations during
-  execution.
-- Permission to keep negative, ambiguous, partial, and messy runs.
-- Optional access to microscopy, Raman, or FTIR if already available.
-- A lab-approved SOP and safety guidance before any actual experiment.
+## Two distinct asks
 
-## What We Are Not Asking For
+### Methods-pilot lab
 
-- We are not asking the lab to guarantee clean phase-pure products.
-- We are not asking for labels before raw files are frozen.
-- We are not asking to discard ambiguous or failed runs.
-- We are not treating the lab's phase labels as the ground truth objective.
+Execute the already designed CaCO3 pilot under approved SOP and safety oversight. The study
+calibrates event logging, early quantitative/report/label arms, and a frozen 24-hour laboratory
+outcome. It is not an industrial degradation or qualification study.
 
-## Why This Is Different
+### Downstream-workflow partner
 
-Most materials ML datasets compress events into labels: `phase pure`, `impure`,
-`failed`, `metastable`, `ambiguous`, and so on. We want to preserve the richer event first,
-then ask whether those labels are clean coordinates, lossy projections, or artifacts of
-how data was collected and interpreted.
+Share a small de-identified, permanently nonconfirmatory chain from a real workflow:
 
-## Pilot Size
+```text
+measurement opportunity -> native artifact -> actual report -> delayed outcome -> action
+```
 
-The first pilot can be small: 48 to 96 events if logging is rich. The purpose is to test
-the data model and measurement loop, not to discover a new material.
+The first deliverable is a golden bundle and opportunity inventory, not a model, data dump, or
+promise of a full study.
 
-## Questions For The Lab
+## What we need
 
-1. Which fields in the schema are realistic to collect without slowing the lab too much?
-2. Which fields are missing from the schema but crucial for interpreting the measurements?
-3. Can raw XRD files and instrument metadata be exported consistently?
-4. Can failed, partial, or ambiguous events be saved rather than filtered out?
-5. Can labels be assigned after raw data is frozen?
-6. What SOP, PPE, training, and waste-handling requirements apply?
-7. Are there safer or more convenient candidate systems than calcium carbonate for this
-   first event-dataset pilot?
-8. Can planned conditions and observed trajectory be logged separately, or would that be
-   too burdensome for normal workflow?
+- a named early action and current report/SOP;
+- measurement opportunities and the human/script/AI policy that selected them;
+- native files, process logs, exact readers, units, configurations, and transformations;
+- complete attempt, failure, ambiguity, censor, retry, and rework denominators;
+- physical lineage from execution/material batch to the outcome subject;
+- multiple independent batches/environments and a possible external site;
+- outcome assay, uncertainty, eligibility, follow-up, and costs; and
+- rights to retain evidence and publish at least aggregate scientific results.
 
-## Success Criterion For The First Lab Conversation
+## What we do not ask
 
-We are successful if we learn whether the event schema is collectable, what fields must
-change, and what constraints the lab workflow imposes. We do not need a commitment to run
-experiments in the first conversation.
+- no production access or confirmatory commitment during the first conversation;
+- no claim that labels are wrong or raw files are universally better;
+- no retrospective feature packet invented to make richer data win;
+- no deletion of failed, censored, or inconvenient attempts; and
+- no transfer of outcomes to model builders before the design and inputs freeze.
+
+## Questions for the first conversation
+
+1. What decision would change before the delayed outcome arrives?
+2. What report or grade is actually used today, and what evidence/side information creates it?
+3. Which measurements could have been taken, which were selected, and by whom or what policy?
+4. Can native bytes, readers, transformations, and omitted channels be reconstructed?
+5. What is the true independent unit: execution, material batch, specimen, device, or lot?
+6. Are failures, censors, retests, reworks, and unassayed units visible in source ledgers?
+7. Which batches, instruments, operators, lots, and sites are crossed rather than confounded?
+8. Can the ordinary report, outcome, costs, and lineage be included in a small golden bundle?
+
+## A successful first conversation
+
+We leave with one bounded workflow, one decision/outcome pair, the likely capture boundary, an
+owner for a nonconfirmatory golden bundle, and an explicit reason to proceed or stop. We do not
+leave with a vague agreement to “share raw data.”
+
+Canonical contract: [partner_collection_pipeline.md](../partner_collection_pipeline.md).
