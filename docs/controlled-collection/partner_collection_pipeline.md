@@ -16,8 +16,11 @@ evidence through the actual practitioner report to an independently measured del
 while deliberately crossing conditions across future deployment environments and retaining every
 attempt, failure, censor, retry, and unavailable representation.
 
-The goal is not to prove that raw data win. The goal is to identify the least costly reporting
-stage that preserves decision value under the environments where the partner intends to use it.
+The goal is not to prove that raw data win. The online goal is to identify the least costly
+reporting stage that preserves decision value under the environments where the partner intends to
+use it. That finding never authorizes deletion: archival retention of native evidence for incident
+review, future tasks, verification, or model revision is a separate decision with a separate cost
+and utility analysis.
 
 ## Five design rules
 
@@ -34,7 +37,9 @@ stage that preserves decision value under the environments where the partner int
 
 ## The identifying graph
 
-Every analysis subject must traverse two linked graphs.
+Every attempted or outcome-eligible subject must have a ledger row and an explicit
+available/unavailable/not-applicable status at every declared graph node. Complete traversal is not
+required—failures and absent reports are part of the estimand—but silent disappearance is forbidden.
 
 The physical-unit graph is:
 
@@ -105,8 +110,12 @@ and material lots. Pilot outcomes may be used to estimate:
 - storage, processing, annotation, assay, and decision latency costs; and
 - feasible learner capacity and hierarchical power.
 
-The pilot can repair parsers, schemas, QC rules, and simulation assumptions. It is a permanent
-development set and never later becomes confirmatory evidence.
+The pilot can repair parsers, schemas, and simulation assumptions. A QC threshold or availability
+rule may change only for an outcome-independent engineering reason, preferably under a QC role
+firewalled from pilot targets; association with the pilot outcome may never select a QC rule. The
+pilot is a permanent development set and never later becomes confirmatory evidence. Its physical
+parents, descendants, continuations, lots, and specimens are disjoint from confirmatory subjects,
+or any unavoidable shared ancestry is declared and excluded from confirmatory inference.
 
 ### 3. Prospective confirmatory collection
 
@@ -123,8 +132,17 @@ Before confirmatory outcomes are visible to representation builders or analysts,
 - assignment, input, QC, outcome, analysis, and release manifest schemas; and
 - code commit, split-assignment hash, sign-offs, and the exact outcome-release procedure.
 
-Confirmatory batch IDs are registered before execution. Early artifacts and ordinary reports are
-frozen at batch close; delayed outcomes remain with a separate custodian until the reveal gate.
+Confirmatory batch IDs are registered before execution. For every subject, eligible early inputs
+and the ordinary report must be immutable before that subject's outcome or outcome-completion
+signal becomes accessible to their builders. A later batch-close certificate proves aggregate
+completeness but cannot repair reversed unit-level chronology. Delayed outcomes live in a separate
+encrypted namespace under a separate custodian until the reveal gate; filenames, hashes,
+availability flags, and completion signals are also protected.
+
+The default reveal occurs once after the entire confirmatory cohort closes. If staged reveals are
+scientifically necessary, every later stage is a newly registered cohort with its own frozen
+assignment, inputs, analysis, and error-spending rule; an early reveal may not silently influence
+later QC, transforms, stopping, or collection.
 
 ## Collection design: a partner-native stream plus a bridge panel
 
@@ -136,6 +154,19 @@ Capture the ordinary production, development, or qualification workflow in shado
 changing the current decision. This preserves real report use, authentic failure modes, natural
 missingness, and operational costs.
 
+Record the ordinary report, decision, allowed action set, chosen action, timing, rationale,
+fallback, and whether any research output was visible. Study models never intervene during shadow
+collection. If the ordinary report-driven action can alter Y—for example by stopping, rerouting,
+reworking, or changing later processing—the primary estimand must be explicitly one of:
+
+- predictability under the frozen existing policy;
+- performance under a fixed post-cutoff protocol;
+- a reference outcome measured before action effects; or
+- a causal policy estimand with actions, assignment probabilities, positivity, and interference
+  assumptions recorded.
+
+Stop if action effects cannot be standardized, measured, or identified for the intended claim.
+
 ### Crossed bridge panel
 
 Repeat a small set of scientifically relevant conditions or reference materials in every batch,
@@ -143,13 +174,20 @@ instrument configuration, and participating site. Multiple conditions also appea
 batch. Rotate operators, lots, days, and assay order within feasible blocks. These bridge subjects
 make condition effects distinguishable from collection identity.
 
+Freeze whether bridge subjects are calibration-only, a secondary balanced estimand, or part of a
+deployment-weighted primary estimand. Their weights may not be chosen after outcomes. A bridge
+subject can support a compression claim only when it traverses the same report, action, and
+downstream-outcome chain; otherwise it diagnoses acquisition or instrument drift only.
+
 Exact counts are not chosen by rule of thumb. The golden bundle establishes feasibility; the pilot
 estimates variance, cluster sizes, failures, censoring, and support; hierarchical simulation then
 sets the number of independent parents and environments needed both to detect meaningful loss and
 to declare bounded adequacy. Additional scans, cycles, aliquots, or devices from one parent improve
 measurement precision but do not increase the independent-batch count.
 
-The primary split mimics deployment—usually a complete future material or manufacturing batch.
+The primary split mimics deployment and contains multiple prospectively held independent material
+or manufacturing batches, with the count set by hierarchical simulation. One future batch is a
+case study, not a population-level batch-transfer design or a basis for an environment harm bound.
 Random-unit splits are diagnostic only. The external site is reserved prospectively and one mode
 is named before collection:
 
@@ -158,6 +196,10 @@ is named before collection:
 3. protocol replication with site-specific retraining.
 
 Only mode 1 demonstrates zero-shot model transfer. Mode 3 can still validate the audit protocol.
+For a calibrated external mode, calibration and test parents are assigned before external outcomes
+are seen; preprocessing cannot adapt on test outcomes. A changed report schema or transformation
+DAG is a new pipeline audit, not transport of the original reporting edge. One named external site
+establishes replication there, not generalization over a population of sites.
 
 ## Outcome and follow-up contract
 
@@ -173,10 +215,18 @@ do not encode a failure as zero unless that value has a physical or decision-uti
 in advance.
 
 All eligible confirmatory subjects receive reference follow-up regardless of early evidence,
-ordinary report, model prediction, or apparent quality. If universal expensive follow-up is
-impossible, select a probability sample before predictions exist and record inclusion
-probabilities. Hand-selection of interesting subjects is not repaired by retaining only the
+ordinary report, model prediction, or apparent quality. If the SOP can scrap, consume, reroute, or
+rework a unit before reference follow-up, select the audit sample from all eligible units before
+the first selection-causing report or action, record known inclusion probabilities, and verify
+that reference recovery remains physically feasible. Otherwise narrow the target population and
+claim explicitly. Hand-selection of interesting subjects is not repaired by retaining only the
 denominator.
+
+Outcome assay order, plate/run, instrument, and operator are randomized or blocked so they do not
+identify a production batch, condition, or representation-availability state. Assay operators and
+adjudicators are blinded to research predictions and early representations and, where operationally
+possible, the ordinary report. Unavoidable inputs are logged. Exposed subjective adjudication or
+irreparable assay-batch confounding blocks the corresponding claim.
 
 The delayed outcome is a separate versioned product joined to its physical subject. It does not
 overwrite the execution event's status and should not be squeezed into a free-form event summary
@@ -225,6 +275,13 @@ transform code/configuration, creation time, operational-ready time, and escrow 
 vendor-native bytes in append-only storage. A correction creates a successor artifact and lineage
 edge; it never replaces the original.
 
+Native escrow specifies encryption and key custody, replica count and independent failure domains,
+object-lock duration, decoder/license preservation, retention and deletion/return rules, access
+triggers, restore tests, and proof that the captured bytes preceded any overwrite or project
+transform. Transform provenance also records runtime/container/dependencies, ordered parameters,
+calibration and reference-library parent hashes, deterministic status and random seed, and any
+manual-edit attestation.
+
 Every report snapshot is retained in original and structured form with schema/SOP version, units,
 rounding, uncertainty, missingness, confidence, abstention, side inputs, author/software, and
 creation/ready times.
@@ -242,6 +299,10 @@ Also record outcome horizon/assay time, repository receipt, input-freeze time, a
 time. Wall clocks use UTC ISO-8601 while retaining the original timezone, relative elapsed time,
 synchronization method, and known drift.
 
+Clock records include authoritative source, synchronization event, measured uncertainty/drift,
+maximum allowable timing error, and correction history. Exceeding the bound makes the operational
+timing claim unavailable even when a timestamp is present.
+
 A specimen arrested before the state cutoff but measured later can support an early-state
 scientific claim. It supports an early operational decision only when the result was ready before
 the decision deadline.
@@ -252,7 +313,9 @@ Create an attempt row when work is scheduled, before the outcome is known. Its s
 at least:
 
 ```text
-planned -> started -> completed
+planned -> cancelled_or_withdrawn_before_start
+        -> resource_unavailable_or_declined
+        -> started -> completed
                    -> physical_failure
                    -> aborted
                    -> partial
@@ -272,6 +335,11 @@ Reconcile the attempt ledger against an independent source—scheduler, LIMS, in
 log, or order system—at least weekly and at batch close. Report counts by batch, session, operator,
 condition, and status, not only overall. Golden, pilot, calibration, and confirmatory roles are
 immutable.
+
+Every batch and outcome handoff is transactional: sender and receiver sign the file/schema/hash
+manifest, transport method, acceptance or rejection, discrepancy list and resolution deadline,
+and supersession chain. Batch close fails while denominator, lineage, checksum, or clock
+discrepancies remain unresolved.
 
 ## Outcome-blind QC and transformation firewall
 
@@ -313,6 +381,11 @@ blinded-QC, analysis, security/legal, and publication/release owners. A small pa
 several roles to one person, but the outcome custodian, input-QC function, and confirmatory modeler
 must not share pre-reveal outcome access.
 
+Freeze an artifact-class × role × gate access-control matrix. Identity crosswalks and outcomes use
+separate stores and credentials, immutable access logs, periodic recertification, and explicit
+offboarding. Access to a hash, filename, row count, or follow-up-completion signal counts as access
+when it can reveal target status.
+
 Publication review is limited to removing confidential information and a fixed patent-filing
 delay. It cannot suppress unfavorable results. Rights must explicitly cover native evidence,
 portable exports, intermediates, reports, outcomes, metadata, derived features, audit results,
@@ -320,13 +393,20 @@ code/model artifacts, retention, and the selected public/controlled/enclave/aggr
 mode. Aggregate-only access without an independent verifier downgrades the project to internal
 engineering.
 
+The rights schedule names owner/licensee, permitted purpose, derivative/model/IP rights, term,
+termination handling, security jurisdiction, subprocessors, maximum review/embargo duration, and
+the minimum release. An aggregate release enumerates attempt and support denominators, reason
+codes, per-environment estimates and intervals, null results, code/hashes, and independent-verifier
+access rather than promising an undefined summary.
+
 ## Corrections and deviations
 
 Corrections are append-only.
 
 - Before input freeze: correct, document, re-run qualification, and issue a new version.
 - After input freeze but before outcome reveal: apply only an objective predeclared rule with
-  two-person approval; a material change restarts the affected collection or amends the claim.
+  two-person approval. A material change requires a new preregistered version and fresh subjects;
+  otherwise affected subjects are permanently downgraded to sensitivity/nonconfirmatory status.
 - After outcome reveal: preserve the frozen primary data. A correction enters a separately
   versioned sensitivity or invalidates the affected claim.
 - Target corrections are made by the outcome custodian without model predictions.
@@ -342,16 +422,25 @@ support, structural collisions, per-environment results, and total workflow util
 Missing reports do not disappear: evaluate a frozen fallback policy and include their operational
 cost.
 
+Predeclare representation-appropriate but bounded learner families, tuning/compute budgets,
+decoder checks, learning-curve diagnostics, and behavior when the richer arm is not estimable. A
+high-dimensional arm failing from inadequate independent parents is a design failure, not evidence
+of adequate compression. Simultaneous inference covers the frozen family of adjacent edges,
+endpoints, held environments, and harm tests. Outcome-dependent extension is allowed only through
+a fully specified group-sequential design; blinded re-estimation may use nuisance quantities only.
+
 Orient every adjacent risk gap as compressed risk minus richer risk. A premature-compression claim
 requires the simultaneous lower bound to exceed the meaningful benefit threshold in the primary
 held environment and no held environment to cross its harm bound. Adequate compression requires
 the upper bound to exclude improvements larger than that threshold while coverage and collision
 bounds pass. Everything between is inconclusive.
 
-Prediction utility in shadow mode asks whether a representation could improve the existing
-decision. It does not prove deployment benefit. Yield, scrap, delay, or cost claims require a later
-randomized or concurrent policy trial with continued reference outcomes on all subjects or a
-randomized audit subset.
+Prediction utility in shadow mode is identifiable only when every candidate action's payoff is a
+frozen function of a uniformly observed reference outcome and costs. If actions alter outcomes,
+unchosen-action utility is counterfactual and requires causal assumptions, logged propensities and
+positivity, or the later randomized trial. Yield, scrap, delay, or cost claims require a randomized
+or concurrent policy trial with continued reference outcomes on all subjects or a randomized
+audit subset.
 
 ## Partner cadence
 
@@ -379,6 +468,13 @@ Do not begin a confirmatory collection if any of the following remains true:
 - QC/report builders/modelers cannot be firewalled from outcomes;
 - files, reports, or corrections can overwrite the frozen record;
 - assay uncertainty is comparable to the smallest useful effect;
+- the pilot lacks enough target, report, action, failure, or collision variation and overlap to
+  identify either material loss or bounded adequacy;
+- ordinary post-cutoff actions affect the outcome but cannot be standardized or identified;
+- outcome adjudication is exposed or assay environment is irreparably confounded with production;
+- unit-level input/report freeze occurs after outcome access or an outcome-completion signal;
+- the planned richer-arm learner cannot be estimated reliably at the available independent-parent
+  count and bounded compute budget;
 - hierarchical simulation cannot support both meaningful-loss and bounded-adequacy conclusions;
 - an external validation population cannot be reserved; or
 - the partner cannot permit a meaningful null or unfavorable release.
