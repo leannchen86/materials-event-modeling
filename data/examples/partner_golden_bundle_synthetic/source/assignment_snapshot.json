@@ -1,0 +1,8 @@
+{
+  "synthetic": true,
+  "nonconfirmatory": true,
+  "assignments": [
+    {"assignment_id": "assignment-syn-ordinary-001", "planned_event_id": "event-syn-ordinary-001", "stream": "bridge"},
+    {"assignment_id": "assignment-syn-failure-001", "planned_event_id": "event-syn-failure-001", "stream": "bridge"}
+  ]
+}

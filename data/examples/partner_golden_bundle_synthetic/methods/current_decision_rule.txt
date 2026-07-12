@@ -1,0 +1,2 @@
+SYNTHETIC CURRENT RULE v1: continue a coupon to durability follow-up when the ordinary report
+grade is PASS; route HOLD coupons to review. This is a fixture rule, not operational guidance.

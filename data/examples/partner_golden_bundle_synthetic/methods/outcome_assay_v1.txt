@@ -1,0 +1,3 @@
+SYNTHETIC OUTCOME ASSAY v1: follow a coupon for at most 168 hours. Record exact functional
+lifetime when the fictitious threshold is crossed; otherwise retain a censoring bound and reason.
+The assay owner is blinded to research-model outputs.

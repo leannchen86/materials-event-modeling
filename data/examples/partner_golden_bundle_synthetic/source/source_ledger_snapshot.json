@@ -1,0 +1,29 @@
+{
+  "schema_version": "partner_source_denominator.v1",
+  "synthetic": true,
+  "nonconfirmatory": true,
+  "source_system": "synthetic-fixture-generator",
+  "extract_id": "extract-synthetic-golden-001",
+  "as_of": "2026-01-20T00:00:00Z",
+  "source_population_count": 2,
+  "planned_assignments": 2,
+  "released_assignments": 2,
+  "not_started_assignments": 0,
+  "cancelled_assignments": 0,
+  "initiated_attempts": 2,
+  "completed_attempts": 1,
+  "failed_attempts": 1,
+  "ambiguous_attempts": 0,
+  "aborted_attempts": 0,
+  "unknown_attempts": 0,
+  "retries": 0,
+  "reworks": 0,
+  "eligible_followup_units": 2,
+  "followed_units": 2,
+  "right_censored_units": 1,
+  "missing_outcome_units": 0,
+  "domain_counts": {
+    "exact_outcomes": 1,
+    "synthetic_attempts": 2
+  }
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "event_id": "event-syn-ordinary-001",
+    "system": "synthetic_coating_coupon",
+    "created_at": "2026-01-10T09:00:00Z",
+    "intent": {"plan_id": "plan-synthetic-coating-v1", "event_group_id": "condition-synthetic-reference", "planned": {"synthetic.temperature_c": 25.0, "synthetic.duration_min": 60}},
+    "observations": [
+      {"observation_id": "obs-ordinary-000", "modality": "process_log", "kind": "process", "stage": "in_situ", "timestamp": "2026-01-10T09:00:00Z", "timepoint_minutes": 0, "payload": {"synthetic": {"signal_raw": 0.220, "temperature_c": 25.0}}, "file_path": "raw_native/ordinary_trace.native.csv", "instrument_id": "instrument-synthetic-1", "instrument_session_id": "session-synthetic-a", "raw_export_format": "synthetic_csv", "include_in_raw_objective": true, "notes": null},
+      {"observation_id": "obs-ordinary-030", "modality": "process_log", "kind": "process", "stage": "in_situ", "timestamp": "2026-01-10T09:30:00Z", "timepoint_minutes": 30, "payload": {"synthetic": {"signal_raw": 0.610, "temperature_c": 25.2}}, "file_path": "raw_native/ordinary_trace.native.csv", "instrument_id": "instrument-synthetic-1", "instrument_session_id": "session-synthetic-a", "raw_export_format": "synthetic_csv", "include_in_raw_objective": true, "notes": null},
+      {"observation_id": "obs-ordinary-060", "modality": "process_log", "kind": "measurement", "stage": "intermediate", "timestamp": "2026-01-10T10:00:00Z", "timepoint_minutes": 60, "payload": {"synthetic": {"signal_raw": 0.840, "temperature_c": 25.1}}, "file_path": "raw_native/ordinary_trace.native.csv", "instrument_id": "instrument-synthetic-1", "instrument_session_id": "session-synthetic-a", "raw_export_format": "synthetic_csv", "include_in_raw_objective": true, "notes": null}
+    ],
+    "outcome": {"status": "success", "summary": {"synthetic.execution_completed": true}, "notes": "Execution status only; delayed lifetime is a separate outcome ledger."},
+    "provenance": {"operator_id": "operator-synthetic-1", "lab_id": "lab-synthetic-a", "batch_id": "batch-synthetic-a", "lot_id": "lot-synthetic-a", "instrument_id": "instrument-synthetic-1", "instrument_session_id": "session-synthetic-a", "measurement_day": "2026-01-10", "run_order": 1, "source_dataset": "synthetic_partner_golden_fixture", "raw_export_profile": "synthetic_csv"},
+    "labels": {"assigned_after_raw_data_frozen": true, "entries": [{"labeler_id": "synthetic-qc-rule", "label": "PASS", "confidence": 0.95, "stage": "minute_60_report", "notes": "Synthetic fixture label"}]}
+  },
+  {
+    "event_id": "event-syn-failure-001",
+    "system": "synthetic_coating_coupon",
+    "created_at": "2026-01-11T09:00:00Z",
+    "intent": {"plan_id": "plan-synthetic-coating-v1", "event_group_id": "condition-synthetic-reference", "planned": {"synthetic.temperature_c": 25.0, "synthetic.duration_min": 60}},
+    "observations": [
+      {"observation_id": "obs-failure-000", "modality": "process_log", "kind": "process", "stage": "in_situ", "timestamp": "2026-01-11T09:00:00Z", "timepoint_minutes": 0, "payload": {"synthetic": {"signal_raw": 0.210, "temperature_c": 25.0}}, "file_path": "raw_native/failure_trace.native.csv", "instrument_id": "instrument-synthetic-1", "instrument_session_id": "session-synthetic-b", "raw_export_format": "synthetic_csv", "include_in_raw_objective": true, "notes": null},
+      {"observation_id": "obs-failure-030", "modality": "process_log", "kind": "process", "stage": "in_situ", "timestamp": "2026-01-11T09:30:00Z", "timepoint_minutes": 30, "payload": {"synthetic": {"signal_raw": 0.580, "temperature_c": 26.8}}, "file_path": "raw_native/failure_trace.native.csv", "instrument_id": "instrument-synthetic-1", "instrument_session_id": "session-synthetic-b", "raw_export_format": "synthetic_csv", "include_in_raw_objective": true, "notes": null},
+      {"observation_id": "obs-failure-060", "modality": "process_log", "kind": "measurement", "stage": "intermediate", "timestamp": "2026-01-11T10:00:00Z", "timepoint_minutes": 60, "payload": {"synthetic": {"signal_raw": 0.700, "temperature_c": 31.2}}, "file_path": "raw_native/failure_trace.native.csv", "instrument_id": "instrument-synthetic-1", "instrument_session_id": "session-synthetic-b", "raw_export_format": "synthetic_csv", "include_in_raw_objective": true, "notes": "Synthetic overtemperature deviation retained."}
+    ],
+    "outcome": {"status": "failure", "summary": {"synthetic.execution_completed": true, "synthetic.process_overtemperature": true}, "notes": "Execution failure is separate from the right-censored delayed lifetime."},
+    "provenance": {"operator_id": "operator-synthetic-2", "lab_id": "lab-synthetic-a", "batch_id": "batch-synthetic-b", "lot_id": "lot-synthetic-b", "instrument_id": "instrument-synthetic-1", "instrument_session_id": "session-synthetic-b", "measurement_day": "2026-01-11", "run_order": 1, "source_dataset": "synthetic_partner_golden_fixture", "raw_export_profile": "synthetic_csv"},
+    "labels": {"assigned_after_raw_data_frozen": true, "entries": [{"labeler_id": "synthetic-qc-rule", "label": "HOLD", "confidence": 0.90, "stage": "minute_60_report", "notes": "Synthetic fixture label"}]}
+  }
+]

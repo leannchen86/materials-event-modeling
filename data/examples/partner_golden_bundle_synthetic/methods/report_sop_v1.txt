@@ -1,0 +1,2 @@
+SYNTHETIC REPORT SOP v1: copy calibrated signal at minute 60 and fitted slope into the report;
+assign PASS when signal_60 >= 0.80 and no process-deviation flag, otherwise HOLD.

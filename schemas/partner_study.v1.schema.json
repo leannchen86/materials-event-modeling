@@ -346,16 +346,40 @@
         "external_validation": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["mode", "site_set_sha256", "calibration_unit_count", "frozen_test_unit_count", "model_retraining_allowed", "same_report_schema_required", "same_transformation_graph_required"],
+          "required": ["mode", "site_set_artifact_id", "site_set_sha256", "calibration_unit_count", "frozen_test_unit_count", "model_retraining_allowed", "same_report_schema_required", "same_transformation_graph_required"],
           "properties": {
             "mode": {"type": "string", "enum": ["none", "zero_shot", "site_calibration_then_frozen_test", "protocol_replication_site_specific_retraining"]},
+            "site_set_artifact_id": {"$ref": "partner_rows.v1.schema.json#/$defs/nullableId"},
             "site_set_sha256": {"$ref": "partner_rows.v1.schema.json#/$defs/nullableSha256"},
             "calibration_unit_count": {"type": "integer", "minimum": 0},
             "frozen_test_unit_count": {"type": "integer", "minimum": 0},
             "model_retraining_allowed": {"type": "boolean"},
             "same_report_schema_required": {"type": "boolean"},
             "same_transformation_graph_required": {"type": "boolean"}
-          }
+          },
+          "allOf": [
+            {
+              "if": {"properties": {"mode": {"const": "none"}}, "required": ["mode"]},
+              "then": {
+                "properties": {
+                  "site_set_artifact_id": {"type": "null"},
+                  "site_set_sha256": {"type": "null"},
+                  "calibration_unit_count": {"const": 0},
+                  "frozen_test_unit_count": {"const": 0}
+                }
+              }
+            },
+            {
+              "if": {"properties": {"mode": {"not": {"const": "none"}}}, "required": ["mode"]},
+              "then": {
+                "properties": {
+                  "site_set_artifact_id": {"$ref": "partner_rows.v1.schema.json#/$defs/id"},
+                  "site_set_sha256": {"$ref": "partner_rows.v1.schema.json#/$defs/sha256"},
+                  "frozen_test_unit_count": {"minimum": 1}
+                }
+              }
+            }
+          ]
         }
       }
     },

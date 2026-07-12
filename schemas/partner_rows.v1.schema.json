@@ -574,6 +574,7 @@
         "amount_transferred",
         "consumes_source",
         "reason_codes",
+        "nonconfirmatory",
         "domain_payload"
       ],
       "properties": {
@@ -601,6 +602,7 @@
         "amount_transferred": {"$ref": "#/$defs/nullableQuantity"},
         "consumes_source": {"type": ["boolean", "null"]},
         "reason_codes": {"$ref": "#/$defs/reasonCodes"},
+        "nonconfirmatory": {"type": "boolean"},
         "domain_payload": {"$ref": "#/$defs/domainPayload"}
       }
     },
@@ -743,6 +745,7 @@
         "outcome_access_status",
         "prohibited_input_check",
         "reason_codes",
+        "nonconfirmatory",
         "domain_payload"
       ],
       "properties": {
@@ -766,6 +769,7 @@
         "outcome_access_status": {"type": "string", "enum": ["blinded", "permitted_postfreeze", "outcome_builder", "unverifiable"]},
         "prohibited_input_check": {"type": "string", "enum": ["passed", "failed", "unverifiable", "not_applicable"]},
         "reason_codes": {"$ref": "#/$defs/reasonCodes"},
+        "nonconfirmatory": {"type": "boolean"},
         "domain_payload": {"$ref": "#/$defs/domainPayload"}
       },
       "allOf": [
@@ -1072,6 +1076,7 @@
         "evidence_artifact_ids",
         "reason_codes",
         "created_at",
+        "nonconfirmatory",
         "domain_payload"
       ],
       "properties": {
@@ -1102,6 +1107,7 @@
         "evidence_artifact_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}, "uniqueItems": true},
         "reason_codes": {"$ref": "#/$defs/reasonCodes"},
         "created_at": {"$ref": "#/$defs/timestamp"},
+        "nonconfirmatory": {"type": "boolean"},
         "domain_payload": {"$ref": "#/$defs/domainPayload"}
       },
       "allOf": [

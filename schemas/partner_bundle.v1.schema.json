@@ -90,7 +90,7 @@
     "tableDescriptor": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["table_id", "path", "sha256", "bytes", "row_count", "row_schema"],
+      "required": ["table_id", "path", "sha256", "bytes", "row_count", "row_schema", "row_schema_sha256"],
       "properties": {
         "table_id": {
           "type": "string",
@@ -100,7 +100,8 @@
         "sha256": {"$ref": "partner_rows.v1.schema.json#/$defs/sha256"},
         "bytes": {"type": "integer", "minimum": 0},
         "row_count": {"type": "integer", "minimum": 0},
-        "row_schema": {"type": "string", "minLength": 1}
+        "row_schema": {"type": "string", "minLength": 1},
+        "row_schema_sha256": {"$ref": "partner_rows.v1.schema.json#/$defs/sha256"}
       }
     },
     "sourceDenominatorCounts": {

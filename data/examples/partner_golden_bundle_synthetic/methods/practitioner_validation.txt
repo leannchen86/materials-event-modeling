@@ -1,0 +1,2 @@
+SYNTHETIC ATTESTATION: the report and grade fields in this fixture are declared to represent the
+fictitious ordinary workflow. This attestation is nonconfirmatory and has no real signatory.

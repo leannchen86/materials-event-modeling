@@ -1,0 +1,1 @@
+SYNTHETIC deterministic transform v1: calibrated=(native-offset)*scale; slope=(last-first)/60.

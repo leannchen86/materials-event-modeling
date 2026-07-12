@@ -1,0 +1,6 @@
+SYNTHETIC NONCONFIRMATORY FIXTURE
+Study: synthetic_partner_golden_v1
+Two fictitious coating-coupon attempts are recorded only to exercise partner-bundle mechanics.
+At minute 0 deposit a synthetic coating; capture sensor signal through minute 60; issue the
+ordinary QC report by minute 90; independently follow functional lifetime for up to 168 hours.
+No value, material, person, laboratory, or partner in this fixture is real.

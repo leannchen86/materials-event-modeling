@@ -1,0 +1,253 @@
+{
+  "schema_version": "partner_bundle.v1",
+  "bundle_id": "bundle-synthetic-golden-001",
+  "study_id": "study-synthetic-golden-001",
+  "purpose": "golden_bundle_nonconfirmatory",
+  "inference_status": "nonconfirmatory",
+  "created_at": "2026-01-20T00:00:00Z",
+  "study_spec": {
+    "path": "study_spec.json",
+    "sha256": "adf5b59297646fcdd7d9479c538e53be0228540713ebe8806e6af3f53674bbc7",
+    "bytes": 19151,
+    "schema_version": "partner_study.v1",
+    "schema_sha256": "3acec023722a382e4faf0c34494cb41c98d638e6bddc59b893f41f69ea2741d2"
+  },
+  "tables": [
+    {
+      "table_id": "assignments",
+      "path": "ledgers/assignments.json",
+      "sha256": "9f7efb605673199fc88bb84cace7d44b93a3c947c86221c7df36d362a0527268",
+      "bytes": 2401,
+      "row_count": 2,
+      "row_schema": "partner_rows.v1.schema.json#/$defs/assignment",
+      "row_schema_sha256": "34e1613232f698c957c14fb1e350c232d2e73ff70b86bccb08bbaa8065a99dc2"
+    },
+    {
+      "table_id": "attempts",
+      "path": "ledgers/attempts.json",
+      "sha256": "b61b6fa39456359bcb3299942c00e157276092a735290da2bb785763405607d5",
+      "bytes": 3031,
+      "row_count": 2,
+      "row_schema": "partner_rows.v1.schema.json#/$defs/attempt",
+      "row_schema_sha256": "34e1613232f698c957c14fb1e350c232d2e73ff70b86bccb08bbaa8065a99dc2"
+    },
+    {
+      "table_id": "events",
+      "path": "ledgers/events.json",
+      "sha256": "c02a16ec26f1b1798c5dc624286caadc53d17aa7667e8075d9295db5a4c18117",
+      "bytes": 5178,
+      "row_count": 2,
+      "row_schema": "event_grammar.v1.schema.json",
+      "row_schema_sha256": "d90d015602f5010b80208cfccd693d4b6c9bbd361f9dd372ae8aa0e853e52ddd"
+    },
+    {
+      "table_id": "physical_nodes",
+      "path": "ledgers/physical_nodes.json",
+      "sha256": "f884d1c26e4efc8ac97eb283a0e6e927b92fc88e626faf22f39cf389a5a26281",
+      "bytes": 8681,
+      "row_count": 10,
+      "row_schema": "partner_rows.v1.schema.json#/$defs/physicalNode",
+      "row_schema_sha256": "34e1613232f698c957c14fb1e350c232d2e73ff70b86bccb08bbaa8065a99dc2"
+    },
+    {
+      "table_id": "physical_edges",
+      "path": "ledgers/physical_edges.json",
+      "sha256": "00d7a5ded5dd9cd598b4857de7ba001b0f1277ae4c83c343aab5af96eb0669b8",
+      "bytes": 3864,
+      "row_count": 8,
+      "row_schema": "partner_rows.v1.schema.json#/$defs/physicalEdge",
+      "row_schema_sha256": "34e1613232f698c957c14fb1e350c232d2e73ff70b86bccb08bbaa8065a99dc2"
+    },
+    {
+      "table_id": "artifacts",
+      "path": "ledgers/artifacts.json",
+      "sha256": "19d2629597cc0e72fccec730a766f6401a20139ad535abd3eb61985a8a07b9cc",
+      "bytes": 43618,
+      "row_count": 40,
+      "row_schema": "partner_rows.v1.schema.json#/$defs/artifact",
+      "row_schema_sha256": "34e1613232f698c957c14fb1e350c232d2e73ff70b86bccb08bbaa8065a99dc2"
+    },
+    {
+      "table_id": "transformations",
+      "path": "ledgers/transformations.json",
+      "sha256": "0e28b75f21eaf071f6039710369c84643968656d35a24ebf5d124cce949ad4f4",
+      "bytes": 11154,
+      "row_count": 10,
+      "row_schema": "partner_rows.v1.schema.json#/$defs/transformation",
+      "row_schema_sha256": "34e1613232f698c957c14fb1e350c232d2e73ff70b86bccb08bbaa8065a99dc2"
+    },
+    {
+      "table_id": "representations",
+      "path": "ledgers/representations.json",
+      "sha256": "0abe82fc7415339794119fd486cd0882de1ee77d15aaa77ba56f2f59cee54eb6",
+      "bytes": 19256,
+      "row_count": 12,
+      "row_schema": "partner_rows.v1.schema.json#/$defs/representation",
+      "row_schema_sha256": "34e1613232f698c957c14fb1e350c232d2e73ff70b86bccb08bbaa8065a99dc2"
+    },
+    {
+      "table_id": "outcomes",
+      "path": "ledgers/outcomes.json",
+      "sha256": "077bd212f7164198d0772f8f068dc1222a68bf942b8f258798c7204a19b1bf85",
+      "bytes": 3582,
+      "row_count": 2,
+      "row_schema": "partner_rows.v1.schema.json#/$defs/outcome",
+      "row_schema_sha256": "34e1613232f698c957c14fb1e350c232d2e73ff70b86bccb08bbaa8065a99dc2"
+    },
+    {
+      "table_id": "costs",
+      "path": "ledgers/costs.json",
+      "sha256": "d81edf7399745546f6cd7ced7f1442dde31ce80b3b94e421a8d4512d4e240f19",
+      "bytes": 3481,
+      "row_count": 4,
+      "row_schema": "partner_rows.v1.schema.json#/$defs/cost",
+      "row_schema_sha256": "34e1613232f698c957c14fb1e350c232d2e73ff70b86bccb08bbaa8065a99dc2"
+    },
+    {
+      "table_id": "decisions",
+      "path": "ledgers/decisions.json",
+      "sha256": "a973607e9d29786bdeb2bceb82a4124e0da746c1d65a75ff5e23c456990402f2",
+      "bytes": 2281,
+      "row_count": 2,
+      "row_schema": "partner_rows.v1.schema.json#/$defs/decision",
+      "row_schema_sha256": "34e1613232f698c957c14fb1e350c232d2e73ff70b86bccb08bbaa8065a99dc2"
+    },
+    {
+      "table_id": "corrections",
+      "path": "ledgers/corrections.json",
+      "sha256": "cb44ab1555257c4b2e0131d8517bab83e1cd20cd9cf9716cd1f8b75b5059216e",
+      "bytes": 1125,
+      "row_count": 1,
+      "row_schema": "partner_rows.v1.schema.json#/$defs/correction",
+      "row_schema_sha256": "34e1613232f698c957c14fb1e350c232d2e73ff70b86bccb08bbaa8065a99dc2"
+    }
+  ],
+  "source_denominator_counts": {
+    "source_system": "synthetic-fixture-generator",
+    "extract_id": "extract-synthetic-golden-001",
+    "as_of": "2026-01-20T00:00:00Z",
+    "source_ledger_artifact_id": "artifact-source-ledger",
+    "source_ledger_sha256": "7cefe8490aa3f9cbbf38852175c66b70b60ca0850213c816b147951aec60ce82",
+    "source_population_count": 2,
+    "planned_assignments": 2,
+    "released_assignments": 2,
+    "not_started_assignments": 0,
+    "cancelled_assignments": 0,
+    "initiated_attempts": 2,
+    "completed_attempts": 1,
+    "failed_attempts": 1,
+    "ambiguous_attempts": 0,
+    "aborted_attempts": 0,
+    "unknown_attempts": 0,
+    "retries": 0,
+    "reworks": 0,
+    "eligible_followup_units": 2,
+    "followed_units": 2,
+    "right_censored_units": 1,
+    "missing_outcome_units": 0,
+    "domain_counts": {
+      "exact_outcomes": 1,
+      "synthetic_attempts": 2
+    }
+  },
+  "nonconfirmatory_scope": {
+    "assignment_ids": [
+      "assignment-syn-ordinary-001",
+      "assignment-syn-failure-001"
+    ],
+    "attempt_ids": [
+      "attempt-syn-ordinary-001",
+      "attempt-syn-failure-001"
+    ],
+    "physical_node_ids": [
+      "node-plan-ordinary",
+      "node-execution-ordinary",
+      "node-batch-ordinary",
+      "node-specimen-ordinary",
+      "node-assay-ordinary",
+      "node-plan-failure",
+      "node-execution-failure",
+      "node-batch-failure",
+      "node-specimen-failure",
+      "node-assay-failure"
+    ],
+    "artifact_ids": [
+      "artifact-protocol",
+      "artifact-source-ledger",
+      "artifact-assignment-snapshot",
+      "artifact-current-decision-rule",
+      "artifact-practitioner-validation",
+      "artifact-report-sop",
+      "artifact-outcome-assay-method",
+      "artifact-calibration-reference",
+      "artifact-transform-code",
+      "artifact-transform-config",
+      "artifact-access-control-matrix",
+      "artifact-schema-context",
+      "artifact-schema-native",
+      "artifact-schema-calibrated",
+      "artifact-schema-features",
+      "artifact-schema-report",
+      "artifact-schema-label",
+      "artifact-arm-c",
+      "artifact-arm-c-l",
+      "artifact-arm-c-s",
+      "artifact-arm-c-x0",
+      "artifact-arm-c-x1",
+      "artifact-arm-c-x2",
+      "artifact-arm-c-x0-s",
+      "artifact-ordinary-native",
+      "artifact-ordinary-portable",
+      "artifact-ordinary-calibrated",
+      "artifact-ordinary-features",
+      "artifact-ordinary-report",
+      "artifact-ordinary-grade",
+      "artifact-ordinary-outcome-evidence",
+      "artifact-ordinary-outcome-product",
+      "artifact-failure-native",
+      "artifact-failure-portable",
+      "artifact-failure-calibrated",
+      "artifact-failure-features",
+      "artifact-failure-report",
+      "artifact-failure-grade",
+      "artifact-failure-outcome-evidence",
+      "artifact-failure-outcome-product"
+    ],
+    "descendants_inherit": true,
+    "reason": "Every record and descendant is intentionally fabricated for validator and documentation testing; none may be used as confirmatory scientific evidence."
+  },
+  "rights": {
+    "legal_basis": "Synthetic data generated entirely within this repository fixture.",
+    "agreement_id": null,
+    "agreement_sha256": null,
+    "raw_upstream_accessible": true,
+    "study_use_permitted": true,
+    "external_sharing_permitted": true,
+    "publication_permitted": true,
+    "privacy_classification": "public",
+    "restrictions": [
+      "Must retain synthetic and permanently nonconfirmatory designation."
+    ],
+    "owner": "materials-event-modeling synthetic fixture maintainers",
+    "licensee": "public fixture users",
+    "permitted_purpose": "Testing, documentation, reproducibility demonstrations, and method development only.",
+    "derivatives_permitted": true,
+    "model_ip_rule": "No special model intellectual-property claim is created by this synthetic fixture.",
+    "term": "Perpetual while the synthetic and nonconfirmatory designation is retained.",
+    "termination_disposition": "Delete local copies if the repository license or fixture designation can no longer be honored.",
+    "security_jurisdiction": "public synthetic data; no geographic restriction",
+    "subprocessors": [],
+    "max_partner_review_days": 0,
+    "minimum_release": "public_bundle",
+    "independent_verifier_access": true
+  },
+  "release_status": {
+    "status": "pending",
+    "publishable_outputs": true,
+    "partner_approval_required": false,
+    "approved_at": null,
+    "release_artifact_id": null,
+    "release_sha256": null,
+    "reason_codes": []
+  }
+}

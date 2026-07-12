@@ -1,0 +1,42 @@
+[
+  {
+    "schema_version": "partner_rows.v1",
+    "row_type": "assignment",
+    "study_id": "study-synthetic-golden-001",
+    "assignment_id": "assignment-syn-ordinary-001",
+    "planned_event_id": "event-syn-ordinary-001",
+    "plan_id": "plan-synthetic-coating-v1",
+    "event_group_id": "condition-synthetic-reference",
+    "planned_condition": {"temperature_c": 25.0, "duration_min": 60},
+    "planned_environment": {"site_id": "site-synthetic-a", "batch_id": "batch-synthetic-a"},
+    "planned_independent_unit_id": "node-batch-ordinary",
+    "randomization": {"method": "source_assigned", "seed": null, "generator_version": null, "generator_sha256": null, "stratum": "golden_fixture", "sequence_position": 1},
+    "status": "released",
+    "status_reason_codes": [],
+    "scheduled_at": "2026-01-10T09:00:00Z",
+    "created_at": "2026-01-09T12:00:00Z",
+    "source_record": {"source_system": "synthetic_scheduler", "source_record_id": "schedule-row-ordinary", "source_artifact_id": "artifact-assignment-snapshot", "source_sha256": "7efea992b4b2c9fdc42ac39012ab85ee1953ebb98d44a02d0f42b829c58cf1e6"},
+    "nonconfirmatory": true,
+    "domain_payload": {"synthetic": true, "stream": "bridge"}
+  },
+  {
+    "schema_version": "partner_rows.v1",
+    "row_type": "assignment",
+    "study_id": "study-synthetic-golden-001",
+    "assignment_id": "assignment-syn-failure-001",
+    "planned_event_id": "event-syn-failure-001",
+    "plan_id": "plan-synthetic-coating-v1",
+    "event_group_id": "condition-synthetic-reference",
+    "planned_condition": {"temperature_c": 25.0, "duration_min": 60},
+    "planned_environment": {"site_id": "site-synthetic-a", "batch_id": "batch-synthetic-b"},
+    "planned_independent_unit_id": "node-batch-failure",
+    "randomization": {"method": "source_assigned", "seed": null, "generator_version": null, "generator_sha256": null, "stratum": "golden_fixture", "sequence_position": 2},
+    "status": "released",
+    "status_reason_codes": [],
+    "scheduled_at": "2026-01-11T09:00:00Z",
+    "created_at": "2026-01-09T12:01:00Z",
+    "source_record": {"source_system": "synthetic_scheduler", "source_record_id": "schedule-row-failure", "source_artifact_id": "artifact-assignment-snapshot", "source_sha256": "7efea992b4b2c9fdc42ac39012ab85ee1953ebb98d44a02d0f42b829c58cf1e6"},
+    "nonconfirmatory": true,
+    "domain_payload": {"synthetic": true, "stream": "bridge"}
+  }
+]
