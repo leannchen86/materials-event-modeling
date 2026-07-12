@@ -56,11 +56,12 @@ def download_file(url: str, destination: Path, expected_size: int | None) -> Non
                     print(f"  {percent:3d}% {destination.name}", file=sys.stderr)
                     last_reported = percent
 
-    if expected_size is not None and tmp.stat().st_size != expected_size:
+    actual_size = tmp.stat().st_size
+    if expected_size is not None and actual_size != expected_size:
         tmp.unlink(missing_ok=True)
         raise RuntimeError(
             f"Size mismatch for {destination.name}: expected {expected_size}, "
-            f"got {tmp.stat().st_size}"
+            f"got {actual_size}"
         )
 
     tmp.replace(destination)

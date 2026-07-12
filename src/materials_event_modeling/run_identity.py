@@ -12,11 +12,18 @@ import platform
 import subprocess
 import sys
 from datetime import datetime, timezone
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Any
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
-_RESULT_PACKAGES = ("numpy", "scipy", "sklearn", "pandas", "torch")
+_RESULT_PACKAGES = {
+    "numpy": "numpy",
+    "scipy": "scipy",
+    "sklearn": "scikit-learn",
+    "pandas": "pandas",
+    "torch": "torch",
+}
 
 
 def _git(*args: str) -> str | None:
@@ -37,16 +44,11 @@ def run_identity(extra: dict[str, Any] | None = None) -> dict[str, Any]:
     commit = _git("rev-parse", "HEAD")
     status = _git("status", "--porcelain", "--untracked-files=no")
     packages: dict[str, str] = {}
-    for name in _RESULT_PACKAGES:
-        module = sys.modules.get(name)
-        if module is None:
-            try:
-                module = __import__(name)
-            except ImportError:
-                continue
-        version = getattr(module, "__version__", None)
-        if version:
-            packages[name] = str(version)
+    for name, distribution in _RESULT_PACKAGES.items():
+        try:
+            packages[name] = version(distribution)
+        except PackageNotFoundError:
+            continue
     identity: dict[str, Any] = {
         "git_commit": commit,
         "git_dirty": bool(status) if status is not None else None,

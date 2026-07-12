@@ -6,16 +6,13 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
   "h5py>=3.11",
-  "jupyter>=1.0",
   "jsonschema>=4.23",
   "matplotlib>=3.8",
   "numpy>=1.26",
   "openpyxl>=3.1",
   "pandas>=2.2",
-  "pyyaml>=6.0",
   "scikit-learn>=1.4",
   "scipy>=1.12",
-  "tqdm>=4.66",
 ]
 
 [project.optional-dependencies]
@@ -39,9 +36,7 @@ where = ["src"]
 line-length = 100
 target-version = "py310"
 
-# Curated to catch semantic bugs, not enforce style. Line-length is the formatter's
-# job (E501 is off); complexity/magic-value rules (PLR*) are engineering theater for
-# research code. What stays are real bug classes and import/modernization hygiene.
+# Keep checks focused on correctness, imports, and modernization; formatting is separate.
 [tool.ruff.lint]
 select = [
   "F",     # pyflakes: undefined names, unused imports/vars — always semantic
@@ -64,10 +59,7 @@ ignore = [
 # same-iteration (safe); documented rather than churned in a closed reference archive.
 "scripts/run_oleogel_*.py" = ["B023"]
 
-# Type checking is gated on the reusable library (src) + its tests, where types earn
-# their keep. scripts/ are run-once entrypoints with heavy pandas/argparse dynamism
-# (~73 diagnostics that are noise, not bugs) — ruff still covers them for real bug
-# classes. Tighten `src` toward stricter rules as the typed-Event refactor lands.
+# Type-check reusable library code and tests; scripts remain ruff-covered.
 [tool.ty.environment]
 python = ".venv"
 

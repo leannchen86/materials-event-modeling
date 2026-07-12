@@ -1,7 +1,0 @@
-device: mps
-seed: 17
-batch_size: 32
-num_workers: 0
-max_epochs: 5
-precision: float32
-

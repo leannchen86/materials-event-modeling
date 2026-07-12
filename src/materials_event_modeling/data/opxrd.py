@@ -187,18 +187,6 @@ def iter_patterns_from_archive(
                 return
 
 
-def finite_pattern(pattern: OpxrdPattern, min_points: int = 50) -> bool:
-    if len(pattern.two_theta) < min_points:
-        return False
-    if not np.isfinite(pattern.two_theta).all() or not np.isfinite(pattern.intensity).all():
-        return False
-    if np.any(pattern.two_theta < 0):
-        return False
-    if np.all(pattern.intensity == 0):
-        return False
-    return bool(np.max(pattern.two_theta) > np.min(pattern.two_theta))
-
-
 def standardize_intensity(
     two_theta: np.ndarray,
     intensity: np.ndarray,
