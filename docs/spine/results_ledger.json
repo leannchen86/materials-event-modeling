@@ -164,11 +164,11 @@
     ]
   },
   "rruff_garnet_raman_species": {
-    "metric": "RRUFF Raman garnet: 5-way species classification accuracy (k-NN, cross-specimen). Lossy because species discretize a solid-solution continuum; family (2-way pyralspite/ugrandite) is 1.0. Manifest value 0.728; docs render 0.73.",
+    "metric": "RRUFF deposited processed Raman: cross-specimen 5-way garnet species classification accuracy. The 2-way family label is easier to recover; this is a label-granularity result, not proof of a continuous or true latent coordinate.",
     "display": "0.73",
     "family_display": "1.0",
     "robustness": "sample-dependent",
-    "claim_served": "claim 3: labels are lossy projections when they discretize a continuum -- species blend while structural family is recovered perfectly.",
+    "claim_served": "calibration: selected spectra retain distinctions represented differently by coarse family and fine species labels.",
     "eval_date": "2026-06-15",
     "source": {
       "kind": "manifest",
@@ -177,17 +177,14 @@
       "family_pointer": "garnet.family_acc_2way"
     },
     "cited_in": [
-      "docs/event-method/findings_summary.md",
-      "docs/event-method/run_log.md",
-      "docs/spine/ontology_and_rawness_gradient.md",
-      "docs/writeup/when_is_a_label_faithful.md"
+      "docs/event-method/run_log.md"
     ]
   },
   "rruff_garnet_raman_within_family_error": {
-    "metric": "RRUFF Raman garnet: fraction of species-classification errors that stay within the correct structural family. 100% -- the raw representation recovers the family axis the species label compresses.",
+    "metric": "RRUFF deposited processed Raman: fraction of species-classification errors that stay within the labeled structural family.",
     "display": "1.0",
     "robustness": "sample-dependent",
-    "claim_served": "claim 3: species errors are structured (all within-family), confirming raw recovers the underlying coordinate.",
+    "claim_served": "calibration: fine-label errors are structured by the coarser family taxonomy.",
     "eval_date": "2026-06-15",
     "source": {
       "kind": "manifest",
@@ -195,16 +192,15 @@
       "pointer": "garnet.within_family_error_frac"
     },
     "cited_in": [
-      "docs/event-method/findings_summary.md",
       "docs/event-method/run_log.md"
     ]
   },
   "rruff_garnet_xrd_species": {
-    "metric": "RRUFF powder-XRD garnet: 5-way species accuracy (modality-general replication of the Raman lossy-label result; family 1.0, species blends).",
+    "metric": "RRUFF deposited processed powder XRD: 5-way garnet species accuracy; the coarser 2-way family label is easier to recover.",
     "display": "0.66",
     "family_display": "1.0",
     "robustness": "sample-dependent",
-    "claim_served": "claim 3: the lossy-label pattern is modality-general (reproduces on XRD, not a Raman artifact).",
+    "claim_served": "calibration: the coarse-versus-fine label-recoverability pattern appears in a second deposited processed modality.",
     "eval_date": "2026-06-16",
     "source": {
       "kind": "manifest",
@@ -212,9 +208,7 @@
       "pointer": "garnet.species_5way.acc",
       "family_pointer": "garnet.family_2way.acc"
     },
-    "cited_in": [
-      "docs/event-method/findings_summary.md"
-    ]
+    "cited_in": []
   },
   "severson_heldout_batch_rank_ridge": {
     "metric": "Severson A-full within-recipe replicate-ranking pairwise accuracy, ridge, HELD-OUT-BATCH scoring (train on 2 batches, rank pairs in the third), on batch 3 (2018-04-12, the only adequately-powered cell: 136 of 160 pairs). Collapses to chance from the 0.779 leave-one-policy-out accuracy on the same pairs -- the ranking rule does not transfer across collection batches.",
@@ -249,7 +243,6 @@
       "pointer": "A_natural_coordinate.loo_spearman_early_to_cyclelife"
     },
     "cited_in": [
-      "docs/event-method/findings_summary.md",
       "docs/event-method/run_log.md"
     ]
   }
