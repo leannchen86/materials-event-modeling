@@ -1,105 +1,73 @@
 # Materials Event Modeling
 
-Materials-event modeling with provenance-stressed evaluation.
+This repository asks a practical question: for a specified materials decision, which early
+experimental signals survive a label or report, which are discarded, and do any gains transfer
+across batches, instruments, or laboratories?
 
-## Headline results (as of 2026-07-03; all pre-registered + adversarially verified)
+The project does **not** assume that raw traces beat labels. A compact report may be the right
+compression for a task. The goal is to locate the earliest harmful reporting edge, retain enough
+upstream evidence to revisit it, and identify the least costly adequate representation.
 
-- **Collection provenance is recoverable from public experimental XRD, and it replicates.**
-  Source/lab identity is recoverable from opXRD spectra + metadata even after normalization;
-  the finding replicates on a second experimental dataset (RRUFF Raman) and a second modality
-  (battery cycling), and a chemistry-matched control localizes the invariant signal to
-  acquisition geometry. →
-  [provenance_leakage_audit.md](docs/provenance-critique/provenance_leakage_audit.md),
-  [second_dataset_replication.md](docs/provenance-critique/second_dataset_replication.md)
-- **Paper-shaped data structurally loses information a grammar-preserved event record keeps.**
-  On real battery data, the recipe+final-label projection cannot rank replicates of one recipe
-  or represent failed runs; the grammar representation can. →
-  [severson_representation_ab.md](docs/controlled-collection/severson_representation_ab.md),
-  [event grammar v1](schemas/event_grammar.v1.schema.json) + the L0–L3 conformance ladder
-- **A validation ladder + a candidate top claim**, with the honest data caveats attached. →
-  [event_grammar_validation_note.md](docs/spine/event_grammar_validation_note.md),
-  [data_assumptions_and_limits.md](docs/spine/data_assumptions_and_limits.md)
+## Current program
 
-Every headline number above is sourced once in
-[`docs/spine/results_ledger.json`](docs/spine/results_ledger.json) (a pointer into its run
-manifest), kept honest by `python scripts/check_results_ledger.py`. Edit magnitudes there,
-not in prose.
+The only active research program is a prospective, partner-grounded compression audit:
 
-Read [SKILL.md](SKILL.md) first when resuming the project; it tracks the operating
-stance and decision pivots.
+```text
+measurement opportunity -> native artifact -> actual report -> delayed outcome -> decision
+```
 
-The working hypothesis is conditional: inherited labels such as `phase pure`, `phase
-impurity`, `failed synthesis`, `metastable`, and `ambiguous XRD` can be useful, lossy, or
-insufficient depending on the measurement task and collection context. The repository
-tests that claim with raw measurements, strong non-neural baselines, and provenance-aware
-splits; it does not assume that labels or raw measurements are intrinsically privileged.
-The formal audit separates common-support task risk (TRCL), event/decision support retention,
-representation collisions, and upstream recoverability; it is defined in
-[task_relevant_compression_audit.md](docs/spine/task_relevant_compression_audit.md).
-The next research layer attaches that audit to delayed consequential outcomes: locate which early
-signals predict final-spec conformance, repeatability, intermediate precision, cross-site
-reproducibility, degradation, or functional performance as separately defined targets, and
-identify the cheapest reporting stage that preserves transferable decision value. The staged scope
-and stop rules are in
-[downstream_failure_research_program.md](docs/spine/downstream_failure_research_program.md).
-The partner-facing implementation is in the
-[partner collection pipeline](docs/controlled-collection/partner_collection_pipeline.md), backed
-by strict [study](schemas/partner_study.v1.schema.json),
-[row](schemas/partner_rows.v1.schema.json), and
-[bundle](schemas/partner_bundle.v1.schema.json) contracts, an executable
-[validator](scripts/validate_partner_bundle.py), and a permanently nonconfirmatory
-[synthetic golden bundle](data/examples/partner_golden_bundle_synthetic/README.md).
+It requires a declared capture policy, physical-unit lineage, real conventional reports, retained
+failures and censors, frozen decision deadlines, and held-environment evaluation. The canonical
+documents are:
 
-The work has two active directions and one retained reference archive. See
-[PROJECTS.md](PROJECTS.md) for the current decision record.
+- [capture and representation boundaries](docs/spine/capture_vs_representation_design_note.md)
+- [task-relevant compression audit](docs/spine/task_relevant_compression_audit.md)
+- [downstream-failure research program](docs/spine/downstream_failure_research_program.md)
+- [partner collection pipeline](docs/controlled-collection/partner_collection_pipeline.md)
 
-- **provenance-critique** *(active)* — turn the opXRD/NIST/HTEM findings into a reusable
-  protocol for detecting and controlling collection-provenance shortcuts.
-- **controlled-collection** *(active)* — create the smallest real, counterbalanced
-  material-making pilot capable of testing one pre-registered partial-event task.
-- **event-method** *(reference archive)* — synthetic policy, field, and representation
-  experiments retained for their design lessons, plus the completed real-data campaign
-  (Runs 001–015; see
-  [docs/event-method/findings_summary.md](docs/event-method/findings_summary.md)); no new
-  architecture work proceeds there before real data changes the question.
+The current implementation includes strict partner study/row/bundle schemas, an executable bundle
+validator, and a synthetic golden bundle used only to test mechanics.
 
-The computational approach across branches:
+## Evidence status
 
-1. Measure how provenance and collection choices affect raw-measurement models.
-2. Define a real partial-event prediction task that cannot be solved by interpolation,
-   a time prior, a recipe, or an event identifier.
-3. Compare raw measurements, process context, and inherited labels only under those
-   controls.
+Public datasets supplied calibration cases, not the final claim:
 
-## Near-Term Milestone
+- collection provenance is often recoverable, so every learned advantage needs provenance-stressed
+  evaluation;
+- RRUFF spectra show that some inherited categories compress distinctions present in measurements,
+  but they do not establish downstream value or a uniquely correct ontology;
+- the Severson adapted per-cycle record supports within-corpus distinctions that a recipe summary
+  cannot express, but the ranking gain failed held-batch transfer, censored records are not failures,
+  and a known within-cycle signal sat above the adapter root;
+- dense oleogel trajectories were largely solvable by time and interpolation baselines.
 
-Do not turn opXRD, NIST, HTEM, or the synthetic scaffold into leaderboards. The near-term
-milestone is a small controlled event dataset with raw process logs, raw measurements,
-negative/ambiguous outcomes, counterbalanced provenance, and labels retained as
-comparators. New public-data or synthetic experiments need to test a new capture or
-evaluation requirement; architecture sweeps are out of scope.
+The [results ledger](docs/spine/results_ledger.json) owns load-bearing historical magnitudes. The
+[event-method findings](docs/event-method/findings_summary.md) retain the public-data campaign
+verdicts; they are not an invitation to resume model sweeps.
 
-Current provenance-critique publication-positioning critique:
-[docs/spine/provenance_publication_assessment.md](docs/spine/provenance_publication_assessment.md)
+## Quick start
 
-The current CaCO3 pilot remains the methods/calibration study. The next consequential study is a
-separately preregistered independent-preparation final-spec task; degradation or functional
-performance becomes the flagship only after a partner supplies a complete native-trace -> actual
-report -> delayed-outcome chain across multiple independent batches.
+```bash
+python -m venv .venv
+.venv/bin/pip install -e '.[dev]'
+.venv/bin/pytest -q
+.venv/bin/python scripts/check_results_ledger.py
+.venv/bin/python scripts/validate_partner_bundle.py \
+  data/examples/partner_golden_bundle_synthetic --readiness golden
+```
+
+See [PROJECTS.md](PROJECTS.md) for the repository map and [SKILL.md](SKILL.md) for current operating
+constraints.
 
 ## Layout
 
 ```text
-docs/spine/                 Thesis, strategy, infra, publication assessments.
-docs/provenance-critique/   "Models learn the lab" findings on public XRD data.
-docs/event-method/          Archived method and synthetic-harness record.
-docs/controlled-collection/ Dataset collection, schema, audits, and outreach/.
-data/                       Local datasets and generated manifests.
-notebooks/                  Exploratory analysis.
-src/                        Reusable preprocessing, models, training, and evaluation code.
-configs/                    Local and Zeus run configs.
-scripts/                    Command-line experiment entrypoints; many archived runs still need consolidation.
+docs/spine/                 Current principles, protocols, and decision records
+docs/controlled-collection/ Active prospective collection and partner contract
+docs/provenance-critique/   Provenance-control methods and completed evidence
+docs/event-method/          Frozen public/synthetic calibration record
+schemas/                    Event and partner data contracts
+src/                        Reusable validation and evaluation code
+scripts/                    Reproducible entry points
+data/manifests/             Small run receipts and legacy result artifacts
 ```
-
-Code (`src/`, `scripts/`) and data (`data/`) stay in standard package layout and are
-shared across branches; the branch split lives in `docs/` and `PROJECTS.md`.

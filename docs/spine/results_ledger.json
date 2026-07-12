@@ -1,6 +1,6 @@
 {
   "_README": {
-    "purpose": "Single source of truth for load-bearing headline result numbers. Each number lives once here (as a pointer into its run manifest, or as an explicit by-construction/literal value), NOT transcribed independently into prose. Prose in SKILL.md, README.md, PROJECTS.md, and docs/ cites these keys; magnitudes there are copies kept honest by scripts/check_results_ledger.py, which resolves each manifest pointer and fails loudly if a doc has drifted from the manifest.",
+    "purpose": "Single source of truth for load-bearing historical result numbers. Each number points to a run manifest or is explicitly structural/literal. scripts/check_results_ledger.py resolves manifest pointers and identifies prose copies that need reconciliation.",
     "why": "Before this ledger, headline metrics were denormalized across 4-6 files (0.756 in 5, 0.898 in 6); a re-run silently staleness-rotted every copy with nothing forcing reconciliation. Two flagship numbers one digit apart (0.756 ranking-robustness vs 0.765 primary A/B) were trivially transposable across 8 files. The ledger + checker convert that silent staleness into a loud, actionable failure that lists exactly which docs to update.",
     "how_to_update": "When a run changes a number: (1) the manifest under data/manifests/ is the run output and updates itself; (2) run `python scripts/check_results_ledger.py` -- it will FAIL and print every doc whose quoted magnitude no longer matches the manifest; (3) fix the ledger 'display' and the listed docs, or re-run the check until green. Never edit a magnitude in prose without running the check.",
     "robustness_vocab": {
@@ -30,7 +30,6 @@
       "ci_pointer": "results.ridge.cluster_ci95"
     },
     "cited_in": [
-      "SKILL.md",
       "docs/controlled-collection/severson_ranking_robustness.md",
       "docs/controlled-collection/severson_representation_ab.md",
       "docs/spine/data_assumptions_and_limits.md",
@@ -49,7 +48,6 @@
       "pointer": "models_clearing_bar"
     },
     "cited_in": [
-      "SKILL.md",
       "docs/controlled-collection/severson_ranking_robustness.md"
     ]
   },
@@ -80,7 +78,6 @@
       "note": "B's feature vector is constant across replicates of a recipe, so any ranker ties at 0.500 by construction; verified bitwise in severson_representation_ab.json."
     },
     "cited_in": [
-      "SKILL.md",
       "docs/controlled-collection/severson_representation_ab.md",
       "docs/controlled-collection/severson_ranking_robustness.md",
       "docs/spine/data_assumptions_and_limits.md",
@@ -187,8 +184,6 @@
       "family_pointer": "garnet.family_acc_2way"
     },
     "cited_in": [
-      "SKILL.md",
-      "PROJECTS.md",
       "docs/event-method/findings_summary.md",
       "docs/event-method/run_log.md",
       "docs/spine/ontology_and_rawness_gradient.md",
@@ -207,7 +202,6 @@
       "pointer": "garnet.within_family_error_frac"
     },
     "cited_in": [
-      "SKILL.md",
       "docs/event-method/findings_summary.md",
       "docs/event-method/run_log.md"
     ]
@@ -226,7 +220,6 @@
       "family_pointer": "garnet.family_2way.acc"
     },
     "cited_in": [
-      "SKILL.md",
       "docs/event-method/findings_summary.md"
     ]
   },
@@ -246,7 +239,6 @@
     },
     "cited_in": [
       "docs/controlled-collection/severson_heldout_batch_ranking.md",
-      "SKILL.md",
       "docs/controlled-collection/severson_representation_ab.md",
       "docs/controlled-collection/severson_ranking_robustness.md",
       "docs/controlled-collection/pilot_design_prereg.md"
@@ -264,7 +256,6 @@
       "pointer": "A_natural_coordinate.loo_spearman_early_to_cyclelife"
     },
     "cited_in": [
-      "PROJECTS.md",
       "docs/event-method/findings_summary.md",
       "docs/event-method/run_log.md"
     ]

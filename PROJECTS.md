@@ -1,160 +1,53 @@
-# Projects Index
+# Repository Directions
 
-This repo is organized by research purpose, not by data source. Only two directions are
-active. Completed and synthetic work stays available as evidence, but is not an invitation
-to keep extending every exploratory thread.
+The repository has one active research program. Earlier branches remain only where they supply a
+control, a calibration result, or reproducibility evidence.
 
-Code (`src/`, `scripts/`) and data (`data/`) are shared infrastructure and stay in standard
-package layout. The branch split lives in `docs/` and this index.
+| direction | status | purpose | canonical entry point |
+| --- | --- | --- | --- |
+| compression-aware collection | **active** | find the earliest reporting edge that loses transferable value for a real delayed decision | [partner collection pipeline](docs/controlled-collection/partner_collection_pipeline.md) |
+| provenance controls | maintained module | detect collection shortcuts and define held-environment evaluation | [provenance leakage audit](docs/provenance-critique/provenance_leakage_audit.md) |
+| event method | frozen archive | retain positive and negative public/synthetic calibration lessons | [findings summary](docs/event-method/findings_summary.md) |
 
-## Legend (old → new)
+## Active program
 
-| Old term | Now |
-| --- | --- |
-| Track A | **provenance-critique** |
-| Track B (modeling) | **event-method** reference archive |
-| Track B (dataset/lab/outreach) | **controlled-collection** |
-| "refined-a" | archived public-data falsification campaign (Runs 001–015, merged 2026-07-03); record in `docs/event-method/findings_summary.md` + `run_log.md` |
+The target is a matched, versioned chain from measurement opportunity and native evidence through
+the partner's actual report to a delayed outcome and action. The immediate gate is not another
+model or schema extension. It is one real partner golden bundle whose native artifacts, omitted
+channels, report lineage, units, clocks, censors, outcome construction, and costs pass the
+validator.
 
----
+After that mechanical gate:
 
-## Branch: provenance-critique
-**Deliverable:** a methods/benchmark protocol for provenance-stressed experimental-XRD
-evaluation.
-**Status:** active and closest to publishable. The replication bar is **met** (2026-07-03):
-the opXRD source-recoverability finding replicates on RRUFF mineral Raman and generalizes to
-a non-spectral modality (Severson battery cycling), and the RRUFF chemistry-matched control
-localizes the composition-invariant provenance signal to acquisition geometry (point count,
-coverage) — see `docs/provenance-critique/second_dataset_replication.md`. Remaining before a
-broad shortcut claim: connect recoverability to a downstream evaluation (leave-one-source-out
-task performance), not just probe recoverability.
-**Core claim:** collection provenance can be recoverable from public experimental XRD, so
-representation results should report provenance probes, coverage controls, strong simple
-baselines, and strict source/session-held-out performance. Recoverability is a risk signal,
-not proof that a downstream task is contaminated.
+1. choose one partner-native decision, cutoff, outcome, and unit of independence;
+2. run a nonconfirmatory pilot to estimate support, environment variation, and power;
+3. freeze the confirmatory design before outcome access; and
+4. test risk, support, collisions, cost, and transfer across held batches and an external site.
 
-- **Docs:** `docs/provenance-critique/` — **`provenance_leakage_audit.md` (the flagship
-  result + reusable tool)**, **`second_dataset_replication.md` (RRUFF + Severson
-  replication, chemistry-matched control)**, `htem_event_proxy.md`,
-  `ontology_stress_tests.md`, `anubhav_snap_result.md`, and
-  `provenance_leakage_text_corpus.md` (modality-generality evidence, archived) — plus the
-  strategy/positioning in `docs/spine/provenance_publication_assessment.md`, and
-`recoverability_vs_transfer.md` (recoverability is a screening signal, not a
-downstream-transfer predictor — n=6).
-- **Scripts:** `audit_opxrd_dataset.py`, `audit_nist_dataset.py`, `audit_htem_dataset.py`,
-  `analyze_opxrd_*` (normalization controls, source diagnostics, source predictability),
-  `run_opxrd_source_transfer.py`, `run_opxrd_conv_*`, `run_xrd_*`, `train_xrd_encoder.py`,
-  `run_ontology_tests.py`, `run_htem_*` (event proxy, spatial field, sampling curve).
-- **Manifests/data:** `data/manifests/opxrd_*`, `nist_*`, `htem_*`.
-- **Next step:** package source recoverability, coverage-controlled performance,
-  interpolation/time baselines, and leave-one-source/session-out evaluation as one
-  protocol; apply it to one second experimental dataset. Do not run another model-scaling
-  sweep first.
+The current CaCO3 pilot is a methods calibration. Degradation, qualification, pilot-scale yield,
+or functional performance belongs in a separate preregistered study with the correct physical-unit
+lineage; it is not a late endpoint added to that pilot.
 
-## Reference archive: event-method
-**Purpose:** retain the synthetic event-field, active-measurement, and representation
-experiments as design evidence, plus the completed real-data campaign record.
-**Status:** closed to new architecture, policy, JEPA, regime-transfer, and synthetic-scaling
-work. These experiments established useful requirements—counterbalancing, provenance
-splits, coverage-aware observations, and interpolation/time controls—but they are not
-evidence for a materials method.
+## Maintained controls
 
-**Real-data campaign (Runs 001–015, completed 2026-06-16, merged to main 2026-07-03):**
-summary in `docs/event-method/findings_summary.md`, per-run log in
-`docs/event-method/run_log.md`. Verdicts:
+The provenance work has reached its public-data ceiling. Source recoverability is a warning signal,
+not proof of shortcut use or downstream failure. Reuse its probes, coverage controls, simple
+baselines, and held-source/session evaluation inside the active program; do not extend it with
+another public-dataset leaderboard.
 
-- *Oleogel SAXS/WAXS (Runs 001–008), negative:* masked-frame reconstruction on dense smooth
-  trajectories is interpolation/clock-solvable; SAXS/WAXS are largely time-redundant (1/6
-  events show genuine cross-modal excess). Shown capacity-free to be a data property
-  (homogeneous, 6 near-identical events) — the empirical justification for
-  controlled-collection.
-- *RRUFF (Runs 009–014), positive:* the three-way label taxonomy — labels are redundant
-  (re-encode composition), natural coordinates (polymorphs: raw recovers them 0.91–1.0 where
-  composition cannot), or lossy (solid-solution species: garnet family 1.0 vs species 0.73,
-  100% of errors within-family — Run 011). Ablation-hardened (Runs 012–013) and reproduced on
-  powder XRD (Run 014). This is the first real-data evidence for the lossy-labels thesis and
-  the standing basis for claim 3 in `docs/spine/event_grammar_validation_note.md`.
-- *Severson battery (Run 015), partial:* early-trajectory predicts lifetime (Spearman 0.61)
-  but the lossy signal is confounded by charging policy — extrinsic process labels need
-  controlled conditions, reinforcing the controlled-collection design.
+## Frozen calibration archive
 
-The campaign closed with the rawness-floor decision (`docs/spine/ontology_and_rawness_gradient.md`):
-public-data discovery is exhausted; the next genuine result requires controlled collection.
-A public writeup draft exists at `docs/writeup/when_is_a_label_faithful.md`.
+The event-method campaign established four constraints: beat clock/interpolation baselines, split
+by independent environments, distinguish support loss from common-support risk, and treat labels as
+task-specific comparators. New synthetic policy, JEPA, architecture, or public-dataset sweeps are
+out of scope unless a prospective dataset creates a predeclared need.
 
-- **Docs:** `docs/event-method/` — masked event model, event-field model, active-learning
-  policies (`*active*`, `*policy*`), regime transfer, synthetic scaffold/field-budget,
-  pilot-size & counterbalanced stress, event-analysis harness, provenance ablation, mock
-  event review, and the JEPA design sketch (`jepa_event_model.md`, not yet run).
-- **Scripts:** `run_track_b_*` (masked event model, event field, active loops, learned /
-  neural active policy + ablation, regime / mixed-regime transfer, progress policy,
-  synthetic scaffold, field budget, pilot-size, counterbalanced, event analysis).
-- **Code:** `src/materials_event_modeling/track_b/`.
-- **Reactivation rule:** only reopen a specific method when a real dataset and
-  pre-registered task show signal beyond interpolation, a time/recipe prior, event identity,
-  and provenance controls. Active measurement is an application layer, not a standalone
-  research direction, until then.
+Generic text/pretraining curation and universal claims about natural kinds or a label-free true
+coordinate system are retired from this repository.
 
-## Branch: controlled-collection
-**Deliverable:** data paper + the dataset itself — a controlled material-making event
-dataset (raw process/measurement trajectories, negatives/ambiguous outcomes, labels frozen
-after raw data).
-**Status:** active. Grammar v1 is frozen (envelope `schemas/event_grammar.v1.schema.json` +
-L0–L3 conformance in `src/materials_event_modeling/grammar/`), and the adapter-coverage
-study (`docs/controlled-collection/event_grammar_coverage_study.md`, 2026-07-03) graded six
-public datasets: Severson L3, HTEM L1, Durham/oleogel/NIST/RRUFF L0 — falsifying the
-pre-registered "no public dataset exceeds L1" and identifying Severson + oleogel as the
-Phase 2 A/B datasets. No real material-making events have yet been collected; the audits
-identify the structural requirements for collection, not a reason to run another public
-benchmark.
+## Sources of truth
 
-- **Docs:** `docs/controlled-collection/` — event dataset plan, universal event embedding
-  scaffold (schema + ingestion/audit), the grammar coverage study + Severson representation
-  A/B, low-equipment droplet pilot, MPS provenance-store evaluation, public-dataset audits
-  (Durham, Dryad, OpenCrystalData), and **`experiments.md`** (parked three-tier XRD
-  portfolio for a process-recording-lab partner — round-robin, lossy-label intervention,
-  born-L3 pilot). The cross-cutting formal object is the task-relevant compression audit in
-  `docs/spine/task_relevant_compression_audit.md`; its paper-level novelty and evidence gates
-  are recorded in `docs/spine/compression_audit_publication_assessment.md`. The separate
-  downstream-failure program and partner decision card are
-  `docs/spine/downstream_failure_research_program.md` and
-  `docs/controlled-collection/downstream_endpoint_decision_card.md`; the executable partner
-  contract and G1--G7 lifecycle are in
-  `docs/controlled-collection/partner_collection_pipeline.md`.
-- **Outreach (subfolder, logistics not research):** `docs/controlled-collection/outreach/` —
-  Foundry application/proposal/emails, PI/collaborator outreach, personalization plan,
-  outreach visuals (+ `figures/`), lab-outreach brief, next-steps.
-- **Scripts:** `audit_track_b_event_dataset.py`, `audit_durham_ipa_droplets.py`,
-  `audit_dryad_gelation_dataset.py`, `audit_opencrystaldata.py`,
-  `run_durham_droplet_smoke_test.py`, `validate_partner_bundle.py`, `download_data.py`.
-- **Artifacts:** `schemas/material_event.schema.json`, the strict `partner_study.v1`,
-  `partner_rows.v1`, and `partner_bundle.v1` schemas, the permanently nonconfirmatory
-  `data/examples/partner_golden_bundle_synthetic/`, `templates/`, and `examples/track_b/`.
-- **Next step:** complete the remaining analysis-freeze blockers in
-  `docs/controlled-collection/pilot_design_prereg.md` (v1 collection design, analysis freeze
-  pending), confirm the partner-lab envelope, then commit the design lock and analysis freeze
-  before collection. In parallel, use the downstream endpoint decision card to qualify one
-  separate partner workflow; do not add a degradation or qualification endpoint to the current
-  48-event pilot. The design encodes
-  every accumulated constraint (16x3 counterbalanced, >=4 sessions with cross-session
-  replicate pairs — the held-out-batch falsification's measured requirement — failures
-  retained, labels frozen, grammar-native logging at L3).
-  For the separate consequential program, the next evidence-producing step is no longer schema
-  work: select one partner decision with the card and make that partner's own small golden bundle
-  pass `validate_partner_bundle.py --readiness golden`.
-
-## Spine (cross-cutting)
-`docs/spine/` — concise thesis, strategy, publication assessments, and infrastructure.
-The operating memo is `SKILL.md` at the repo root.
-
-## Explicitly out of scope
-
-- Generic text/pretraining-corpus curation and decontamination as a research direction. The
-  merged campaign artifacts (`src/materials_event_modeling/curate/`, the `text` adapter in
-  `run_provenance_leakage_audit.py`, `docs/provenance-critique/provenance_leakage_text_corpus.md`)
-  are retained as archived evidence that the provenance-audit protocol is modality-agnostic,
-  not as an invitation to extend corpus work here.
-- Universal claims about natural kinds, rawness, or a label-free "native coordinate system."
-  The project tests task-specific adequacy under stated measurement conditions.
-- Further public-dataset or synthetic architecture sweeps that do not change a collection
-  decision or test a new provenance/evaluation control.
+- current operating rules: [SKILL.md](SKILL.md)
+- formal compression protocol: [task_relevant_compression_audit.md](docs/spine/task_relevant_compression_audit.md)
+- historical magnitudes: [results_ledger.json](docs/spine/results_ledger.json)
+- data limitations: [data_assumptions_and_limits.md](docs/spine/data_assumptions_and_limits.md)

@@ -1,7 +1,7 @@
 [project]
 name = "materials-event-modeling"
 version = "0.1.0"
-description = "Pre-taxonomic representation learning for material-making events."
+description = "Compression-aware, provenance-stressed evaluation of materials experiments."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
