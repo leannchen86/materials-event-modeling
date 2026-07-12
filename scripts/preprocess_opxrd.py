@@ -1,4 +1,4 @@
-"""Preprocess an opXRD subset into fixed-grid raw-pattern arrays."""
+"""Preprocess opXRD deposited patterns into standardized fixed-grid arrays."""
 
 from __future__ import annotations
 

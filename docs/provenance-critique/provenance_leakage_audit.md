@@ -1,5 +1,11 @@
 # Provenance-recoverability audit
 
+> **Terminology correction (2026-07-12).** The opXRD spectral arm is the archive's deposited
+> pattern after fixed-grid interpolation, minimum shift, and max normalization. Historical feature
+> IDs such as `xrd_pca` are retained for manifest compatibility, but `raw spectra` below means this
+> standardized deposited spectrum, not the native instrument artifact. The archive-to-standardized
+> edge and input content hashes were not audited in these runs.
+
 A reusable, dataset-agnostic diagnostic that answers one question: **how much of an
 *incidental* provenance label can a simple model recover from a record's features?**
 

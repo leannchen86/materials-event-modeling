@@ -3,8 +3,9 @@
 Each RRUFF file has ``##KEY=value`` header lines (NAMES, RRUFFID, IDEAL CHEMISTRY, STATUS,
 RAMAN WAVELENGTH) followed by ``wavenumber, intensity`` rows. We keep Processed spectra at one
 laser wavelength, resample onto a common grid, and expose mineral label + specimen id +
-composition (element-presence) + status, so the probe can test raw-spectrum vs label and
-vs the compositional proxy. See docs/event-method/run_log.md (Run 009).
+composition (element-presence) + status, so the historical probe can compare the selected
+processed spectrum with labels and a compositional proxy. The RAW-to-Processed export edge was
+not audited. See docs/event-method/run_log.md (Run 009).
 """
 
 from __future__ import annotations

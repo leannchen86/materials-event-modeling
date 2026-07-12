@@ -4,7 +4,7 @@ One event per thin-film sample library, built ONLY from the local API cache unde
 ``data/interim/htem_event_proxy/`` (written by ``scripts/run_htem_event_proxy.py``; no network).
 A library is included when the cache holds both its per-position properties entry and its XRD
 spectra entry — 95 libraries at the time of writing. This is a locality cap, not a sample of the
-full HTEM database (1,891 records in ``sample_library_records.json``): only these 95 have raw
+full HTEM database (1,891 records in ``sample_library_records.json``): only these 95 have
 position-level payloads on disk.
 
 Slot mapping (source field -> envelope slot):
@@ -15,10 +15,10 @@ Slot mapping (source field -> envelope slot):
   fields only. These are recorded as plan-shaped metadata, not a full process trajectory.
   ``plan_id`` / ``event_group_id`` are null: HTEM records no explicit plan or replicate-group id.
 * observations    <- position-indexed rows, several modalities per position:
-  - ``xrd``: raw spectrum referenced by ``file_path`` (the cached spectra chunk, relative to the
+  - ``xrd``: deposited spectrum referenced by ``file_path`` (the cached spectra chunk, relative to the
     repo root) plus ``payload.htem`` locator {table, spectra_key, sample_library_id, position,
     n_points}; XRD-derived ``peak_count`` (a string in the source) rides along in the payload.
-  - ``optical_absorption`` (17/95 libraries): raw absorption-vs-energy spectrum, referenced the
+  - ``optical_absorption`` (17/95 libraries): deposited absorption-vs-energy spectrum, referenced the
     same way.
   - ``xrf``, ``four_point_probe``, ``optical_summary``, ``profilometry``: small per-position
     scalars/lists inlined in ``payload.htem`` from the properties table.
@@ -127,20 +127,9 @@ def spatial(prop_entry: dict, index: int) -> dict[str, Any] | None:
     return {"x": x, "y": y, "unit": "mm"}
 
 
-def planned_value(value: Any) -> Any:
-    """Serialize list-valued recipe fields (per-gun settings) to a stable string.
-
-    The frozen conformance grader hashes planned values into a plan signature and cannot
-    handle raw lists; "Cu2S|SnS2|None" keeps per-gun order without changing the content.
-    """
-    if isinstance(value, list):
-        return "|".join("None" if item is None else str(item) for item in value)
-    return value
-
-
 def build_intent(record: dict) -> dict[str, Any] | None:
     planned = {
-        f: planned_value(record[f]) for f in DEPOSITION_FIELDS
+        f: record[f] for f in DEPOSITION_FIELDS
         if record.get(f) not in (None, "", [])
     }
     if not planned:

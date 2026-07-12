@@ -145,7 +145,7 @@ def load_opxrd(args: argparse.Namespace) -> dict[str, Any]:
         "spectrum_summary": _spectrum_summary_features(xrd, args.peak_threshold),
         "xrd_pca": xrd,
     }
-    # Sets named here are raw matrices; PCA is fit INSIDE each CV fold (train split
+    # Sets named here are input matrices; PCA is fit INSIDE each CV fold (train split
     # only) by the audit core. Pre-reducing on the full matrix would let test rows
     # shape the basis — the exact leakage this tool exists to catch.
     pca_spec: dict[str, int] = {"xrd_pca": args.pca_components}
@@ -180,7 +180,7 @@ def load_opxrd(args: argparse.Namespace) -> dict[str, Any]:
         }.items():
             feature_sets[name] = matrix
             pca_spec[name] = args.pca_components
-        # Does the strongest control reduce source recoverability in the raw representation?
+        # Does the strongest control reduce source recoverability in the standardized spectrum?
         control_pairs.append(("full_xrd_pca", "crop_xrd_derivative_pca"))
 
     return {

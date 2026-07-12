@@ -19,11 +19,11 @@ Slot mapping
     intent        -> null. A specimen is collected, not synthesised; the source records
                      no plan, recipe, or design. (mapping gap)
     observations  -> one observation per distinct measured laser wavelength for that
-                     specimen, modality "raman". We reference the spectrum by file
+                     specimen, modality "raman". We reference the deposited export by file
                      (never inline the ~600-1000-point vector). For each (specimen,
                      wavelength) we keep ONE observation and prefer the Processed export,
-                     falling back to RAW; the alternate export is recorded in
-                     payload["rruff.alt_export_available"] rather than emitted as a second
+                     falling back to RAW; the selected and alternate members are both recorded
+                     in the payload rather than emitted as a second
                      observation, so multi-observation structure reflects genuine
                      measurement multiplicity (different laser lines) and is not inflated
                      by format duplicates. order_index ranks wavelengths ascending;
@@ -89,11 +89,6 @@ NAME_RE = re.compile(
     r"Raman_Data_(?P<kind>Processed|RAW)__(?P<hash>[0-9a-fA-F]+)\.txt$"
 )
 
-# Header ##KEY fields we surface (all specimen-level, constant across a specimen's files).
-HEADER_KEYS = ("NAMES", "STATUS", "IDEAL CHEMISTRY", "MEASURED CHEMISTRY", "CELL PARAMETERS",
-               "DESCRIPTION", "LOCALITY", "OWNER", "SOURCE", "URL")
-
-
 def project_root() -> Path:
     return Path(__file__).resolve().parents[2]
 
@@ -149,10 +144,12 @@ def build_observations(rid: str, by_key: dict[tuple[int, str], dict[str, str]]) 
     observations = []
     for order_index, (wl, variant) in enumerate(sorted(by_key)):
         exports = by_key[(wl, variant)]
-        # Prefer the Processed export; fall back to RAW. Record the alternate's presence.
+        # Preserve the historical Processed-first policy, but expose both exact members so
+        # RAW -> Processed is an auditable edge rather than an invisible adapter choice.
         chosen_kind = "Processed" if "Processed" in exports else "RAW"
         member = exports[chosen_kind]
         alt_kind = "RAW" if chosen_kind == "Processed" else "Processed"
+        alt_member = exports.get(alt_kind)
         wl_tag = f"{wl:g}nm" if wl > 0 else "unknown_wl"
         obs_id = f"{rid}__{wl_tag}" + (f"__{variant}" if variant else "")
         observations.append(
@@ -160,7 +157,7 @@ def build_observations(rid: str, by_key: dict[tuple[int, str], dict[str, str]]) 
                 "observation_id": obs_id,
                 "modality": "raman",
                 "kind": "measurement",
-                "stage": "final",
+                "stage": f"deposited_{chosen_kind.lower()}_export",
                 "order_index": order_index,
                 "instrument_id": f"raman_{wl_tag}",
                 "raw_export_format": f"rruff_txt_{chosen_kind.lower()}",
@@ -168,7 +165,9 @@ def build_observations(rid: str, by_key: dict[tuple[int, str], dict[str, str]]) 
                 "payload": {
                     "rruff.raman_wavelength_nm": wl if wl > 0 else None,
                     "rruff.zip_member": member,
-                    "rruff.alt_export_available": alt_kind if alt_kind in exports else None,
+                    "rruff.selected_export": chosen_kind,
+                    "rruff.alt_export": alt_kind if alt_member else None,
+                    "rruff.alt_zip_member": alt_member,
                     "rruff.variant_note": variant or None,
                 },
                 "notes": (
@@ -231,7 +230,7 @@ def build_event(
             "measurement_day": None,
             "run_order": None,
             "source_dataset": "rruff",
-            "raw_export_profile": "excellent_unoriented",
+            "deposited_export_profile": "excellent_unoriented; Processed preferred over RAW",
         },
         "labels": {
             "assigned_after_raw_data_frozen": None,
