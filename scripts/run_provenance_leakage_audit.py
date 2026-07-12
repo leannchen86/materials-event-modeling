@@ -41,9 +41,7 @@ def project_root() -> Path:
 
 
 # --------------------------------------------------------------------------------------
-# opXRD adapter — feature builders mirror analyze_opxrd_source_predictability.py and
-# analyze_opxrd_normalization_controls.py, kept self-contained so the audit tool has no
-# torch dependency.
+# opXRD adapter — self-contained feature builders with no torch dependency.
 # --------------------------------------------------------------------------------------
 
 

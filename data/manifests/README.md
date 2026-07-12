@@ -22,3 +22,7 @@ git show <commit>:<path>
 ```
 
 They are calibration history, not active inputs.
+
+Retired NIST, HTEM, Durham, and one-off opXRD/RRUFF commands and manifests are available at commit
+`12e7d7f`. The live directory keeps only current inputs/receipts and manifests referenced by the
+results ledger or maintained protocols.

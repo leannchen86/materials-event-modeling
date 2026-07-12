@@ -9,7 +9,9 @@
 > The study also tested envelope expressibility, not capture completeness: within-cycle arrays were
 > left above the adapter root. Therefore “zero schema changes” means only that the selected adapter
 > projection fit the envelope; it does not freeze the payload/sidecar policy. Historical statements
-> below are preserved to keep the preregistered record auditable.
+> below are preserved to keep the preregistered record auditable. The retired public adapters and
+> dataset-audit commands are available at Git commit `12e7d7f`; they are no longer maintained in the
+> live command surface.
 
 Started 2026-07-03. Ladder placement: rungs 1 (coverage) and 2 (audit power) of
 [../spine/event_grammar_validation_note.md](../spine/event_grammar_validation_note.md).
