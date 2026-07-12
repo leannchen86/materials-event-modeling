@@ -5,7 +5,7 @@
     "A dataset with no negative outcomes fails L2 by design: from the outside, 'all successes' and 'failures filtered out' are indistinguishable.",
     "trace_richness is reported but not gated: single-observation events are valid, but a dataset of them is a measurement archive, not event traces."
   ],
-  "created_at": "2026-07-12T09:12:29.207223+00:00",
+  "created_at": "2026-07-12T09:48:48.168277+00:00",
   "dataset": "severson_battery",
   "event_count": 135,
   "events_path": "data/interim/event_grammar_v1/severson_battery/events.json",
@@ -98,19 +98,16 @@
       "--events",
       "data/interim/event_grammar_v1/severson_battery/events.json",
       "--dataset",
-      "severson_battery",
-      "--output",
-      "/tmp/event_grammar_conformance_severson_battery.json"
+      "severson_battery"
     ],
-    "captured_at": "2026-07-12T09:12:29.272311+00:00",
-    "git_commit": "d647a0c97bdbbc45a85548427c88f785109e9a97",
+    "captured_at": "2026-07-12T09:48:48.231067+00:00",
+    "git_commit": "7543a016c6857a4028db1dd2f4c7c338803f7879",
     "git_dirty": false,
     "packages": {
       "numpy": "2.5.1",
       "pandas": "3.0.3",
       "scipy": "1.18.0",
-      "sklearn": "1.9.0",
-      "torch": "2.12.0"
+      "sklearn": "1.9.0"
     },
     "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
     "python": "3.13.0"
