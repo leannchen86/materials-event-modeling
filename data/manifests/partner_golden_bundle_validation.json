@@ -1,0 +1,152 @@
+{
+  "schema_version": "partner_bundle_validation_receipt.v1",
+  "bundle_id": "bundle-synthetic-golden-001",
+  "bundle_path": "data/examples/partner_golden_bundle_synthetic/bundle.json",
+  "validation_scope": "golden mechanics only; permanently nonconfirmatory",
+  "valid": true,
+  "requested_readiness": "golden",
+  "blocking_errors": [],
+  "warnings": [],
+  "checks": {
+    "assignment_attempt_state_machine": {"passed": true},
+    "attempt_event_ledger_consistent": {"passed": true},
+    "bridge_crossing": {"details": {"failed_requirements": []}, "passed": true},
+    "bundle_artifacts_match_ledger": {"passed": true},
+    "bundle_matches_schema": {"passed": true},
+    "decision_and_correction_semantics": {"passed": true},
+    "golden_readiness": {"details": {"failed_requirements": []}, "passed": true},
+    "governance_hashes_and_access": {
+      "details": {"locked_freezes": 0},
+      "passed": true
+    },
+    "independent_parent_partition_isolation": {"passed": true},
+    "nonconfirmatory_scope_consistent": {"passed": true},
+    "outcome_exact_and_censor_semantics": {"passed": true},
+    "outcome_subject_coverage": {
+      "details": {
+        "covered_subjects": 2,
+        "declared_subjects": 2,
+        "duplicate_subject_ids": [],
+        "missing_subject_ids": []
+      },
+      "passed": true
+    },
+    "physical_lineage_acyclic": {"details": {"edges": 8, "nodes": 10}, "passed": true},
+    "referential_integrity": {"passed": true},
+    "representation_cutoff_and_deadline_consistent": {"passed": true},
+    "row_ids_unique": {"passed": true},
+    "rows_match_schema": {"passed": true},
+    "schemas_loaded": {
+      "details": {
+        "expected": ["bundle", "rows", "study"],
+        "loaded": ["bundle", "rows", "study"]
+      },
+      "passed": true
+    },
+    "source_denominators_reconcile": {"details": {"mismatches": {}}, "passed": true},
+    "study_contract_semantics": {"passed": true},
+    "study_identity_consistent": {"passed": true},
+    "study_matches_schema": {"passed": true},
+    "table_declarations_consistent": {"passed": true},
+    "table_files_match_manifest": {"passed": true},
+    "transformation_lineage_acyclic": {
+      "details": {"edges": 110, "nodes": 62},
+      "passed": true
+    },
+    "unit_level_freeze_precedes_outcome_access": {
+      "details": {
+        "comparisons": 12,
+        "relevant_pairs": 12,
+        "unmatched_representations": 0
+      },
+      "passed": true
+    }
+  },
+  "counts": {
+    "analysis_arms": 7,
+    "blocking_errors": 0,
+    "bridge": {
+      "attempts": 2,
+      "conditions": 1,
+      "environment_levels": 2,
+      "explicit_membership": true,
+      "independent_units": 2
+    },
+    "bundle_artifacts_verified": 40,
+    "events": 2,
+    "independent_parents": 2,
+    "independent_parents_by_partition": {"nonconfirmatory": 2},
+    "ledger_denominators": {
+      "aborted_attempts": 0,
+      "ambiguous_attempts": 0,
+      "cancelled_assignments": 0,
+      "completed_attempts": 1,
+      "eligible_followup_units": 2,
+      "failed_attempts": 1,
+      "followed_units": 2,
+      "initiated_attempts": 2,
+      "missing_outcome_units": 0,
+      "not_started_assignments": 0,
+      "planned_assignments": 2,
+      "released_assignments": 2,
+      "retries": 0,
+      "reworks": 0,
+      "right_censored_units": 1,
+      "source_population_count": 2,
+      "unknown_attempts": 0
+    },
+    "representation_specs": 6,
+    "rows_by_type": {
+      "artifact": 40,
+      "assignment": 2,
+      "attempt": 2,
+      "correction": 1,
+      "cost": 4,
+      "decision": 2,
+      "outcome": 2,
+      "physical_edge": 8,
+      "physical_node": 10,
+      "representation": 12,
+      "transformation": 10
+    },
+    "semantic_rows_skipped": 0,
+    "tables": 12,
+    "unit_freeze_outcome_comparisons": 12,
+    "unit_freeze_relevant_pairs": 12,
+    "unit_freeze_unmatched_representations": 0,
+    "warnings": 0
+  },
+  "schema_hashes": {
+    "schema:partner_bundle.v1.schema.json": "2c898a2df3ea459e610e0a6b38621c8b655ad77af487d7619b2aee85938d0db5",
+    "schema:partner_rows.v1.schema.json": "34e1613232f698c957c14fb1e350c232d2e73ff70b86bccb08bbaa8065a99dc2",
+    "schema:partner_study.v1.schema.json": "3acec023722a382e4faf0c34494cb41c98d638e6bddc59b893f41f69ea2741d2"
+  },
+  "bundle_index": {
+    "bytes": 9624,
+    "path": "bundle.json",
+    "sha256": "ebe551a32e712f611dddfc535f58554322753eab3b19b43ae6a98738151f82b8"
+  },
+  "run_identity": {
+    "argv": [
+      "scripts/validate_partner_bundle.py",
+      "data/examples/partner_golden_bundle_synthetic/bundle.json",
+      "--readiness",
+      "golden"
+    ],
+    "bundle_argument": "data/examples/partner_golden_bundle_synthetic/bundle.json",
+    "captured_at": "2026-07-12T05:24:22.915856+00:00",
+    "git_commit": "b154a8b9456fb9866a55a066821eb02fc7c57ffa",
+    "git_dirty": false,
+    "packages": {
+      "numpy": "2.5.1",
+      "pandas": "3.0.3",
+      "scipy": "1.18.0",
+      "sklearn": "1.9.0",
+      "torch": "2.12.0"
+    },
+    "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+    "python": "3.13.0",
+    "requested_readiness": "golden",
+    "validator": "partner_bundle.v1"
+  }
+}
