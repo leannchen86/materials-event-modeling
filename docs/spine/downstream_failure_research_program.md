@@ -325,8 +325,9 @@ plausible. Equal budget alone does not identify policy value.
    X100-over-S100 advantage, exposes a cross-batch target-provenance reversal, and remains an
    engineering control rather than a practitioner-report result.
 3. Use the [downstream endpoint decision card](../controlled-collection/downstream_endpoint_decision_card.md)
-   in every partner conversation; require one nonconfirmatory golden bundle before promising a
-   study.
+   and [partner collection pipeline](../controlled-collection/partner_collection_pipeline.md) in
+   every partner conversation; require one nonconfirmatory golden bundle before pricing or
+   promising a study.
 4. Select one real endpoint, cutoff, action, physical-unit graph, and transfer population.
 5. Estimate assay, batch, missingness, and censoring components from nonconfirmatory pilot units.
 6. Simulate the full hierarchical design for both material-loss and bounded-adequacy power.
