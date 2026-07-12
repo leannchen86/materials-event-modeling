@@ -5,18 +5,13 @@ The ledger is the single source of truth for load-bearing headline numbers.
 Each entry either points into a run manifest (source.kind == "manifest") or
 carries a by_construction / literal value. This script:
 
-  1. HARD CHECK (exit 1 on failure): for every manifest-sourced entry, resolve
-     the JSON pointer in the live manifest, round it to the ledger's displayed
-     precision, and assert it matches the ledger 'display'. This is what catches
-     a re-run that silently moved a number: the manifest changes, the ledger no
-     longer matches, and the check fails -- listing every doc in 'cited_in' as
-     the propagation worklist.
+  1. HARD CHECK (exit 1 on failure): resolve every declared pointer/display pair
+     in a manifest-sourced entry (primary, family companion, and confidence
+     interval where present) and compare at displayed precision.
 
-  2. ADVISORY (report only, never fails): for every entry, check that each doc in
-     'cited_in' actually contains the display string, and flag docs that contain
-     the string but are NOT declared in 'cited_in' (undeclared duplication).
-     Advisory because prose numbers collide (0.73 as many different facts), so a
-     fuzzy text match is a hint, not an invariant.
+  2. ADVISORY (report only, never fails): check that each cited document contains
+     the primary display string. Prose-number collisions make this a hint, not an
+     invariant.
 
 Usage:
   python scripts/check_results_ledger.py            # check
@@ -48,14 +43,26 @@ def resolve(obj: object, pointer: str) -> object:
     return cur
 
 
-def display_matches(canonical: float, shown: str) -> bool:
-    """Does the ledger's display string round-match the live manifest value?"""
-    nums = re.findall(r"-?\d+\.?\d*", shown)
-    if not nums:
+POINTER_DISPLAY_PAIRS = (
+    ("pointer", "display"),
+    ("family_pointer", "family_display"),
+    ("ci_pointer", "ci95_display"),
+)
+
+
+def display_matches(canonical: object, shown: str) -> bool:
+    """Do scalar/list values round-match every number rendered in ``shown``?"""
+    shown_numbers = re.findall(r"-?\d+\.?\d*", shown)
+    canonical_values = canonical if isinstance(canonical, list) else [canonical]
+    if len(shown_numbers) != len(canonical_values):
         return False
-    shown_num = nums[0]
-    decimals = len(shown_num.split(".")[1]) if "." in shown_num else 0
-    return round(canonical, decimals) == float(shown_num)
+    for value, rendered in zip(canonical_values, shown_numbers, strict=True):
+        if not isinstance(value, (int, float)) or isinstance(value, bool):
+            return False
+        decimals = len(rendered.split(".")[1]) if "." in rendered else 0
+        if round(float(value), decimals) != float(rendered):
+            return False
+    return True
 
 
 def load_entries() -> dict:
@@ -77,28 +84,31 @@ def cmd_check(entries: dict) -> int:
             if mpath not in manifest_cache:
                 manifest_cache[mpath] = json.loads((REPO / mpath).read_text())
             manifest = manifest_cache[mpath]
-            try:
-                canonical = resolve(manifest, src["pointer"])
-            except (KeyError, IndexError) as exc:
-                hard_failures.append(
-                    f"[{key}] pointer {src['pointer']!r} does not resolve in {mpath}: {exc}"
-                )
-                continue
-            if not isinstance(canonical, (int, float)):
-                hard_failures.append(
-                    f"[{key}] pointer {src['pointer']!r} resolved to non-numeric {canonical!r}"
-                )
-                continue
-            if not display_matches(float(canonical), e["display"]):
-                worklist = "\n      - ".join(e["cited_in"])
-                hard_failures.append(
-                    f"[{key}] STALE: manifest value {canonical} != ledger display {e['display']!r}.\n"
-                    f"    Update the ledger and these docs:\n      - {worklist}"
-                )
+            for pointer_key, display_key in POINTER_DISPLAY_PAIRS:
+                if pointer_key not in src:
+                    continue
+                if display_key not in e:
+                    hard_failures.append(
+                        f"[{key}] source declares {pointer_key} but entry lacks {display_key}"
+                    )
+                    continue
+                try:
+                    canonical = resolve(manifest, src[pointer_key])
+                except (KeyError, IndexError) as exc:
+                    hard_failures.append(
+                        f"[{key}] pointer {src[pointer_key]!r} does not resolve in {mpath}: {exc}"
+                    )
+                    continue
+                if not display_matches(canonical, e[display_key]):
+                    worklist = "\n      - ".join(e["cited_in"])
+                    hard_failures.append(
+                        f"[{key}] STALE: manifest value {canonical} != ledger "
+                        f"{display_key} {e[display_key]!r}.\n"
+                        f"    Update the ledger and these docs:\n      - {worklist}"
+                    )
         elif kind == "literal" and src.get("pointer_todo"):
             advisories.append(f"[{key}] literal with pointer_todo -- pin a manifest pointer and convert to kind:manifest.")
 
-        # Advisory: does each cited doc actually contain the display string?
         for doc in e["cited_in"]:
             p = REPO / doc
             if not p.exists():

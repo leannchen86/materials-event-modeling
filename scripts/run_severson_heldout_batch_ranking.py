@@ -113,22 +113,27 @@ def main() -> None:
         macro = []
         for b in batches:
             idxs = [pair_index[p] for p in pairs_by_batch[b]]
-            loo_acc = float(loo_correct[idxs].mean()) if idxs else float("nan")
-            hob_acc = float(hob_correct[idxs].mean()) if idxs else float("nan")
+            loo_acc = float(loo_correct[idxs].mean()) if idxs else None
+            hob_acc = float(hob_correct[idxs].mean()) if idxs else None
             clusters_b = [policy_of[pairs_all[i][0]] for i in idxs]
             if len(set(clusters_b)) >= 2:
                 clo, chi = cluster_bootstrap_ci(hob_correct[idxs], clusters_b)
+                ci_status = "estimated"
             else:
-                clo, chi = float("nan"), float("nan")
+                clo, chi = None, None
+                ci_status = "undefined_fewer_than_two_policy_clusters"
             per_batch[b] = {
                 "n_pairs": len(idxs),
                 "n_train_eol": sum(v for k, v in eol_by_batch.items() if k != b),
+                "estimate_status": "estimated" if idxs else "undefined_no_ranking_pairs",
                 "loo_policy_accuracy": loo_acc,
                 "held_out_batch_accuracy": hob_acc,
-                "transfer_cost": loo_acc - hob_acc,
+                "transfer_cost": loo_acc - hob_acc if idxs else None,
                 "held_out_batch_cluster_ci95": [clo, chi],
+                "cluster_ci95_status": ci_status,
             }
-            macro.append(hob_acc)
+            if hob_acc is not None:
+                macro.append(hob_acc)
 
         clusters_all = [policy_of[w] for w, _ in pairs_all]
         pooled_lo, pooled_hi = cluster_bootstrap_ci(hob_correct, clusters_all)
@@ -136,7 +141,7 @@ def main() -> None:
             "per_batch": per_batch,
             "pooled_held_out_batch_accuracy": float(hob_correct.mean()),
             "pooled_held_out_batch_cluster_ci95": [pooled_lo, pooled_hi],
-            "macro_avg_held_out_batch_accuracy": float(np.nanmean(macro)),
+            "macro_avg_held_out_batch_accuracy": float(np.mean(macro)) if macro else None,
             "pooled_loo_policy_accuracy": float(loo_correct.mean()),
         }
 
@@ -157,7 +162,7 @@ def main() -> None:
     }
     output = root / args.output
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+    output.write_text(json.dumps(report, indent=2, sort_keys=True, allow_nan=False) + "\n")
 
     print(f"\nHeld-out-batch ranking — {len(pairs_all)} pairs, A_full, k={K}")
     print(f"  pairs/batch: {report['pairs_per_batch']}  |  paper-shape B pooled: {b_pooled:.3f}\n")
@@ -167,10 +172,13 @@ def main() -> None:
         for b in batches:
             pb = r["per_batch"][b]
             lo, hi = pb["held_out_batch_cluster_ci95"]
-            ci = f"[{lo:.3f}, {hi:.3f}]" if lo == lo else "[n/a — <2 clusters]"
+            ci = f"[{lo:.3f}, {hi:.3f}]" if lo is not None else "[n/a — <2 clusters]"
+            loo = f"{pb['loo_policy_accuracy']:.3f}" if pb["loo_policy_accuracy"] is not None \
+                else "n/a"
+            held = f"{pb['held_out_batch_accuracy']:.3f}" \
+                if pb["held_out_batch_accuracy"] is not None else "n/a"
             print(f"    {b}  n={pb['n_pairs']:>3}  train_eol={pb['n_train_eol']:>3}  "
-                  f"LOO-policy={pb['loo_policy_accuracy']:.3f}  "
-                  f"held-out-batch={pb['held_out_batch_accuracy']:.3f}  {ci}")
+                  f"LOO-policy={loo}  held-out-batch={held}  {ci}")
         print(f"    pooled held-out-batch={r['pooled_held_out_batch_accuracy']:.3f}  "
               f"macro-avg={r['macro_avg_held_out_batch_accuracy']:.3f}  "
               f"(pooled LOO-policy ref={r['pooled_loo_policy_accuracy']:.3f})\n")
