@@ -1,209 +1,121 @@
 # Downstream Endpoint and Decision Card
 
-Status: pre-partner / pre-preregistration template, 2026-07-11. Complete one card per candidate
-study before modeling or collection. The program-level rationale and phase gates live in
+Complete one card per candidate partner workflow before modeling, schema extension, or collection.
+This freezes one outcome and one early decision; it is not a menu of possible targets. Program:
 [downstream_failure_research_program.md](../spine/downstream_failure_research_program.md).
 
-This card freezes one consequential outcome and one early decision. It is intentionally not a menu
-of every property that could later be measured.
-
-## A. Use case and decision
+## Decision
 
 | field | required entry |
 | --- | --- |
-| study ID and version | immutable identifier |
-| intended user | named role that would act on the result |
-| target population | material systems, processes, sites, and time period covered by the claim |
-| decision time | operational deadline, not only material-state cutoff |
-| allowed actions | e.g. continue, repeat, rework, add characterization, route, stop, scrap |
-| current decision rule | actual SOP/report/expert rule used today |
-| false-accept cost | scientific or operational consequence |
-| false-reject cost | scientific or operational consequence |
-| measurement/delay cost | cost of waiting for the final outcome |
-| utility or loss | task-native function with units |
-| smallest useful task-risk benefit $\delta_R$ | elicited before outcome access |
-| smallest useful utility/cost benefit $\delta_U$ | separate from predictive risk |
+| study ID/version |  |
+| intended user and target population |  |
+| decision deadline |  |
+| allowed actions |  |
+| actual current rule/report |  |
+| false-accept and false-reject costs |  |
+| assay/delay/action costs |  |
+| task-native loss or utility |  |
+| smallest worthwhile risk/utility gain |  |
 
-Reject the candidate if no real person would take a different action at the declared time.
+Reject if no named user would change an action at the declared time.
 
-## B. Downstream outcome
+## Outcome
 
 | field | required entry |
 | --- | --- |
-| outcome ID and version | immutable target specification |
-| physical subject | execution, material batch, aliquot, specimen, device, pilot lot, or field unit |
-| primary target | continuous and failure-aware where possible; survival/co-primary when needed |
-| secondary threshold/status | optional spec-pass, failure, or time-to-threshold target |
-| outcome horizon/window | frozen time or interval |
-| assay and adjudication | instrument, protocol, software, assessor, blinding |
-| uncertainty | repeatability, calibration, detection/quantification limits |
-| eligibility | which attempted units have a scientifically defined target |
-| censoring/dropout | right, interval, destructive-test, missing, or not-followed reason |
-| measured-at environment | site, instrument, session, operator, lot, and configuration |
-| outcome independence | why it is not merely the same transformation that produced the early report |
+| outcome ID/version and physical subject |  |
+| primary continuous/failure-aware target |  |
+| optional threshold or survival target |  |
+| horizon/window |  |
+| assay, adjudication, software, and blinding |  |
+| calibration/repeatability/detection uncertainty |  |
+| eligibility and follow-up |  |
+| censoring/dropout types |  |
+| measured-at environment |  |
+| independence from the early report |  |
 
-Reject the candidate if target measurement error is comparable to the smallest useful effect. If
-follow-up is selective, require one of: all eligible units assayed; predeclared probability sampling
-with known inclusion probabilities; or a defensible selection model plus sensitivity bounds. A
-recoverable denominator alone does not reveal the missing outcomes of hand-selected units.
+Reject if measurement uncertainty rivals the worthwhile effect or selective follow-up has no
+frozen sampling/sensitivity design.
 
-## C. Physical-unit lineage
+## Capture and representations
 
-Draw and version the actual graph:
+| field | required entry |
+| --- | --- |
+| state cutoff and decision deadline |  |
+| measurement opportunities/actions |  |
+| capture-policy mode, inputs, selections, failures, and reasons |  |
+| native retained artifacts and reader recipes |  |
+| actual intermediate transformations |  |
+| conventional report/grade and side inputs |  |
+| context shared by all arms |  |
+| parent DAG, clocks, hashes, versions, and availability |  |
+| retention/recoverability and cost per node |  |
+
+At minimum compare context, actual report, richer/native or genuine intermediate evidence, and
+report-plus-richer complementarity. Do not invent a weak report for the study. A human report with
+unrecorded evidence is a nonnested branch.
+
+## Physical units and environments
+
+Draw the machine-resolvable graph:
 
 ```text
-producing event -> material batch -> aliquot/specimen -> device/pilot lot -> outcome assay
+attempt -> material batch -> aliquot/specimen -> device or lot -> outcome evidence
 ```
 
-For every node record:
+For each node record immutable ID, parents, split/merge/consumption, times, amount/state, artifacts,
+and provenance. State the highest shared ancestor that defines independence.
 
-- immutable ID and type;
-- parent IDs and split/merge/consumed relation;
-- creation, transfer, preparation, and assay timestamps;
-- amount, geometry, storage, and handling state where relevant;
-- source artifact hashes;
-- process, material-lot, operator, instrument, and site provenance; and
-- whether multiple descendants share one independent parent.
-
-Reject the candidate if an outcome cannot be joined to its source evidence without a manual guess.
-
-## D. Input cutoff and representation graph
-
-| field | required entry |
+| claim | primary held-out unit |
 | --- | --- |
-| state cutoff $\tau_s$ | latest physical state allowed into any early representation |
-| decision deadline $\tau_d$ | when the representation and decision must be ready |
-| acquisition time | when each source artifact becomes available |
-| construction time | when each derived representation is produced |
-| operational availability | whether construction finishes before $\tau_d$ |
-| context $C$ | legitimate shared recipe/process information |
-| native evidence $X$ | exact modalities, files, machine state, and process logs |
-| intermediate stages | calibration, cleanup, fit, engineered features, residuals |
-| conventional report $S$ | actual fields, precision, missingness, and generating SOP |
-| label/grade $L$ | category, confidence, abstention, and side inputs |
-| parent DAG | actual parents and versions for every representation |
-| retention class | exact, lossy, reconstructable, deleted/inaccessible, never captured |
-
-At minimum compare `C`, `C+L`, `C+S`, `C+X`, and `C+L+X`, plus genuine adjacent intermediate
-stages. A human label with side evidence absent from $X$ is nonnested and must remain a separate
-branch.
-
-Keep online and archival decisions separate. A compact report may be adequate for the declared
-real-time action while native evidence remains worth retaining for future tasks or verification.
-
-## E. Environments and independent units
-
-| claim | required held-out unit |
-| --- | --- |
-| repeatability | repeat execution on the same apparatus under short-term conditions |
-| measurement-system intermediate precision | changed day/operator/instrument within one lab |
-| process robustness | changed material lot or predeclared process nuisance |
+| repeatability | repeat execution under short-term same-method conditions |
+| intermediate precision | changed day/operator/instrument within one lab |
+| process/material robustness | changed lot, batch, or frozen nuisance |
 | reproducibility | independent site |
-| material transfer | independent material or manufacturing batch |
-| chemistry/process transfer | predeclared held formulation, condition, or family |
+| predictor transfer | frozen held material/manufacturing batch or site |
 
-Record expected counts at every level. Do not treat scans, timepoints, cycles, aliquots, specimens,
-or devices as independent when they descend from one material batch relevant to the claim.
-Require condition/chemistry overlap across batches when batch transfer is the primary estimand.
+List counts and overlap at every level. Descendant scans, cycles, aliquots, specimens, or devices do
+not substitute for independent material batches.
 
-For an external site, choose exactly one primary mode: zero-shot frozen-model transport;
-predeclared site calibration followed by a frozen test; or protocol replication with site-specific
-retraining. The last validates the method, not transfer of the original predictor. Verify whether
-the report schema and transformation graph are actually the same at the new site.
-
-## F. Support and leakage contract
+## Support and firewall
 
 Freeze:
 
-- attempted-unit denominator;
-- target eligibility and follow-up denominator;
-- representation-availability denominator and reason codes;
-- handling of failure, ambiguity, abort, retry, rework, and unclassifiable reports;
-- censoring model and follow-up schedule;
-- no-future-state and no-outcome-informed-processing checks;
-- grouping that prevents descendants of one independent parent crossing folds;
-- training-only feature learning, imputation, tuning, and calibration; and
-- provenance recoverability probes for every representation.
+- attempt, target-eligibility, follow-up, assay, and representation denominators;
+- failure, ambiguity, abort, retry, rework, censor, and unavailable reason codes;
+- capture-opportunity coverage;
+- one primary environment split and an external-site mode;
+- no-future-state/no-outcome-informed processing checks;
+- parent-group isolation across folds;
+- fold-local fitting, imputation, tuning, and calibration; and
+- provenance probes, risk/support/collision/harm margins, uncertainty, and stop rules.
 
-Predeclare one primary transfer split. Random, held-batch, held-condition, held-chemistry, and
-held-site evaluations answer different questions and cannot be selected after seeing results.
+## Golden-bundle entry gate
 
-## G. Costs and adequacy
+Request one ordinary chain and one failure/censor/abort/retry/rework example when available, with
+the opportunity inventory, native bytes, transformations, actual report, outcome evidence,
+lineage, source denominators, costs, rights, and reader recipes.
 
-Collect from day one:
+All answers below are hard gates:
 
-- acquisition and instrument time;
-- storage volume and retention duration;
-- processing and compute time;
-- annotation/expert time;
-- turnaround/decision latency;
-- retest, rework, scrap, and false-decision costs; and
-- recoverability of the upstream artifact.
+- Is there a real early action and actual report?
+- Are capture opportunities, failed attempts, and censors visible?
+- Can every outcome and report be joined to native evidence without a manual guess?
+- Are enough crossed independent environments available for simulation and an untouched test?
+- Is an external site or instrument available after model freeze?
+- Can native evidence be retained and scientific outputs released?
 
-Freeze meaningful risk, utility, event-support, decision-support, collision, and harm bounds. The
-target is the least costly representation whose worst relevant environment remains inside all
-bounds.
+Golden and pilot units are permanently nonconfirmatory.
 
-## H. Partner-entry checklist: a golden bundle
+## Signatures
 
-Before a full agreement, request a small de-identified bundle containing:
-
-- an ordinary event with planned process and actual deviations;
-- complete native trace, instrument/process metadata, and every transformation version;
-- actual conventional report, final grade, and delayed outcome with uncertainty and lineage;
-- a failure, censor, retry, rework, or abstention example where one exists;
-- aggregate source-ledger counts for denominator checks; and
-- rough cost and turnaround estimates.
-
-Golden-bundle IDs and descendants are permanently nonconfirmatory and listed in the
-preregistration, or their outcomes remain firewalled from the analysis team while a data engineer
-checks the joins.
-
-Required partner answers:
-
-1. Is the raw upstream artifact legally and technically accessible?
-2. Does the report reflect real practice, rather than a feature set invented for this project?
-3. Are failed and censored units visible in the source ledger?
-4. Are there enough crossed independent material/batch environments for simulation and an
-   untouched test, rather than merely one nominal held-out batch?
-5. Is an external instrument or site available after the model and claim freeze?
-6. Can results or at least aggregate audit outputs be released?
-
-Hard, noncompensable entry gates are: a real early action; an actual report ladder; machine-
-resolvable lineage; a complete attempt/failure denominator; enough crossed batches for the planned
-transfer estimand; legally usable raw evidence; and publishable outputs. Do not promise a
-consequential compression study if any hard gate fails.
-
-## I. Candidate scorecard
-
-Score each item `0` (absent), `1` (partial), or `2` (strong):
-
-| criterion | score |
-| --- | ---: |
-| delayed outcome is expensive, slow, destructive, or consequential |  |
-| real early action exists |  |
-| informative, failure-aware outcome with credible uncertainty/censoring |  |
-| actual raw-to-report ladder is accessible |  |
-| failed/censored attempts remain visible |  |
-| physical-unit lineage is machine-resolvable |  |
-| multiple independent batches/environments |  |
-| external validation path |  |
-| storage/latency/action costs measurable |  |
-| data rights permit a scientific result |  |
-
-This total is a prioritization heuristic, not scientific evidence and not a substitute for the hard
-gates above. `16--20`: strong Phase 2/3 candidate. `12--15`: partner-development candidate with
-named gaps. Below `12`: calibration or engineering exercise, not a flagship.
-
-## J. Freeze signatures
-
-- scientific owner and date:
-- practitioner/action owner and date:
-- outcome-assay owner and date:
-- data/lineage owner and date:
+- scientific owner/date:
+- practitioner action owner/date:
+- outcome assay owner/date:
+- data lineage owner/date:
 - preregistration commit:
-- first outcome-access timestamp:
+- first confirmatory outcome-access timestamp:
 
-The card is invalid if the preregistration commit does not precede confirmatory outcome access.
-Golden-bundle and pilot outcomes must be explicitly identified as permanently nonconfirmatory or
-kept firewalled as described above.
+The card is invalid if any hard gate is blank or the preregistration does not precede outcome
+access.
