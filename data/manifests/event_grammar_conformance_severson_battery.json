@@ -1,16 +1,17 @@
 {
   "caveats": [
-    "Levels grade what the dataset RECORDS, not the quality of the science.",
+    "Levels grade the ADAPTED RECORD, not capture completeness or scientific quality.",
+    "Signals omitted before the adapter output are outside every level and must be declared in a separate capture-policy audit.",
     "A dataset with no negative outcomes fails L2 by design: from the outside, 'all successes' and 'failures filtered out' are indistinguishable.",
     "trace_richness is reported but not gated: single-observation events are valid, but a dataset of them is a measurement archive, not event traces."
   ],
-  "created_at": "2026-07-04T00:39:24.135918+00:00",
+  "created_at": "2026-07-12T09:02:51.943382+00:00",
   "dataset": "severson_battery",
   "event_count": 135,
   "events_path": "data/interim/event_grammar_v1/severson_battery/events.json",
   "grammar_version": "v1",
-  "level": 3,
-  "level_name": "l3_counterbalanced",
+  "level": 1,
+  "level_name": "l1_provenance",
   "levels": {
     "l0_raw_trace": {
       "checks": {
@@ -67,16 +68,16 @@
     "l2_negatives_frozen_labels": {
       "checks": {
         "labels_frozen_after_raw": true,
-        "negative_outcomes_retained": true,
+        "negative_outcomes_retained": false,
         "outcome_status_fraction": true
       },
       "evidence": {
         "events_with_outcome_status_fraction": 1.0,
         "frozen_label_fraction": null,
         "labeled_event_count": 0,
-        "negative_outcome_count": 7
+        "negative_outcome_count": 0
       },
-      "passed": true
+      "passed": false
     },
     "l3_counterbalanced": {
       "checks": {
@@ -99,14 +100,14 @@
       "--dataset",
       "severson_battery"
     ],
-    "captured_at": "2026-07-04T00:39:26.088344+00:00",
-    "git_commit": "eeab85ef65a32da0379bdb2bb24a97c4f5c5d4a5",
-    "git_dirty": true,
+    "captured_at": "2026-07-12T09:02:54.075416+00:00",
+    "git_commit": "55370d3956e577dfe38dd861a40702d692e1b44d",
+    "git_dirty": false,
     "packages": {
-      "numpy": "2.4.6",
+      "numpy": "2.5.1",
       "pandas": "3.0.3",
-      "scipy": "1.17.1",
-      "sklearn": "1.8.0",
+      "scipy": "1.18.0",
+      "sklearn": "1.9.0",
       "torch": "2.12.0"
     },
     "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
@@ -115,14 +116,14 @@
   "selection_risk": {
     "few_provenance_units_risk": "high",
     "min_independent_provenance_units": 3,
-    "negative_outcome_count": 7,
+    "negative_outcome_count": 0,
     "note": "Measures only success-bias and provenance-unit count. Publication bias, pre-filtering, single-source curation, and processing-before-deposit are NOT visible here \u2014 see docs/spine/data_assumptions_and_limits.md.",
     "provenance_units_per_logged_axis": {
       "batch_id": 3,
       "instrument_id": 48,
       "instrument_session_id": 3
     },
-    "success_bias_risk": "low_negatives_present"
+    "success_bias_risk": "high_no_negatives_recorded"
   },
   "task": "event_grammar_conformance",
   "thresholds": {
