@@ -5,6 +5,9 @@ hard the historical residual CNN transfers to it when held out. Analysis over tw
 manifests; no model run. The retired analysis command and source manifests are available at Git
 commit `12e7d7f`; the compact result manifest remains live.
 
+The opXRD inputs are standardized deposited patterns after interpolation, intensity shifting, and
+normalization—not instrument-native bytes.
+
 > Read with [../spine/data_assumptions_and_limits.md](../spine/data_assumptions_and_limits.md):
 > **n=6 sources** — every correlation here is descriptive, not inferential.
 
@@ -28,13 +31,13 @@ Transfer badness > 0 means the CNN loses to interpolation on that held-out sourc
   (essentially zero). The most recoverable source (LBNL, 0.979) transfers *well*; a
   poorly recoverable one (HKUST, 0.565) transfers *badly*.
 - **Metadata recoverability barely predicts it**: +0.203 (weak).
-- **What predicts transfer is source size**: Spearman(log n, badness) = **-0.71**
+- **Source size has the larger descriptive association in this six-source table**:
+  Spearman(log n, badness) = **-0.71**
   (unrounded -0.714). The
   two sources the CNN loses on (EMPA n=34, HKUST n=23) are the small ones; the strong
   winners are the two largest (INT, LBNL). This matches the branch's earlier per-source
-  diagnostic (EMPA: small, low intensity, dense peaks; HKUST: sparse, interpolation-
-  friendly) — transfer failure is a spectrum-content/size phenomenon, not an
-  identifiability one.
+  diagnostic (EMPA: small, low intensity, dense peaks; HKUST: sparse, interpolation-friendly).
+  With n=6 this does not establish size as a predictor or identify a cause.
 
 ## Why this matters
 

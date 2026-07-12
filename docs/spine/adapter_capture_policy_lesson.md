@@ -1,109 +1,55 @@
-# The Adapter Is a Capture Policy: Lesson from the Severson Within-Cycle Blind Spot
+# The Adapter Is an Inclusion Policy
 
-Recorded 2026-07-12, from the post-hoc review of the
-[downstream-compression dry run](../controlled-collection/severson_downstream_compression_results.md).
-Extends [capture_vs_representation_design_note.md](capture_vs_representation_design_note.md) and
-[data_assumptions_and_limits.md](data_assumptions_and_limits.md). The subject is our own code:
-[`adapt_severson_battery.py`](../../scripts/adapters/adapt_severson_battery.py).
+Status: current lesson from the Severson downstream audit, revised 2026-07-12. The full original
+narrative is preserved at Git commit `eb21481acd7b3065d775fd8fd1b5f6b428441c27`.
 
-There is an irony here that is the thesis proving itself: a repo built around "premature
-compression destroys downstream value" performed a premature compression at its own adapter —
-knowingly, for defensible engineering reasons, with escrow — and its own audit was then blind to
-that edge because the edge sat *above* the representation graph the audit was handed. The packet
-paradox is not a rhetorical worry; this is a concrete instance of it, in our own pipeline. The
-thesis applies to us first.
+## Correction in terms
 
-## What happened
+An adapter is not the acquisition capture policy: it cannot recover opportunities never taken or
+artifacts never produced. It is a post-acquisition inclusion and representation policy that can
+make retained evidence invisible to every later arm.
 
-- **2026-06-15** — the [dataset audit](../event-method/severson_battery_audit.md) explicitly
-  documents the within-cycle raw curves (`batch.cycles{cell}`, `Qdlin` on the `Vdlin` voltage
-  grid) and names them "the basis of the famous ΔQ(V) feature" — the strongest known early-life
-  predictor in this dataset. The signal's location was known before any adapter existed.
-- **2026-07-03** — the adapter is written for the representation A/B study. Grammar v1
-  observation payloads are scalar-shaped, so the adapter keeps one capacity number per cycle and
-  references the within-cycle curves by archive path instead of carrying them. The limitation is
-  documented in the docstring. For the A/B question (grammar-shaped vs paper-shaped record) this
-  granularity was sufficient.
-- **2026-07-11** — the downstream-compression dry run audits four arms (C, C+S100, C+X100,
-  C+S100+X100), all built from the per-cycle scalars. Result: S100 and X100 are statistically
-  tied. The design and results docs both list "X100 is not native within-cycle electrochemistry"
-  as their *first* limitation.
-- **2026-07-12** — post-hoc review connects three individually-known facts for the first time:
-  (1) early per-cycle capacity fade is nearly flat, so the audited 99-value-vs-7-value edge was
-  predictably cheap; (2) the strongest known signal lives in the channel the adapter left behind;
-  therefore (3) the null was partly preordained, and the discarded channel is a free known-loss
-  calibration control the program's phase-0 explicitly calls for. The connection was drawn by an
-  outside question, not by the run's own design or review machinery.
+Use two roots:
 
-The structural fact: an audit is a *differential* instrument. It detects loss by comparing arms.
-Information destroyed before the arms' common input was formed is missing from every arm equally
-and cancels out of every comparison. The adapter's compression step sat above the audit's DAG
-root (X100), so no arm could see it — by construction, not by accident.
+```text
+capture audit:         opportunity/action ledger -> native artifacts and failures
+representation audit: earliest retained artifact -> adapter -> features -> report
+```
 
-## Root cause, honestly ranked
+The first tests selective acquisition. The second tests loss among evidence that exists. Starting
+at the adapter output tests neither edge above it.
 
-1. **Schema-shaped capture (the real cause).** Grammar v1's observation payload is
-   scalar-oriented and the event corpus is inline JSON; carrying ~1,000-point per-cycle arrays
-   would have required inventing a sidecar/blob mechanism. The path of least resistance was to
-   conform the data to the schema. An envelope designed for uniformity across six heterogeneous
-   datasets thereby acted as an implicit capture policy — the ontology decided what counts as an
-   observation. This is ontology loss (see the capture-vs-representation note) committed by our
-   own format.
-2. **Deferral without pricing.** The limitation was disclosed three times (adapter docstring,
-   dry-run design bullet 1, results-doc interpretation-boundary bullet 1) and priced zero times.
-   Nobody stated at design freeze: "given flat early fade and the known ΔQ(V) signal, this
-   limitation predictably forces a near-tie on the audited edge." Known-limitations lists are
-   where insights go dormant: once a fact is filed as a caveat, authors and reviewers treat it
-   as handled and stop asking what it implies. The 2026-07-11 multi-agent review reproduced this
-   failure — critiques adjacent to the blind spot were dismissed because "the doc already
-   concedes it," treating disclosure as neutralization.
-3. **Not compute.** The raw archives are 8.3 GB; the events file is 77.7 MB. Storage and compute
-   were never the constraint. The barrier was a framework convenience. When a scoping decision
-   is attributed to "too big," the actual limit must be named; here there wasn't one.
+## Severson case
 
-## What was done right
+The native HDF5 files contain within-cycle `Qdlin`/`Vdlin` curves used by the published ΔQ(V)
+feature. The event adapter retained per-cycle scalars and archive pointers but omitted those arrays
+from its JSON payload. The later S100-versus-X100 audit compared only descendants of that adapted
+record, so it could not test the known within-cycle signal.
 
-The lesson is precision, not penance. The adapter escrowed everything by reference with exact
-HDF5 paths; the limitation was disclosed in three places; the run's nonconfirmatory framing
-prevented over-reading the null. Nothing was destroyed and nothing was hidden. The failure was
-*invisibility to the instrument* plus *unpriced deferral* — not data loss and not concealment.
-A compression shortcut is legitimate when it is **declared, priced, reversible, and visible to
-the audit**. This one was declared and reversible; unpriced and invisible. Two of four.
+This omission was documented and reversible, but not priced at design freeze. Given nearly flat
+early per-cycle capacity and a known signal above the root, the near-tie was partly foreseeable.
+The run remains a valid nonconfirmatory engineering test of the edge it actually represented; it
+is not evidence that the omitted channel lacks value.
 
-## Rules for future runs
+## Rules
 
-1. **Every adapter is a capture policy.** Its compression edge must appear as an explicit edge
-   in any representation DAG audited downstream. Audits root at the native artifact reference,
-   not at the adapter's output. "We have not tested above this line" must be something the
-   machine-readable manifest says, not something a caveat whispers.
-2. **Disclosed is not neutralized.** At design freeze, every known-limitation bullet must be
-   priced: state what result it could preordain and what experiment would test it. If a
-   limitation predictably forces the primary result, the design must say so before the run.
-3. **Never conform evidence to schema silently.** When data exceeds the grammar, grow the
-   grammar (array/sidecar-by-reference mechanism) or record an explicit unadapted-edge entry.
-   Pointer + content hash + reader recipe beats both inlining and omission.
-4. **Name resource limits precisely.** "Too big" must cite the number and the actual binding
-   constraint. A framework convenience wearing a resource-limit costume is how premature
-   optimization hides.
-5. **Reviews need a completeness critic.** Claims-checking asks "is what the doc says true and
-   fairly framed?" and structurally treats disclosed limitations as resolved. Every run review
-   must also ask: *what edge sits above this graph, and what experiment does the blind spot
-   imply?*
-6. **The alternative to premature compression is not "carry everything."** Scoping is
-   unavoidable; unbounded capture is not a policy. The standard is declared, priced, reversible,
-   audit-visible compression — the same standard we intend to hold industrial capture pipelines
-   to, applied to our own adapters first.
+1. Inventory opportunities, acquisition actions, failures, native artifacts, and adapter omissions
+   separately.
+2. Put every tested transformation in the representation DAG. If parentage is unverified, report
+   complementarity rather than localizing loss to an edge.
+3. Before outcomes open, state what result each omission could preordain and the experiment that
+   would test it.
+4. Retain large evidence by pointer, content hash, and reader recipe instead of inlining it or
+   dropping it silently.
+5. Treat schema fit as an expressibility check, never a completeness certificate.
 
-## Remediations
+## Consequences
 
-- **Known-loss control:** rebuild the ΔQ(V) representation from the escrowed within-cycle curves
-  and run the identical audit on the within-cycle→per-cycle edge — a test with a known correct
-  answer that both validates the instrument (it has so far only ever produced nulls) and
-  retroactively makes the S100-vs-X100 tie credible. (Task queued 2026-07-12.)
-- **DAG root extension:** future manifests root the representation DAG at the archive reference,
-  with the adapter's compression step recorded as an explicit unaudited edge.
-- **Grammar v1.1 candidate:** first-class array/sidecar payloads by reference (pointer + hash +
-  reader recipe), so richness never again requires either JSON bloat or omission.
-- **Results-doc amendment** for the dry run is pending separately (decomposition, censoring
-  sensitivity, failed batch-3 width prediction); this note deliberately does not modify the
-  frozen run artifacts.
+- The queued known-loss control reconstructs ΔQ(V) from the native archives and tests the
+  within-cycle-to-per-cycle edge with the same downstream audit.
+- Prospective partner collection needs an opportunity/action inventory above the current v1 bundle.
+- A later schema may add first-class sidecar arrays, but v1 remains hash-bound and is not mutated.
+
+The governing design note is
+[capture_vs_representation_design_note.md](capture_vs_representation_design_note.md); the operational
+gate is the [partner collection pipeline](../controlled-collection/partner_collection_pipeline.md).

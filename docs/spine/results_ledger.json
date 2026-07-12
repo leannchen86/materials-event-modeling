@@ -1,8 +1,7 @@
 {
   "_README": {
-    "purpose": "Single source of truth for load-bearing historical result numbers. Each number points to a run manifest or is explicitly structural/literal. scripts/check_results_ledger.py resolves manifest pointers and identifies prose copies that need reconciliation.",
-    "why": "Before this ledger, headline metrics were denormalized across 4-6 files (0.756 in 5, 0.898 in 6); a re-run silently staleness-rotted every copy with nothing forcing reconciliation. Two flagship numbers one digit apart (0.756 ranking-robustness vs 0.765 primary A/B) were trivially transposable across 8 files. The ledger + checker convert that silent staleness into a loud, actionable failure that lists exactly which docs to update.",
-    "how_to_update": "When a run changes a number: (1) the manifest under data/manifests/ is the run output and updates itself; (2) run `python scripts/check_results_ledger.py` -- it will FAIL and print every doc whose quoted magnitude no longer matches the manifest; (3) fix the ledger 'display' and the listed docs, or re-run the check until green. Never edit a magnitude in prose without running the check.",
+    "purpose": "Canonical pointers and displays for load-bearing historical magnitudes.",
+    "update_rule": "After a result changes, run scripts/check_results_ledger.py and reconcile every reported mismatch.",
     "robustness_vocab": {
       "structural": "true by construction / model- and dataset-independent (e.g. a paper-shaped projection CANNOT exceed chance on within-recipe ranking). Does not decay on re-run.",
       "sample-dependent": "the effect exists but its magnitude is specific to this (often selection-biased, success-biased) public dataset; do not quote as representative of real lab data.",
@@ -114,10 +113,10 @@
     ]
   },
   "opxrd_provenance_worst": {
-    "metric": "Provenance-recoverability audit on opXRD: worst-case source/lab recoverability (metadata + curation feature set). Severe; the flagship 'models learn the lab' result.",
+    "metric": "Provenance-recoverability audit on opXRD: worst-case archive-source-label recoverability from standardized deposited patterns, metadata, and curation features; laboratory is not separately identified.",
     "display": "0.977",
     "robustness": "sample-dependent",
-    "claim_served": "provenance protocol flagship: collection provenance is severely recoverable from public experimental XRD.",
+    "claim_served": "calibration: bundled archive-source labels are recoverable from public standardized XRD records.",
     "eval_date": "2026-07-04",
     "source": {
       "kind": "manifest",
@@ -144,10 +143,10 @@
     ]
   },
   "recoverability_vs_transfer_size": {
-    "metric": "opXRD recoverability-vs-transfer: Spearman of per-source log(n_samples) vs transfer badness. Source SIZE predicts transfer difficulty (the sources the CNN loses on -- EMPA, HKUST -- are small, not especially recoverable).",
+    "metric": "opXRD recoverability-vs-transfer: descriptive Spearman of per-source log(n_samples) vs transfer badness in a six-source table.",
     "display": "-0.71",
     "robustness": "descriptive-noninferential",
-    "claim_served": "what predicts transfer badness is source size, not recoverability -- sharpens the 'risk signal not predictor' framing.",
+    "claim_served": "source size had the larger descriptive association at n=6; this sharpens the 'risk signal, not predictor' framing without establishing a size effect.",
     "eval_date": "2026-07-04",
     "source": {
       "kind": "manifest",

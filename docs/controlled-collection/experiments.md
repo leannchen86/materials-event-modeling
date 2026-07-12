@@ -1,5 +1,9 @@
 # Controlled-Collection Tier Map
 
+> **Frozen methods-design draft; not authorized for execution.** Reactivation requires an observed
+> partner workflow, opportunity/action inventory, practitioner-report validation, and a
+> capture-aware preregistration.
+
 This filename remains because the frozen pilot preregistration cites its tier names. The original
 partner pitch was retired; current partner strategy lives in
 [partner_collection_pipeline.md](partner_collection_pipeline.md).
@@ -22,13 +26,13 @@ Quantitative phase analysis itself is established; the object is audit calibrati
 
 ## Tier 3 — CaCO3 methods pilot
 
-The current 16-condition × 3-replicate design records planned/actual process, early quantitative
+The retained 16-condition × 3-replicate design records planned/actual process, early quantitative
 X60, conventional S60, human L60, failures/ambiguity, provenance, and a frozen 24-hour outcome
-across four sessions. Operational authority:
+across four sessions. Historical design authority:
 [pilot_design_prereg.md](pilot_design_prereg.md).
 
 ## Decision
 
-Tier 3 remains the active methods design. Tiers 1 and 2 are separate controls and require their own
-preregistrations; access to an instrument does not authorize unregistered scans. None of the tiers
-establishes downstream industrial value or cross-site reproducibility.
+Tier 3 is a frozen methods design. Tiers 1 and 2 are separate controls and require their own
+preregistrations. None may run before the partner and capture gates above, and none establishes
+downstream industrial value or cross-site reproducibility.

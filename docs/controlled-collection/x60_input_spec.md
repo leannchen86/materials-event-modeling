@@ -1,7 +1,7 @@
 # Frozen Quantitative X60 Arm — Draft
 
-Status: freeze-blocking draft. Instrument-specific transformations, timing, quality rules, and
-feature schema must be certified before collection. Companion:
+Status: frozen CaCO3 methods draft. Reactivation requires partner-specific transformations,
+timing, quality rules, and a new freeze. Companion:
 [pilot_design_prereg.md](pilot_design_prereg.md).
 
 ## Boundary

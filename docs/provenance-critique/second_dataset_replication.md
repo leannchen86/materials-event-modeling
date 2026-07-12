@@ -1,9 +1,12 @@
 # Provenance protocol, second dataset: RRUFF Raman (+ Severson modality check)
 
 > **Read with [../spine/data_assumptions_and_limits.md](../spine/data_assumptions_and_limits.md).**
-> All numbers here are on public data; the effect's *existence* and the chemistry-matched
-> *decomposition* are structural, but the specific magnitudes (0.142, 0.765, 0.898) are
-> sample-dependent and must not be quoted as representative.
+> All numbers here are sample-dependent public-data results and must not be quoted as
+> representative. The chemistry-matched design narrows alternatives but does not make its
+> magnitudes structural.
+> RRUFF primarily supplied its deposited `Processed` export. Chemistry matching removes specimen
+> identity as an explanation; it does not isolate hardware from acquisition, export, processing,
+> or archive-curation choices.
 
 Started 2026-07-03. This is the provenance-critique branch's named milestone
 ([PROJECTS.md](../../PROJECTS.md)): take the opXRD source-recoverability protocol
@@ -17,9 +20,9 @@ dataset* so the finding stops being local. Two applications, one shared tool
    confound it could not resolve: its "source" was the archive directory, conflating lab
    with chemistry (different labs measured different materials). RRUFF fixes exactly that
    with `--rruff-paired`: restrict to specimens measured at ≥2 wavelengths, so within
-   each specimen the *chemistry is identical* across label classes. Any recovery above
-   chance there is instrument/laser imprint, not composition — the chemistry-matched
-   control opXRD lacked.
+   each specimen the *chemistry is identical* across label classes. Recovery above chance is
+   therefore wavelength-associated acquisition/export geometry rather than composition; hardware,
+   operator, processing, and curation causes remain bundled.
 2. **Severson battery — modality-generality + the rung-3 follow-on.** The A/B replication
    found trajectory features identify the collection batch at 94.5% via an ad-hoc probe;
    the recorded follow-on was to make that number come from the protocol tool, on exactly
@@ -57,7 +60,7 @@ dataset, and after a chemistry-matched control, it disappears.
 - **H4 (modality generality, Severson).** Batch date is recoverable from the A/B
   trajectory features above chance (3 batches, chance ≈ 0.36 balanced): expected
   leakage_score ≥ 0.50, reproducing the ad-hoc 94.5% via the protocol tool; and from the
-  raw QDischarge curve too. The paper-shape (policy) features also recover batch
+  adapted per-cycle QDischarge trajectory too. The paper-shape (policy) features also recover batch
   (designed nesting), reported as a measured confound, not a surprise.
 - **H5 (grouped-fold necessity).** On RRUFF, ungrouped folds report materially higher
   recoverability than specimen-grouped folds for the spectrum features — demonstrating
@@ -133,15 +136,15 @@ count alone recovers **0.534**, and among the three near-identical-range lasers
 (532/780/785, dropping 514) non-range metadata still recovers **0.396 (elevated)** — a
 separation that cannot be range-tautology at all. Point count (514nm ~1,089 points vs
 ~2,270–2,400 for the others) is a detector/operator setting, not the wavelength relabeled.
-So the acquisition-geometry provenance is a real instrument/operator imprint; the cm-range
-is the single strongest metadata feature but it is not what the claim rests on.
+So the archive retains wavelength-associated acquisition/export geometry beyond the cm-range
+feature; its specific physical or curation cause is not identified.
 
 ### Severson A/B features (batch label, 3 batches, chance ≈ 0.36 balanced)
 
 | feature set | leakage | bal-acc ± std | severity |
 | --- | ---: | ---: | --- |
 | a_trajectory_k100 (A/B features) | 0.898 | 0.932 ± 0.032 | severe |
-| qd_curve_pca (raw discharge curve) | 0.830 | 0.886 ± 0.079 | severe |
+| qd_curve_pca (adapted per-cycle discharge trajectory) | 0.830 | 0.886 ± 0.079 | severe |
 | b_policy (paper-shape recipe) | 0.440 | 0.626 ± 0.054 | elevated |
 
 ### Verdict against the pre-registered hypotheses
@@ -161,8 +164,8 @@ is the single strongest metadata feature but it is not what the claim rests on.
   threshold — the "models learn the instrument from the spectrum" reading is NOT
   supported by the control. What *is* supported, and is new: metadata and coverage stay
   severe under chemistry-matching (0.765 / 0.709), driven substantially by point count (a
-  detector setting, not wavelength physics — see above), so labs/instruments imprint via
-  *acquisition geometry* independent of what was measured. This is a more precise claim
+  wavelength-associated setting — see above), so archive labels remain recoverable through
+  *acquisition/export geometry* after chemistry matching. This is a more precise claim
   than opXRD's, which could not separate instrument from chemistry at all.
 - **H3 — partially falsified, informatively.** The spectral control *neutralizes*
   (predicted: reduces-but-not-neutralize) — but only because the spectrum barely carried
@@ -172,7 +175,7 @@ is the single strongest metadata feature but it is not what the claim rests on.
   control *acquisition geometry* first, not just spectral normalization.
 - **H4 — CONFIRMED.** Batch date is recovered severe from the A/B trajectory features
   (0.898, balanced accuracy 0.932 — the ad-hoc 94.5% probe, now produced by the protocol
-  tool as its recorded follow-on) and from the raw discharge curve (0.830). The
+  tool as its recorded follow-on) and from the adapted per-cycle discharge trajectory (0.830). The
   paper-shape recipe also recovers batch at elevated (0.440), the designed policy→batch
   nesting, reported as a measured confound. The protocol is not XRD-specific.
 - **H5 — FALSIFIED, with a clarifying mechanism.** Grouped vs ungrouped folds made no
@@ -189,15 +192,15 @@ is the single strongest metadata feature but it is not what the claim rests on.
 
 The provenance-critique branch's stated bar — replicate the opXRD finding on a second
 appropriate experimental dataset before it supports a broad shortcut claim — is **met**:
-provenance recoverability replicates on RRUFF Raman (severe) and generalizes to a
-non-spectral modality on Severson (severe). The replication also *upgrades* the claim: the
+provenance-label recoverability appears in RRUFF Raman and in a non-spectral Severson
+representation. The replication narrows the claim: the
 chemistry-matched control localizes the robust, composition-invariant provenance signal to
 acquisition geometry/coverage/metadata, and shows that spectral-content recovery can be
 mostly chemistry — a decomposition the single-dataset opXRD result could not make and a
 sharper recommendation for representation papers (audit and control coverage/acquisition
 metadata, report leave-one-source-out, and do not assume spectral normalization removes
-provenance). Publishability: this is now a genuine cross-dataset methods result with a
-control that strengthens rather than merely repeats it.
+provenance). This is a cross-dataset calibration result, not evidence of laboratory causation or
+downstream harm.
 
 Current decision (2026-07-12): the public-data branch is closed. The chemistry-matched-control
 framing now lives in `provenance_leakage_audit.md`; HTEM model extensions and one-off replication

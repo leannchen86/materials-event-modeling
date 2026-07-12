@@ -44,8 +44,8 @@ cutoff, learner family, environments, and sample size.
 
 ## Capture-policy rules
 
-1. Root each audit at the earliest retained artifact, not the first convenient table or JSON
-   record.
+1. Root the outer capture audit at the opportunity/action ledger; root representation comparisons
+   at the earliest retained artifact.
 2. Inventory planned, captured, retained, and adapted channels separately. Anything omitted by
    every comparison arm is invisible to a differential audit.
 3. Record every transformation, side input, version, hash, and availability rule. If lineage is

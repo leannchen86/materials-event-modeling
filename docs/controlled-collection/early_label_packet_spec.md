@@ -1,6 +1,7 @@
 # Early Human Label Packet — L60 Draft
 
-Status: freeze-blocking until rubric, labelers, rendering, and blinding are certified. Companion:
+Status: frozen CaCO3 methods draft; rubric, labelers, rendering, and blinding remain unresolved.
+Companion:
 [pilot_design_prereg.md](pilot_design_prereg.md).
 
 ## Role and information boundary

@@ -139,8 +139,9 @@ an X100-over-S100 advantage under this frozen learner and estimand.
    spend the remaining degrees of freedom without fixing the identification problem.
 2. **Start at the partner-entry gate.** Complete the
    [downstream endpoint and decision card](downstream_endpoint_decision_card.md) for candidate
-   workflows and request one golden bundle containing native evidence, every intermediate,
-   the actual conventional report, a delayed outcome, failures/censors, lineage, and costs.
+   workflows and request an opportunity/action inventory plus one golden bundle containing native
+   evidence, every intermediate, the actual conventional report, a delayed outcome,
+   failures/censors, lineage, and costs.
 3. **Require a crossed collection.** The conventional report fields and key process conditions
    must recur across independent material/manufacturing batches; hold out a later batch and then an
    independent site. A design with policies nested in batches cannot identify a batch-transfer
@@ -158,4 +159,3 @@ an X100-over-S100 advantage under this frozen learner and estimand.
    paper needs an actual report edge, an independently measured consequential outcome, and
    replicated held-environment evidence. Severson alone is an appendix-quality demonstration, not
    the novelty claim.
-

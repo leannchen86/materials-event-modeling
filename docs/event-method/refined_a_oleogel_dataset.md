@@ -1,79 +1,25 @@
-# Refined-a Target Dataset: Oleogel Polymorphic Transitions (zenodo 15268752)
+# Oleogel SAXS/WAXS Calibration Dataset
 
-Historical real-trajectory target for the completed public-data campaign. See
-[../spine/capture_vs_representation_design_note.md](../spine/capture_vs_representation_design_note.md).
-Downloaded to `data/raw/oleogel_zenodo_15268752/` (gitignored). License CC-BY-4.0.
+Status: frozen source note. The original scouting plan is preserved at Git commit
+`be750d33df2932c14e1022dcc0b67f9d78ab6bb1`; its JEPA recommendation and
+interpolation-resistant premise were rejected by Runs 001–008.
 
-## What it is
+Zenodo record 15268752 contains six in-situ oleogel runs: two materials by three shear conditions,
+with one run marked as a redo. Each has roughly 280–400 frame-aligned SAXS and WAXS measurements.
+The local download is gitignored under `data/raw/oleogel_zenodo_15268752/` (CC-BY-4.0).
 
-Time-resolved in-situ synchrotron SAXS/WAXS of two monoglyceride oleogel systems (DMHR,
-MOPV) crystallizing and undergoing **polymorphic transitions under shear** during a 10 °C/min
-cool. Polymorph selection is a direct analog of CaCO3 polymorph choice. Headline modality:
-**simultaneous SAXS (nanostructure / lamellar d-spacing) + WAXS (crystalline polymorph),
-frame-aligned time series.**
+Important source limits:
 
-## Structure (`SR-SAXS-WAXS.zip`, 3789 files, ~179 MB unzipped)
+- six runs, not thousands of independent events;
+- frame index is the only deposited cross-frame clock;
+- negative intensities and masked `NaN` values reflect preprocessing;
+- a small hand-curated d-spacing workbook is a separate report layer, not proof of label loss; and
+- microscopy/DSC files were not part of the evaluated representation.
 
-6 runs = **6 events**, laid out `MAGs/<run>/{SAXS,WAXS}/..._NNNN_sub.csv`:
+The masked-frame experiments were largely explained by time, interpolation, and
+smoothness-preserving nulls. SAXS added little transferable WAXS information in leave-one-run-out
+tests. This is a useful negative calibration case: many correlated frames do not compensate for
+few independent events, and model capacity does not repair a weak task.
 
-| run (event) | sample | shear | frames (SAXS = WAXS) |
-| --- | --- | --- | ---: |
-| s_dmhr_1s_10Cmin_10c | DMHR | 1s | 307 |
-| s_dmhr_25s_10Cmin_10c | DMHR | 25s | 298 |
-| s_dmhr_50s_10Cmin_10c | DMHR | 50s | 280 |
-| s_mopv_1s_10Cmin_10c | MOPV | 1s | 300 |
-| s_mopv_25s_10Cmin_10C_redo | MOPV | 25s | 400 (**replicate**) |
-| s_mopv_50s_10Cmin_10c | MOPV | 50s | 300 |
-
-- SAXS and WAXS frame counts match per run → **two synchronized modalities per event**
-  (~1.8k frames/modality total).
-- Per-frame CSV = long `q,I` (comma-delimited); `NaN` at masked/edge q; negative I from
-  background subtraction.
-- Standalone `WAXS_*_1s_follow-up*.csv` = a **second, different format**: wide,
-  `;`-delimited, `q`(605 points) × repeating `(I_subtracted, Sigma_I)` pairs = 120/120/60
-  timepoints. The isothermal-hold WAXS follow-up.
-- `d-spacings_MAGs.xlsx` = a tiny (7×9) hand-curated d-spacing/polymorph summary with merged
-  cells = **the inherited label layer** (lossy, late, human). Use as a downstream probe only.
-- **No per-frame time/temperature log is deposited** → frame index IS the time coordinate;
-  absolute T can be inferred from the 10 °C/min rate if needed.
-
-## Why it fits the thesis
-
-- **Event-native:** planned conditions (sample × shear) + raw multimodal trajectory +
-  replicate (`_redo`) + inherited label (d-spacings) frozen after raw. Maps cleanly onto
-  `schemas/event_grammar.v1.schema.json`.
-- **Interpolation-resistant:** real polymorphic transitions (sharp nucleation / transition
-  events) mean temporal smoothness does NOT trivially solve the masked-frame task — the
-  property HTEM lacked. This is what makes HJ2 (JEPA beats IDW/ridge on the hard regime) a
-  real test here.
-
-## Caveats (from staring at the data)
-
-- **Small event count** (6 runs, 2 samples × 3 shear). The frame-level masked task is
-  well-powered (~300 timepoints/run); event-level transfer is thin (leave-one-run-out = 6
-  folds). State this in any result; it is also the JEPA collapse-risk flagged in the sketch.
-- Two CSV formats; NaN/negative-intensity handling; the label xlsx is messy (merged cells) —
-  parse later, it is only a probe.
-- Microscopy (129 MB) and DSC zips not yet pulled = extra modalities for the missing-modality
-  task.
-
-## Next
-
-Write ingestion `MAGs/<run>` → event-grammar records. First task: **within-event
-masked-frame prediction on SAXS+WAXS**, baselines (`event_mean`/IDW/`coordinate_ridge`/RF)
-tuned hard, then the JEPA variant; d-spacings used as a label probe only. Overfit a single
-event first (Karpathy) before any scale-up.
-
-## Dataset scouting update (2026-06-15, after Runs 001–008)
-
-The zeolite backup ([zenodo 18972297](https://zenodo.org/records/18972297)) was inspected: its
-NeXus groups (`data_S0h`, `S16h`, … `S144h`) are **timepoints of a single crystallization
-run**, monitored by Raman (cryst/aging × solid/liquid) + ex-situ PXRD — i.e. **one event, not
-many.** So it is *worse* than oleogel for cross-event work.
-
-**Conclusion:** both open candidates we found are modality- and time-rich but **event-poor**
-(oleogel = 6 near-identical runs; zeolite = 1 run). This is the empirical case for
-**controlled-collection** — independent events across varied conditions/outcomes — which no
-public in-situ crystallization deposit we found provides. See run_log Runs 006–008: on oleogel,
-SAXS↔WAXS is largely time-redundant (not a model-capacity limit), so squeezing it further is
-not the move.
+Current interpretation is in [findings_summary.md](findings_summary.md); the compact run index is
+[run_log.md](run_log.md). The retired ingestion/model machinery is available at commit `8efe5bb`.

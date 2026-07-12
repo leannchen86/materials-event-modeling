@@ -12,10 +12,9 @@ control, a calibration result, or reproducibility evidence.
 ## Active program
 
 The target is a matched, versioned chain from measurement opportunity and native evidence through
-the partner's actual report to a delayed outcome and action. The immediate gate is not another
-model or schema extension. It is one real partner golden bundle whose native artifacts, omitted
-channels, report lineage, units, clocks, censors, outcome construction, and costs pass the
-validator.
+the partner's actual report to a delayed outcome and action. The immediate gate is one real v1
+golden bundle that passes the validator **and** a separately reconciled opportunity/action inventory;
+v1 cannot certify capture completeness.
 
 After that mechanical gate:
 

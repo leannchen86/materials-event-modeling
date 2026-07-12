@@ -1,7 +1,7 @@
 # Conventional 60-Minute Report — S60 Draft
 
-Status: freeze-blocking until a practicing XRD/CaCO3 scientist validates the workflow and every
-field. Companion: [pilot_design_prereg.md](pilot_design_prereg.md).
+Status: frozen CaCO3 methods draft; a practicing XRD/CaCO3 scientist has not validated the workflow
+or fields. Companion: [pilot_design_prereg.md](pilot_design_prereg.md).
 
 ## Role
 

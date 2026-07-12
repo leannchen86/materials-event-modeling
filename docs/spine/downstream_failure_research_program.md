@@ -37,8 +37,8 @@ is their combination at a real experimental reporting boundary:
 | 1. CaCO3 methods pilot | frozen 24-hour laboratory outcome | single-site methods evidence |
 | 2. final-spec bridge | delayed property of an independent preparation | early-QC evidence across held within-site environments |
 | 3. consequential study | degradation, lifetime, strength, corrosion, yield, or another partner-native property | downstream-value evidence |
-| 4. decision trial | cost, delay, scrap, false accept/reject, yield, or regret | operational impact |
-| 5. external validation | frozen outcome and action at an independent site | reproducibility/deployment evidence |
+| 4. external validation | frozen outcome and action at an independent site | reproducibility/deployment evidence |
+| 5. decision trial | cost, delay, scrap, false accept/reject, yield, or regret | operational impact after transfer |
 
 Each phase receives a separate preregistration and dataset. An earlier phase may size a later one;
 it cannot be relabeled confirmatory.
@@ -92,5 +92,5 @@ retained, or too few independent environments support the target altitude.
 4. choose one decision, outcome, cutoff, unit graph, and transfer population;
 5. pilot, simulate, preregister, collect, and hold the external site frozen.
 
-Do not add industrial endpoints to the current pilot, count descendant rows as material batches,
+Do not add industrial endpoints to the frozen CaCO3 draft, count descendant rows as material batches,
 or call within-lab variation reproducibility.

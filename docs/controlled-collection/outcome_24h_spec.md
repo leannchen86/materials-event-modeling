@@ -1,11 +1,11 @@
 # 24-Hour Outcome Product — Draft
 
-Status: freeze-blocking until methods, thresholds, uncertainty, and eligibility are certified.
+Status: frozen CaCO3 methods draft; methods, thresholds, uncertainty, and eligibility are unresolved.
 Companion: [pilot_design_prereg.md](pilot_design_prereg.md).
 
 ## Targets
 
-The pilot has two separate 24-hour targets:
+The draft has two separate 24-hour targets:
 
 1. binary **no-precipitate failure**; and
 2. quantitative **vaterite share of quantified crystalline CaCO3**.

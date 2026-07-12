@@ -1,4 +1,7 @@
-# Controlled Pilot — Run Protocol (lab-facing, execute verbatim)
+# Controlled Pilot — Frozen Run-Protocol Draft
+
+> **Frozen methods-design draft; do not execute.** It requires an observed partner workflow,
+> opportunity/action inventory, practitioner-report validation, and capture-aware re-preregistration.
 
 Companion to [pilot_design_prereg.md](pilot_design_prereg.md) (the why) and
 [pilot_assignment.csv](pilot_assignment.csv) (the what: 48 events, pre-assigned to
@@ -87,12 +90,12 @@ is a controlled axis).
 
 ## What gets recorded (the data contract)
 
-Every event becomes a grammar-v1 record (`schemas/event_grammar.v1.schema.json`); the
-assignment row is the `intent`, the session/operator/lot/run-order go to `provenance`,
-every aliquot/note/video segment is an `observation`. A per-session log sheet (CSV or
-notebook photo) is sufficient raw input — the adapter script on our side does the JSON.
-Labels (calcite/vaterite/aragonite/amorphous/mixed) are assigned **only after** the full
-raw set is frozen (hash committed), independently by two people, disagreement kept.
+Every event becomes a grammar-v1 record (`schemas/event_grammar.v1.schema.json`); the assignment is
+`intent`, session/operator/lot/run-order are `provenance`, and aliquots/notes/video segments are
+`observations`. Independently retain the opportunity/action ledger, instrument-native artifacts,
+reader recipes, portable exports, and explicit omissions. Labels
+(calcite/vaterite/aragonite/amorphous/mixed) are assigned **only after** that declared source-evidence
+inventory is frozen and hashed, independently by two people with disagreement retained.
 
 ## The one rule that outranks all others
 
