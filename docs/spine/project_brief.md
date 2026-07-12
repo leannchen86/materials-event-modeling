@@ -1,64 +1,42 @@
 # Project Brief
 
-## Working Title
+## Question
 
-Pre-Taxonomic Materials Event Modeling
+For a declared materials decision, which early signals survive a conventional report or label,
+which are lost, and does any richer signal transfer across collection environments?
 
 ## Thesis
 
-Materials ML often learns to predict inherited labels: phase purity, impurity,
-metastability, synthesis success, and failure. This project treats those labels as
-historical compression layers rather than ground-truth ontology.
+Experimental reports are task-specific compressions, not universal ground truth and not presumed
+mistakes. The project compares actual reporting stages on prediction or decision risk, support,
+representation collisions, transfer, cost, and upstream recoverability. `Raw` is always relative to
+a declared capture edge.
 
-The goal is to learn from raw measurement signals and material-making event metadata, then audit
-whether conventional reports and labels preserve the evidence needed for a declared downstream
-decision. The highest-value extension asks which early signals predict final-spec conformance,
-repeatability/intermediate precision, degradation, functional performance, or scale failure, and
-at which audited reporting edge those signals fail to be preserved. Cross-site reproducibility
-remains a separate claim requiring independent sites.
+## Principles
 
-## First Claim To Test
+1. Begin with measurement opportunities and native retained artifacts, not an adapter output.
+2. Use the partner's actual report and action; do not invent an easy comparator after seeing outcomes.
+3. Retain attempts, failures, ambiguity, censoring, and unavailable representations as separate states.
+4. Evaluate across independent batches, sessions, instruments, and sites appropriate to the claim.
+5. Prefer the least costly representation that meets frozen adequacy bounds; preserve upstream
+   evidence when future tasks or incident review justify it.
+6. Treat public and synthetic data as calibration only.
 
-For a predeclared task, cutoff, and transfer environment, a richer or intermediate event
-representation can retain decision value that an inherited report discards. The project must also
-be able to conclude that a compact report is adequate. Phase labels and disagreement labels are
-comparators and diagnostic probes, not presumed truth or presumed error.
+## Active program
 
-## Public Data Guardrail
+The current target is one prospective partner chain:
 
-Public datasets such as NIST and opXRD are placeholders, feasibility targets, and artifact
-audits. They are not the research destination. We should not keep tuning around opXRD or
-NIST metrics as if this were a leaderboard. A public-data experiment is useful only when it
-tests an objective feedback task, exposes a failure mode, or informs the design of a
-controlled event dataset.
+```text
+capture policy -> native evidence -> report -> delayed outcome -> early action
+```
 
-The public-data work has already taught one important lesson: raw XRD objectives can learn
-nontrivial structure, but source/contributor effects are strong. This is a reason to build
-Track B, not a reason to over-optimize opXRD.
+The immediate gate is a nonconfirmatory golden bundle with complete lineage, units, clocks,
+omissions, censors, report construction, outcomes, and costs. The formal method is the
+[task-relevant compression audit](task_relevant_compression_audit.md); execution is defined in the
+[partner collection pipeline](../controlled-collection/partner_collection_pipeline.md).
 
-## Track B: Controlled Event Dataset
+## Not claimed
 
-Track B turns these questions into a controlled material-making event dataset. The first
-candidate system is calcium carbonate polymorph crystallization, pending lab SOP and safety
-review. Each row should be a material-making event with raw process logs, raw measurement
-files, and later human labels recorded only as downstream probes.
-
-Detailed plan: [event_dataset.md](../controlled-collection/event_dataset.md)
-
-## Initial Questions
-
-- Can raw XRD objectives learn embeddings useful for held-out measurement prediction?
-- Do conventional labels form compact regions after training on raw objectives?
-- Are ambiguous or disputed labels predictable as downstream probes rather than primary
-  training targets?
-- Do broad labels such as `mixed phase` or `failure` split into multiple latent regimes?
-- Does adding process metadata reorganize the latent space around material-making events
-  rather than static material categories?
-
-## Non-Goals For The MVP
-
-- Discovering a new material.
-- Building the largest possible transformer.
-- Treating phase classification accuracy as the only success criterion.
-- Optimizing around public-dataset metrics after they stop informing the event-dataset
-  design.
+The repository has not shown that raw traces generally beat labels, recovered a true materials
+ontology, or predicted industrial reproducibility, degradation, scale-up yield, qualification, or
+functional performance. Those claims require separate prospective evidence.

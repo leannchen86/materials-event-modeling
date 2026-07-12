@@ -31,9 +31,7 @@
     },
     "cited_in": [
       "docs/controlled-collection/severson_ranking_robustness.md",
-      "docs/controlled-collection/severson_representation_ab.md",
-      "docs/spine/data_assumptions_and_limits.md",
-      "docs/spine/event_grammar_validation_note.md"
+      "docs/controlled-collection/severson_representation_ab.md"
     ]
   },
   "severson_ab_rank_models_clearing": {
@@ -79,9 +77,7 @@
     },
     "cited_in": [
       "docs/controlled-collection/severson_representation_ab.md",
-      "docs/controlled-collection/severson_ranking_robustness.md",
-      "docs/spine/data_assumptions_and_limits.md",
-      "docs/spine/event_grammar_validation_note.md"
+      "docs/controlled-collection/severson_ranking_robustness.md"
     ]
   },
   "severson_ab_primary_rank_ridge": {
@@ -99,7 +95,6 @@
     },
     "cited_in": [
       "docs/controlled-collection/severson_representation_ab.md",
-      "docs/spine/data_assumptions_and_limits.md",
       "docs/provenance-critique/second_dataset_replication.md"
     ]
   },
@@ -117,8 +112,6 @@
     "_note": "SKILL.md states this result qualitatively (no magnitude), so it is intentionally NOT in cited_in.",
     "cited_in": [
       "docs/controlled-collection/severson_representation_ab.md",
-      "docs/spine/data_assumptions_and_limits.md",
-      "docs/spine/event_grammar_validation_note.md",
       "docs/provenance-critique/provenance_leakage_audit.md",
       "docs/provenance-critique/second_dataset_replication.md"
     ]
