@@ -1,5 +1,16 @@
 # Event-Grammar Adapter-Coverage Study (rung 1 + rung 2)
 
+> **Current requalification (2026-07-12).** This is a historical run record, not the current
+> grade. The adapter mapped right-censored Severson cells to `ambiguous`; the conformance checker
+> then counted them as retained negative outcomes. Censoring is not experimental failure or
+> ambiguity. With those records correctly mapped to `unknown`, Severson has no documented negative
+> outcomes and its cumulative grade is L1, not L3. Its replicated-policy/provenance structure still
+> passes the non-cumulative L3 design check, but that variation was incidental rather than deliberate.
+> The study also tested envelope expressibility, not capture completeness: within-cycle arrays were
+> left above the adapter root. Therefore “zero schema changes” means only that the selected adapter
+> projection fit the envelope; it does not freeze the payload/sidecar policy. Historical statements
+> below are preserved to keep the preregistered record auditable.
+
 Started 2026-07-03. Ladder placement: rungs 1 (coverage) and 2 (audit power) of
 [../spine/event_grammar_validation_note.md](../spine/event_grammar_validation_note.md).
 Null attacked: paper-shaped public data already records what the event grammar demands, so

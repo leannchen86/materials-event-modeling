@@ -1,175 +1,70 @@
-# Capture vs Representation: Design Note
+# Capture and Representation Boundaries
 
-Context: extends [project_brief.md](project_brief.md), [universal_event_embedding_scaffold.md](../controlled-collection/universal_event_embedding_scaffold.md),
-and [masked_event_model.md](../event-method/masked_event_model.md). Working frame unchanged:
-pre-taxonomic event modeling — inherited labels are compression layers, not ground truth.
+Status: current design rule, revised 2026-07-12. The formal test is the
+[task-relevant compression audit](task_relevant_compression_audit.md); the concrete failure that
+forced this revision is the
+[Severson adapter lesson](adapter_capture_policy_lesson.md).
 
-This note records a thread on two questions that kept getting conflated: how we *capture*
-trajectories, and what *substrate* we learn on. Plus the near-term a/b decision.
+## The pipeline
 
-## Two kinds of lossy (the distinction that unblocks the rest)
+```text
+physical process
+-> measurement opportunity
+-> instrument-native artifact
+-> adapter / export
+-> analysis representation
+-> report or label
+-> downstream decision
+```
 
-"Lossy" hides two different failures:
+`Raw` is relative to an edge in this pipeline. A native instrument file is already a selective
+measurement of the physical process, and an adapter can discard channels before a representation
+audit begins. Therefore the project distinguishes:
 
-1. **Fidelity loss** — resolution, frame rate, modality coverage. You lose *signal*.
-2. **Ontology loss** — collapsing a continuous process into human-named categories. You
-   lose signal *and* pre-decide meaning.
+- **capture loss:** a relevant modality, interval, failure, or context was never recorded;
+- **retention loss:** recorded evidence was deleted, overwritten, or made inaccessible;
+- **representation loss:** a retained input was projected into a poorer summary; and
+- **ontology loss:** a representation imposed categories that collapse task-relevant variation.
 
-Inherited labels (`gel point`, `phase pure`, `failure`) are heavy on *both*. Raw modalities
-(video, a spectrum stream, process logs) are heavy on fidelity loss but ~zero on ontology
-loss — they impose no interpretation.
+These can coexist. A camera may preserve a low-ontology trajectory while missing chemistry; a
+categorical label may be highly compressed yet exactly adequate for one decision. Neither rawness
+nor compression has a global quality ordering.
 
-Consequence: on the axis this project cares about (the ontology trap), raw capture beats
-labels even though it is still "lossy." Video *feeling* lossy is correct, but it is the
-*acceptable* kind. Rule of thumb: do not reject a raw modality for being lossy; reject a
-representation for being *prematurely interpretive*.
+## Governing question
 
-## On capture modality (is video the right record?)
+For a declared task and environment, compare actual pipeline nodes and ask:
 
-Video is cheap and low-ontology, so it is a good *stream*. Two cautions:
+> What is the least costly representation that stays within frozen risk, support, collision, and
+> transfer bounds, and is richer upstream evidence recoverable when the task changes?
 
-- **Wrong as the sole modality.** A camera sees the optical surface / a 2D projection. The
-  governing variable in CaCO3 polymorph selection (local supersaturation, ionic
-  environment, a transient amorphous precursor) can be invisible to it. The fix is not
-  "better video," it is *multimodal hedging* — video + in-situ structural/chemical probe +
-  process logs — because we do not yet know which modality carries the causal signal. This
-  is already the schema's multimodal + missing-modality-prediction design.
-- **Wrong as a learning substrate if used naively.** Raw pixels spend model capacity on
-  perceptually salient but causally irrelevant detail.
+This requires strong context, interpolation, clock, recipe, event-identity, and provenance
+baselines. A richer input earns value only through a held-out prediction or decision; recovering a
+human label is not sufficient. A null gap establishes only bounded adequacy for the tested task,
+cutoff, learner family, environments, and sample size.
 
-So: video is one stream feeding a learned latent, not THE record.
+## Capture-policy rules
 
-## On representation substrate (the encoder/decoder intuition)
+1. Root each audit at the earliest retained artifact, not the first convenient table or JSON
+   record.
+2. Inventory planned, captured, retained, and adapted channels separately. Anything omitted by
+   every comparison arm is invisible to a differential audit.
+3. Record every transformation, side input, version, hash, and availability rule. If lineage is
+   not verified, compare nodes but do not attribute loss to a particular edge.
+4. Price every omission before outcomes are opened: state the result it could preordain and the
+   experiment that would test it.
+5. Prefer pointer + content hash + reader recipe over either inlining large arrays or silently
+   dropping them.
+6. Keep labels and reports as serious comparator arms. The objective is late, task-specific,
+   reversible compression—not maximal capture for its own sake.
 
-The instinct — store a rich latent the net can use, not a human-interpretable ontology — is
-right, and is what the masked event model already is. Family of the right tools:
-autoencoders / VAEs / masked autoencoders are *learned lossy compressors optimized for
-reconstruction, not for human readability*. Neural compression beats hand-designed codecs in
-other domains — evidence the principle generalizes.
+## Current research decision
 
-**Upgrade worth testing — JEPA (joint-embedding predictive):** predict the *latent* of the
-masked part instead of reconstructing the raw signal. Why it matters here specifically:
+The public-data campaign established useful positive and negative calibration cases, but it cannot
+settle downstream industrial value. The active target is a matched chain from native early evidence
+through the actual intermediate report to a delayed outcome and action, evaluated across independent
+environments. The [partner collection pipeline](../controlled-collection/partner_collection_pipeline.md)
+implements that target; the [downstream-failure program](downstream_failure_research_program.md)
+defines its evidence ladder.
 
-- Reconstruction objectives reward recovering smooth/predictable raw structure — which is
-  exactly why current masked-event results stay partly solvable by coordinate interpolation
-  (IDW), e.g. `random_axis`. Predicting in latent space does not reward spatial smoothness
-  the same way, so it may be a route *out* of the "geometry already solves it" trap.
-- JEPA on time-series has been shown (under near-identity-predictor conditions) to recover
-  dynamical-regime structure / Koopman-invariant clustering *without labels* — i.e. discover
-  events/regimes without imposing an ontology. That is the pre-taxonomic goal stated in
-  model terms.
-- Risk: representation collapse (the known JEPA failure). Needs the usual guards
-  (target/stop-gradient encoder, variance-covariance terms). Treat as a hypothesis under the
-  same strong-baseline + stop-rule discipline as the reconstruction objective.
-
-## The two caveats that keep us honest
-
-1. **You cannot remove choice, only move it.** Dropping the human ontology moves the lossy
-   decision into the *objective + architecture + which modalities you feed*. The loss
-   function becomes the new ontology (reconstruction keeps what is salient; JEPA keeps what
-   is predictable). The goal is a *late, learned, swappable* ontology — not none.
-2. **Some interpretation is required for intervention.** Confirming a *driving factor* (not
-   just a correlate) needs interventional experiments — and you can only dial a variable in
-   the lab if you can name/actuate it. A pure uninterpretable latent dimension cannot be set
-   on a syringe pump. So keep the substrate latent, but maintain a *decode-to-actionable-view
-   on demand* bridge. Interpret late and disposably; never store the interpretation as the
-   substrate. (Consistent with "labels after raw frozen.")
-
-## Near-term decision (a vs b)
-
-- **a:** run the falsifying objective on existing *real trajectory* data (multiple
-  feedback-bearing observations per event), not more final-snapshot public XRD.
-- **b:** stand up controlled collection (Track B / lab pilot / Foundry).
-
-**Recommendation: refined-a first, b in parallel.** Pure public-snapshot data is already
-known to be a feasibility/artifact tool with strong source effects, not a thesis test
-([project_brief.md](project_brief.md)). The honest fast test needs event-structured real
-data where interpolation/geometry cannot shortcut it — time-resolved / operando synthesis
-series (in-situ XRD/SAXS during crystallization; HTEM within-library spatial fields). If
-such open data with enough per-event richness exists → run masked-event + a JEPA variant
-there now. If it does not exist → that absence *is* the argument for b being the moat. So a's
-outcome sets b's urgency.
-
-## Stop rules (unchanged, restated)
-
-- No transformer race. Neural counts as progress only when it beats event-mean / IDW /
-  coordinate-ridge / RF on held-out provenance splits.
-- Validation is downstream-operational (missing-measurement error, retrieval, transfer,
-  active-measurement utility), never "did we recover the human label."
-
-## Dataset hunt findings (refined-a, 2026-06-14)
-
-Searched for open, per-event-rich, interpolation-resistant *trajectory* data to run the
-masked-event + JEPA test with no rig. **Key meta-finding:** the *science* of operando
-crystallization trajectories is mature and exactly on-thesis, but *open, downloadable, raw*
-deposits are scarce — most are paywalled SI or "available on request." That scarcity is
-itself evidence for Track B being the moat.
-
-Scored against: per-event richness / real temporal trajectory / resists interpolation
-shortcut / downloadable now / on-thesis (crystallization).
-
-| Candidate | Rich | Temporal | Resists interp. | Downloadable | On-thesis |
-| --- | --- | --- | --- | --- | --- |
-| HTEM-DB (NREL, open API/web) | spatial | no (spatial) | no — IDW shortcut | yes | ~ thin-film |
-| Operando battery in-situ XRD + echem (XRDStat ecosystem) | yes | yes | yes | ~yes | no (battery) |
-| In-situ TR-XRD solid-state/mechanochem synth (LLZO, ZnS, UiO-66, FeS) | yes | yes | yes | no — SI/on-request | yes |
-| TR SAXS/WAXS crystallization (CaCO3, gypsum/bassanite, Ca-phosphate; Stawski/Benning, Diamond I22) | yes (multimodal) | yes | yes | no open deposit found | yes (bullseye) |
-| Olympus / SDL optimization benchmarks | — | no | — | yes | knobs->scalar, skip |
-| Text-mined recipes (35,675 procedures) | — | no | — | yes | compressed prose, skip |
-
-Decision:
-
-- **Fast zero-rig falsification → operando battery in-situ XRD+echem.** Accept off-thesis
-  chemistry: the claim is supposed to *generalize*, this is a genuine temporal+multimodal
-  trajectory, and it sidesteps the spatial-interpolation trap that disqualifies HTEM.
-- **On-thesis target → one specific crystallization deposit.** Chase Diamond I22 / Nature
-  Comms / RSC ESI, or request from authors (Stawski/Benning lineage).
-- **HTEM → use only for provenance/shortcut stress + baseline plumbing,** not the
-  falsification (its spatial fields are exactly the `random_axis`/IDW shortcut we already hit).
-- **Meta:** open, per-event-rich, interpolation-resistant *crystallization* trajectory data
-  is genuinely scarce in public repos. So refined-a can de-risk the *method* (battery/HTEM),
-  but the *on-thesis* falsification likely needs Track B's own CaCO3 events. a's outcome
-  (scarce) raises b's urgency — exactly the contingency flagged above.
-
-### Correction (same day — repository filtering)
-
-The "scarce" read above was an artifact of *search method*. Naive title/keyword search on
-Zenodo returns mostly **paper PDFs**, not raw data. Filtering records by data-file extension
-(`.nxs/.h5/.csv/.xy/.zip`) flips the conclusion: real raw time-resolved trajectory deposits
-DO exist, including on-thesis crystallization ones. The bottleneck is **discoverability /
-indexing, not absence.** refined-a is effectively unblocked.
-
-Concrete runnable on-thesis candidates (all CC-BY):
-
-- **Oleogel polymorphic transitions under shear** — zenodo.org/records/15268752 — 1 s
-  time-resolved WAXS + SR-SAXS/WAXS + microscopy + DSC, CSV, ~200 MB. A *polymorph-selection
-  trajectory*, directly analogous to CaCO3 polymorph choice; multimodal (enables the
-  missing-modality task); small enough to run today. **Primary recommendation.**
-- **Zeolite crystallization** — zenodo.org/records/18972297 — in situ Raman (crystallization +
-  aging, solid + liquid) + PXRD endpoint, NeXus, ML-paired. Almost purpose-built for "raw
-  process (Raman trajectory) vs inherited endpoint label (XRD phase ID)." **Thesis-cleanest
-  backup.**
-- Off-thesis but clean operando: battery operando XAS (zenodo 14922524), simultaneous operando
-  monitoring (zenodo 3514967); CuPd supercrystal in situ scattering (zenodo 10138087, ~15 GB).
-- Caution: "Seeds of imperfection" anhydrite mesocrystal (zenodo 4943234, SAXS/WAXS + microCT +
-  video) is multimodal and CaCO3-adjacent but is *finished-crystal characterization*, not a
-  formation trajectory — wrong axis for the masked-event test.
-
-Updated decision: **run refined-a now on 15268752 (primary), 18972297 as the thesis-cleanest
-backup.** Track B (controlled CaCO3 events) remains the long-term moat but is no longer a
-prerequisite for the first falsification. Lesson for our own future data publishing: deposit
-raw with discoverable file-type metadata, or it is effectively invisible (the same lossy-at-the-
-source problem, one level up at the indexing layer).
-
-### Status (2026-07-03): executed and superseded
-
-The instruction above was carried out as the real-data campaign, Runs 001–015 (merged to main
-2026-07-03). Verdicts: the oleogel deposit (15268752) gave the *negative* result — masked-frame
-reconstruction is interpolation/clock-solvable and SAXS/WAXS are largely time-redundant, a data
-property (homogeneous, 6 near-identical events), not a model limit. The positive result came
-from RRUFF instead: the three-way label taxonomy (redundant / natural coordinate / lossy), with
-Run 011's solid-solution finding as the first real-data instance of the lossy-labels thesis.
-Campaign summary: [../event-method/findings_summary.md](../event-method/findings_summary.md);
-per-run log: [../event-method/run_log.md](../event-method/run_log.md). The campaign is complete;
-do not restart refined-a from this note. Current instructions live in `PROJECTS.md` and
-[event_grammar_validation_note.md](event_grammar_validation_note.md).
+Historical dataset search, model trials, and run-level lessons are retained in
+[event-method findings](../event-method/findings_summary.md) rather than repeated here.

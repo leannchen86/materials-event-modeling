@@ -45,6 +45,22 @@ preserve.
 answer as in selective-prediction risk--coverage analysis. Reports should use the longer term when
 the distinction could be ambiguous.
 
+## The audit root is itself a compression edge
+
+A differential audit cannot detect information removed before all of its arms. Declare three
+objects before defining `raw` and `label` arms:
+
+1. the **measurement-opportunity ledger**: what could and should have been observed;
+2. the **native-artifact inventory**: what the instruments and process systems actually retained;
+3. the **adapter policy**: which native channels, intervals, failures, and metadata entered the
+   audit root, which stayed available only by reference, and which were omitted.
+
+Every omission is classified as never captured, unavailable, intentionally excluded, or deferred
+but recoverable, with its expected consequence priced before outcome access. The representation
+DAG begins at the native artifact. If the audit instead begins at an adapted table, its verdict
+must say that all upstream edges are untested. Envelope conformance and high observation counts do
+not establish evidence coverage.
+
 ## Audit variables and scope
 
 For event $i$, define:
@@ -151,6 +167,7 @@ Every representation must ship with an input and time contract before outcomes a
 | blinding | outcomes, future observations, and provenance identifiers hidden from its producer |
 | availability rule | what makes an event representable or unrepresentable |
 | upstream retention | retained exactly, approximately recoverable, deleted, or never captured |
+| audit-root coverage | native channels included, reference-only, omitted, and never captured |
 
 Two clocks must not be conflated. Construction may occur after the state cutoff: an early human
 label may be assigned offline from a frozen packet, and an ex-situ instrument may assay a specimen
@@ -570,7 +587,8 @@ same frozen content. At minimum they contain:
 - all four arm definitions with exact fields;
 - the input-provenance DAG, state and assay timestamps, side inputs, availability rules, and
   no-future-state/no-outcome-informed-processing checks;
-- upstream retention/recoverability classification for every audited edge.
+- measurement-opportunity ledger, native-artifact inventory, adapter policy, and
+  retention/recoverability classification for every audited edge;
 
 ### 3. Denominators and support
 

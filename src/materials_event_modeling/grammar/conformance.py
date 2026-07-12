@@ -3,9 +3,9 @@
 A dataset of typed ``Event`` records (parsed by ``grammar.event.parse_event`` from either
 the v1 envelope or the legacy material_event shape) is graded on cumulative levels:
 
-* **L0 — raw trace.** Unique event boundaries; observations carry raw payloads
+* **L0 — adapted trace.** Unique event boundaries; observations carry payloads
   (inline or by file reference) and are orderable by some index (time, space,
-  cycle, frame, or explicit order).
+  cycle, frame, or explicit order). L0 does not certify capture completeness.
 * **L1 — provenance.** At least two provenance axes (operator, lab, batch, lot,
   instrument, session, day, run order) are actually logged across the dataset.
 * **L2 — negatives + frozen labels.** Outcome status is recorded per event with
@@ -275,7 +275,9 @@ def conformance_report(events: list[Event]) -> dict[str, Any]:
             "min_replicated_groups": MIN_REPLICATED_GROUPS,
         },
         "caveats": [
-            "Levels grade what the dataset RECORDS, not the quality of the science.",
+            "Levels grade the ADAPTED RECORD, not capture completeness or scientific quality.",
+            "Signals omitted before the adapter output are outside every level and must be "
+            "declared in a separate capture-policy audit.",
             "A dataset with no negative outcomes fails L2 by design: from the outside, "
             "'all successes' and 'failures filtered out' are indistinguishable.",
             "trace_richness is reported but not gated: single-observation events are "

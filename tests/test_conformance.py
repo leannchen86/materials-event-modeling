@@ -109,7 +109,7 @@ def test_l3_requires_replicates_with_provenance_variation() -> None:
                 _event(
                     idx,
                     provenance={"operator_id": f"op{rep}", "batch_id": f"b{rep}"},
-                    outcome_status="ambiguous" if idx == 0 else "success",
+                    outcome_status="failure" if idx == 0 else "success",
                     plan={"target_level": plan},
                 )
             )
@@ -126,7 +126,7 @@ def test_l3_requires_replicates_with_provenance_variation() -> None:
                 _event(
                     idx,
                     provenance={"operator_id": f"op{plan}", "batch_id": f"b{plan}"},
-                    outcome_status="ambiguous" if idx == 0 else "success",
+                    outcome_status="failure" if idx == 0 else "success",
                     plan={"target_level": plan},
                 )
             )
@@ -163,6 +163,15 @@ def test_selection_risk_reports_unknown_when_outcomes_missing() -> None:
     no_status = [_event(i, provenance=prov, outcome_status=None) for i in range(6)]
     risk = conformance_report(no_status)["selection_risk"]
     assert risk["success_bias_risk"] == "unknown_outcomes_not_recorded"
+
+
+def test_unknown_or_censored_outcome_is_not_a_negative() -> None:
+    prov = {"operator_id": "op0", "batch_id": "b0"}
+    events = [_event(i, provenance=prov, outcome_status="unknown") for i in range(6)]
+    report = conformance_report(events)
+    l2 = report["levels"]["l2_negatives_frozen_labels"]
+    assert l2["evidence"]["negative_outcome_count"] == 0
+    assert not l2["checks"]["negative_outcomes_retained"]
 
 
 def test_legacy_material_event_records_are_gradable() -> None:

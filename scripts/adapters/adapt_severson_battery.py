@@ -47,11 +47,11 @@ outcome
     criterion is 80% of nominal capacity (0.88 Ah of 1.1 Ah). A cell whose QDischarge series
     (excluding <0.5 Ah logging artifacts) reaches <= 0.88 Ah within its record gets status
     "success" with ``outcome.summary`` = the recorded cycle_life. A cell whose record ends
-    ABOVE the criterion never reached EOL in this file — its run is truncated (several
-    batch-1 cells are known to continue cycling in a later batch of the original study) —
-    and gets status "ambiguous" with the tail capacity recorded. These truncated runs are
-    honest retained negatives: the source data itself distinguishes them. The file flags no
-    cells as noisy/excluded (no such field exists in batch1.mat).
+    ABOVE the criterion never reached EOL in this file — its run is right-censored/truncated
+    (several batch-1 cells are known to continue cycling in a later batch of the original
+    study) — and gets status "unknown" with the tail capacity recorded. A censor is retained
+    evidence, not a failed or ambiguous experimental outcome. The file flags no cells as
+    noisy/excluded (no such field exists in batch1.mat).
 provenance
     ONLY what the file records: ``batch_id`` = the file's root ``batch_date`` variable
     ("2017-05-12"); ``instrument_id`` = "channel_<n>" from per-cell ``batch.channel_id`` (the
@@ -247,7 +247,7 @@ def derive_outcome(observations: list[dict], file_cycle_life: float, merged: boo
                      + merged_note,
         }
     return {
-        "status": "ambiguous",
+        "status": "unknown",
         "summary": {"cell.cycle_life_cycles": None,
                     "cell.file_recorded_cycle_life": file_cycle_life,
                     "cell.min_qdischarge_ah": round(min_qd, 4),
