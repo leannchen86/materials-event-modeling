@@ -247,7 +247,7 @@ def main() -> None:
 
     output = root / args.output
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+    output.write_text(json.dumps(report, indent=2, sort_keys=True, allow_nan=False) + "\n")
     print(f"wrote {args.output}")
 
     reg = report["regression"]["results"]

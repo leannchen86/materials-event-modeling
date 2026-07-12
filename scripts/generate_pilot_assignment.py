@@ -189,7 +189,7 @@ def main() -> None:
         "run_identity": run_identity(),
     }
     out = root / args.output
-    out.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+    out.write_text(json.dumps(manifest, indent=2, sort_keys=True, allow_nan=False) + "\n")
     print(f"wrote {args.csv} ({len(rows)} events) and {args.output}")
     print(f"design certification: L0 structure {l0['passed']}, L1 axes "
           f"{l1['evidence']['logged_axes']}, L3 counterbalancing {l3['passed']} "

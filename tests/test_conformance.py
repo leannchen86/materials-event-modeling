@@ -2,9 +2,22 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Any
 
-from materials_event_modeling.grammar import Event, conformance_report, parse_event
+import pytest
+
+from materials_event_modeling.grammar import (
+    Event,
+    conformance_report,
+    load_events,
+    parse_event,
+)
+
+SCHEMA = json.loads(
+    (Path(__file__).parents[1] / "schemas/event_grammar.v1.schema.json").read_text()
+)
 
 
 def _event(
@@ -172,3 +185,41 @@ def test_unknown_or_censored_outcome_is_not_a_negative() -> None:
     l2 = report["levels"]["l2_negatives_frozen_labels"]
     assert l2["evidence"]["negative_outcome_count"] == 0
     assert not l2["checks"]["negative_outcomes_retained"]
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        lambda event: event.update(event_id=12),
+        lambda event: event.pop("system"),
+        lambda event: event["outcome"].update(status="censored"),
+    ],
+)
+def test_schema_invalid_records_cannot_receive_a_conformance_grade(
+    tmp_path: Path,
+    mutation: Any,
+) -> None:
+    event = {
+        "event_id": "e0",
+        "system": "test",
+        "observations": [{"observation_id": "o0", "modality": "xrd"}],
+        "outcome": {"status": "unknown"},
+        "provenance": {},
+    }
+    mutation(event)
+    path = tmp_path / "events.json"
+    path.write_text(json.dumps([event]))
+
+    with pytest.raises(ValueError, match="schema violation"):
+        load_events(path, schema=SCHEMA)
+
+
+def test_event_loader_rejects_nonfinite_and_duplicate_json(tmp_path: Path) -> None:
+    for payload, message in (
+        ('[{"event_id":"e0","event_id":"e1"}]', "duplicate"),
+        ('[{"event_id":"e0","value":NaN}]', "non-finite"),
+    ):
+        path = tmp_path / "events.json"
+        path.write_text(payload)
+        with pytest.raises(ValueError, match=message):
+            load_events(path, schema=SCHEMA)

@@ -99,7 +99,7 @@ def main() -> None:
 
     output = root / args.output
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+    output.write_text(json.dumps(report, indent=2, sort_keys=True, allow_nan=False) + "\n")
 
     print(f"\nRanking robustness — {len(pairs_all)} pairs, A_full, k={K}\n")
     print(f"  {'model':<20}{'rank_acc':>9}{'cluster_CI':>18}{'reg_rho':>9}  clears")

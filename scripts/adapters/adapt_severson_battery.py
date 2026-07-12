@@ -232,7 +232,8 @@ def derive_outcome(observations: list[dict], file_cycle_life: float, merged: boo
     qd = np.array([o["payload"]["cycling"]["qdischarge_ah"] for o in usable], dtype=float)
     cyc = np.array([o["cycle_index"] for o in usable], dtype=float)
     valid = qd >= ARTIFACT_FLOOR_AH
-    min_qd = float(qd[valid].min()) if valid.any() else float("nan")
+    min_qd = float(qd[valid].min()) if valid.any() else None
+    recorded_cycle_life = float(file_cycle_life) if np.isfinite(file_cycle_life) else None
     eol_mask = valid & (qd <= EOL_CAPACITY_AH + EOL_TOLERANCE_AH)
     merged_note = " (record merged across batch files via barcode continuation)" if merged else ""
     if eol_mask.any():
@@ -240,8 +241,8 @@ def derive_outcome(observations: list[dict], file_cycle_life: float, merged: boo
         return {
             "status": "success",
             "summary": {"cell.cycle_life_cycles": eol_cycle,
-                        "cell.file_recorded_cycle_life": file_cycle_life,
-                        "cell.min_qdischarge_ah": round(min_qd, 4)},
+                        "cell.file_recorded_cycle_life": recorded_cycle_life,
+                        "cell.min_qdischarge_ah": round(min_qd, 4) if min_qd is not None else None},
             "notes": "success = QDischarge reached the 0.88 Ah (80%-of-nominal) end-of-life "
                      "criterion; cycle_life derived as the first cycle at/below the criterion"
                      + merged_note,
@@ -249,8 +250,8 @@ def derive_outcome(observations: list[dict], file_cycle_life: float, merged: boo
     return {
         "status": "unknown",
         "summary": {"cell.cycle_life_cycles": None,
-                    "cell.file_recorded_cycle_life": file_cycle_life,
-                    "cell.min_qdischarge_ah": round(min_qd, 4),
+                    "cell.file_recorded_cycle_life": recorded_cycle_life,
+                    "cell.min_qdischarge_ah": round(min_qd, 4) if min_qd is not None else None,
                     "cell.record_truncated": True},
         "notes": "record ends above the 0.88 Ah EOL criterion: run truncated (no later "
                  "continuation found by barcode); the file-recorded cycle_life is not confirmed "
@@ -368,7 +369,7 @@ def main() -> None:
 
     events = build_events(root)
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(events, indent=1) + "\n")
+    output.write_text(json.dumps(events, indent=1, allow_nan=False) + "\n")
 
     n_obs = sum(len(event["observations"]) for event in events)
     n_groups = len({event["intent"]["event_group_id"] for event in events})

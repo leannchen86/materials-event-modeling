@@ -124,7 +124,7 @@ def download_nist_mds2_2301(force: bool) -> Path:
         "files": files,
     }
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True, allow_nan=False) + "\n")
     print(f"Wrote {manifest_path.relative_to(root)}", file=sys.stderr)
     return manifest_path
 
@@ -196,7 +196,7 @@ def download_opxrd(force: bool, metadata_only: bool) -> Path:
         "files": files,
     }
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True, allow_nan=False) + "\n")
     print(f"Wrote {manifest_path.relative_to(root)}", file=sys.stderr)
     return manifest_path
 

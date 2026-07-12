@@ -284,7 +284,7 @@ def main() -> None:
 
     events = build_events(zip_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(events, indent=2) + "\n")
+    out_path.write_text(json.dumps(events, indent=2, allow_nan=False) + "\n")
 
     multi = sum(1 for e in events if len(e["observations"]) >= 2)
     total_obs = sum(len(e["observations"]) for e in events)

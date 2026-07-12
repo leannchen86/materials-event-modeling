@@ -6,9 +6,12 @@ The parser normalizes types but leaves grouping, richness, and outcome meaning t
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, NoReturn
+
+from jsonschema import Draft202012Validator, FormatChecker
 
 # Provenance axes that can carry collection identity. source_dataset is excluded from
 # `axes()` (constant within a single-dataset audit) but kept on the record.
@@ -68,11 +71,6 @@ class Observation:
             return True
         pos = self.spatial_position
         return pos is not None and (pos.x is not None or pos.y is not None)
-
-    @property
-    def kept_for_raw_objective(self) -> bool:
-        return self.include_in_raw_objective is not False
-
 
 @dataclass(frozen=True)
 class Provenance:
@@ -266,15 +264,51 @@ def parse_event(raw: dict[str, Any]) -> Event:
     )
 
 
-def load_events(path: Path) -> list[Event]:
-    """Load a JSON array / single event / directory of JSON files, parsed to Events."""
+def _reject_constant(value: str) -> NoReturn:
+    raise ValueError(f"non-finite JSON number is forbidden: {value}")
+
+
+def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON object key: {key}")
+        result[key] = value
+    return result
+
+
+def _load_json(path: Path) -> Any:
     import json
 
+    return json.loads(
+        path.read_text(),
+        parse_constant=_reject_constant,
+        object_pairs_hook=_unique_object,
+    )
+
+
+def load_events(
+    path: Path,
+    *,
+    schema: Mapping[str, Any] | None = None,
+) -> list[Event]:
+    """Load strict JSON events and optionally validate each one before coercive parsing."""
     if path.is_dir():
         events: list[Event] = []
         for child in sorted(path.glob("*.json")):
-            events.extend(load_events(child))
+            events.extend(load_events(child, schema=schema))
         return events
-    payload = json.loads(path.read_text())
+    payload = _load_json(path)
     raw_list = payload if isinstance(payload, list) else [payload]
+    if schema is not None:
+        Draft202012Validator.check_schema(schema)
+        validator = Draft202012Validator(schema, format_checker=FormatChecker())
+        for index, raw in enumerate(raw_list):
+            errors = sorted(validator.iter_errors(raw), key=lambda error: list(error.path))
+            if errors:
+                location = ".".join(str(part) for part in errors[0].absolute_path) or "$"
+                raise ValueError(
+                    f"{path}: event[{index}] schema violation at {location}: "
+                    f"{errors[0].message}"
+                )
     return [parse_event(r) for r in raw_list]

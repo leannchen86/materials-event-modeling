@@ -112,7 +112,7 @@ def preprocess(max_spectra: int, points: int, selection: str) -> dict[str, objec
             "then max-intensity normalization"
         ),
     }
-    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True, allow_nan=False) + "\n")
     return manifest
 
 

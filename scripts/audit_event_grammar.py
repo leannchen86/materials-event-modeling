@@ -53,7 +53,9 @@ def main() -> None:
     args = parser.parse_args()
 
     events_path = args.events if args.events.is_absolute() else project_root() / args.events
-    events = load_events(events_path)
+    schema_path = project_root() / "schemas/event_grammar.v1.schema.json"
+    schema = json.loads(schema_path.read_text())
+    events = load_events(events_path, schema=schema)
     dataset = args.dataset or events_path.stem
 
     report = conformance_report(events)
@@ -67,7 +69,7 @@ def main() -> None:
     rel = args.output or Path(f"data/manifests/event_grammar_conformance_{dataset}.json")
     output = Path(rel) if Path(rel).is_absolute() else project_root() / rel
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+    output.write_text(json.dumps(report, indent=2, sort_keys=True, allow_nan=False) + "\n")
     try:
         shown = output.relative_to(project_root())
     except ValueError:

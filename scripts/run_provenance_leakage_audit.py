@@ -424,7 +424,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     rel = args.output or Path(f"data/manifests/provenance_leakage_audit_{args.dataset}.json")
     output = Path(rel) if Path(rel).is_absolute() else project_root() / rel
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+    output.write_text(json.dumps(report, indent=2, sort_keys=True, allow_nan=False) + "\n")
     try:
         shown = output.relative_to(project_root())
     except ValueError:
