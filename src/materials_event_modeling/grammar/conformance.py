@@ -1,7 +1,6 @@
 """Graded conformance checks for event-grammar datasets (L0-L3).
 
-A dataset of typed ``Event`` records (parsed by ``grammar.event.parse_event`` from either
-the v1 envelope or the legacy material_event shape) is graded on cumulative levels:
+A dataset of typed ``Event`` records parsed from the v1 envelope is graded on cumulative levels:
 
 * **L0 — adapted trace.** Unique event boundaries; observations carry payloads
   (inline or by file reference) and are orderable by some index (time, space,

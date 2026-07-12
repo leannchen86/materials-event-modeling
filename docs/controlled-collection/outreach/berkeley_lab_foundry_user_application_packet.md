@@ -184,9 +184,9 @@ Draft response logic:
 4. Identify a senior PI/collaborator.
 5. Convert this packet into the portal proposal structure.
 6. Attach or reference current Track B artifacts:
-   - `docs/controlled-collection/event_dataset.md`
-   - `schemas/material_event.schema.json`
-   - `templates/calcium_carbonate_event_log.csv`
+   - `docs/controlled-collection/pilot_design_prereg.md`
+   - `schemas/event_grammar.v1.schema.json`
+   - `schemas/partner_study.v1.schema.json`
    - `docs/controlled-collection/outreach/lab_outreach_brief.md`
 
 Supporting drafts:

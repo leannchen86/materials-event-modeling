@@ -172,31 +172,3 @@ def test_unknown_or_censored_outcome_is_not_a_negative() -> None:
     l2 = report["levels"]["l2_negatives_frozen_labels"]
     assert l2["evidence"]["negative_outcome_count"] == 0
     assert not l2["checks"]["negative_outcomes_retained"]
-
-
-def test_legacy_material_event_records_are_gradable() -> None:
-    """The CaCO3-pilot shape (measurements + process.planned_conditions) still grades."""
-    legacy = {
-        "event_id": "legacy_1",
-        "system": "calcium_carbonate",
-        "provenance": {"operator_id": "op1", "batch_id": "b1"},
-        "process": {
-            "precursors": [{"name": "CaCl2"}],
-            "planned_conditions": {"target_temperature_c": 25},
-            "timeline": [],
-        },
-        "measurements": {
-            "xrd": [
-                {"file_path": "raw/e1_a.xy", "measurement_time": "2026-06-01T10:00:00Z"},
-                {"file_path": "raw/e1_b.xy", "measurement_time": "2026-06-01T11:00:00Z"},
-            ]
-        },
-        "labels": {"assigned_after_raw_data_frozen": True,
-                   "human_labels": [{"labeler_id": "h1", "label": "calcite"}]},
-        "data_quality": {"include_in_raw_objective": True, "deviations": [],
-                         "missing_fields": []},
-    }
-    report = conformance_report([parse_event(legacy)])
-    # Grades without error; single legacy event lacks outcome.status -> at most L1.
-    assert report["level"] in (0, 1)
-    assert report["levels"]["l0_raw_trace"]["passed"]

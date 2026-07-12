@@ -1,13 +1,7 @@
-"""Typed event envelope + the single boundary parser.
+"""Typed event-grammar v1 envelope and boundary parser.
 
-Everything downstream (conformance, analysis) consumes ``Event`` — a frozen, typed
-structure — never a raw ``dict[str, Any]``. ``parse_event`` is the ONE place that absorbs
-both the event-grammar v1 shape (``observations``/``outcome``/``provenance``/``intent``)
-and the legacy ``material_event`` pilot shape (``measurements``/``process.conditions``/
-top-level provenance/``human_labels``). The two-schema reconciliation lives here and
-nowhere else, so no downstream callsite carries ``.get(...) or {}`` fallbacks or has to
-guess which shape it holds. Parse and normalize the *shape*; do not interpret (grouping,
-richness, outcome meaning stay with the consumer that sees all interacting data).
+Everything downstream consumes the frozen ``Event`` structure rather than raw dictionaries.
+The parser normalizes types but leaves grouping, richness, and outcome meaning to consumers.
 """
 
 from __future__ import annotations
@@ -158,7 +152,7 @@ NEGATIVE_STATUSES = frozenset({"failure", "ambiguous", "aborted"})
 
 
 # --------------------------------------------------------------------------------------
-# Boundary parser — the one place that knows about both schemas.
+# Boundary parser.
 # --------------------------------------------------------------------------------------
 
 
@@ -194,55 +188,19 @@ def _parse_observation(raw: dict[str, Any]) -> Observation:
     )
 
 
-def _synthesize_legacy_observations(raw: dict[str, Any]) -> list[Observation]:
-    """Legacy material_event has no `observations` — one measurement file = one obs."""
-    measurements = raw.get("measurements")
-    if not isinstance(measurements, dict):
-        return []
-    default_keep = (raw.get("data_quality") or {}).get("include_in_raw_objective")
-    keep = default_keep if isinstance(default_keep, bool) else None
-    event_id = str(raw.get("event_id", "event"))
-    out: list[Observation] = []
-    for modality, entries in measurements.items():
-        items = entries if isinstance(entries, list) else [entries]
-        for idx, entry in enumerate(items):
-            if not isinstance(entry, dict):
-                continue
-            out.append(Observation(
-                observation_id=f"{event_id}_{modality}_{idx}",
-                modality=str(modality),
-                kind="measurement",
-                stage=None,
-                timestamp=_as_str(entry.get("measurement_time") or entry.get("timestamp")),
-                timepoint_minutes=None, time_s=None, cycle_index=None,
-                frame_index=None, order_index=float(idx),
-                spatial_position=None,
-                payload=None,
-                file_path=_as_str(entry.get("file_path")),
-                include_in_raw_objective=keep,
-            ))
-    return out
-
-
 def _parse_provenance(raw: dict[str, Any]) -> Provenance:
-    """v1 nests provenance; legacy stores some axes at top level. Reconcile here, once."""
     prov_raw = raw.get("provenance")
     prov = prov_raw if isinstance(prov_raw, dict) else {}
-
-    def pick(name: str) -> object:
-        nested = prov.get(name)
-        return nested if nested not in (None, "") else raw.get(name)
-
     return Provenance(
-        operator_id=_as_str(pick("operator_id")),
-        lab_id=_as_str(pick("lab_id")),
-        batch_id=_as_str(pick("batch_id")),
-        lot_id=_as_str(pick("lot_id")),
-        instrument_id=_as_str(pick("instrument_id")),
-        instrument_session_id=_as_str(pick("instrument_session_id")),
-        measurement_day=_as_str(pick("measurement_day")),
-        run_order=_as_float(pick("run_order")),
-        source_dataset=_as_str(pick("source_dataset")),
+        operator_id=_as_str(prov.get("operator_id")),
+        lab_id=_as_str(prov.get("lab_id")),
+        batch_id=_as_str(prov.get("batch_id")),
+        lot_id=_as_str(prov.get("lot_id")),
+        instrument_id=_as_str(prov.get("instrument_id")),
+        instrument_session_id=_as_str(prov.get("instrument_session_id")),
+        measurement_day=_as_str(prov.get("measurement_day")),
+        run_order=_as_float(prov.get("run_order")),
+        source_dataset=_as_str(prov.get("source_dataset")),
     )
 
 
@@ -255,15 +213,6 @@ def _parse_intent(raw: dict[str, Any]) -> Intent | None:
             event_group_id=_as_str(intent.get("event_group_id")),
             planned=planned if isinstance(planned, dict) else {},
         )
-    # Legacy: planned conditions live under process.
-    process_raw = raw.get("process")
-    process = process_raw if isinstance(process_raw, dict) else {}
-    planned = process.get("planned_conditions") or process.get("conditions")
-    plan_id = _as_str(raw.get("pre_registered_plan_id"))
-    if isinstance(planned, dict) and planned:
-        return Intent(plan_id=plan_id, event_group_id=None, planned=planned)
-    if plan_id is not None:
-        return Intent(plan_id=plan_id, event_group_id=None, planned={})
     return None
 
 
@@ -272,8 +221,6 @@ def _parse_labels(raw: dict[str, Any]) -> Labels | None:
     if not isinstance(labels, dict):
         return None
     raw_entries = labels.get("entries")
-    if not isinstance(raw_entries, list):
-        raw_entries = labels.get("human_labels")  # legacy field name
     entries: list[Label] = []
     if isinstance(raw_entries, list):
         for entry in raw_entries:
@@ -298,17 +245,16 @@ def _parse_outcome(raw: dict[str, Any]) -> Outcome:
             summary=summary if isinstance(summary, dict) else None,
             recorded=True,
         )
-    return Outcome(status="unknown", summary=None, recorded=False)  # legacy: no outcome
+    return Outcome(status="unknown", summary=None, recorded=False)
 
 
 def parse_event(raw: dict[str, Any]) -> Event:
-    """Normalize either schema into a typed Event. The only shape-reconciling code."""
-    if "observations" in raw and isinstance(raw["observations"], list):
-        observations = [
-            _parse_observation(o) for o in raw["observations"] if isinstance(o, dict)
-        ]
-    else:
-        observations = _synthesize_legacy_observations(raw)
+    """Parse one event-grammar v1-shaped dictionary into a typed event."""
+    raw_observations = raw.get("observations")
+    observations = [
+        _parse_observation(observation)
+        for observation in raw_observations if isinstance(observation, dict)
+    ] if isinstance(raw_observations, list) else []
     return Event(
         event_id=str(raw["event_id"]),
         system=str(raw.get("system", "unknown")),

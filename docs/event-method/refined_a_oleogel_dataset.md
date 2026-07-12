@@ -42,7 +42,7 @@ frame-aligned time series.**
 
 - **Event-native:** planned conditions (sample × shear) + raw multimodal trajectory +
   replicate (`_redo`) + inherited label (d-spacings) frozen after raw. Maps cleanly onto
-  `schemas/material_event.schema.json`.
+  `schemas/event_grammar.v1.schema.json`.
 - **Interpolation-resistant:** real polymorphic transitions (sharp nucleation / transition
   events) mean temporal smoothness does NOT trivially solve the masked-frame task — the
   property HTEM lacked. This is what makes HJ2 (JEPA beats IDW/ridge on the hard regime) a
@@ -60,8 +60,7 @@ frame-aligned time series.**
 
 ## Next
 
-Write ingestion `MAGs/<run>` → `material_event` events (reuse
-`src/materials_event_modeling/track_b/event_ingest.py`). First task: **within-event
+Write ingestion `MAGs/<run>` → event-grammar records. First task: **within-event
 masked-frame prediction on SAXS+WAXS**, baselines (`event_mean`/IDW/`coordinate_ridge`/RF)
 tuned hard, then the JEPA variant; d-spacings used as a label probe only. Overfit a single
 event first (Karpathy) before any scale-up.
