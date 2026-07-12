@@ -40,7 +40,8 @@ def load_cells(path: Path) -> list[dict]:
         }
         cycles = np.array([o["cycle_index"] for o in obs], dtype=float)
         outcome = event["outcome"]
-        censored = outcome["status"] == "ambiguous"
+        summary = outcome.get("summary") or {}
+        censored = summary.get("cell.record_truncated") is True
         cells.append({
             "event_id": event["event_id"],
             "policy": event["intent"]["event_group_id"],
@@ -52,7 +53,7 @@ def load_cells(path: Path) -> list[dict]:
             # For EOL cells cycle_life is the final answer; for censored cells the record
             # length is a LOWER BOUND on life (the run was truncated above the criterion).
             "cycle_life": None if censored else float(
-                outcome["summary"]["cell.cycle_life_cycles"]
+                summary["cell.cycle_life_cycles"]
             ),
             "life_lower_bound": float(cycles.max()) + 1.0,
         })

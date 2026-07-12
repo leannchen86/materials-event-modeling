@@ -9,6 +9,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
+from materials_event_modeling.eval.severson_ab import load_cells
 from materials_event_modeling.eval.severson_downstream import (
     ARM_NAMES,
     S100_NAMES,
@@ -28,7 +29,15 @@ def _observation(cycle: int, capacity: float, *, accepted: bool = True) -> dict:
         "modality": "cycling",
         "cycle_index": cycle,
         "include_in_raw_objective": accepted,
-        "payload": {"cycling": {"qdischarge_ah": capacity}},
+        "payload": {"cycling": {
+            "qdischarge_ah": capacity,
+            "qcharge_ah": capacity + 0.01,
+            "ir_ohm": 0.02,
+            "tavg_c": 30.0,
+            "tmax_c": 31.0,
+            "tmin_c": 29.0,
+            "chargetime_min": 12.0,
+        }},
     }
 
 
@@ -53,7 +62,7 @@ def _event(
         for cycle in cycle_values
     ]
     summary: dict[str, object] = {"cell.cycle_life_cycles": cycle_life}
-    if status == "ambiguous":
+    if status == "unknown" and cycle_life is None:
         summary["cell.record_truncated"] = True
     return {
         "event_id": event_id,
@@ -138,8 +147,8 @@ def test_cutoff_is_applied_before_interpolation_and_future_changes_are_inert() -
     future_changed = copy.deepcopy(event)
     future_changed["observations"][-1]["payload"]["cycling"]["qdischarge_ah"] = -1e12
     future_changed["outcome"] = {
-        "status": "ambiguous",
-        "summary": {"cell.record_truncated": True, "cell.cycle_life_cycles": 99999},
+        "status": "unknown",
+        "summary": {"cell.record_truncated": True, "cell.cycle_life_cycles": None},
     }
     future_changed["source_ref"] = {"merged_from_batches": ["batch_0", "future_batch"]}
     changed = extract_x100(future_changed)
@@ -243,8 +252,8 @@ def test_censoring_target_support_and_early_eol_representation_support_are_separ
         "censored",
         policy="p_censored",
         cycles=range(2, 121),
-        status="ambiguous",
-        cycle_life=9999.0,
+        status="unknown",
+        cycle_life=None,
     )
     early_eol = _event(
         "early",
@@ -280,6 +289,16 @@ def test_censoring_target_support_and_early_eol_representation_support_are_separ
     np.testing.assert_array_equal(policy_macro_weights(rows, analysis_eligible), [1.0, 0.0, 1.0])
     with pytest.raises(ValueError, match="without an exact scalar target"):
         policy_macro_weights(rows, np.array([True, True, False]))
+
+
+def test_ab_loader_recognizes_unknown_truncated_record_as_censored(tmp_path: Path) -> None:
+    event = _event("censored", status="unknown", cycle_life=None, cycles=range(2, 121))
+    path = tmp_path / "events.json"
+    path.write_text(json.dumps([event]))
+
+    cell = load_cells(path)[0]
+    assert cell["censored"] is True
+    assert cell["cycle_life"] is None
 
 
 def test_held_batch_and_inner_policy_folds_are_strictly_out_of_fold(

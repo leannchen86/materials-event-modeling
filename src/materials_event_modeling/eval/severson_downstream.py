@@ -307,7 +307,7 @@ def _target(event: dict[str, Any]) -> tuple[str, bool, float | None, float | Non
         if not np.isfinite(cycle_life) or cycle_life <= 0.0:
             raise ValueError("a successful event must have a finite positive cycle-life target")
         return "observed_eol", True, cycle_life, float(np.log10(cycle_life)), None
-    if status == "ambiguous" and summary.get("cell.record_truncated") is True:
+    if summary.get("cell.record_truncated") is True:
         last_cycle = _accepted_last_cycle(event)
         lower_bound = last_cycle + 1.0 if last_cycle is not None else None
         return "right_censored", False, None, None, lower_bound
