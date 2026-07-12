@@ -44,6 +44,7 @@ from materials_event_modeling.run_identity import run_identity
 EVENTS_REL = Path("data/interim/event_grammar_v1/severson_battery/events.json")
 OUTPUT_REL = Path("data/manifests/severson_downstream_compression_audit.json")
 DESIGN_REL = Path("docs/controlled-collection/severson_downstream_compression_dry_run.md")
+PRIOR_INLINE_LEDGER_COMMIT = "d598643a101c3f8e8c21954d40571cfa795930b0"
 
 EXPECTED_ATTEMPTS = 135
 EXPECTED_EXACT_TARGETS = 128
@@ -644,6 +645,31 @@ def _row_ledger(
     return ledger
 
 
+def _row_ledger_receipt(
+    rows: list[DownstreamRow],
+    primary: HeldBatchOOFResult,
+    all_eol: HeldBatchOOFResult,
+) -> dict[str, Any]:
+    ledger = _json_safe(_row_ledger(rows, primary, all_eol))
+    canonical = json.dumps(
+        ledger,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    ).encode()
+    return {
+        "row_count": len(ledger),
+        "canonical_json_sha256": hashlib.sha256(canonical).hexdigest(),
+        "canonicalization": "UTF-8 JSON; sorted keys; separators comma/colon; no NaN",
+        "storage": "omitted_from_live_manifest_deterministically_regenerable",
+        "prior_inline_snapshot": {
+            "git_commit": PRIOR_INLINE_LEDGER_COMMIT,
+            "path": str(OUTPUT_REL),
+            "note": "Historical row output; reruns may differ after code or data corrections.",
+        },
+    }
+
+
 def _analysis_report(
     rows: list[DownstreamRow], result: HeldBatchOOFResult, *, label: str
 ) -> dict[str, Any]:
@@ -751,7 +777,7 @@ def build_report(events_path: Path) -> dict[str, Any]:
         ),
         "primary_excluding_cross_batch_target_provenance": primary_report,
         "all_observed_eol_contaminated_sensitivity": sensitivity_report,
-        "row_ledger": _row_ledger(rows, primary, all_eol),
+        "row_ledger_receipt": _row_ledger_receipt(rows, primary, all_eol),
         "run_identity": run_identity(
             {
                 "design_status": "frozen_before_new_implementation_and_run",
